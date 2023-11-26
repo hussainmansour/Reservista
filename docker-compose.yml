@@ -1,5 +1,4 @@
 version: "3.8"
-
 services:
   mysql:
     image: mysql
@@ -13,12 +12,14 @@ services:
     volumes:
       - mysql-data:/var/lib/mysql
 
-  # Spring Boot Application
-  spring-app:
-    build: .
+  spring-boot-app:
+    build:
+      context: 
+        ./Backend
     ports:
       - "8080:8080"
-
+    depends_on:
+      - mysql
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/test?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&useUnicode=true
       SPRING_DATASOURCE_USERNAME: mysql_user
@@ -26,7 +27,21 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
+    
 
+  react-native-app:
+    build:
+      context: 
+        ./Frontend
+    ports:
+      - "19000:19000"
+      - "19001:19001"
+      - "19002:19002"
+
+    stdin_open: true
+    tty: true
+    depends_on:
+      - spring-boot-app
 
 volumes:
   mysql-data:
