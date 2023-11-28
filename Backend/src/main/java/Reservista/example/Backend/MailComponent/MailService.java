@@ -1,5 +1,7 @@
 package Reservista.example.Backend.MailComponent;
 
+import Reservista.example.Backend.StatusCode;
+
 public class MailService {
     public int sendMail(Mail mail){
         try{
@@ -7,7 +9,7 @@ public class MailService {
             return mailService.sendMail(mail);
         }
         catch (Exception e) {
-            return 1;
+            return StatusCode.CREDENTIAL_ERROR.getCode();
         }
     }
 }

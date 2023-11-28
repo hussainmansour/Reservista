@@ -7,6 +7,8 @@ import java.nio.file.Paths;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
+
+import Reservista.example.Backend.StatusCode;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -61,7 +63,7 @@ public class MailServiceProxy {
     }
 
     public int sendMail(Mail m) throws Exception {
-        String to=m.to;String subject= m.subject; String message=m.body;
+        String to=m.getTo();String subject= m.getSubject(); String message=m.getBody();
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
@@ -69,7 +71,7 @@ public class MailServiceProxy {
         try {
             email.addRecipient(TO, new InternetAddress(to));
         }catch (AddressException e){
-            return 400;
+            return StatusCode.INVALID_ARGUMENT.getCode();
         }
 
         email.setSubject(subject);
@@ -84,7 +86,7 @@ public class MailServiceProxy {
 
         try {
             msg = service.users().messages().send("me", msg).execute();
-            return 200;
+            return StatusCode.SUCCESS.getCode();
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             return error.getCode();
