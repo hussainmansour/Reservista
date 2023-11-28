@@ -1,0 +1,102 @@
+package Reservista.example.Backend.Models;
+
+import Reservista.example.Backend.Config.SystemRoles;
+import Reservista.example.Backend.Enums.Gender;
+import Reservista.example.Backend.Validators.Gmail;
+import Reservista.example.Backend.Validators.StrongPassword;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Date;
+import java.util.List;
+
+@Entity
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+@Table(name = "user")
+public class User implements UserDetails {
+
+    @Id
+    @Column(name = "username")
+    private String username;
+
+    @StrongPassword
+    @Column(name = "password")
+    private String password;
+
+    @Gmail
+    @NotBlank
+    @Column(name = "email")
+    private String email;
+
+    @NotBlank
+    @Column(name = "first_name")
+    private String firstName;
+
+    @Column(name = "middle_name")
+    private String middleName;
+
+    @NotBlank
+    @Column(name = "last_name")
+    private String lastName;
+
+    @NotBlank
+    @Column(name = "birthDate")
+    private LocalDate birthDate;
+
+    @NotBlank
+    @Column(name = "gender")
+    @Enumerated(EnumType.STRING)
+    private Gender gender;
+
+    @NotNull
+    @Column(name = "is_validated")
+    private boolean isValidated;
+
+    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
+    private List<Reservation> reservations;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Notification> notifications;
+
+    @ManyToMany(mappedBy = "users")
+    private List<Voucher> vouchers;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority(SystemRoles.USER));
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return isValidated;
+    }
+}
