@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = StrongPasswordValidator.class)
 public @interface StrongPassword {
-    String message() default "Password must be strong";
+    String message() default "weak password";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

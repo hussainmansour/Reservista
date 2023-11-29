@@ -9,12 +9,14 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+@ControllerAdvice
 public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
@@ -26,17 +28,22 @@ public class GlobalExceptionHandler {
         for (FieldError error : result.getFieldErrors()) {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
-
-        String className = result.getTarget() != null ? result.getTarget().getClass().getSimpleName() : null;
-
-        if ("RegistrationRequestDTO".equals(className)){
-
-            ObjectMapper mapper = new ObjectMapper();
-            RegistrationResponseDTO responseDTO =mapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
-        }
-
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
+
+//
+//        String className = result.getTarget() != null ? result.getTarget().getClass().getSimpleName() : null;
+////
+//        if ("RegistrationRequestDTO".equals(className)){
+//            System.out.println("in if conditiofjdsofmdc");
+//            ObjectMapper mapper = new ObjectMapper();
+//            RegistrationResponseDTO responseDTO =mapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
+//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+//        }
+//        ObjectMapper mapper = new ObjectMapper();
+//        RegistrationResponseDTO responseDTO =mapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
+
+//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
 
     }
 

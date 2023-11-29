@@ -4,6 +4,7 @@ package Reservista.example.Backend.Services;
 import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
+import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
 import Reservista.example.Backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,18 +47,18 @@ public class UserRegistrationService {
     private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws CredentialsException {
 
         if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
-            throw new CredentialsException("this account is blocked");
+            throw new CredentialsException(StatusCode.ACCOUNT_BLOCKED.message);
 
         if (userRepository.existsByEmail(registrationRequest.getEmail()) ){
 
-            if (!userRepository.FindIsValidByEmail(registrationRequest.getEmail()))
-                throw new CredentialsException("this account already exists and needs to be activated, check your email");
+            if (!userRepository.FindIsValidatedByEmail(registrationRequest.getEmail()))
+                throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.message);
             else
-                throw new CredentialsException("email already exists");
+                throw new CredentialsException(StatusCode.EMAIL_ALREADY_EXIST.message);
         }
 
         if (userRepository.existsByUserName(registrationRequest.getUserName()))
-            throw new CredentialsException("username already exists");
+            throw new CredentialsException(StatusCode.USERNAME_ALREADY_EXIST.message);
 
     }
 

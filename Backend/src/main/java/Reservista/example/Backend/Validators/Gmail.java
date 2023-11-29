@@ -16,7 +16,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = GmailValidator.class)
 public @interface Gmail {
-    String message() default "Email must end with @gmail.com";
+    String message() default "please provide your gmail";
 
     Class<?>[] groups() default {};
 

@@ -1,5 +1,6 @@
 package Reservista.example.Backend.DTOs;
 
+import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.StrongPassword;
 import Reservista.example.Backend.Validators.Username;
@@ -12,25 +13,27 @@ import java.time.LocalDate;
 import java.util.Date;
 
 
+
+
 @Data
 @Builder
 public class RegistrationRequestDTO {
 
-    @Gmail(message = "please provide a gmail")
+    @Gmail
     String email;
 
-    @StrongPassword(message="weak password")
+    @StrongPassword
     String password;
 
     @Username
     String userName;
 
-    @NotBlank(message = "provide your first name")
+    @NotBlank(message = "please provide your first name")
     String firstName;
 
     String lastName;
 
-    @ValidBirthDate
-    LocalDate birthDate;
+//    @ValidBirthDate
+//    LocalDate birthDate;
 
 }

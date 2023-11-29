@@ -11,6 +11,8 @@ public class ValidBirthDateValidator implements ConstraintValidator<ValidBirthDa
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
 
         // Validate that birthDate is in the past
+        if (birthDate == null) return true;
+
         if (birthDate.isAfter(LocalDate.now()))
             return false;
 

@@ -3,6 +3,7 @@ package Reservista.example.Backend.DAOs;
 
 import Reservista.example.Backend.Models.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -12,5 +13,6 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByUserName(String userName);
 
-    boolean FindIsValidByEmail(String email);
+    @Query("UPDATE User e SET e.isValidated = true WHERE e.email = :email")
+    boolean FindIsValidatedByEmail(String email);
 }
