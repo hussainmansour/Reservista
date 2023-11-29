@@ -26,11 +26,6 @@ public class DBUserDetailsService implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String userNameOrEmail) throws UsernameNotFoundException {
 
-        if (blockedUserService.isUserBlocked(userNameOrEmail))
-            throw new BlockedUserException(
-                    String.format("User %s is blocked: ", userNameOrEmail)
-            );
-
         User user = userRepository
                 .findById(userNameOrEmail) // first check by userName
                 .orElse( // if not found by userName check with email
