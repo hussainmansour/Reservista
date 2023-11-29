@@ -1,5 +1,6 @@
 package Reservista.example.Backend.Controllers;
 
+import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
@@ -27,16 +28,18 @@ public class RegistrationController {
     @Autowired
     private UserRegistrationService userRegistrationService;
 
+    @Autowired
+    UserRepository userRepository;
+
 
     @PostMapping("/register")
     public ResponseEntity<RegistrationResponseDTO> register(@Valid @RequestBody RegistrationRequestDTO request) throws CredentialsException {
 
 
         User user = userRegistrationService.registerUser(request);
-//        publisher.publishEvent(new RegistrationCompleteEvent(
-//                user
-//        ));
 
+
+        System.out.println(userRepository.findIsValidatedByEmail(request.getEmail()));
         return ResponseEntity.ok(RegistrationResponseDTO.builder().response(StatusCode.SUCCESSFUL_REGISTRATION.message).build());
 
     }

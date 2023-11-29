@@ -24,7 +24,7 @@ public class RegistrationResponseDTO {
 
     private String lastName;
 
-//    private String birthDate;
+    private String birthDate;
 
     private String response;
 

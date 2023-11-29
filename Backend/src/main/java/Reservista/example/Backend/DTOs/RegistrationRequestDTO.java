@@ -33,7 +33,7 @@ public class RegistrationRequestDTO {
 
     String lastName;
 
-//    @ValidBirthDate
-//    LocalDate birthDate;
+    @ValidBirthDate
+    LocalDate birthDate;
 
 }

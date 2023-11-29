@@ -13,6 +13,9 @@ public interface UserRepository extends JpaRepository<User, String> {
 
     boolean existsByUserName(String userName);
 
-    @Query("UPDATE User e SET e.isValidated = true WHERE e.email = :email")
-    boolean FindIsValidatedByEmail(String email);
+//    @Query("SELECT u.isValidated FROM User u WHERE u.email = email")
+//    boolean findIsValidatedByEmail(String email);
+
+    boolean findIsValidatedByEmail(String email);
 }
+

@@ -1,6 +1,7 @@
 package Reservista.example.Backend.Validators;
 
 
+import Reservista.example.Backend.Enums.StatusCode;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -13,7 +14,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = StrongPasswordValidator.class)
 public @interface StrongPassword {
-    String message() default "weak password";
+    String message() default "Weak password";
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 }

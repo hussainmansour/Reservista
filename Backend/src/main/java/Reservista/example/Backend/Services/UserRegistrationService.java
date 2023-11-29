@@ -26,6 +26,7 @@ public class UserRegistrationService {
 
     public User registerUser(RegistrationRequestDTO registrationRequest) throws CredentialsException {
 
+
         //check users credentials
         checkUserCredentials(registrationRequest);
 
@@ -51,10 +52,10 @@ public class UserRegistrationService {
 
         if (userRepository.existsByEmail(registrationRequest.getEmail()) ){
 
-            if (!userRepository.FindIsValidatedByEmail(registrationRequest.getEmail()))
+            if (!userRepository.findIsValidatedByEmail(registrationRequest.getEmail()))
                 throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.message);
-            else
-                throw new CredentialsException(StatusCode.EMAIL_ALREADY_EXIST.message);
+
+            throw new CredentialsException(StatusCode.EMAIL_ALREADY_EXIST.message);
         }
 
         if (userRepository.existsByUserName(registrationRequest.getUserName()))

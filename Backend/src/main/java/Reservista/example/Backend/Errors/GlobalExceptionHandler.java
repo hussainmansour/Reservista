@@ -30,27 +30,13 @@ public class GlobalExceptionHandler {
         }
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
 
-//
-//        String className = result.getTarget() != null ? result.getTarget().getClass().getSimpleName() : null;
-////
-//        if ("RegistrationRequestDTO".equals(className)){
-//            System.out.println("in if conditiofjdsofmdc");
-//            ObjectMapper mapper = new ObjectMapper();
-//            RegistrationResponseDTO responseDTO =mapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
-//        }
-//        ObjectMapper mapper = new ObjectMapper();
-//        RegistrationResponseDTO responseDTO =mapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
-
-//        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
-
     }
+
 
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> handleDatabaseExceptions(DataAccessException ex){
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"response\":\"error\"}");
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("{\"response\":\"data access error\"}");
 
     }
 

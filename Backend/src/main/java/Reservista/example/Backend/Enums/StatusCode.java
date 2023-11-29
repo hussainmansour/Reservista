@@ -10,7 +10,7 @@ public enum StatusCode {
     INVALID_USERNAME(15,"enter a username that does not include @"),
     INVALID_BIRTHDATE(16,"invalid birthdate"),
     INVALID_FIRSTNAME(17,"please provide your first name"),
-    WEAK_PASSWORD(18,"weak password"),
+    WEAK_PASSWORD(18,"Please enter a strong password"),
     SUCCESSFUL_REGISTRATION(19,"registration completed, verify your email");
 
     private final int code;
@@ -21,10 +21,4 @@ public enum StatusCode {
         this.message = message;
     }
 
-//    public String getMessage() {
-//        return message;
-//    }
-//    public int getCode() {
-//        return code;
-//    }
 }
