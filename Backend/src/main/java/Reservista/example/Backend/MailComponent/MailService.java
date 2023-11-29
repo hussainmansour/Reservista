@@ -1,6 +1,6 @@
 package Reservista.example.Backend.MailComponent;
 
-import Reservista.example.Backend.StatusCode;
+import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.responds.Respond;
 import org.springframework.stereotype.Service;
 
