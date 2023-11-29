@@ -4,13 +4,16 @@ import Reservista.example.Backend.Config.SystemRoles;
 import Reservista.example.Backend.Enums.Gender;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.StrongPassword;
+import Reservista.example.Backend.Validators.ValidBirthDate;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -39,6 +42,7 @@ public class User implements UserDetails {
 
     @Gmail
     @NotBlank
+    @Unique
     @Column(name = "email")
     private String email;
 
@@ -49,15 +53,15 @@ public class User implements UserDetails {
     @Column(name = "middle_name")
     private String middleName;
 
-    @NotBlank
     @Column(name = "last_name")
     private String lastName;
 
-    @NotBlank
+    @NotNull
+    @ValidBirthDate
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-    @NotBlank
+    @NotNull
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;

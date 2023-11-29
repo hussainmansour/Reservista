@@ -10,19 +10,22 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.checkerframework.common.aliasing.qual.Unique;
 
 @Entity
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "BlockedUser")
+@Table(name = "blocked_user")
 public class BlockedUser {
 
     @Id
     @Column(name = "username")
     private String username;
 
+    @NotBlank
+    @Unique
     @Gmail
     @Column(name = "email")
     private String email;
