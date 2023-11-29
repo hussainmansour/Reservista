@@ -8,5 +8,10 @@ import java.util.Optional;
 
 @Repository
 public interface BlockedUserRepository extends JpaRepository<BlockedUser,String> {
+
+
+    boolean existsByEmail(String email);
+
     Optional<BlockedUser> findByEmail(String email);
+
 }

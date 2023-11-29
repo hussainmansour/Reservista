@@ -1,6 +1,5 @@
 package Reservista.example.Backend.Validators;
 
-
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 
@@ -11,9 +10,12 @@ import java.lang.annotation.Target;
 
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = StrongPasswordValidator.class)
-public @interface StrongPassword {
-    String message() default "Weak password";
+@Constraint(validatedBy = UsernameValidator.class)
+public @interface Username {
+
+    String message() default "enter a username that does not include @";
+
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }
