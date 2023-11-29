@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Models;
 
-import Reservista.example.Backend.Config.SystemRoles;
+import Reservista.example.Backend.Enums.SystemRoles;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
