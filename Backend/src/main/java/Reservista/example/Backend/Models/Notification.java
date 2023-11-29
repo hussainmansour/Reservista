@@ -35,6 +35,7 @@ public class Notification {
 
     @NotNull
     @Column(name = "type")
+    @Enumerated(EnumType.STRING)
     private NotificationType type;
 
     @ManyToMany(cascade = CascadeType.ALL)
