@@ -17,7 +17,7 @@ public enum StatusCode {
 
 
     private  final int code;
-    private  String message;
+    private  final String message;
     StatusCode(int code, String message) {
         this.code = code;
         this.message = message;
