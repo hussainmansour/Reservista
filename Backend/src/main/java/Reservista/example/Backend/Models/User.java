@@ -1,9 +1,8 @@
 package Reservista.example.Backend.Models;
 
-import Reservista.example.Backend.Config.SystemRoles;
+import Reservista.example.Backend.Enums.SystemRoles;
 import Reservista.example.Backend.Enums.Gender;
 import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.StrongPassword;
 import Reservista.example.Backend.Validators.ValidBirthDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
@@ -33,7 +32,6 @@ public class User implements UserDetails {
     @Column(name = "user_name")
     private String userName;
 
-    @StrongPassword
     @Column(name = "password")
     private String password;
 

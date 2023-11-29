@@ -9,6 +9,7 @@ import java.util.Properties;
 import java.util.Set;
 
 import Reservista.example.Backend.Enums.StatusCode;
+
 import Reservista.example.Backend.responds.Respond;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
@@ -72,6 +73,7 @@ public class MailServiceProxy {
         try {
             email.addRecipient(TO, new InternetAddress(to));
         }catch (AddressException e){
+
             return StatusCode.INVALID_ARGUMENT.getRespond();
         }
 
@@ -91,6 +93,7 @@ public class MailServiceProxy {
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
             return new Respond(error.getMessage(),error.getCode());
+
         }
 
     }

@@ -11,13 +11,15 @@ import java.util.Optional;
 @Repository
 public interface UserRepository extends JpaRepository<User, String> {
 
+
     boolean existsByEmail(String email);
 
     boolean existsByUserName(String userName);
 
-//    @Query("SELECT u.isValidated FROM User u WHERE u.email = email")
-//    boolean findIsValidatedByEmail(String email);
-    Optional<User> findByEmail(String email);
+
     boolean findIsValidatedByEmail(String email);
+
+    Optional<User> findByEmail(String email);
+
 }
 
