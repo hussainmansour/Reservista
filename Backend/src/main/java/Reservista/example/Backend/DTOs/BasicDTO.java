@@ -1,4 +1,4 @@
-package DTOs;
+package Reservista.example.Backend.DTOs;
 
 public class BasicDTO {
 }

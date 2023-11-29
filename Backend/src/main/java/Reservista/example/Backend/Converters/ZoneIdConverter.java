@@ -1,0 +1,19 @@
+package Reservista.example.Backend.Converters;
+
+import jakarta.persistence.AttributeConverter;
+import jakarta.persistence.Converter;
+
+import java.time.ZoneId;
+
+public class ZoneIdConverter implements AttributeConverter<ZoneId, String> {
+
+    @Override
+    public String convertToDatabaseColumn(ZoneId attribute) {
+        return attribute.getId();
+    }
+
+    @Override
+    public ZoneId convertToEntityAttribute(String dbData) {
+        return ZoneId.of( dbData );
+    }
+}
