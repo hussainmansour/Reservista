@@ -1,4 +1,4 @@
-package Reservista.example.Backend;
+package Reservista.example.Backend.Enums;
 
 import Reservista.example.Backend.responds.Respond;
 

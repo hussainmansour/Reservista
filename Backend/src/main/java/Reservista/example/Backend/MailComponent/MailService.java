@@ -1,6 +1,6 @@
 package Reservista.example.Backend.MailComponent;
 
-import Reservista.example.Backend.StatusCode;
+import Reservista.example.Backend.Enums.StatusCode;
 
 public class MailService {
     public int sendMail(Mail mail){

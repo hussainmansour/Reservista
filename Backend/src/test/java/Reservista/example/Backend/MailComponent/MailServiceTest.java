@@ -1,6 +1,6 @@
 package Reservista.example.Backend.MailComponent;
 
-import Reservista.example.Backend.StatusCode;
+import Reservista.example.Backend.Enums.StatusCode;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

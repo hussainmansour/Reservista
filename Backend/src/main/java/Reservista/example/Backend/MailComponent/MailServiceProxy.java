@@ -8,7 +8,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import Reservista.example.Backend.StatusCode;
+import Reservista.example.Backend.Enums.StatusCode;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
