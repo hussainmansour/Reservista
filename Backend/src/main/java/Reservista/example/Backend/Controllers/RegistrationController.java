@@ -3,7 +3,7 @@ package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
 import Reservista.example.Backend.Event.RegistrationCompleteEvent;
 import Reservista.example.Backend.Models.User;
@@ -40,7 +40,7 @@ public class RegistrationController {
 
 
         System.out.println(userRepository.findIsValidatedByEmail(request.getEmail()));
-        return ResponseEntity.ok(RegistrationResponseDTO.builder().response(StatusCode.SUCCESSFUL_REGISTRATION.message).build());
+        return ResponseEntity.ok(RegistrationResponseDTO.builder().response(StatusCode.SUCCESSFUL_REGISTRATION.getMessage()).build());
 
     }
 

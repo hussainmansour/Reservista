@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Validators;
 
 
-import Reservista.example.Backend.Enums.StatusCode;
 import jakarta.validation.Constraint;
 import jakarta.validation.Payload;
 

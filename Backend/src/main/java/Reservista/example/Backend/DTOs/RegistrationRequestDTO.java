@@ -1,6 +1,5 @@
 package Reservista.example.Backend.DTOs;
 
-import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.StrongPassword;
 import Reservista.example.Backend.Validators.Username;
@@ -10,9 +9,6 @@ import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.util.Date;
-
-
 
 
 @Data
