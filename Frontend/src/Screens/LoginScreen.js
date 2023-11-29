@@ -2,13 +2,51 @@ import { StyleSheet, Text, TextInput, View, TouchableOpacity, Image } from 'reac
 import React, {useState, useEffect} from 'react';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
+import * as WebBrowser from "expo-web-browser"
+import * as Google from 'expo-auth-session/providers/google'
+import * as React from 'react'
+
 
 
 const LoginScreen = ({navigation}) => {
   const [username, usernameSet] = useState('');
   const [password , passwordSet] = useState('');
+  const [userInfo, setUserInfo] = React.useState(null)
+  const [request, response, promptAsync] = Google.useAuthRequest({
+    androidClientId: "1031607216981-56eug3c6kc0m0opdoo880f46aimrakga.apps.googleusercontent.com",
+    webClientId: "1031607216981-a811ens5029nos4vo5qgkjm99imtmlcg.apps.googleusercontent.com"
+  })
 
-  const handle = () => {
+  React.useEffect( () => {handleGoogleSignup();}, [response]);
+
+
+  async function handleGoogleSignup(){
+    if(response?. type === "success"){
+      console.log(response.authentication.idToken)
+      await getUserInfo(response.authentication.accessToken)
+    }else{
+      console.log("Failed")
+    }
+  }
+
+  const getUserInfo = async (token) => {
+    if(!token) return;
+    try{
+      const response = await fetch(
+        "https://www.googleapis.com/userinfo/v2/me",
+        {
+          headers : { Authorization: `Bearer ${token}` }
+        }
+      );
+
+      const user = await response.json();
+      setUserInfo(user)
+    }catch(error){
+      console.log('Failed')
+    }
+  } 
+
+  const handleLoginRequest = () => {
     const userData = {
       username,
       password
@@ -25,7 +63,7 @@ const LoginScreen = ({navigation}) => {
       <CustomTextInput placeholder={'Username'} title={'Username'} secure = {false} onChangeText={(text) => usernameSet(text)}/>
       <CustomTextInput placeholder={'Password'} title={'Password'} secure = {true} onChangeText={(text) => passwordSet(text)}/>      
       
-      <SmallButton text={"Login"} handlePressing={handle}/>
+      <SmallButton text={"Login"} handlePressing={handleLoginRequest}/>
       
 
       <View style = {styles.signup}>
@@ -36,7 +74,7 @@ const LoginScreen = ({navigation}) => {
       </View>
       
 
-      <TouchableOpacity style = {styles.googleButtonContainer}>
+      <TouchableOpacity style = {styles.googleButtonContainer} onPress={() => promptAsync()}>
         <Text style = {styles.googleText} >Continue with Google</Text>
         <Image source = {require('../Data/Google.png')} style = {styles.img}/>
       </TouchableOpacity>
