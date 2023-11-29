@@ -1,6 +1,7 @@
 package Reservista.example.Backend.MailComponent;
 
 import Reservista.example.Backend.StatusCode;
+import Reservista.example.Backend.responds.Respond;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -14,8 +15,8 @@ class MailServiceTest {
         mail.setTo("mariam.gerges1188@gmail.com");
         mail.setBody("testing send with correct email");
         MailService mailservice=new MailService();
-        int statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode, StatusCode.SUCCESS.getCode());
+        Respond statusCode=mailservice.sendMail(mail);
+        assertEquals(statusCode.getStatus(), StatusCode.SUCCESS.getCode());
     }
     @Test
     void testSendWithNoDomain(){
@@ -24,8 +25,8 @@ class MailServiceTest {
         mail.setTo("mariam.gerges1188");
         mail.setBody("testing send with no domain");
         MailService mailservice=new MailService();
-        int statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode, StatusCode.INVALID_ARGUMENT.getCode());
+        Respond statusCode=mailservice.sendMail(mail);
+        assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
     }
     @Test
     void testSendWithEmptyEmail(){
@@ -34,7 +35,7 @@ class MailServiceTest {
         mail.setTo("");
         mail.setBody("testing send with empty email");
         MailService mailservice=new MailService();
-        int statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode, StatusCode.INVALID_ARGUMENT.getCode());
+        Respond statusCode=mailservice.sendMail(mail);
+        assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
     }
 }
