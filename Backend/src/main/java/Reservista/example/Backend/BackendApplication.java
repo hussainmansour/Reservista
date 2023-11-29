@@ -1,7 +1,5 @@
 package Reservista.example.Backend;
 
-import Reservista.example.Backend.MailComponent.Mail;
-import Reservista.example.Backend.MailComponent.MailService;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
