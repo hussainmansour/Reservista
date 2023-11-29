@@ -16,12 +16,12 @@ public class Report {
 
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "username", referencedColumnName = "username")
+    @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     private User user;
 
     @Id
     @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "adminname", referencedColumnName = "adminname")
+    @JoinColumn(name = "admin_name", referencedColumnName = "admin_name")
     private Admin admin;
 
     @Id

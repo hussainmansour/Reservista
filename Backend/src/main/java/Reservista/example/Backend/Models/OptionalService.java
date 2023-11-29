@@ -27,6 +27,6 @@ public class OptionalService {
 
     @NotNull
     @Column(name = "price")
-    private BigDecimal price;
+    private double price;
 
 }

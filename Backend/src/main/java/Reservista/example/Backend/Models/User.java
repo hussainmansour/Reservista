@@ -30,8 +30,8 @@ import java.util.List;
 public class User implements UserDetails {
 
     @Id
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     @StrongPassword
     @Column(name = "password")
@@ -54,7 +54,7 @@ public class User implements UserDetails {
     private String lastName;
 
     @NotBlank
-    @Column(name = "birthDate")
+    @Column(name = "birth_date")
     private LocalDate birthDate;
 
     @NotBlank
@@ -77,7 +77,12 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(SystemRoles.USER));
+        return List.of(new SimpleGrantedAuthority(SystemRoles.USER.name()));
+    }
+
+    @Override
+    public String getUsername() {
+        return this.userName;
     }
 
     @Override

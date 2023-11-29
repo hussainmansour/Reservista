@@ -20,8 +20,8 @@ import java.util.List;
 public class Admin implements UserDetails {
 
     @Id
-    @Column(name = "adminname")
-    private String adminname;
+    @Column(name = "admin_name")
+    private String adminName;
 
     @NotBlank
     @Column(name = "password")
@@ -29,12 +29,12 @@ public class Admin implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(SystemRoles.ADMIN));
+        return List.of(new SimpleGrantedAuthority(SystemRoles.ADMIN.name()));
     }
 
     @Override
     public String getUsername() {
-        return this.adminname;
+        return this.adminName;
     }
 
     @Override

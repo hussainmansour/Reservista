@@ -28,7 +28,7 @@ public class Reservation {
 
     @NotNull
     @Column(name = "price")
-    private BigDecimal price;
+    private double price;
 
     @NotNull
     @Column(name = "created_at")
@@ -52,7 +52,7 @@ public class Reservation {
     private Review review;
 
     @ManyToOne
-    @JoinColumn(name = "username" , referencedColumnName = "username")
+    @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
     private User user;
 
     @ManyToMany(mappedBy = "reservations")

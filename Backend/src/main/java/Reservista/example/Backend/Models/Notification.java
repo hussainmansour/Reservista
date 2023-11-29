@@ -41,7 +41,7 @@ public class Notification {
     @JoinTable(
             name = "user_notification",
             joinColumns = @JoinColumn(name = "notification_id" , referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "username" , referencedColumnName = "username")
+            inverseJoinColumns = @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
     )
     private List<User> users;
 }

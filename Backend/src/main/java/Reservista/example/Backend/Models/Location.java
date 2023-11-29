@@ -33,12 +33,12 @@ public class Location {
     private String country;
 
     @Convert(converter = ZoneIdConverter.class)
-    @Column(name = "time-zone")
+    @Column(name = "time_zone")
     private ZoneId timeZone;
 
     @Embedded
     private Coordinates coordinates;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
-    private List<Hotel> rooms;
+    private List<Hotel> hotels;
 }

@@ -25,7 +25,7 @@ public class RoomDescription {
 
     @NotNull
     @Column(name = "price")
-    private BigDecimal price;
+    private double price;
 
     @Column(name = "capacity")
     private int capacity;

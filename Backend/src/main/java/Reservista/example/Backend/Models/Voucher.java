@@ -30,7 +30,7 @@ public class Voucher {
     @JoinTable(
             name = "user_voucher",
             joinColumns = @JoinColumn(name = "voucher_code" , referencedColumnName = "voucher_code"),
-            inverseJoinColumns = @JoinColumn(name = "username" , referencedColumnName = "username")
+            inverseJoinColumns = @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
     )
     private List<User> users;
 }

@@ -40,12 +40,12 @@ public class Hotel {
     @Min(0)
     @Max(5)
     @Column(name = "star_rating")
-    private double starRating;
+    private int starRating;
 
     @ElementCollection
     @CollectionTable(name = "area_description", joinColumns = @JoinColumn(name = "id"))
     @Column(name = "area_description")
-    private List<String> area_description;
+    private List<String> areaDescription;
 
     @ManyToOne
     @JoinColumn(name = "location_id",referencedColumnName = "id")
