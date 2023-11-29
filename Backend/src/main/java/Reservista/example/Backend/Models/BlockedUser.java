@@ -21,8 +21,8 @@ import org.checkerframework.common.aliasing.qual.Unique;
 public class BlockedUser {
 
     @Id
-    @Column(name = "username")
-    private String username;
+    @Column(name = "user_name")
+    private String userName;
 
     @NotBlank
     @Unique
