@@ -10,7 +10,7 @@ public enum StatusCode {
     ACCOUNT_DEACTIVATED(13, "this account already exists and needs to be activated, check your email"),
     ACCOUNT_BLOCKED(14, "this account is blocked"),
     INVALID_USERNAME(15, "enter a username that does not include @"),
-    INVALID_BIRTHDATE(16, "invalid birthdate"),
+    INVALID_BIRTHDATE(16, "Invalid age"),
     INVALID_FIRSTNAME(17, "please provide your first name"),
     WEAK_PASSWORD(18, "Please enter a strong password"),
     SUCCESSFUL_REGISTRATION(19, "registration completed, verify your email"),
