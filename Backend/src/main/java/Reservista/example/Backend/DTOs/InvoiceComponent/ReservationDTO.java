@@ -39,7 +39,7 @@ public class ReservationDTO {
         total += Math.ceil(0.13 * intRefundable * total);
         if (isRefundable()) s.append("\nRefundable\t\t\t" + "13%(+").append(total * 0.13).append(")\n\n");
         if (voucher != 0)
-            s.append("\nVocher\t\t\t").append(voucher * 100).append("%100(-+").append(total * voucher).append(")\n");
+            s.append("\nVoucher\t\t\t").append(voucher * 100).append("%100(-+").append(total * voucher).append(")\n");
         total -= total * voucher;
         s.append("Total \t\t\t").append(total).append("\n\n");
 

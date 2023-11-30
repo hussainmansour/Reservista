@@ -50,7 +50,7 @@ public class UserRegistrationService {
         if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
             throw new CredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
 
-        if (userRepository.existsByEmail(registrationRequest.getEmail()) ){
+        if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 
             if (!userRepository.findIsValidatedByEmail(registrationRequest.getEmail()))
                 throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
