@@ -21,6 +21,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
+
         BindingResult result = ex.getBindingResult();
         Map<String, String> fieldErrors = new HashMap<>();
 
@@ -28,6 +29,13 @@ public class GlobalExceptionHandler {
         for (FieldError error : result.getFieldErrors()) {
             fieldErrors.put(error.getField(), error.getDefaultMessage());
         }
+
+        if (result.getTarget().getClass().getSimpleName().equals("RegistrationRequestDTO")){
+            ObjectMapper objectMapper = new ObjectMapper();
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+                    .body(objectMapper.convertValue(fieldErrors,RegistrationResponseDTO.class));
+        }
+
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
 
     }
@@ -46,7 +54,7 @@ public class GlobalExceptionHandler {
         RegistrationResponseDTO responseDTO
                 = RegistrationResponseDTO.builder().response(ex.getMessage()).build();
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body( responseDTO);
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(responseDTO);
     }
 
 }
