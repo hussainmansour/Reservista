@@ -24,7 +24,7 @@ public class RegistrationRequestDTO {
     @Username
     String userName;
 
-    @NotBlank(message = "please provide your first name")
+//    @NotBlank(message = "please provide your first name")
     String firstName;
 
     String lastName;

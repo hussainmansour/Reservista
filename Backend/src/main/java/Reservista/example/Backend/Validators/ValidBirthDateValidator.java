@@ -10,11 +10,8 @@ public class ValidBirthDateValidator implements ConstraintValidator<ValidBirthDa
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
 
-        // Validate that birthDate is in the past
-        if (birthDate == null) return false;
 
-        if (birthDate.isAfter(LocalDate.now()))
-            return false;
+        if (birthDate == null) return true;
 
         // Validate that the person is at least 18 years old
         LocalDate eighteenYearsAgo = LocalDate.now().minusYears(18);

@@ -34,8 +34,6 @@ public class RegistrationController {
 
         User user = userRegistrationService.registerUser(request);
 
-
-        System.out.println(userRepository.findIsValidatedByEmail(request.getEmail()));
         return ResponseEntity.ok(RegistrationResponseDTO.builder().response(StatusCode.SUCCESSFUL_REGISTRATION.getMessage()).build());
 
     }

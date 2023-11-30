@@ -41,7 +41,7 @@ public class User implements UserDetails {
     @Column(name = "email")
     private String email;
 
-    @NotBlank
+//    @NotBlank
     @Column(name = "first_name")
     private String firstName;
 
@@ -51,12 +51,11 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-//    @NotNull
-//    @ValidBirthDate
+    @ValidBirthDate
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
-//    @NotNull
+
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
