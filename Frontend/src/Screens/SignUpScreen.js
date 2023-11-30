@@ -13,7 +13,7 @@ import {
     StyleSheet,
     Alert,
     Button,
-    Image
+    Image, ActivityIndicator
 } from 'react-native';
 import {signUp} from "../Utilities/API";
 
@@ -30,7 +30,9 @@ const SignupScreen = () => {
   const [agreeTerms, setAgreeTerms] = useState(false);
   const [verificationCode, setVerificationCode] = useState('');
   const [enteredVerificationCode, setEnteredVerificationCode] = useState('');
-  const url = "http://192.168.1.4:8080"
+  const [loading, setLoading] = useState(false);
+
+    const url = "http://192.168.1.4:8080"
 
   const navigation = useNavigation();
     const handleSignUp = () => {
@@ -44,7 +46,7 @@ const SignupScreen = () => {
                 nationality,
                 username
             };
-            const response = signUp(userData);
+            const response = signUp(userData , setLoading);
             console.log(response)
             // Navigate to the verification code screen
             navigation.navigate('VerificationCode');
@@ -156,6 +158,7 @@ const SignupScreen = () => {
                     </Text>
                 </View>
 
+                {loading && <ActivityIndicator size="large" color="#0000ff" />}
                 <TouchableOpacity
                     style={styles.loginButtonContainer}
                     onPress={() => handleSignUp()}
