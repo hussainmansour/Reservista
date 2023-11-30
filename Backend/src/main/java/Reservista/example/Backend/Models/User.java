@@ -51,7 +51,7 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @NotNull
+
     @ValidBirthDate
     @Column(name = "birth_date")
     private LocalDate birthDate;
