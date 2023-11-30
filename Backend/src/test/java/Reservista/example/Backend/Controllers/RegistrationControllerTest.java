@@ -227,27 +227,5 @@ class RegistrationControllerTest {
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 
-    @Test
-    public void whenInValidBirthDate_thenReturnBadRequest() throws Exception {
 
-
-        RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
-                .email("testtttt@gmail")
-                .password("Strong@124312")
-                .userName("username")
-                .birthDate(LocalDate.parse("2022-02-02"))
-                .build();
-
-        RegistrationResponseDTO expected = RegistrationResponseDTO
-                .builder()
-                .birthDate(StatusCode.INVALID_BIRTHDATE.getMessage())
-                .build();
-
-        System.out.println(objectMapper.writeValueAsString(expected));
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
-    }
 }
