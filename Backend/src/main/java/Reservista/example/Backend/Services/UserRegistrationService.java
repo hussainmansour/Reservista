@@ -38,7 +38,7 @@ public class UserRegistrationService {
                         .lastName(registrationRequest.getLastName())
                         .email(registrationRequest.getEmail())
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                        .isValidated(false) //this attribute should be enabled after the user verifies his email using OTP
+                        .isActivated(false) //this attribute should be enabled after the user verifies his email using OTP
                         .build();
 
         //save user in the database
@@ -52,7 +52,7 @@ public class UserRegistrationService {
 
         if (userRepository.existsByEmail(registrationRequest.getEmail()) ){
 
-            if (!userRepository.findIsValidatedByEmail(registrationRequest.getEmail()))
+            if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail()))
                 throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
 
             throw new CredentialsException(StatusCode.EMAIL_ALREADY_EXIST.getMessage());

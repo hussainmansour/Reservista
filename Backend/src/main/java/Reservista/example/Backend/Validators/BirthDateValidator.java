@@ -5,12 +5,10 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 
-public class ValidBirthDateValidator implements ConstraintValidator<ValidBirthDate, LocalDate> {
+public class BirthDateValidator implements ConstraintValidator<BirthDate, LocalDate> {
 
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
-
-
         if (birthDate == null) return true;
 
         // Validate that the person is at least 18 years old

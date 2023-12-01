@@ -24,7 +24,6 @@ public class BlockedUser {
     @Column(name = "user_name")
     private String userName;
 
-    @NotBlank
     @Unique
     @Gmail
     @Column(name = "email")

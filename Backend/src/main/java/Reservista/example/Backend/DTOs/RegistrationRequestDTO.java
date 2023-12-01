@@ -3,8 +3,7 @@ package Reservista.example.Backend.DTOs;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.StrongPassword;
 import Reservista.example.Backend.Validators.Username;
-import Reservista.example.Backend.Validators.ValidBirthDate;
-import jakarta.validation.constraints.NotBlank;
+import Reservista.example.Backend.Validators.BirthDate;
 import lombok.Builder;
 import lombok.Data;
 
@@ -29,7 +28,7 @@ public class RegistrationRequestDTO {
 
     String lastName;
 
-    @ValidBirthDate
+    @BirthDate
     LocalDate birthDate;
 
 }
