@@ -16,19 +16,17 @@ export default function App() {
     return (
         <View style={styles.container}>
             <StatusBar
-                backgroundColor="white" // Set the background color to transparent
-                barStyle="light-content" // Set the text color to light
-                translucent={true} // Make the status bar translucent
+                backgroundColor="white" 
+                barStyle="light-content" 
+                translucent={true} 
             />
-            {/* <LoginForm></LoginForm> */}
             <NavigationContainer>
                 <Stack.Navigator>
                     <Stack.Screen name = 'Login' component = {LoginScreen}/>
                     <Stack.Screen name = 'Signup' component = {SignupScreen}/>
-                    <Stack.Screen name="TermsAndConditions" component={TermsAndConditionsScreen} />
-                    <Stack.Screen name="VerificationCode" component={VerificationCodeScreen} />
+                    <Stack.Screen name= 'TermsAndConditions' component={TermsAndConditionsScreen} />
+                    <Stack.Screen name= 'VerificationCode' component={VerificationCodeScreen} />
                     <Stack.Screen name = 'Home' component = {Home}/>
-
                 </Stack.Navigator>
             </NavigationContainer>
 
