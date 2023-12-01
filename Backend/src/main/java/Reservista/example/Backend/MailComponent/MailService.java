@@ -8,12 +8,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class MailService {
 
-    public Respond sendMail(Mail mail){
-        try{
-            MailServiceProxy mailService=new MailServiceProxy();
-            return mailService.sendMail(mail);
-        }
-        catch (Exception e) {
+    public Respond sendMail(Mail mail) {
+        try {
+            MailServiceProxy mailServiceProxy = new MailServiceProxy();
+            return mailServiceProxy.sendMail(mail);
+        } catch (Exception e) {
             return StatusCode.CREDENTIAL_ERROR.getRespond();
         }
     }

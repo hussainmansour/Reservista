@@ -37,7 +37,7 @@ import static javax.mail.Message.RecipientType.TO;
 
 public class MailServiceProxy {
     private static final String TEST_EMAIL = "Rerservista";
-    private static final String jsonCredentials="/client_secret_514897488180-dl8iuptm8o2blgkdd5n6tp379tf186p7.apps.googleusercontent.com.json";
+    private static final String jsonCredentials = "/client_secret_514897488180-dl8iuptm8o2blgkdd5n6tp379tf186p7.apps.googleusercontent.com.json";
     private final Gmail service;
 
     public MailServiceProxy() throws Exception {
@@ -65,14 +65,16 @@ public class MailServiceProxy {
     }
 
     public Respond sendMail(Mail m) throws Exception {
-        String to=m.getTo();String subject= m.getSubject(); String message=m.getBody();
+        String to = m.getTo();
+        String subject = m.getSubject();
+        String message = m.getBody();
         Properties props = new Properties();
         Session session = Session.getDefaultInstance(props, null);
         MimeMessage email = new MimeMessage(session);
         email.setFrom(new InternetAddress(TEST_EMAIL));
         try {
             email.addRecipient(TO, new InternetAddress(to));
-        }catch (AddressException e){
+        } catch (AddressException e) {
 
             return StatusCode.INVALID_ARGUMENT.getRespond();
         }
@@ -92,12 +94,11 @@ public class MailServiceProxy {
             return StatusCode.SUCCESS.getRespond();
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
-            return new Respond(error.getMessage(),error.getCode());
+            return new Respond(error.getMessage(), error.getCode());
 
         }
 
     }
-
 
 
 }
