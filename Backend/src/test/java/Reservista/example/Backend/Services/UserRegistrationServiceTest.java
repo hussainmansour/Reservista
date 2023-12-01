@@ -16,8 +16,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
- import static org.junit.jupiter.api.Assertions.*;
- import static org.mockito.ArgumentMatchers.any;
+
+import static org.mockito.ArgumentMatchers.any;
  import static org.mockito.Mockito.*;
 
 @SpringBootTest
@@ -46,7 +46,7 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsValidatedByEmail("mariam@gmail.com")).thenReturn(true);
+        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(true);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
@@ -68,7 +68,7 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
-        Mockito.when(userRepository.findIsValidatedByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
@@ -93,7 +93,7 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsValidatedByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
 
         RegistrationRequestDTO registrationRequest =
@@ -116,7 +116,7 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
-        Mockito.when(userRepository.findIsValidatedByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
@@ -138,7 +138,7 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsValidatedByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);

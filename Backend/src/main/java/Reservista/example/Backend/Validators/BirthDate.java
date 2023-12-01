@@ -5,8 +5,8 @@ import java.lang.annotation.*;
 
 @Target({ElementType.FIELD})
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = {ValidBirthDateValidator.class})
-public @interface ValidBirthDate {
+@Constraint(validatedBy = {BirthDateValidator.class})
+public @interface BirthDate {
     String message() default "Invalid age";
 
     Class<?>[] groups() default {};

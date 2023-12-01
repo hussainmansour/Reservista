@@ -22,12 +22,18 @@ public class RoomDescription {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
+    @Column(name = "title")
+    private String title;
+
     @NotNull
     @Column(name = "price")
     private double price;
 
     @Column(name = "capacity")
     private int capacity;
+
+    @OneToMany(mappedBy = "roomDescription",cascade = CascadeType.ALL)
+    private List<RoomImage> roomImages;
 
     @ElementCollection
     @CollectionTable(name = "room_details", joinColumns = @JoinColumn(name = "id"))

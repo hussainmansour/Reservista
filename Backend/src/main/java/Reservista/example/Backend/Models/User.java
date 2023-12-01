@@ -2,10 +2,10 @@ package Reservista.example.Backend.Models;
 
 import Reservista.example.Backend.Enums.SystemRoles;
 import Reservista.example.Backend.Enums.Gender;
+import Reservista.example.Backend.Validators.Country;
 import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.ValidBirthDate;
+import Reservista.example.Backend.Validators.BirthDate;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -36,12 +36,10 @@ public class User implements UserDetails {
     private String password;
 
     @Gmail
-    @NotBlank
     @Unique
     @Column(name = "email")
     private String email;
 
-//    @NotBlank
     @Column(name = "first_name")
     private String firstName;
 
@@ -51,18 +49,25 @@ public class User implements UserDetails {
     @Column(name = "last_name")
     private String lastName;
 
-    @ValidBirthDate
+    @BirthDate
     @Column(name = "birth_date")
     private LocalDate birthDate;
-
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
+    @Country
+    @Column(name = "nationality")
+    private String nationality;
+
     @NotNull
-    @Column(name = "is_validated")
-    private boolean isValidated;
+    @Column(name = "is_activated")
+    private boolean isActivated;
+
+    @Lob
+    @Column(name = "profile_image")
+    private byte[] profileImage;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
     private List<Reservation> reservations;
@@ -100,6 +105,6 @@ public class User implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return isValidated;
+        return isActivated;
     }
 }
