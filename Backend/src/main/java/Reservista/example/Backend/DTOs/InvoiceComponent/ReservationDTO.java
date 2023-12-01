@@ -4,7 +4,7 @@ import lombok.*;
 
 import java.util.Date;
 import java.util.List;
-import org.antlr.v4.runtime.misc.Pair;
+import org.springframework.data.util.Pair;
 
 
 @Data
@@ -31,8 +31,8 @@ public class ReservationDTO {
         s.append("Your Rooms:\n");
         for (int i = 0; i < rooms.size(); i++) {
             Pair<Double, String> priceAndDetails = rooms.get(i).calculate_price();
-            total += priceAndDetails.a;
-            s.append(priceAndDetails.b);
+            total += priceAndDetails.getFirst();
+            s.append(priceAndDetails.getSecond());
         }
         int intRefundable = this.refundable ? 1 : 0;
         total += Math.ceil(0.13 * intRefundable * total);
@@ -42,7 +42,7 @@ public class ReservationDTO {
         total -= total * voucher;
         s.append("Total \t\t\t").append(total).append("\n\n");
 
-        return new Pair<>(total, s.toString());
+        return Pair.of(total, s.toString());
     }
 }
 
