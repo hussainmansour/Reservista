@@ -10,6 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 @Entity
 @Data
@@ -25,8 +26,7 @@ public class OTP {
     private Date expirationDate;
 
     public OTP(String email) {
-        Random random = new Random();
-        this.code = Integer.toString(random.nextInt(999999 - 100000 + 1) + 100000);
+        this.code = String.valueOf(ThreadLocalRandom.current().nextInt(100000, 1000000));
         this.email = email;
         this.expirationDate = calculateExpirationDate(EXPIRATION_TIME);
 
