@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class OTPController {
     @Autowired
     private OTPService otpService;
-    @PostMapping("/verifyCode")
+    @PostMapping("Auth/verifyCode")
     public Respond verifyGmailAccount(@RequestParam("email") String email, @RequestParam("code")  String code) {
         return otpService.verifyGmailAccount(email,code);
     }
-    @PostMapping("/refreshVerificationCode")
+    @PostMapping("Auth/refreshVerificationCode")
     public Respond refreshOTP(@RequestParam("email") String email){
         return otpService.refreshOTP(email);
     }
