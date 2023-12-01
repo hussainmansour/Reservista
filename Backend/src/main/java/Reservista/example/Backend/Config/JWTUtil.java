@@ -30,17 +30,17 @@ public class JWTUtil {
     }
 
     public String generateToken(UserDetails userDetails) {
-        List<String> roles = userDetails
+        String role = userDetails
                 .getAuthorities()
                 .stream()
                 .map(GrantedAuthority::getAuthority)
-                .toList();
+                .findFirst()
+                .orElse(null);
 
-        Map<String, List<String>> claims = Collections.singletonMap("roles", roles);
-
-        var x = createToken(userDetails.getUsername() , claims);
-        System.out.println(extractUsername(x));
-        return x;
+        return createToken(
+                userDetails.getUsername() ,
+                Collections.singletonMap("role", role)
+        );
     }
 
     private String createToken(String subject, Map<String, ?> claims) {

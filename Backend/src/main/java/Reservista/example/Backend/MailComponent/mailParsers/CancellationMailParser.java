@@ -2,12 +2,12 @@ package Reservista.example.Backend.MailComponent.mailParsers;
 
 import Reservista.example.Backend.MailComponent.Mail;
 
-public class CancelationMailParser extends Mail {
-    public void parseCancelationMAil(String to,String firstName){
+public class CancellationMailParser extends Mail {
+    public  CancellationMailParser(String to, String firstName) {
 
         setTo(to);
-        setSubject("Reservation Cancelation");
-        setBody("Hi "+ firstName+"\n" +
+        setSubject("Reservation Cancellation");
+        setBody("Hi " + firstName + "\n" +
                 "We hope this message finds you well.\n" +
                 "\n" +
                 "This is to confirm that the reservation for [details of the reservation: hotel name, reservation ID, dates, etc.] has been successfully canceled per your request.\n" +

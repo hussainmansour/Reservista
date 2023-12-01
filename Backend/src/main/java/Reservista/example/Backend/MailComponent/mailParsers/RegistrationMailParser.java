@@ -4,11 +4,11 @@ import Reservista.example.Backend.MailComponent.Mail;
 import Reservista.example.Backend.Models.User;
 
 public class RegistrationMailParser extends Mail {
-    public  RegistrationMailParser(User user){
+    public RegistrationMailParser(User user) {
         setTo(user.getEmail());
 
         setSubject("Welcome to Reservista!");
-        setBody("hi "+user.getFirstName()+"\n" +
+        setBody("hi " + user.getFirstName() + "\n" +
                 "\n" +
                 "Thank you for registering with Reservista!\n" +
                 "\n" +
