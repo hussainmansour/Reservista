@@ -21,7 +21,7 @@ public class InvoiceParser extends Mail {
                         "Check-out Date: " + reservationDTO.getCheckOut() + "\n" +
 
 
-                        reservationDTO.calculate_price().second +
+                        reservationDTO.calculate_price().b +
 
 
                         "If you have any questions or need further assistance, feel free to reply to this email or contact our customer service at [Hotel Contact Number].\n" +

@@ -1,14 +1,12 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
 import lombok.*;
-
+import org.antlr.v4.runtime.misc.Pair;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 public class Option {
     private String name;
     private double price;
