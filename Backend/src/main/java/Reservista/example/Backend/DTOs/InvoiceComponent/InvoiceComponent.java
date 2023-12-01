@@ -1,6 +1,7 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
-import org.antlr.v4.runtime.misc.Pair;
+
+import org.springframework.data.util.Pair;
 
 public interface InvoiceComponent {
     public Pair<Double,String> calculate_price();
