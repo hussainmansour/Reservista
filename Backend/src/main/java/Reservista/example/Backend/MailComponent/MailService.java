@@ -10,8 +10,8 @@ public class MailService {
 
     public Respond sendMail(Mail mail) {
         try {
-            MailServiceProxy mailService = new MailServiceProxy();
-            return mailService.sendMail(mail);
+            MailServiceProxy mailServiceProxy = new MailServiceProxy();
+            return mailServiceProxy.sendMail(mail);
         } catch (Exception e) {
             return StatusCode.CREDENTIAL_ERROR.getRespond();
         }

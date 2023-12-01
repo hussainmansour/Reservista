@@ -13,7 +13,7 @@ import Reservista.example.Backend.responds.Respond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Calendar;
+import java.time.LocalDateTime;
 @Service
 public class OTPService {
     @Autowired
@@ -42,6 +42,7 @@ public class OTPService {
     }
 
     public Respond refreshOTP(String email) {
+
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
             return StatusCode.INVALID_REQUEST.getRespond();
@@ -75,11 +76,14 @@ public class OTPService {
         if (!otp.getCode().equals(code)) {
             return StatusCode.WRONG_VERIFICATION_CODE.getRespond();
         }
-        Calendar cal = Calendar.getInstance();
-        if (otp.getExpirationDate().getTime() - cal.getTime().getTime() <= 0) {
+        LocalDateTime now=LocalDateTime.now();
+        if (now.compareTo(otp.getExpirationDate()) > 0) { //is the time now after expiration date
             otpRepository.delete(otp);
             return StatusCode.EXPIRED_VERIFICATION_COD.getRespond();
         }
+        otpRepository.delete(otp);
         return StatusCode.SUCCESS.getRespond();
     }
+
+
 }

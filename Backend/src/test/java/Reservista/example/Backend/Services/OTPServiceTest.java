@@ -11,8 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDateTime;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -63,23 +62,19 @@ class OTPServiceTest {
 
     @BeforeEach
     void setUp() {
-        Date activeDate = getActiveDate();
+        LocalDateTime activeDate = getActiveDate();
         User user = setUPUser1NotValidated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt = OTP.builder().code("111111").email("mariam.gerges1188@gmail.com").expirationDate(activeDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt);
     }
 
-    Date getExpiredDate() {
-        long currentTimeMillis = System.currentTimeMillis();
-        return new Date(currentTimeMillis);
+    LocalDateTime getExpiredDate() {
+        return LocalDateTime.now().minusSeconds(1);
     }
 
-    Date getActiveDate() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(new Date().getTime());
-        calendar.add(Calendar.MINUTE, 5);
-        return new Date(calendar.getTime().getTime());
+    LocalDateTime getActiveDate() {
+        return LocalDateTime.now().plusMinutes(5);
     }
 
     @Test
@@ -95,7 +90,7 @@ class OTPServiceTest {
 
     @Test
     void verifyOTPWithExpiredCode() {
-        Date expiredDate = getExpiredDate();
+        LocalDateTime expiredDate = getExpiredDate();
         User user = setUPUser2NotValidated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt2 = OTP.builder().code("222222").email(user.getEmail()).expirationDate(expiredDate).build();
@@ -131,7 +126,7 @@ class OTPServiceTest {
 
     @Test
     void refreshOTPRequestWithAlreadyActivatedAccount() {
-        Date activeDate = getActiveDate();
+        LocalDateTime activeDate = getActiveDate();
         User user = setUPUser1Validated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
@@ -169,7 +164,7 @@ class OTPServiceTest {
 
     @Test
     void verifyGmailAccountWithCorrectCodeAndActivatedUser() {
-        Date activeDate = getActiveDate();
+        LocalDateTime activeDate = getActiveDate();
         User user = setUPUser1Validated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
