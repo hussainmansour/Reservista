@@ -1,6 +1,7 @@
 package Reservista.example.Backend.Controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,7 +16,7 @@ public class ConfigController {
     private Set<String> validCountries;
 
     @GetMapping("/countries")
-    public Set<String> getValidCountries() {
-        return validCountries;
+    public ResponseEntity<Set<String>> getValidCountries() {
+        return ResponseEntity.ok(validCountries);
     }
 }
