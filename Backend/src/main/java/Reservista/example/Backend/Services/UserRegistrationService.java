@@ -8,7 +8,6 @@ import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
 import Reservista.example.Backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;

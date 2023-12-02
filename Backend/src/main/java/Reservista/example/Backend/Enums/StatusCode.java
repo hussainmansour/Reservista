@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Enums;
 
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 
 public enum StatusCode {
 
@@ -43,8 +43,8 @@ public enum StatusCode {
         return code;
     }
 
-    public Respond getRespond() {
-        return new Respond(message, code);
+    public Respond<Void> getRespond() {
+        return new Respond<>(code,message,null);
     }
 
 }
