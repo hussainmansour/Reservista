@@ -4,7 +4,7 @@ package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Exceptions.CredentialsException;
 import Reservista.example.Backend.Models.User;
 import Reservista.example.Backend.Services.UserRegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -18,10 +18,6 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
-
-import java.time.LocalDate;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 
 @SpringBootTest
@@ -55,9 +51,9 @@ class RegistrationControllerTest {
                 .response(StatusCode.SUCCESSFUL_REGISTRATION.getMessage())
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isOk())
@@ -83,7 +79,7 @@ class RegistrationControllerTest {
 
         Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new CredentialsException(mockMessage));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -109,9 +105,9 @@ class RegistrationControllerTest {
                 .email(StatusCode.INVALID_EMAIL.getMessage())
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -131,14 +127,14 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(userr);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
         RegistrationResponseDTO expected = RegistrationResponseDTO
                 .builder()
                 .userName(StatusCode.INVALID_USERNAME.getMessage())
                 .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -157,13 +153,13 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(userr);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
         RegistrationResponseDTO expected = RegistrationResponseDTO
                 .builder()
                 .userName(StatusCode.INVALID_USERNAME.getMessage())
                 .build();
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -184,7 +180,7 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
         RegistrationResponseDTO expected = RegistrationResponseDTO
                 .builder()
@@ -192,7 +188,7 @@ class RegistrationControllerTest {
                 .build();
         System.out.println("debuggg");
         System.out.println(objectMapper.writeValueAsString(expected));
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())
@@ -210,7 +206,7 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+        Mockito.when(userRegistrationService.registerUser(registrationRequest)).thenReturn("success");
 
         RegistrationResponseDTO expected = RegistrationResponseDTO
                 .builder()
@@ -220,7 +216,7 @@ class RegistrationControllerTest {
                 .build();
 
         System.out.println(objectMapper.writeValueAsString(expected));
-        mockMvc.perform(MockMvcRequestBuilders.post("/register")
+        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
                 .andExpect(MockMvcResultMatchers.status().isBadRequest())

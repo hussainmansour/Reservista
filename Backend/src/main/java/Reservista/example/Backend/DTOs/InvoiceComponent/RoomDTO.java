@@ -1,6 +1,7 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
 import lombok.*;
+import org.springframework.data.util.Pair;
 
 import java.util.Vector;
 
@@ -8,8 +9,6 @@ import java.util.Vector;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Setter
-@Getter
 public class RoomDTO {
     private String type;
     private Vector<Option> options;
@@ -21,9 +20,9 @@ public class RoomDTO {
         StringBuilder s = new StringBuilder(type + "\t\t\t" + price + "\n");
         for (int i = 0; i < options.size(); i++) {
             Pair<Double, String> priceAndDetails = options.elementAt(i).calculate_price();
-            total += priceAndDetails.first;
-            s.append(priceAndDetails.second);
+            total += priceAndDetails.getFirst();
+            s.append(priceAndDetails.getSecond());
         }
-        return new Pair<>(total, s.toString());
+        return  Pair.of(total, s.toString());
     }
 }

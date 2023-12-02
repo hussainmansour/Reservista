@@ -1,10 +1,6 @@
 package Reservista.example.Backend.DTOs;
 
-import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.StrongPassword;
-import Reservista.example.Backend.Validators.Username;
-import Reservista.example.Backend.Validators.ValidBirthDate;
-import jakarta.validation.constraints.NotBlank;
+import Reservista.example.Backend.Validators.*;
 import lombok.Builder;
 import lombok.Data;
 
@@ -16,20 +12,23 @@ import java.time.LocalDate;
 public class RegistrationRequestDTO {
 
     @Gmail
-    String email;
+    private String email;
 
     @StrongPassword
-    String password;
+    private String password;
 
     @Username
-    String userName;
+    private String userName;
 
 //    @NotBlank(message = "please provide your first name")
-    String firstName;
+    private String firstName;
 
-    String lastName;
+    private String lastName;
 
-    @ValidBirthDate
-    LocalDate birthDate;
+    @BirthDate
+    private LocalDate birthDate;
+
+    @Country
+    private String nationality;
 
 }

@@ -1,16 +1,9 @@
 package Reservista.example.Backend.DTOs;
 
-import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.StrongPassword;
-import Reservista.example.Backend.Validators.Username;
-import Reservista.example.Backend.Validators.ValidBirthDate;
-import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import java.time.LocalDate;
 
 @Data
 @NoArgsConstructor
@@ -29,6 +22,8 @@ public class RegistrationResponseDTO {
     private String lastName;
 
     private String birthDate;
+
+    private String nationality;
 
     private String response;
 

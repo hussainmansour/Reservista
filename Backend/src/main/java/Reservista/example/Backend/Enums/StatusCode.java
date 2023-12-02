@@ -4,17 +4,18 @@ import Reservista.example.Backend.DTOs.Respond;
 
 public enum StatusCode {
 
-    INVALID_EMAIL(10, "please provide your gmail"),
-    EMAIL_ALREADY_EXIST(11, "email already exists"),
-    USERNAME_ALREADY_EXIST(12, "username already exists"),
-    ACCOUNT_DEACTIVATED(13, "this account already exists and needs to be activated, check your email"),
-    ACCOUNT_BLOCKED(14, "this account is blocked"),
-    INVALID_USERNAME(15, "enter a username that does not include @"),
+    INVALID_EMAIL(10, "please enter your gmail"),
+    EMAIL_ALREADY_EXIST(11, "Email already exists"),
+    USERNAME_ALREADY_EXIST(12, "Username already exists"),
+    ACCOUNT_DEACTIVATED(13, "This account already exists and needs to be activated, check your email!"),
+    ACCOUNT_BLOCKED(14, "This account is blocked"),
+    INVALID_USERNAME(15, "please enter a username that does not include @"),
     INVALID_BIRTHDATE(16, "Invalid age"),
     INVALID_FIRSTNAME(17, "please provide your first name"),
     WEAK_PASSWORD(18, "Please enter a strong password"),
-    SUCCESSFUL_REGISTRATION(19, "registration completed, verify your email"),
-
+    SUCCESSFUL_REGISTRATION(19, "Registration complete, verify your email!"),
+    EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
+    REGISTRATION_RACE_CONDITION(21, "Email or username already exists"),
     SUCCESS(200, "success"),
     NOT_FOUND(404, "Not found"),
     SERVER_ERROR(500, "Server error"),

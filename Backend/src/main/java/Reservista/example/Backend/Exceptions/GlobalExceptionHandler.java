@@ -1,7 +1,7 @@
-package Reservista.example.Backend.Errors;
+package Reservista.example.Backend.Exceptions;
 
-import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
+import Reservista.example.Backend.Exceptions.CredentialsException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
 import org.springframework.http.HttpStatus;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {

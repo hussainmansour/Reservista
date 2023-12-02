@@ -5,14 +5,17 @@ import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Exceptions.CredentialsException;
 import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.responds.Respond;
+import lombok.extern.log4j.Log4j2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
+@Log4j2
 public class UserRegistrationService {
 
 
@@ -28,7 +31,7 @@ public class UserRegistrationService {
     @Autowired
     private OTPService otpService;
 
-    public User registerUser(RegistrationRequestDTO registrationRequest) throws CredentialsException {
+    public String registerUser(RegistrationRequestDTO registrationRequest) throws CredentialsException {
 
 
         //check users credentials
@@ -42,16 +45,25 @@ public class UserRegistrationService {
                         .lastName(registrationRequest.getLastName())
                         .email(registrationRequest.getEmail())
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
-                        .isValidated(false) //this attribute should be enabled after the user verifies his email using OTP
+                        .birthDate(registrationRequest.getBirthDate())
+                        .nationality(registrationRequest.getNationality())
+                        .isActivated(false) //this attribute should be enabled after the user verifies his email using OTP
                         .build();
 
 
         try {
             //save user in the database
-            return userRepository.save(user);
+            Respond respond = otpService.createAndSendOTP(userRepository.save(user));
+            log.info(respond.getMessage());
+
+            if (respond.getStatus() != StatusCode.SUCCESS.getCode())
+                throw new CredentialsException(StatusCode.EMAIL_NOT_REACHED.getMessage());
+
+            return StatusCode.SUCCESSFUL_REGISTRATION.getMessage();
+
         }
         catch (DataIntegrityViolationException e){
-            throw new CredentialsException("Email or username already exists");
+            throw new CredentialsException(StatusCode.REGISTRATION_RACE_CONDITION.getMessage());
         }
 
     }
@@ -63,7 +75,8 @@ public class UserRegistrationService {
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 
-            if (!userRepository.findIsValidatedByEmail(registrationRequest.getEmail())) {
+
+            if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail())) {
                 otpService.refreshOTP(registrationRequest.getEmail());
                 throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
             }
