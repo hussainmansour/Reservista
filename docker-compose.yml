@@ -27,8 +27,3 @@ services:
 
     stdin_open: true
     tty: true
-    depends_on:
-      - spring-boot-app
-
-#volumes:
-#  mysql-data:
