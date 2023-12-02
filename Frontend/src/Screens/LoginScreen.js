@@ -1,19 +1,25 @@
 import React, { useState } from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, Image } from 'react-native';
+import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
+import {signIn} from '../Utilities/API';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [loading, setLoading] = useState(false);
 
-  const handleLoginRequest = () => {
-    const userData = {
-      username,
-      password
-    };
-
-    console.log(userData);
+  const handleLoginRequest = async () => {
+    const userInfo = {
+      userNameOrEmail: username, 
+      password: password
+    }
+    let data = await signIn(userInfo, setLoading);
+    if(data.status === 200){
+      navigation.navigate('Home')
+    }else{
+      Alert.alert('Error', 'Please enter correct username or password');
+    }
   };
 
   return (
@@ -21,9 +27,21 @@ const LoginScreen = ({ navigation }) => {
 
       <Image source={require('../Data/Logo.png')} style={{ alignSelf: 'center' }} />
 
-      <CustomTextInput placeholder={'Username'} title={'Username'} secure={false} onChangeText={(text) => setUsername(text)} />
-      <CustomTextInput placeholder={'Password'} title={'Password'} secure={true} onChangeText={(text) => setPassword(text)} />
+      <CustomTextInput
+          placeholder={'Username'}
+          title={'Username'}
+          secure={false}
+          onChangeText={(text) => setUsername(text)}
+      />
+      <CustomTextInput
+          placeholder={'Password'}
+          title={'Password'}
+          secure={true}
+          onChangeText={(text) => setPassword(text)}
+          keyboardType="visible-password"
+      />
 
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <SmallButton text={"Login"} handlePressing={handleLoginRequest} />
 
       <View style={styles.signup}>

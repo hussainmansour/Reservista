@@ -11,21 +11,24 @@ import {
 } from 'react-native';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
+import {verifyEmail} from '../Utilities/API'
 
 
-const VerificationCodeScreen = ({ navigation}) => {
-    const [enteredVerificationCode, setEnteredVerificationCode] = useState('');
+const VerificationCodeScreen = ({ route, navigation }) => {
     const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
 
-    const handleVerifyCode = () => {
-        // Compare the entered code with the generated code
-        if (verificationCode === enteredVerificationCode) {
-             console.log('Email successfully verified!');
+    const handleVerifyCode = async () => {
+        const dto = {
+            verificationCode,
+            email: route.params.email
+        }
+        let data = verifyEmail(dto, setLoading)
 
+        if (data.status === 200) {
+             console.log('Email successfully verified!');
              navigation.navigate('Login');
         } else {
-            // Incorrect code, show an error message
             Alert.alert('Error', 'Incorrect verification code. Please try again.');
         }
     };
@@ -37,7 +40,13 @@ const VerificationCodeScreen = ({ navigation}) => {
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.wholeForm}>
-                <CustomTextInput placeholder={'123456'} title={'Enter Verification Code'} secure = {false} onChangeText={(text) => setEnteredVerificationCode(text)}/>
+                <CustomTextInput
+                    placeholder={'123456'}
+                    title={'Enter Verification Code'}
+                    secure = {false}
+                    onChangeText={(text) => setVerificationCode(text)}
+                    keyboardType= 'numeric'
+                />
                 
                 {loading && <ActivityIndicator size="large" color="#0000ff" />}
                 

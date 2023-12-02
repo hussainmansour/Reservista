@@ -30,10 +30,10 @@ public class OTPService {
             return verifiedOTP;
         }
         User user = userRepository.findByEmail(email).orElse(null);
-        if (user == null || user.isValidated()) {
+        if (user == null || user.isActivated()) {
             return StatusCode.INVALID_REQUEST.getRespond();
         }
-        user.setValidated(true);
+        user.setActivated(true);
         userRepository.save(user);
         Mail registrationMail = new RegistrationMailParser(user);
         mailService.sendMail(registrationMail);
@@ -47,7 +47,7 @@ public class OTPService {
         if (user == null) {
             return StatusCode.INVALID_REQUEST.getRespond();
         }
-        if (user.isValidated()) {
+        if (user.isActivated()) {
             return StatusCode.INVALID_REQUEST.getRespond();
         }
         OTP otp = otpRepository.findByEmail(email);

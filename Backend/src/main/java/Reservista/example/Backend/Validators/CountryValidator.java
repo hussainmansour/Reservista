@@ -15,6 +15,6 @@ public class CountryValidator implements ConstraintValidator<Country, String> {
 
     @Override
     public boolean isValid(String value, ConstraintValidatorContext context) {
-        return validCountries.contains(value);
+        return (value == null) || validCountries.contains(value);
     }
 }

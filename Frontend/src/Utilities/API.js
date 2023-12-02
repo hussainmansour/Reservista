@@ -1,14 +1,14 @@
 import axios from 'axios';
 
-const BASE_URL = 'https://api.example.com';
+const BASE_URL = 'http://192.168.1.4:8080';
 
 const apiRequest = async (endpoint, data, setLoading) => {
   try {
     setLoading(true); // Set loading to true to show the ActivityIndicator
-
+    console.log('Data', data);
     const response = await axios.post(`${BASE_URL}/${endpoint}`, data);
-
-    if (response.data.status === 'ok') {
+    console.log('response at line 10', response.status)
+    if (response.status === 200) {
       return response.data;
     } else {
       throw new Error(response.data.message);
@@ -21,13 +21,16 @@ const apiRequest = async (endpoint, data, setLoading) => {
 };
 
 export const signUp = async (userData, setLoading) => {
-  return apiRequest('signup', userData, setLoading);
+  return await apiRequest('register', userData, setLoading);
+
 };
 
-export const verifyEmail = async (verificationCode, setLoading) => {
-  return apiRequest('verify-email', { verificationCode }, setLoading);
+export const verifyEmail = async (dto, setLoading) => {
+  return await apiRequest('auth/verifyCode', dto, setLoading);
 };
 
 export const signIn = async (userInfo, setLoading) => {
-  return apiRequest('signin', userInfo, setLoading);
+  response = await apiRequest('auth/login', userInfo, setLoading);
+  console.log('api request', response)
+  return response;
 };
