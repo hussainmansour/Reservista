@@ -3,6 +3,7 @@ import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../Components/CustomTextInput';
 import Checkbox from 'expo-checkbox';
 import SmallButton from '../Components/SmallButton';
+import CustomDateInput from '../Components/CustomDateInput';
 import {
     View,
     Text,
@@ -19,29 +20,87 @@ const SignupScreen = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [date, setDate] = useState('');
-    const [nationality, setNationality] = useState('');
     const [username, setUsername] = useState('');
+    const [nationality, setNationality] = useState('');
     const [agreeTerms, setAgreeTerms] = useState(false);
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState('');
 
-    const url = "http://192.168.1.4:8080";
+    // Error states for each input field
+    const [firstNameError, setFirstNameError] = useState('');
+    const [lastNameError, setLastNameError] = useState('');
+    const [emailError, setEmailError] = useState('');
+    const [passwordError, setPasswordError] = useState('');
+    const [dateError, setDateError] = useState('');
+    const [usernameError, setUsernameError] = useState('');
+    const [nationalityError, setNationalityError] = useState('');
 
     const navigation = useNavigation();
 
-    const handleSignUp = () => {
+    const handleSignUp = async () => {
+        // Clear previous error messages
+        setFirstNameError('');
+        setLastNameError('');
+        setEmailError('');
+        setPasswordError('');
+        setDateError('');
+        setUsernameError('');
+
+        // Validation checks for each field
+        if (!firstName) {
+            setFirstNameError('Please enter your first name.');
+        }
+
+        if (!lastName) {
+            setLastNameError('Please enter your last name.');
+        }
+
+        if (!email) {
+            setEmailError('Please enter your email.');
+        }
+
+        if (!password) {
+            setPasswordError('Please enter your password.');
+        }
+
+        if (!date) {
+            setDateError('Please enter your date of birth.');
+        } else if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) {
+            setDateError('Date must be in the format YYYY-MM-DD.');
+        }
+
+        if (!username) {
+            setUsernameError('Please enter your username.');
+        }
+
+        if (!nationality) {
+            setNationalityError('Please enter your nationality.');
+        }
+
         if (agreeTerms) {
-            const userData = {
-                firstName,
-                lastName,
-                email,
-                password,
-                date,
-                nationality,
-                username
+            const userInfo = {
+                firstName: firstName,
+                lastName: lastName,
+                email: email,
+                password: password,
+                birthDate: date,
+                userName: username
             };
-            // const response = signUp(userData, setLoading);
-            // console.log(response);
-            navigation.navigate('VerificationCode');
+
+            // Call signUp function only if there are no validation errors
+            if (!(firstNameError || lastNameError || emailError || passwordError || dateError || usernameError)) {
+                setLoading(true);
+                try {
+                    const data = await signUp(userInfo);
+                    if (data.status === 200) {
+                        navigation.navigate('VerificationCode', {email: email});
+                    }
+                } catch (error) {
+                    console.error('Error signing up:', error.message);
+                    Alert.alert('Error', 'An error occurred during signup. Please try again.');
+                } finally {
+                    setLoading(false);
+                }
+            }
         } else {
             Alert.alert('Error', 'Please agree to the Terms and Conditions before signing up.');
         }
@@ -54,22 +113,67 @@ const SignupScreen = () => {
                 <View style={styles.sectionContainer}>
                     <Text style={styles.sectionTitle}>Personal Information</Text>
 
-                    <CustomTextInput placeholder={'First name'} title={'First name'} secure={false} onChangeText={(text) => setFirstName(text)} />
-                    <CustomTextInput placeholder={'Last name'} title={'Last name'} secure={false} onChangeText={(lName) => setLastName(lName)} />
-                    <CustomTextInput placeholder={'DD/MM/YYYY'} title={'Date of birth'} secure={false} onChangeText={(date) => setDate(date)} />
+                    <CustomTextInput
+                        placeholder={'First name'}
+                        title={'First name'}
+                        secure={false}
+                        onChangeText={(text) => setFirstName(text)}
+                        errorMessage={firstNameError}
+                    />
+                    <CustomTextInput
+                        placeholder={'Last name'}
+                        title={'Last name'}
+                        secure={false}
+                        onChangeText={(lName) => setLastName(lName)}
+                        errorMessage={lastNameError}
+                    />
+
+                    <CustomTextInput
+                        placeholder={'YYYY-MM-DD'}
+                        title={'Date of birth'}
+                        secure={false}
+                        onChangeText={(date) => setDate(date)}
+                        errorMessage={dateError}
+                    />
 
                 </View>
 
                 <View style={styles.sectionContainer}>
                     <Text style={styles.sectionTitle}>Contact Information</Text>
 
-                    <CustomTextInput placeholder={'example@gmail.com'} title={'Email'} secure={false} onChangeText={(email) => setEmail(email)} />
-                    <CustomTextInput placeholder={'Username'} title={'Username'} secure={false} onChangeText={(username) => setUsername(username)} />
-                    <CustomTextInput placeholder={'Password (8 characters)'} title={'Password'} secure={false} onChangeText={(pass) => setPassword(pass)} />
-                    <CustomTextInput placeholder={'Nationality'} title={'Nationality'} secure={false} onChangeText={(text) => setNationality(text)} />
+                    <CustomTextInput
+                        placeholder={'example@gmail.com'}
+                        title={'Email'}
+                        secure={false}
+                        onChangeText={(text) => setEmail(text)}
+                        errorMessage={emailError}
+                        keyboardType = "email-address"
+                    />
+                    <CustomTextInput
+                        placeholder={'Username'}
+                        title={'Username'}
+                        secure={false}
+                        onChangeText={(uName) => setUsername(uName)}
+                        errorMessage={usernameError}
+                    />
+                    <CustomTextInput
+                        placeholder={'Password (8 characters)'}
+                        title={'Password'}
+                        secure={true}
+                        onChangeText={(pass) => setPassword(pass)}
+                        errorMessage={passwordError}
+                        keyboardType="visible-password"
+                    />
+                    <CustomTextInput 
+                        placeholder={'Nationality'}
+                        title={'Nationality'}
+                        secure={false} 
+                        onChangeText={(text) => setNationality(text)} 
+                        errorMessage={nationalityError}
+                    />
 
                 </View>
-                
+
                 <View style={styles.termsContainer}>
                     <Checkbox
                         value={agreeTerms}
