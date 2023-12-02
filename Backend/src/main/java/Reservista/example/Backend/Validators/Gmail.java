@@ -12,7 +12,7 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = GmailValidator.class)
 public @interface Gmail {
-    String message() default "please provide your gmail";
+    String message() default "please enter your gmail";
 
     Class<?>[] groups() default {};
 

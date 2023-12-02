@@ -23,6 +23,8 @@ public class RegistrationResponseDTO {
 
     private String birthDate;
 
+    private String nationality;
+
     private String response;
 
 }

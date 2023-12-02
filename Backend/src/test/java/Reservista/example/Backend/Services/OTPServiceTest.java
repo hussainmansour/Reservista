@@ -34,7 +34,7 @@ class OTPServiceTest {
                 .lastName("gerges")
                 .email("mariam.gerges1188@gmail.com")
                 .password("jKK&123jgj")
-                .isValidated(false)
+                .isActivated(false)
                 .build();
     }
 
@@ -45,7 +45,7 @@ class OTPServiceTest {
                 .lastName("gerges")
                 .email("mariamgerges575@gmail.com")
                 .password("jKK&123jgj")
-                .isValidated(false)
+                .isActivated(false)
                 .build();
     }
 
@@ -56,7 +56,7 @@ class OTPServiceTest {
                 .lastName("gerges")
                 .email("mariam.gerges1188@gmail.com")
                 .password("jKK&123jgj")
-                .isValidated(true)
+                .isActivated(true)
                 .build();
     }
 

@@ -57,7 +57,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-    @Country
+//    @Country
     @Column(name = "nationality")
     private String nationality;
 

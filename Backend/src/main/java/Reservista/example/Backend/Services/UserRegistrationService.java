@@ -43,6 +43,8 @@ public class UserRegistrationService {
                         .lastName(registrationRequest.getLastName())
                         .email(registrationRequest.getEmail())
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
+                        .birthDate(registrationRequest.getBirthDate())
+                        .nationality(registrationRequest.getNationality())
                         .isActivated(false) //this attribute should be enabled after the user verifies his email using OTP
                         .build();
 

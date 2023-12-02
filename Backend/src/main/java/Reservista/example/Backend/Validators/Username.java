@@ -13,7 +13,7 @@ import java.lang.annotation.Target;
 @Constraint(validatedBy = UsernameValidator.class)
 public @interface Username {
 
-    String message() default "enter a username that does not include @";
+    String message() default "please enter a username that does not include @";
 
     Class<?>[] groups() default {};
 
