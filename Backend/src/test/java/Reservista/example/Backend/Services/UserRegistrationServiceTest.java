@@ -7,7 +7,7 @@ import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Exceptions.CredentialsException;
 import Reservista.example.Backend.Models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -155,10 +155,10 @@ class UserRegistrationServiceTest {
                         .password("password")
                         .build();
 
-        User result = userRegistrationService.registerUser(registrationRequest);
+        String result = userRegistrationService.registerUser(registrationRequest);
         verify(userRepository, times(1)).save(any());
 
-        assert result.getEmail().equals(registrationRequest.getEmail());
+        assert result.equals(StatusCode.SUCCESSFUL_REGISTRATION.getMessage());
 
 
     }

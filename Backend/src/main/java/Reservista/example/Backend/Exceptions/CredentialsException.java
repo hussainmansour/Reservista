@@ -1,4 +1,4 @@
-package Reservista.example.Backend.Errors;
+package Reservista.example.Backend.Exceptions;
 
 import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
 
