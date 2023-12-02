@@ -31,15 +31,15 @@ Before you begin, ensure that you have the following installed on your machine:
        ```bash
         cd Backend
 
-   2. **Make sure that the./mvnw file has the permission to run: **
+   2. **Make sure that the./mvnw file has the permission to run:**
         ```bash
         chmod +x mvnw
         
-   3. **Generate the Jar file: **
+   3. **Generate the Jar file:**
       ```bash
       ./mvnw clean install
 
-   4. **Return to the project directory then continue from step 4: **
+   4. **Return to the project directory then continue from step 4:**
       ```bash
       cd ..
       
