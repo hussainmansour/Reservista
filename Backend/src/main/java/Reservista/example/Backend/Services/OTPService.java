@@ -9,7 +9,7 @@ import Reservista.example.Backend.MailComponent.mailParsers.AccountActivationMai
 import Reservista.example.Backend.MailComponent.mailParsers.RegistrationMailParser;
 import Reservista.example.Backend.Models.OTP;
 import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -74,6 +74,8 @@ public class OTPService {
         }
 
         if (!otp.getCode().equals(code)) {
+            System.out.println("DB code: " + otp.getCode());
+            System.out.println("sent code: " + code);
             return StatusCode.WRONG_VERIFICATION_CODE.getRespond();
         }
         LocalDateTime now=LocalDateTime.now();

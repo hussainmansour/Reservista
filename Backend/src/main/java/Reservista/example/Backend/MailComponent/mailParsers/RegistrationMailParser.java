@@ -8,11 +8,12 @@ public class RegistrationMailParser extends Mail {
         setTo(user.getEmail());
 
         setSubject("Welcome to Reservista!");
-        setBody("hi " + user.getFirstName() + "\n" +
+        setBody("Hi " + user.getFirstName() + ",\n" +
                 "\n" +
                 "Thank you for registering with Reservista!\n" +
                 "\n" +
-                "You're now all set to discover and book hotels effortlessly through our app. Enjoy seamless browsing and reservation services right at your fingertips.\n" +
+                "You're now all set to discover and book hotels effortlessly through our app.\n" +
+                "Enjoy seamless browsing and reservation services right at your fingertips.\n" +
                 "\n" +
                 "Should you need any assistance, don't hesitate to contact us.\n" +
                 "\n" +
@@ -20,7 +21,7 @@ public class RegistrationMailParser extends Mail {
                 "\n" +
                 "Best regards,\n" +
                 "\n" +
-                "Reservista Team");
+                "Reservista Team.");
 
     }
 }

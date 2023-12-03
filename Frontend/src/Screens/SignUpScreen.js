@@ -3,7 +3,6 @@ import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../Components/CustomTextInput';
 import Checkbox from 'expo-checkbox';
 import SmallButton from '../Components/SmallButton';
-import CustomDateInput from '../Components/CustomDateInput';
 import {
     View,
     Text,
@@ -90,9 +89,21 @@ const SignupScreen = () => {
             if (!(firstNameError || lastNameError || emailError || passwordError || dateError || usernameError)) {
                 setLoading(true);
                 try {
-                    const data = await signUp(userInfo);
-                    if (data.status === 200) {
+                    const response = await signUp(userInfo, setLoading);
+                    console.log(response.status);
+                    if (response.status === 200) {
+                        Alert.alert('', response.message);
                         navigation.navigate('VerificationCode', {email: email});
+                    }else if(response.status === 400){
+                        if(response.data.email) setEmailError(response.data.email)
+                        if(response.data.nationality) setNationalityError(response.data.nationality)
+                        if(response.data.birthDate) setDateError(response.data.birthDate)
+                        if(response.data.lastName) setLastNameError(response.data.lastName)
+                        if(response.data.firstName) setFirstNameError(response.data.firstName)
+                        if(response.data.userName) setUsernameError(response.data.userName)
+                        if(response.data.password) setPasswordError(response.data.password)
+                    }else if(response.status === 500){
+                        Alert.alert('', response.message);
                     }
                 } catch (error) {
                     console.error('Error signing up:', error.message);
