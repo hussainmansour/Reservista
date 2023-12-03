@@ -8,6 +8,7 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Errors.DeactivatedAccountException;
 import Reservista.example.Backend.Models.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -134,7 +135,7 @@ class UserRegistrationServiceTest {
     }
 
     @Test
-    public void whenValidUserCredentials_thenUserAccountCreated() throws CredentialsException {
+    public void whenValidUserCredentials_thenUserAccountCreated() throws CredentialsException, DeactivatedAccountException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);

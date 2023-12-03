@@ -6,6 +6,7 @@ import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
 import Reservista.example.Backend.DTOs.Respond;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Errors.DeactivatedAccountException;
 import Reservista.example.Backend.Event.RegistrationCompleteEvent;
 import Reservista.example.Backend.Models.User;
 import Reservista.example.Backend.Services.UserRegistrationService;
@@ -30,7 +31,7 @@ public class RegistrationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Respond> register(@Valid @RequestBody RegistrationRequestDTO request) throws CredentialsException {
+    public ResponseEntity<Respond> register(@Valid @RequestBody RegistrationRequestDTO request) throws CredentialsException, DeactivatedAccountException {
         User user = userRegistrationService.registerUser(request);
         publisher.publishEvent(new RegistrationCompleteEvent(user));
         return ResponseEntity

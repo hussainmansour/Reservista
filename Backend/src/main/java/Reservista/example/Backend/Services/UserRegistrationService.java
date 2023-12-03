@@ -6,6 +6,7 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Errors.DeactivatedAccountException;
 import Reservista.example.Backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
@@ -29,7 +30,7 @@ public class UserRegistrationService {
     @Autowired
     private OTPService otpService;
 
-    public User registerUser(RegistrationRequestDTO registrationRequest) throws CredentialsException {
+    public User registerUser(RegistrationRequestDTO registrationRequest) throws CredentialsException, DeactivatedAccountException {
 
 
         //check users credentials
@@ -59,7 +60,7 @@ public class UserRegistrationService {
 
     }
 
-    private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws CredentialsException {
+    private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws CredentialsException, DeactivatedAccountException {
 
         if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
             throw new CredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
@@ -69,7 +70,7 @@ public class UserRegistrationService {
 
             if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail())) {
                 otpService.refreshOTP(registrationRequest.getEmail());
-                throw new CredentialsException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
+                throw new DeactivatedAccountException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
             }
 
             throw new CredentialsException(StatusCode.EMAIL_ALREADY_EXIST.getMessage());

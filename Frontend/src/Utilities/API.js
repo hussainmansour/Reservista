@@ -32,3 +32,7 @@ export const verifyEmail = async (dto, setLoading) => {
 export const signIn = async (userInfo, setLoading) => {
   return await apiRequest('auth/login', userInfo, setLoading);
 };
+
+export const refreshCode = async (userInfo, setLoading) => {
+  return await apiRequest('auth/refresh-verification-code', userInfo, setLoading);
+};

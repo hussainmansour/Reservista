@@ -74,6 +74,8 @@ public class OTPService {
         }
 
         if (!otp.getCode().equals(code)) {
+            System.out.println("DB code: " + otp.getCode());
+            System.out.println("sent code: " + code);
             return StatusCode.WRONG_VERIFICATION_CODE.getRespond();
         }
         LocalDateTime now=LocalDateTime.now();

@@ -10,7 +10,7 @@ import {
 } from 'react-native';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
-import {verifyEmail} from '../Utilities/API'
+import {refreshCode, verifyEmail} from '../Utilities/API'
 
 
 const VerificationCodeScreen = ({ route, navigation }) => {
@@ -19,21 +19,26 @@ const VerificationCodeScreen = ({ route, navigation }) => {
 
     const handleVerifyCode = async () => {
         const dto = {
-            verificationCode,
+            code: verificationCode,
             email: route.params.email
         }
-        let data = verifyEmail(dto, setLoading)
+        let data = await verifyEmail(dto, setLoading)
 
         if (data.status === 200) {
              console.log('Email successfully verified!');
              navigation.navigate('Login');
         } else {
+            console.log(data);
             Alert.alert('Error', 'Incorrect verification code. Please try again.');
         }
     };
     
-    const handleResendCode = () => {
-        Alert.alert('Code Resent', 'A new verification code has been sent to your email.');
+    const handleResendCode = async () => {
+        const dto = {
+            email: route.params.email
+        }
+
+        await refreshCode(dto, setLoading);
     };
     
     return (
