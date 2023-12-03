@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
@@ -8,7 +7,6 @@ const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
-
   const handleLoginRequest = async () => {
     const userInfo = {
       userNameOrEmail: username, 

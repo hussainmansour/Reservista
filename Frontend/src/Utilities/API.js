@@ -30,7 +30,4 @@ export const verifyEmail = async (dto, setLoading) => {
 };
 
 export const signIn = async (userInfo, setLoading) => {
-  response = await apiRequest('auth/login', userInfo, setLoading);
-  console.log('api request', response)
-  return response;
 };
