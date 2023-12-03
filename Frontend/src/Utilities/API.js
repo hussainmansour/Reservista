@@ -6,7 +6,7 @@ const apiRequest = async (endpoint, data, setLoading) => {
   try {
     setLoading(true); // Set loading to true to show the ActivityIndicator
     console.log('Data', data);
-    const response = await axios.post(${BASE_URL}/${endpoint}, data);
+    const response = await axios.post(`${BASE_URL}/${endpoint}`, data);
     console.log('response at line 10', response.status)
     if (response.status === 200) {
       return response.data;
@@ -14,7 +14,7 @@ const apiRequest = async (endpoint, data, setLoading) => {
       throw new Error(response.data.message);
     }
   } catch (error) {
-    throw new Error(Error ${endpoint.replace('-', ' ')}: ${error.message});
+    throw new Error(`Error ${endpoint.replace('-', ' ')}: ${error.message}`);
   } finally {
     setLoading(false); // Set loading to false to hide the ActivityIndicator, regardless of success or failure
   }
