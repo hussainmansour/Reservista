@@ -21,16 +21,14 @@ const apiRequest = async (endpoint, data, setLoading) => {
 };
 
 export const signUp = async (userData, setLoading) => {
-  return await apiRequest('register', userData, setLoading);
+  return await apiRequest('auth/register', userData, setLoading);
 
 };
 
 export const verifyEmail = async (dto, setLoading) => {
-  return await apiRequest('auth/verifyCode', dto, setLoading);
+  return await apiRequest('auth/verify-code', dto, setLoading);
 };
 
 export const signIn = async (userInfo, setLoading) => {
-  response = await apiRequest('auth/login', userInfo, setLoading);
-  console.log('api request', response)
-  return response;
+  return await apiRequest('auth/login', userInfo, setLoading);
 };

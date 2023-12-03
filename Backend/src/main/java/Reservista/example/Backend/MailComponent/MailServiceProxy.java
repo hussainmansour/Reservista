@@ -10,7 +10,7 @@ import java.util.Set;
 
 import Reservista.example.Backend.Enums.StatusCode;
 
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -64,7 +64,7 @@ public class MailServiceProxy {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public Respond sendMail(Mail m) throws Exception {
+    public Respond<Void> sendMail(Mail m) throws Exception {
         String to = m.getTo();
         String subject = m.getSubject();
         String message = m.getBody();
@@ -94,7 +94,7 @@ public class MailServiceProxy {
             return StatusCode.SUCCESS.getRespond();
         } catch (GoogleJsonResponseException e) {
             GoogleJsonError error = e.getDetails();
-            return new Respond(error.getMessage(), error.getCode());
+            return new Respond( error.getCode(),error.getMessage(),null);
 
         }
 

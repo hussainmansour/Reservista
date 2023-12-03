@@ -2,7 +2,7 @@ package Reservista.example.Backend.MailComponent;
 
 import Reservista.example.Backend.Enums.StatusCode;
 
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 
 import org.junit.jupiter.api.Test;
 

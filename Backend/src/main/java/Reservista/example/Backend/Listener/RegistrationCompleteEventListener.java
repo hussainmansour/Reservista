@@ -3,7 +3,7 @@ package Reservista.example.Backend.Listener;
 import Reservista.example.Backend.Event.RegistrationCompleteEvent;
 import Reservista.example.Backend.Models.User;
 import Reservista.example.Backend.Services.OTPService;
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 import lombok.extern.log4j.Log4j2;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;

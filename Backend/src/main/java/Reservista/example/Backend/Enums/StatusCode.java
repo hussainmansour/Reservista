@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Enums;
 
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 
 public enum StatusCode {
 
@@ -14,7 +14,8 @@ public enum StatusCode {
     INVALID_FIRSTNAME(17, "please provide your first name"),
     WEAK_PASSWORD(18, "Please enter a strong password"),
     SUCCESSFUL_REGISTRATION(19, "Registration complete, verify your email!"),
-
+    EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
+    REGISTRATION_RACE_CONDITION(21, "Email or username already exists"),
     SUCCESS(200, "success"),
     NOT_FOUND(404, "Not found"),
     SERVER_ERROR(500, "Server error"),
@@ -43,8 +44,8 @@ public enum StatusCode {
         return code;
     }
 
-    public Respond getRespond() {
-        return new Respond(message, code);
+    public Respond<Void> getRespond() {
+        return new Respond<>(code,message,null);
     }
 
 }

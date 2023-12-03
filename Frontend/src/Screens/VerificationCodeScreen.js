@@ -3,7 +3,6 @@ import Checkbox from 'expo-checkbox';
 import {
     View,
     Text,
-    TextInput,
     TouchableOpacity,
     ScrollView,
     StyleSheet,

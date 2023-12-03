@@ -1,25 +1,23 @@
 package Reservista.example.Backend.Controllers;
 
+import Reservista.example.Backend.DTOs.VerificationDTO;
 import Reservista.example.Backend.Services.OTPService;
-import Reservista.example.Backend.responds.Respond;
+import Reservista.example.Backend.DTOs.Respond;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/auth")
 public class OTPController {
     @Autowired
     private OTPService otpService;
-    @PostMapping("/verifyCode")
-    public Respond verifyGmailAccount(@RequestParam("email") String email, @RequestParam("code")  String code) {
-        return otpService.verifyGmailAccount(email,code);
+    @PostMapping("/verify-code")
+    public Respond verifyGmailAccount(@RequestBody VerificationDTO verificationDTO) {
+        return otpService.verifyGmailAccount(verificationDTO.getEmail(),verificationDTO.getCode());
     }
 
-    @PostMapping("/refreshVerificationCode")
-    public Respond refreshOTP(@RequestParam("email") String email){
+    @PostMapping("/refresh-verification-code")
+    public Respond refreshOTP(@RequestBody String email){
         return otpService.refreshOTP(email);
     }
 }
