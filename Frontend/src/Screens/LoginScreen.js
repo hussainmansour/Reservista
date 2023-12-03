@@ -1,12 +1,16 @@
+import React, { useState , useContext } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
 import CustomTextInput from '../Components/CustomTextInput';
 import SmallButton from '../Components/SmallButton';
 import {signIn} from '../Utilities/API';
+import {AuthContext} from '../Store/authContext';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
+  const [isAuthenticating, setIsAuthenticating] = useState(false);
+  const authCtx = useContext(AuthContext);
   const handleLoginRequest = async () => {
     const userInfo = {
       userNameOrEmail: username, 
@@ -14,9 +18,13 @@ const LoginScreen = ({ navigation }) => {
     }
     let data = await signIn(userInfo, setLoading);
     if(data.status === 200){
+      setIsAuthenticating(true);
+      const token = data.data.token; // may need to change this
+      authCtx.authenticate(token);
       navigation.navigate('Home')
     }else{
       Alert.alert('Error', 'Please enter correct username or password');
+      setIsAuthenticating(false);
     }
   };
 
