@@ -2,15 +2,16 @@ package Reservista.example.Backend.Controllers;
 
 
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
-import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
+import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
+import Reservista.example.Backend.DTOs.Registration.RegistrationResponseDTO;
+import Reservista.example.Backend.DTOs.Response;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
+import Reservista.example.Backend.Error.RegistrationCredentialsException;
+import Reservista.example.Backend.Error.DeactivatedAccountException;
 import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.Services.UserRegistrationService;
+import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -23,9 +24,7 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 
@@ -36,51 +35,36 @@ class RegistrationControllerTest {
     @MockBean
     UserRegistrationService userRegistrationService;
 
-    @MockBean
-    UserRepository userRepository;
-
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private ApplicationEventPublisher publisher;
-
     @Autowired
     ObjectMapper objectMapper;
-//
-//    @Test
-//    public void whenRegistrationRequestDTOIsValidAndRegisterUserIsSuccessful_thenReturnOk() throws Exception {
-//
-//        User user = User.builder().build();
-//
-//        RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
-//                .email("test@gmail.com")
-//                .password("StrongPassword123!")
-//                .userName("testuser")
-//                .firstName("Test")
-//                .lastName("User")
-//                .build();
-//
-//        RegistrationResponseDTO expected = RegistrationResponseDTO
-//                .builder()
-//                .response(StatusCode.SUCCESSFUL_REGISTRATION.getMessage())
-//                .build();
-//
-//        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
-//
-//        when(userRepository.save(any(User.class))).thenReturn(user);
-//
-//        doNothing().when(publisher).publishEvent(any());
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(registrationRequest)))
-//                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-//                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
-//    }
 
     @Test
-    public void whenRegistrationRequestDTOIsValidAndRegisterUserIsUnsuccessful_thenReturnBadRequest() throws Exception {
+    public void whenRegistrationRequestDTOIsValidAndRegisterUserIsSuccessful_thenReturn200() throws Exception {
+
+        User user = User.builder().build();
+
+        RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
+                .email("test@gmail.com")
+                .password("StrongPassword123!")
+                .userName("testuser")
+                .firstName("Test")
+                .lastName("User")
+                .build();
+
+        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registrationRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(StatusCode.SUCCESSFUL_REGISTRATION.getRespond())));
+    }
+
+    @Test
+    public void whenRegistrationRequestDTOIsValidAndCredentialsException_thenReturn500() throws Exception {
 
         RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
                 .email("test@gmail.com")
@@ -92,78 +76,74 @@ class RegistrationControllerTest {
 
         String mockMessage = "error";
 
-        RegistrationResponseDTO expected = RegistrationResponseDTO.builder()
-                .response(mockMessage)
+        Response expected = Response.builder()
+                .status(500)
+                .message(mockMessage)
                 .build();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new CredentialsException(mockMessage));
+        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new RegistrationCredentialsException(mockMessage));
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 
-
     @Test
-    public void whenEmailIsInValid_thenReturnBadRequest() throws Exception {
-
-        User user = User.builder().build();
+    public void whenRegistrationRequestDTOIsValidAndDeactivatedAccountException_thenReturn200() throws Exception {
 
         RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
-                .email("test@gmail")
+                .email("test@gmail.com")
                 .password("StrongPassword123!")
                 .userName("testuser")
                 .firstName("Test")
                 .lastName("User")
                 .build();
 
-        RegistrationResponseDTO expected = RegistrationResponseDTO
+        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new DeactivatedAccountException("deactivated account"));
+
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(registrationRequest)))
+                .andExpect(MockMvcResultMatchers.status().isOk())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(StatusCode.ACCOUNT_DEACTIVATED.getRespond())));
+    }
+
+
+    @Test
+    public void whenEmailIsFormatIsInValid_thenReturn400() throws Exception {
+
+        RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
+                .email("test")
+                .password("StrongPassword123!")
+                .userName("testuser")
+                .firstName("Test")
+                .lastName("User")
+                .build();
+
+        RegistrationResponseDTO responseDTO = RegistrationResponseDTO
                 .builder()
                 .email(StatusCode.INVALID_EMAIL.getMessage())
                 .build();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
+        Response expected = Response.builder()
+                .data(responseDTO)
+                .status(400)
+                .build();
 
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 
-    @Test
-    public void whenUsernameIsInValid_thenReturnBadRequest() throws Exception {
-
-        User userr = User.builder().build();
-
-        RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
-                .email("test@gmail.com")
-                .password("StrongPassword123!")
-                .userName("test@user")
-                .firstName("Test")
-                .lastName("User")
-                .build();
-
-        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(userr);
-
-        RegistrationResponseDTO expected = RegistrationResponseDTO
-                .builder()
-                .userName(StatusCode.INVALID_USERNAME.getMessage())
-                .build();
-
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
-    }
 
     @Test
-    public void whenUsernameNotProvided_thenReturnBadRequest() throws Exception {
-
-        User userr = User.builder().build();
+    public void whenUsernameNotProvided_thenReturn400() throws Exception {
 
         RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
                 .email("test@gmail.com")
@@ -172,24 +152,26 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(userr);
-
-        RegistrationResponseDTO expected = RegistrationResponseDTO
+        RegistrationResponseDTO responseDTO = RegistrationResponseDTO
                 .builder()
                 .userName(StatusCode.INVALID_USERNAME.getMessage())
                 .build();
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
+
+        Response expected = Response.builder()
+                .data(responseDTO)
+                .status(400)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
 
     }
 
     @Test
-    public void whenWeakPassword_thenReturnBadRequest() throws Exception {
-
-        User user = User.builder().build();
+    public void whenWeakPassword_thenReturn400() throws Exception {
 
         RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
                 .email("test@gmail.com")
@@ -199,46 +181,50 @@ class RegistrationControllerTest {
                 .lastName("User")
                 .build();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
-
-        RegistrationResponseDTO expected = RegistrationResponseDTO
+        RegistrationResponseDTO responseDTO = RegistrationResponseDTO
                 .builder()
                 .password(StatusCode.WEAK_PASSWORD.getMessage())
                 .build();
-        System.out.println("debuggg");
-        System.out.println(objectMapper.writeValueAsString(expected));
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
+
+        Response expected = Response.builder()
+                .data(responseDTO)
+                .status(400)
+                .build();
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 
     @Test
-    public void whenMultipleInvalidAttributes_thenReturnBadRequest() throws Exception {
-
-        User user = User.builder().build();
+    public void whenMultipleInvalidAttributes_thenReturn400() throws Exception {
 
         RegistrationRequestDTO registrationRequest = RegistrationRequestDTO.builder()
                 .email("test@gmail")
                 .password("weak")
                 .lastName("User")
+                .nationality("Egyp")
+                .birthDate(LocalDate.parse("2022-01-01"))
                 .build();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenReturn(user);
-
-        RegistrationResponseDTO expected = RegistrationResponseDTO
+        RegistrationResponseDTO responseDTO = RegistrationResponseDTO
                 .builder()
                 .email(StatusCode.INVALID_EMAIL.getMessage())
                 .userName(StatusCode.INVALID_USERNAME.getMessage())
                 .password(StatusCode.WEAK_PASSWORD.getMessage())
+                .nationality(StatusCode.INVALID_NATIONALITY.getMessage())
+                .birthDate(StatusCode.INVALID_BIRTHDATE.getMessage())
                 .build();
 
+        Response expected = Response.builder().data(responseDTO).status(400).build();
+
         System.out.println(objectMapper.writeValueAsString(expected));
-        mockMvc.perform(MockMvcRequestBuilders.post("/register/create-account")
+        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(registrationRequest)))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
+                .andExpect(MockMvcResultMatchers.status().isOk())
                 .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 

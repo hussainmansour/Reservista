@@ -1,4 +1,4 @@
-package Reservista.example.Backend.Services;
+package Reservista.example.Backend.Services.Registration;
 
 import Reservista.example.Backend.DAOs.OTPRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
@@ -9,13 +9,14 @@ import Reservista.example.Backend.MailComponent.mailParsers.AccountActivationMai
 import Reservista.example.Backend.MailComponent.mailParsers.RegistrationMailParser;
 import Reservista.example.Backend.Models.OTP;
 import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.DTOs.Respond;
+import Reservista.example.Backend.DTOs.Response;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 @Service
 public class OTPService {
+
     @Autowired
     private MailService mailService;
     @Autowired
@@ -23,9 +24,9 @@ public class OTPService {
     @Autowired
     private UserRepository userRepository;
 
-    public Respond verifyGmailAccount(String email, String code) {
+    public Response verifyGmailAccount(String email, String code) {
 
-        Respond verifiedOTP = verifyOTP(email, code);
+        Response verifiedOTP = verifyOTP(email, code);
         if (verifiedOTP.getStatus() != StatusCode.SUCCESS.getCode()) {
             return verifiedOTP;
         }
@@ -41,7 +42,7 @@ public class OTPService {
 
     }
 
-    public Respond refreshOTP(String email) {
+    public Response refreshOTP(String email) {
 
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
@@ -57,7 +58,7 @@ public class OTPService {
         return createAndSendOTP(user);
     }
 
-    public Respond createAndSendOTP(User user) {
+    public Response createAndSendOTP(User user) {
 
         OTP newOtp = new OTP(user.getEmail());
         otpRepository.save(newOtp);
@@ -67,7 +68,7 @@ public class OTPService {
 
     }
 
-    public Respond verifyOTP(String email, String code) {
+    public Response verifyOTP(String email, String code) {
         OTP otp = otpRepository.findByEmail(email);
         if (otp == null) {
             return StatusCode.NOT_REGISTERED_USER.getRespond();

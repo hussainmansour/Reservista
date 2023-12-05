@@ -1,18 +1,13 @@
 package Reservista.example.Backend.Controllers;
 
-import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
-import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
-import Reservista.example.Backend.DTOs.Respond;
+import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
+import Reservista.example.Backend.DTOs.Response;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
-import Reservista.example.Backend.Errors.DeactivatedAccountException;
-import Reservista.example.Backend.Event.RegistrationCompleteEvent;
-import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.Services.UserRegistrationService;
+import Reservista.example.Backend.Error.RegistrationCredentialsException;
+import Reservista.example.Backend.Error.DeactivatedAccountException;
+import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,20 +15,16 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/auth")
 public class RegistrationController {
 
-    @Autowired
-    ApplicationEventPublisher publisher;
 
     @Autowired
     private UserRegistrationService userRegistrationService;
 
-    @Autowired
-    UserRepository userRepository;
-
 
     @PostMapping("/register")
-    public ResponseEntity<Respond> register(@Valid @RequestBody RegistrationRequestDTO request) throws CredentialsException, DeactivatedAccountException {
-        User user = userRegistrationService.registerUser(request);
-        publisher.publishEvent(new RegistrationCompleteEvent(user));
+    public ResponseEntity<Response> register(@Valid @RequestBody RegistrationRequestDTO request) throws RegistrationCredentialsException, DeactivatedAccountException {
+
+        userRegistrationService.registerUser(request);
+
         return ResponseEntity
                 .ok(StatusCode.SUCCESSFUL_REGISTRATION.getRespond());
     }

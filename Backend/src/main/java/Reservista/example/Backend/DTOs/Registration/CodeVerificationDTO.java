@@ -1,10 +1,10 @@
-package Reservista.example.Backend.DTOs;
+package Reservista.example.Backend.DTOs.Registration;
 
 import Reservista.example.Backend.Validators.Gmail;
 import lombok.Data;
 
 @Data
-public class VerificationDTO {
+public class CodeVerificationDTO {
     @Gmail
     private String email;
 

@@ -1,4 +1,4 @@
-package Reservista.example.Backend.DTOs;
+package Reservista.example.Backend.DTOs.Registration;
 
 import Reservista.example.Backend.Validators.*;
 import lombok.Builder;
@@ -28,7 +28,7 @@ public class RegistrationRequestDTO {
     @BirthDate
     private LocalDate birthDate;
 
-    @Country
+    @Country( message = "Invalid nationality")
     private String nationality;
 
 }

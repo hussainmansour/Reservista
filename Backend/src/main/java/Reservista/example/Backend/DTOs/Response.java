@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 @AllArgsConstructor
 @Builder
-public class Respond<T> {
+public class Response<T> {
     private int status;
     private String message;
     private T data;

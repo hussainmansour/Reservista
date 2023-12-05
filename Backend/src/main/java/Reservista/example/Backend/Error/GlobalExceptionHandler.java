@@ -1,8 +1,7 @@
-package Reservista.example.Backend.Errors;
+package Reservista.example.Backend.Error;
 
-import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
-import Reservista.example.Backend.DTOs.RegistrationResponseDTO;
-import Reservista.example.Backend.DTOs.Respond;
+import Reservista.example.Backend.DTOs.Registration.RegistrationResponseDTO;
+import Reservista.example.Backend.DTOs.Response;
 import Reservista.example.Backend.Enums.StatusCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
@@ -34,17 +32,15 @@ public class GlobalExceptionHandler {
 
         if (result.getTarget().getClass().getSimpleName().equals("RegistrationRequestDTO")){
             ObjectMapper objectMapper = new ObjectMapper();
-//            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-//                    .body(objectMapper.convertValue(fieldErrors,RegistrationResponseDTO.class));
             RegistrationResponseDTO registrationResponseDTO = objectMapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(Respond.builder()
+                    .body(Response.builder()
                             .status(400)
                             .data(registrationResponseDTO)
                             .build());
         }
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(fieldErrors);
+        return ResponseEntity.status(HttpStatus.OK).body(fieldErrors);
 
     }
 
@@ -52,22 +48,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> handleDatabaseExceptions(DataAccessException ex){
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                 .body(StatusCode
                         .SERVER_ERROR
                         .getRespond());
 
     }
 
-    @ExceptionHandler(CredentialsException.class)
-    public ResponseEntity<Object> credentialsException(CredentialsException ex) {
+    @ExceptionHandler(RegistrationCredentialsException.class)
+    public ResponseEntity<Object> credentialsException(RegistrationCredentialsException ex) {
 
         RegistrationResponseDTO responseDTO
                 = RegistrationResponseDTO.builder().response(ex.getMessage()).build();
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(Respond.builder()
+                .body(Response.builder()
                         .status(500)
                         .message(ex.getMessage())
                         .build());
@@ -75,7 +71,7 @@ public class GlobalExceptionHandler {
     }
 
     @ExceptionHandler(DeactivatedAccountException.class)
-    public ResponseEntity<Object> deactivatedAccountException(CredentialsException ex) {
+    public ResponseEntity<Object> deactivatedAccountException(DeactivatedAccountException ex) {
 
         RegistrationResponseDTO responseDTO
                 = RegistrationResponseDTO.builder().response(ex.getMessage()).build();

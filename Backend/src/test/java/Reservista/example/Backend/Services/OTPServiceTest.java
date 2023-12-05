@@ -5,6 +5,7 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Models.OTP;
 import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Services.Registration.OTPService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

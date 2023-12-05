@@ -1,4 +1,4 @@
-package Reservista.example.Backend.DTOs;
+package Reservista.example.Backend.DTOs.Registration;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;

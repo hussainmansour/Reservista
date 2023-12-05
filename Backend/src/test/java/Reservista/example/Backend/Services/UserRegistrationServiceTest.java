@@ -5,11 +5,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.DTOs.RegistrationRequestDTO;
+import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Errors.CredentialsException;
-import Reservista.example.Backend.Errors.DeactivatedAccountException;
+import Reservista.example.Backend.Error.RegistrationCredentialsException;
+import Reservista.example.Backend.Error.DeactivatedAccountException;
 import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -36,11 +37,6 @@ class UserRegistrationServiceTest {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
-    @BeforeEach
-    void setUp() {
-
-    }
-
     @Test
     public void whenEmailAlreadyExists_thenUserAccountNotCreated(){
 
@@ -56,7 +52,7 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        CredentialsException exception = assertThrows(CredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
 
         assertEquals(StatusCode.EMAIL_ALREADY_EXIST.getMessage(), exception.getMessage());
 
@@ -78,7 +74,7 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        CredentialsException exception = assertThrows(CredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
 
         assertEquals(StatusCode.USERNAME_ALREADY_EXIST.getMessage(), exception.getMessage());
 
@@ -103,7 +99,7 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        CredentialsException exception =assertThrows(CredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        RegistrationCredentialsException exception =assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
 
         assertEquals(StatusCode.ACCOUNT_BLOCKED.getMessage(), exception.getMessage());
 
@@ -113,7 +109,7 @@ class UserRegistrationServiceTest {
 
 
     @Test
-    public void whenUserHasAnUnactivatedAccount_thenUserAccountNotCreatedAgain(){
+    public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain(){
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
@@ -126,7 +122,7 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        CredentialsException exception =assertThrows(CredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        DeactivatedAccountException exception =assertThrows(DeactivatedAccountException.class,()->userRegistrationService.registerUser(registrationRequest));
 
         assertEquals(StatusCode.ACCOUNT_DEACTIVATED.getMessage(), exception.getMessage());
 
@@ -135,7 +131,7 @@ class UserRegistrationServiceTest {
     }
 
     @Test
-    public void whenValidUserCredentials_thenUserAccountCreated() throws CredentialsException, DeactivatedAccountException {
+    public void whenValidUserCredentials_thenUserAccountCreated() throws RegistrationCredentialsException, DeactivatedAccountException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
@@ -161,8 +157,5 @@ class UserRegistrationServiceTest {
 
         assert result.getEmail().equals(registrationRequest.getEmail());
 
-
     }
-
-
 }

@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Enums;
 
-import Reservista.example.Backend.DTOs.Respond;
+import Reservista.example.Backend.DTOs.Response;
 
 public enum StatusCode {
 
@@ -10,6 +10,7 @@ public enum StatusCode {
     ACCOUNT_DEACTIVATED(200, "This account already exists and needs to be activated, check your email!"),
     ACCOUNT_BLOCKED(14, "This account is blocked"),
     INVALID_USERNAME(15, "please enter a username that does not include @"),
+    INVALID_NATIONALITY(21, "Invalid nationality"),
     INVALID_BIRTHDATE(16, "Invalid age"),
     INVALID_FIRSTNAME(17, "please provide your first name"),
     WEAK_PASSWORD(18, "Please enter a strong password"),
@@ -25,9 +26,7 @@ public enum StatusCode {
     WRONG_VERIFICATION_CODE(3, "Wrong verification code"),
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
-
     INVALID_ARGUMENT(400, "Invalid argument");
-
 
     private final int code;
     private final String message;
@@ -45,8 +44,8 @@ public enum StatusCode {
         return code;
     }
 
-    public Respond<Void> getRespond() {
-        return new Respond<>(code,message,null);
+    public Response<Void> getRespond() {
+        return new Response<>(code,message,null);
     }
 
 }
