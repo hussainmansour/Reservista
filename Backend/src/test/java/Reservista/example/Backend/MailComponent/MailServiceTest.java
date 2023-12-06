@@ -2,7 +2,7 @@ package Reservista.example.Backend.MailComponent;
 
 import Reservista.example.Backend.Enums.StatusCode;
 
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 
 import org.junit.jupiter.api.Test;
 
@@ -17,7 +17,7 @@ class MailServiceTest {
         mail.setTo("mariam.gerges1188@gmail.com");
         mail.setBody("testing send with correct email");
         MailService mailservice=new MailService();
-        Response statusCode=mailservice.sendMail(mail);
+        ResponseDTO statusCode=mailservice.sendMail(mail);
         assertEquals(statusCode.getStatus(), StatusCode.SUCCESS.getCode());
     }
     @Test
@@ -27,7 +27,7 @@ class MailServiceTest {
         mail.setTo("mariam.gerges1188");
         mail.setBody("testing send with no domain");
         MailService mailservice=new MailService();
-        Response statusCode=mailservice.sendMail(mail);
+        ResponseDTO statusCode=mailservice.sendMail(mail);
         assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
     }
     @Test
@@ -37,7 +37,7 @@ class MailServiceTest {
         mail.setTo("");
         mail.setBody("testing send with empty email");
         MailService mailservice=new MailService();
-        Response statusCode=mailservice.sendMail(mail);
+        ResponseDTO statusCode=mailservice.sendMail(mail);
         assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
     }
 }

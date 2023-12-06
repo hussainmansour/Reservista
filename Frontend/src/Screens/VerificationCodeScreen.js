@@ -25,7 +25,7 @@ const VerificationCodeScreen = ({ route, navigation }) => {
         let data = await verifyEmail(dto, setLoading)
 
         if (data.status === 200) {
-             console.log('Email successfully verified!');
+            Alert.alert('Successful', 'Welcome In Reservista');
              navigation.navigate('Login');
         } else {
             console.log(data);

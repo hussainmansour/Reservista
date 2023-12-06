@@ -2,7 +2,7 @@ package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.Registration.CodeVerificationDTO;
 import Reservista.example.Backend.Services.Registration.OTPService;
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -12,12 +12,12 @@ public class OTPController {
     @Autowired
     private OTPService otpService;
     @PostMapping("/verify-code")
-    public Response verifyGmailAccount(@RequestBody CodeVerificationDTO codeVerificationDTO) {
+    public ResponseDTO verifyGmailAccount(@RequestBody CodeVerificationDTO codeVerificationDTO) {
         return otpService.verifyGmailAccount(codeVerificationDTO.getEmail(), codeVerificationDTO.getCode());
     }
 
     @PostMapping("/refresh-verification-code")
-    public Response refreshOTP(@RequestBody String email){
+    public ResponseDTO refreshOTP(@RequestBody String email){
         return otpService.refreshOTP(email);
     }
 }

@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.RegistrationCredentialsException;
 import Reservista.example.Backend.Error.DeactivatedAccountException;
@@ -21,7 +21,7 @@ public class RegistrationController {
 
 
     @PostMapping("/register")
-    public ResponseEntity<Response> register(@Valid @RequestBody RegistrationRequestDTO request) throws RegistrationCredentialsException, DeactivatedAccountException {
+    public ResponseEntity<ResponseDTO<Void>> register(@Valid @RequestBody RegistrationRequestDTO request) throws RegistrationCredentialsException, DeactivatedAccountException {
 
         userRegistrationService.registerUser(request);
 

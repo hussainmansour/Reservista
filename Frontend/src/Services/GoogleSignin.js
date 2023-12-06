@@ -2,17 +2,17 @@
 // import * as WebBrowser from "expo-web-browser"
 // import * as Google from 'expo-auth-session/providers/google'
 // import * as React from 'react'
-
-// const GoogleSignin = () => {
+//
+// const GoogleSignIn = () => {
 //     const [userInfo, setUserInfo] = React.useState(null)
 //     const [request, response, promptAsync] = Google.useAuthRequest({
 //       androidClientId: "1031607216981-56eug3c6kc0m0opdoo880f46aimrakga.apps.googleusercontent.com",
 //       webClientId: "1031607216981-a811ens5029nos4vo5qgkjm99imtmlcg.apps.googleusercontent.com"
 //     })
-  
+//
 //     React.useEffect( () => {handleGoogleSignup();}, [response]);
-  
-  
+//
+//
 //     async function handleGoogleSignup(){
 //       if(response?. type === "success"){
 //         console.log(response.authentication.idToken)
@@ -21,7 +21,7 @@
 //         console.log("Failed")
 //       }
 //     }
-  
+//
 //     const getUserInfo = async (token) => {
 //       if(!token) return;
 //       try{
@@ -31,14 +31,14 @@
 //             headers : { Authorization: `Bearer ${token}` }
 //           }
 //         );
-  
+//
 //         const user = await response.json();
 //         setUserInfo(user)
 //       }catch(error){
 //         console.log('Failed')
 //       }
-//     } 
-
+//     }
+//
 //   return (
 //     <View>
 //       <TouchableOpacity style = {styles.googleButtonContainer} onPress={() => promptAsync()}>
@@ -48,9 +48,9 @@
 //     </View>
 //   )
 // }
-
-// export default GoogleSignin
-
+//
+// export default GoogleSignIn
+//
 // const styles = StyleSheet.create({
 //     googleButtonContainer:{
 //         backgroundColor: '#728FF3',
@@ -60,7 +60,7 @@
 //         height: 43,
 //         borderRadius: 10,
 //         justifyContent: 'space-evenly',
-//         flexDirection: 'row', 
+//         flexDirection: 'row',
 //         paddingTop: 10
 //     },
 //     googleText:{

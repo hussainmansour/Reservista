@@ -1,7 +1,9 @@
 package Reservista.example.Backend.Enums;
 
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import lombok.Getter;
 
+@Getter
 public enum StatusCode {
 
     INVALID_EMAIL(10, "please enter your gmail"),
@@ -15,6 +17,7 @@ public enum StatusCode {
     INVALID_FIRSTNAME(17, "please provide your first name"),
     WEAK_PASSWORD(18, "Please enter a strong password"),
     SUCCESSFUL_REGISTRATION(200, "Registration complete, verify your email!"),
+    SUCCESSFUL_LOGIN(200, "Login completed successfully"),
     BAD_USER_CREDENTIALS(400,"Bad credentials"),
     EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
     REGISTRATION_RACE_CONDITION(21, "Email or username already exists"),
@@ -26,7 +29,9 @@ public enum StatusCode {
     WRONG_VERIFICATION_CODE(3, "Wrong verification code"),
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
-    INVALID_ARGUMENT(400, "Invalid argument");
+    INVALID_ARGUMENT(400, "Invalid argument"),
+    UNAUTHORIZED(401 , "Incorrect username or password");
+
 
     private final int code;
     private final String message;
@@ -36,16 +41,7 @@ public enum StatusCode {
         this.message = message;
     }
 
-    public String getMessage() {
-        return message;
+    public ResponseDTO<Void> getRespond() {
+        return new ResponseDTO<>(code,message,null);
     }
-
-    public int getCode() {
-        return code;
-    }
-
-    public Response<Void> getRespond() {
-        return new Response<>(code,message,null);
-    }
-
 }

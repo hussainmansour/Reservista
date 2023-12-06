@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Error;
 
 import Reservista.example.Backend.DTOs.Registration.RegistrationResponseDTO;
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.dao.DataAccessException;
@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
             ObjectMapper objectMapper = new ObjectMapper();
             RegistrationResponseDTO registrationResponseDTO = objectMapper.convertValue(fieldErrors,RegistrationResponseDTO.class);
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(Response.builder()
+                    .body(ResponseDTO.builder()
                             .status(400)
                             .data(registrationResponseDTO)
                             .build());
@@ -63,7 +63,7 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(Response.builder()
+                .body(ResponseDTO.builder()
                         .status(500)
                         .message(ex.getMessage())
                         .build());

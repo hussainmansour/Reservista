@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const BASE_URL = 'http://192.168.1.4:8080';
+const BASE_URL = 'http://192.168.1.109:8080';
 
 const apiRequest = async (endpoint, data, setLoading) => {
   try {
@@ -9,6 +9,7 @@ const apiRequest = async (endpoint, data, setLoading) => {
     const response = await axios.post(`${BASE_URL}/${endpoint}`, data);
     console.log('response at line 10', response.status)
     if (response.status === 200) {
+      console.log("data" + response.data)
       return response.data;
     } else {
       throw new Error(response.data.message);

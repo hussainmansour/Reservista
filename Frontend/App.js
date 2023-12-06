@@ -1,42 +1,50 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
-import { NavigationContainer } from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import LoginScreen from './src/Screens/LoginScreen';
-import SignupScreen from './src/Screens/SignUpScreen';
-import Home from './src/Screens/Home';
-import TermsAndConditionsScreen from './src/Screens/TermsAndConditionsScreen';
-import VerificationCodeScreen   from "./src/Screens/VerificationCodeScreen";
+import {StatusBar} from 'expo-status-bar';
+import {StyleSheet, Text, View} from 'react-native';
+import AuthContextProvider, {AuthContext} from './src/Store/authContext';
+import {useContext, useEffect, useState} from "react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import {Navigation} from "./src/Navigations/Navigation";
 
 
+function Root() {
+    const [isTryingLogin, setIsTryingLogin] = useState(true);
 
-const Stack = createNativeStackNavigator();
+    const authCtx = useContext(AuthContext);
+
+    useEffect(() => {
+        async function fetchToken() {
+            const storedToken = await AsyncStorage.getItem('token');
+
+            if (storedToken)
+                authCtx.authenticate(storedToken);
+            setIsTryingLogin(false);
+        }
+
+        fetchToken();
+    }, []);
+
+    // if (isTryingLogin) {
+    //     return <AppLoading />;
+    // }
+
+    return <Navigation/>;
+}
 
 export default function App() {
-    return (
-        <View style={styles.container}>
-            <StatusBar
-                backgroundColor="white" 
-                barStyle="light-content" 
-                translucent={true} 
-            />
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen name = 'Login' component = {LoginScreen}/>
-                    <Stack.Screen name = 'Signup' component = {SignupScreen}/>
-                    <Stack.Screen name= 'TermsAndConditions' component={TermsAndConditionsScreen} />
-                    <Stack.Screen name= 'VerificationCode' component={VerificationCodeScreen} />
-                    <Stack.Screen name = 'Home' component = {Home}/>
-                </Stack.Navigator>
-            </NavigationContainer>
 
-        </View>
+    return (
+        <>
+            <StatusBar style="light"/>
+            <AuthContextProvider>
+                <Root/>
+            </AuthContextProvider>
+        </>
     );
 }
 
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+    container: {
+        flex: 1,
+    },
 });

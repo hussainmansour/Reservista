@@ -9,7 +9,7 @@ import Reservista.example.Backend.MailComponent.mailParsers.AccountActivationMai
 import Reservista.example.Backend.MailComponent.mailParsers.RegistrationMailParser;
 import Reservista.example.Backend.Models.OTP;
 import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +24,9 @@ public class OTPService {
     @Autowired
     private UserRepository userRepository;
 
-    public Response verifyGmailAccount(String email, String code) {
+    public ResponseDTO verifyGmailAccount(String email, String code) {
 
-        Response verifiedOTP = verifyOTP(email, code);
+        ResponseDTO verifiedOTP = verifyOTP(email, code);
         if (verifiedOTP.getStatus() != StatusCode.SUCCESS.getCode()) {
             return verifiedOTP;
         }
@@ -42,7 +42,7 @@ public class OTPService {
 
     }
 
-    public Response refreshOTP(String email) {
+    public ResponseDTO refreshOTP(String email) {
 
         User user = userRepository.findByEmail(email).orElse(null);
         if (user == null) {
@@ -58,7 +58,7 @@ public class OTPService {
         return createAndSendOTP(user);
     }
 
-    public Response createAndSendOTP(User user) {
+    public ResponseDTO createAndSendOTP(User user) {
 
         OTP newOtp = new OTP(user.getEmail());
         otpRepository.save(newOtp);
@@ -68,7 +68,7 @@ public class OTPService {
 
     }
 
-    public Response verifyOTP(String email, String code) {
+    public ResponseDTO verifyOTP(String email, String code) {
         OTP otp = otpRepository.findByEmail(email);
         if (otp == null) {
             return StatusCode.NOT_REGISTERED_USER.getRespond();

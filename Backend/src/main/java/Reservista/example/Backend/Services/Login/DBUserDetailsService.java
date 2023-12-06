@@ -2,7 +2,6 @@ package Reservista.example.Backend.Services.Login;
 
 import Reservista.example.Backend.DAOs.AdminRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.Exceptions.BlockedUserException;
 import Reservista.example.Backend.Models.Admin;
 import Reservista.example.Backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;

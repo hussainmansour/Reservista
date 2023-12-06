@@ -1,10 +1,9 @@
 package Reservista.example.Backend.Controllers;
 
 
-import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.DTOs.Registration.RegistrationResponseDTO;
-import Reservista.example.Backend.DTOs.Response;
+import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.RegistrationCredentialsException;
 import Reservista.example.Backend.Error.DeactivatedAccountException;
@@ -16,7 +15,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -76,7 +74,7 @@ class RegistrationControllerTest {
 
         String mockMessage = "error";
 
-        Response expected = Response.builder()
+        ResponseDTO expected = ResponseDTO.builder()
                 .status(500)
                 .message(mockMessage)
                 .build();
@@ -129,7 +127,7 @@ class RegistrationControllerTest {
                 .email(StatusCode.INVALID_EMAIL.getMessage())
                 .build();
 
-        Response expected = Response.builder()
+        ResponseDTO expected = ResponseDTO.builder()
                 .data(responseDTO)
                 .status(400)
                 .build();
@@ -157,7 +155,7 @@ class RegistrationControllerTest {
                 .userName(StatusCode.INVALID_USERNAME.getMessage())
                 .build();
 
-        Response expected = Response.builder()
+        ResponseDTO expected = ResponseDTO.builder()
                 .data(responseDTO)
                 .status(400)
                 .build();
@@ -186,7 +184,7 @@ class RegistrationControllerTest {
                 .password(StatusCode.WEAK_PASSWORD.getMessage())
                 .build();
 
-        Response expected = Response.builder()
+        ResponseDTO expected = ResponseDTO.builder()
                 .data(responseDTO)
                 .status(400)
                 .build();
@@ -218,7 +216,7 @@ class RegistrationControllerTest {
                 .birthDate(StatusCode.INVALID_BIRTHDATE.getMessage())
                 .build();
 
-        Response expected = Response.builder().data(responseDTO).status(400).build();
+        ResponseDTO expected = ResponseDTO.builder().data(responseDTO).status(400).build();
 
         System.out.println(objectMapper.writeValueAsString(expected));
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")

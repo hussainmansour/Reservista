@@ -21,7 +21,6 @@ const LoginScreen = ({ navigation }) => {
       setIsAuthenticating(true);
       const token = data.data.token; // may need to change this
       authCtx.authenticate(token);
-      navigation.navigate('Home')
     }else{
       Alert.alert('Error', 'Please enter correct username or password');
       setIsAuthenticating(false);
@@ -39,6 +38,7 @@ const LoginScreen = ({ navigation }) => {
           secure={false}
           onChangeText={(text) => setUsername(text)}
       />
+
       <CustomTextInput
           placeholder={'Password'}
           title={'Password'}
