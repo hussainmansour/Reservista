@@ -4,7 +4,7 @@ import React from 'react'
 const BasicService = () => {
   return (
     <View>
-      <Text>BasicService</Text>
+      <Text> BasicService </Text>
     </View>
   )
 }
