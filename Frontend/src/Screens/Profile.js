@@ -27,7 +27,6 @@ const Profile = ({ route }) => {
 
     const renderProfile = () => (
         <View style={styles.container}>
-            <Image style={styles.profilephoto} source={require('./assets/profile.jpg')} />
 
             {renderField('Username', editedUser.username)}
             {renderField('First Name', editedUser.firstName)}
@@ -61,12 +60,6 @@ const styles = StyleSheet.create({
         margin: 5,
         backgroundColor: '#fff',
         paddingBottom:40
-    },
-    profilephoto: {
-        width: 150,
-        height: 150,
-        borderRadius: 75,
-        marginBottom: 20,
     },
     fieldContainer: {
         flexDirection: 'row',
