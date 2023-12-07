@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, StyleSheet, Image, Alert, Button } from 'react-native';
+import { View, Text, StyleSheet, Image, Alert } from 'react-native';
+import EditButton from '../Components/EditButton';
 
 const Profile = ({ route }) => {
     const { user } = route.params;
@@ -66,7 +67,7 @@ const Profile = ({ route }) => {
                 <Text style={styles.fieldValue}>{editedUser.passportNumber}</Text>
             </View>
 
-            <Button title='Edit' onPress={handleEdit} />
+            <EditButton onPress={handleEdit} />
         </View>
     );
 };
