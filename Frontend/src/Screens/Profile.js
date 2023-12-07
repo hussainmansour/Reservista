@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import EditButton from '../Components/EditButton';
+import EditButton from '../Components/EditButton'
+
 
 const Profile = ({ route }) => {
     const { user } = route.params;
@@ -24,52 +25,31 @@ const Profile = ({ route }) => {
         Alert.alert('Success', 'Profile updated successfully');
     };
 
-    return (
+    const renderProfile = () => (
         <View style={styles.container}>
             <Image style={styles.profilephoto} source={require('./assets/profile.jpg')} />
 
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Username</Text>
-                <Text style={styles.fieldValue}>{editedUser.username}</Text>
-            </View>
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>First Name</Text>
-                <Text style={styles.fieldValue}>{editedUser.firstName}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Last Name</Text>
-                <Text style={styles.fieldValue}>{editedUser.lastName}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Email</Text>
-                <Text style={styles.fieldValue}>{editedUser.email}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Phone</Text>
-                <Text style={styles.fieldValue}>{editedUser.phone}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Gender</Text>
-                <Text style={styles.fieldValue}>{editedUser.gender}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Nationality</Text>
-                <Text style={styles.fieldValue}>{editedUser.nationality}</Text>
-            </View>
-
-            <View style={styles.fieldContainer}>
-                <Text style={styles.fieldLabel}>Passport Number</Text>
-                <Text style={styles.fieldValue}>{editedUser.passportNumber}</Text>
-            </View>
+            {renderField('Username', editedUser.username)}
+            {renderField('First Name', editedUser.firstName)}
+            {renderField('Last Name', editedUser.lastName)}
+            {renderField('Email', editedUser.email)}
+            {renderField('Phone', editedUser.phone)}
+            {renderField('Gender', editedUser.gender)}
+            {renderField('Nationality', editedUser.nationality)}
+            {renderField('Passport Number', editedUser.passportNumber)}
 
             <EditButton onPress={handleEdit} />
         </View>
     );
+
+    const renderField = (label, value) => (
+        <View style={styles.fieldContainer}>
+            <Text style={styles.fieldLabel}>{label}</Text>
+            <Text style={styles.fieldValue}>{value}</Text>
+        </View>
+    );
+
+    return renderProfile();
 };
 
 const styles = StyleSheet.create({
@@ -106,4 +86,4 @@ const styles = StyleSheet.create({
     },
 });
 
-export default UserProfile;
+export default Profile;
