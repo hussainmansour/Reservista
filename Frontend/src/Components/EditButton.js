@@ -10,7 +10,7 @@ const EditButton = ({ onPress }) => {
 };
 const styles = StyleSheet.create({
     editButton: {
-        backgroundColor: '#002c73', // Blue color
+        backgroundColor: '#728FF3', // Blue color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
