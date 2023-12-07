@@ -28,14 +28,13 @@ const Profile = ({ route }) => {
     const renderProfile = () => (
         <View style={styles.container}>
 
-            {renderField('Username', editedUser.username)}
             {renderField('First Name', editedUser.firstName)}
+            {renderField('Middle Name', editedUser.middleName)}
             {renderField('Last Name', editedUser.lastName)}
             {renderField('Email', editedUser.email)}
-            {renderField('Phone', editedUser.phone)}
             {renderField('Gender', editedUser.gender)}
             {renderField('Nationality', editedUser.nationality)}
-            {renderField('Passport Number', editedUser.passportNumber)}
+            {renderField('Birthday', editedUser.birthday)}
 
             <EditButton onPress={handleEdit} />
         </View>
