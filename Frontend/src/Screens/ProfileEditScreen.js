@@ -6,25 +6,10 @@ import * as Yup from 'yup';
 import CustomTextInput from '../Components/EditTextInput';
 
 const validationSchema = Yup.object().shape({
-    username: Yup.string()
-        .required('Username is required')
-        .min(4, 'Username must be at least 4 characters')
-        .max(20, 'Username must be at most 20 characters'),
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    email: Yup.string()
-        .email('Invalid email')
-        .required('Email is required'),
-    phone: Yup.string()
-        .matches(/^\d{11}$/, 'Invalid phone number')
-        .required('Phone is required'),
-    gender: Yup.string().oneOf(['Male', 'Female'], 'Invalid gender'),
+    gender: Yup.string().oneOf(['Male', 'Female','Prefer not to say'], 'Invalid gender'),
     nationality: Yup.string(),
-    passportNumber: Yup.string()
-        .matches(/^[A-Za-z0-9]+$/, 'Invalid passport number')
-        .min(6, 'Passport number must be at least 6 characters')
-        .max(15, 'Passport number must be at most 15 characters')
-        .required('Passport number is required'),
 });
 
 
@@ -43,13 +28,6 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                     >
                         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
                             <ScrollView>
-                                <CustomTextInput
-                                    title="Username"
-                                    onChangeText={handleChange('username')}
-                                    onBlur={handleBlur('username')}
-                                    errorMessage={errors.username}
-                                    Value={values.username}
-                                />
 
                                 <CustomTextInput
                                     title="First Name"
@@ -60,28 +38,19 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                 />
 
                                 <CustomTextInput
+                                    title="Middle Name"
+                                    onChangeText={handleChange('middleName')}
+                                    onBlur={handleBlur('middleName')}
+                                    errorMessage={errors.middleName}
+                                    Value={values.middleName}
+                                />
+
+                                <CustomTextInput
                                     title="Last Name"
                                     onChangeText={handleChange('lastName')}
                                     onBlur={handleBlur('lastName')}
                                     errorMessage={errors.lastName}
                                     Value={values.lastName}
-                                />
-
-                                <CustomTextInput
-                                    title="Email"
-                                    onChangeText={handleChange('email')}
-                                    onBlur={handleBlur('email')}
-                                    errorMessage={errors.email}
-                                    Value={values.email}
-                                />
-
-                                <CustomTextInput
-                                    title="Phone"
-                                    onChangeText={handleChange('phone')}
-                                    onBlur={handleBlur('phone')}
-                                    errorMessage={errors.phone}
-                                    Value={values.phone}
-                                    type="numeric"
                                 />
 
                                 {/* Gender Dropdown */}
@@ -96,6 +65,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         >
                                             <Picker.Item label="Male" value="Male" />
                                             <Picker.Item label="Female" value="Female" />
+                                            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
                                         </Picker>
                                         {errors.gender && (
                                             <Text style={styles.errorText}>{errors.gender}</Text>
@@ -138,14 +108,6 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         )}
                                     </View>
                                 </View>
-
-                                <CustomTextInput
-                                    title="Passport Number"
-                                    onChangeText={handleChange('passportNumber')}
-                                    onBlur={handleBlur('passportNumber')}
-                                    errorMessage={errors.passportNumber}
-                                    Value={values.passportNumber}
-                                />
 
                                 <View style={styles.buttonContainer}>
                                     <TouchableOpacity
@@ -234,23 +196,23 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-around',
         marginTop: 20,
-        paddingBottom:20
+        paddingBottom: 20
     },
     saveButton: {
         backgroundColor: '#4CAF50', // Green color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        width:'30%',
-        height:50,
+        width: '30%',
+        height: 50,
     },
     cancelButton: {
         backgroundColor: '#A9A9A9', // Gray color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        width:'30%',
-        height:50,
+        width: '30%',
+        height: 50,
     },
     buttonText: {
         color: 'white',
