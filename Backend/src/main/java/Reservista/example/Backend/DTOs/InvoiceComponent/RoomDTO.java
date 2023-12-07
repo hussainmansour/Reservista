@@ -1,25 +1,33 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import lombok.*;
 import org.springframework.data.util.Pair;
+import java.util.List;
 
-import java.util.Vector;
 
 @Data
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class RoomDTO {
-    private String type;
-    private Vector<Option> options;
+
+    @NotBlank
+    @NotEmpty
+    private String title;
+
+    private List<Option> options;
+
     private double price;
-    private String roomID;
+
+
 
     public Pair<Double, String> calculate_price() {
         double total = price;
-        StringBuilder s = new StringBuilder(type + "\t\t\t" + price + "\n");
+        StringBuilder s = new StringBuilder(title + "\t\t\t" + price + "\n");
         for (int i = 0; i < options.size(); i++) {
-            Pair<Double, String> priceAndDetails = options.elementAt(i).calculate_price();
+            Pair<Double, String> priceAndDetails = options.get(i).calculate_price();
             total += priceAndDetails.getFirst();
             s.append(priceAndDetails.getSecond());
         }

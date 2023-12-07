@@ -1,8 +1,13 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
+import jakarta.validation.constraints.FutureOrPresent;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jdk.jfr.BooleanFlag;
 import lombok.*;
 
-import java.util.Date;
+import java.time.Instant;
 import java.util.List;
 import org.springframework.data.util.Pair;
 
@@ -13,15 +18,39 @@ import org.springframework.data.util.Pair;
 @NoArgsConstructor
 public class ReservationDTO {
 
+    private long reservationID;
 
-    private String reservationID;
+    @NotBlank
+    @NotEmpty
     private String hotelID;
+
+    @NotBlank
+    @NotEmpty
+    private String hotelName;
+
+    @NotNull
     private List<RoomDTO> rooms;
+
+    @NotNull
+    @NotBlank
     private String userID;
-    private Date checkIn;
-    private Date checkOut;
+
+    @NotNull
+    @FutureOrPresent
+    private Instant checkIn;
+
+    @NotNull
+    @FutureOrPresent
+    private Instant checkOut;
+
+    @NotNull
+    @BooleanFlag
     private boolean refundable;
-    private double voucher;
+
+    private String voucherName;
+
+    private double voucherPercentage;
+
     private double price;
 
 
@@ -37,9 +66,9 @@ public class ReservationDTO {
         int intRefundable = this.refundable ? 1 : 0;
         total += Math.ceil(0.13 * intRefundable * total);
         if (isRefundable()) s.append("\nRefundable\t\t\t" + "13%(+").append(total * 0.13).append(")\n\n");
-        if (voucher != 0)
-            s.append("\nVoucher\t\t\t").append(voucher * 100).append("%(-+").append(total * voucher).append(")\n");
-        total -= total * voucher;
+        if (voucherPercentage != 0)
+            s.append("\nVoucher\t\t\t").append(voucherPercentage * 100).append("%(-+").append(total * voucherPercentage).append(")\n");
+        total -= total * voucherPercentage;
         s.append("Total \t\t\t").append(total).append("\n\n");
 
         return Pair.of(total, s.toString());

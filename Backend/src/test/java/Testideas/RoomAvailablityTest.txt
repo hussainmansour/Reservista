@@ -1,0 +1,11 @@
+1- multiple threads trying to reserve the same rooms in interleaved intervals
+(only one thread or one user should be able to reserve "successfully" and all of other gets "not available message"
+
+2- user that start to reserve but didn't complete the payment ...the reservation shouldn't be existed after 10 mins.
+3- user that start to reserve and complete the payment ...the reservation should be existed after 10 mins.
+4- make sure that if thread holding lock on some hotel ...all other reservations on other hotels are not locked.
+5- handle not sufficient amount of rooms.
+6- Handle 2 users need to reserve in the same hotel but each one reserve different rooms (both of them should success).
+7- Handle 2 users need to reserve in the same hotel but each one reserve same rooms but the system has plenty of these rooms
+   (both of them should success).
+8- user need to reserve 2 types of (one of them is available and the another type is not) -> should cancel the whole reservation.
