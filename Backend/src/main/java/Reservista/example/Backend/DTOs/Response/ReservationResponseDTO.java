@@ -9,5 +9,5 @@ import lombok.NoArgsConstructor;
 @Builder
 public class ReservationResponseDTO {
     private String paymentIntentId;
-    private String reservationId;
+    private Long reservationId;
 }

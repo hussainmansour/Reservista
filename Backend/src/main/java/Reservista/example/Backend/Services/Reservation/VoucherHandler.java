@@ -29,7 +29,7 @@ public class VoucherHandler extends ReservationHandler{
         }else{
             Instant voucherExpirationDate = voucherRepository
             .findVoucherByVoucherCode(reservationDTO.getVoucherCode())
-            .getExpirationDate();
+            .getExpiresAt();
 
             if(Instant.now().isAfter(voucherExpirationDate)){
 //                return new ResponseDTO<>()
