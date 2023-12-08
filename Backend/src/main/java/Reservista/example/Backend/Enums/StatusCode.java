@@ -30,7 +30,11 @@ public enum StatusCode {
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
-    UNAUTHORIZED(401 , "Incorrect username or password");
+    UNAUTHORIZED(401 , "Incorrect username or password"),
+    STRIPE_PAYMENT_INTENT_FAILED(60,"failed to create payment intent"),
+    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created");
+
+
 
 
     private final int code;
@@ -40,8 +44,11 @@ public enum StatusCode {
         this.code = code;
         this.message = message;
     }
-
+//
     public ResponseDTO<Void> getRespond() {
         return new ResponseDTO<>(code,message,null);
     }
+//    public ResponseDTO<Object> getRespond() {
+//        return new ResponseDTO<Object>(code,message,null);
+//    }
 }
