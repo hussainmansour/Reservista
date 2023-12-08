@@ -30,8 +30,9 @@ public enum StatusCode {
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
-    UNAUTHORIZED(401 , "Incorrect username or password");
-
+    UNAUTHORIZED(401 , "Incorrect username or password"),
+    REFUND_SUCCESSFUL(50,"Reservation cancelled successfully"),
+    REFUND_UNSUCCESSFUL(51, "Refund unsuccessful: This reservation cannot be canceled");
 
     private final int code;
     private final String message;
