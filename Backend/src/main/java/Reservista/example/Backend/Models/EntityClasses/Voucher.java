@@ -1,14 +1,16 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -27,15 +29,15 @@ public class Voucher {
     @Column(name = "discount_rate")
     private int discountRate;
 
-    @Column
-    private Instant expirationDate;
+    @NotNull
+    @Column(name = "expires_at")
+    private Instant expiresAt;
 
-
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_voucher",
-            joinColumns = @JoinColumn(name = "voucher_code" , referencedColumnName = "voucher_code"),
-            inverseJoinColumns = @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
+            joinColumns = @JoinColumn(name = "voucher_code", referencedColumnName = "voucher_code"),
+            inverseJoinColumns = @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     )
-    private List<User> users;
+    private Set<User> users;
 }

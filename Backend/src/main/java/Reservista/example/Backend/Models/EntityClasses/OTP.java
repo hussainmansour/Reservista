@@ -1,13 +1,12 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 
 import Reservista.example.Backend.Validators.Gmail;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import jakarta.persistence.Table;
+import lombok.*;
+
 import java.time.LocalDateTime;
 import java.util.concurrent.ThreadLocalRandom;
 
@@ -16,8 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
+@Table(name = "otp")
 public class OTP {
+
     private static final int EXPIRATION_TIME_IN_MINs = 5;
+
     @Id
     @Gmail
     private String email;

@@ -1,4 +1,7 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
+
+
+import Reservista.example.Backend.Models.IDClasses.OptionalServiceId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -13,6 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "optional_service")
+@IdClass(OptionalServiceId.class)
 public class OptionalService {
 
     @Id
@@ -20,8 +24,8 @@ public class OptionalService {
     private String serviceName;
 
     @Id
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id", referencedColumnName = "id" , nullable = false)
     private Hotel hotel;
 
     @NotNull
