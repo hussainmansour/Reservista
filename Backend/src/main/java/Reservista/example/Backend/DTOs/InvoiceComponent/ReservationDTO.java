@@ -24,16 +24,16 @@ public class ReservationDTO {
     @NotEmpty
     private String hotelID;
 
+    @NotNull
+    @NotBlank
+    private String userID;
+
     @NotBlank
     @NotEmpty
     private String hotelName;
 
     @NotNull
     private List<RoomDTO> rooms;
-
-    @NotNull
-    @NotBlank
-    private String userID;
 
     @NotNull
     @FutureOrPresent
@@ -47,7 +47,7 @@ public class ReservationDTO {
     @BooleanFlag
     private boolean refundable;
 
-    private String voucherName;
+    private String voucherCode;
 
     private double voucherPercentage;
 

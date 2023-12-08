@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.Instant;
 import java.util.List;
 
 @Entity
@@ -25,6 +26,10 @@ public class Voucher {
     @Max(100)
     @Column(name = "discount_rate")
     private int discountRate;
+
+    @Column
+    private Instant expirationDate;
+
 
     @ManyToMany(cascade = CascadeType.ALL)
     @JoinTable(
