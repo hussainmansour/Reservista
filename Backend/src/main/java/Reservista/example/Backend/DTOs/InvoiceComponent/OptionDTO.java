@@ -7,7 +7,7 @@ import org.springframework.data.util.Pair;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Option {
+public class OptionDTO {
     private String name;
     private double price;
     public Pair<Double,String> calculate_price(){

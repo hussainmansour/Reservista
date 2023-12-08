@@ -17,7 +17,7 @@ public class RoomDTO {
     @NotEmpty
     private String title;
 
-    private List<Option> options;
+    private List<OptionDTO> options;
 
     private double price;
 

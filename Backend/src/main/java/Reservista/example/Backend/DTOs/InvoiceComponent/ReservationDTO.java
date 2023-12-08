@@ -9,6 +9,8 @@ import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.util.Pair;
 
 
@@ -22,7 +24,7 @@ public class ReservationDTO {
 
     @NotBlank
     @NotEmpty
-    private String hotelID;
+    private UUID hotelID;
 
     @NotNull
     @NotBlank
