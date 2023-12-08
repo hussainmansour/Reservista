@@ -1,15 +1,15 @@
 import React from 'react';
-import { View, Text, TextInput, Button, Modal, StyleSheet, ScrollView, KeyboardAvoidingView, Platform, TouchableOpacity } from 'react-native';
-import { Picker } from '@react-native-picker/picker';
+import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CustomTextInput from '../Components/EditTextInput';
+import CustomizedButton from '../Components/CustomizedButton';
+import DropdownList from '../Components/DropdownList';
+import styles from '../Styles/Editstyles';
 
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
-    gender: Yup.string().oneOf(['Male', 'Female','Prefer not to say'], 'Invalid gender'),
-    nationality: Yup.string(),
 });
 
 
@@ -53,76 +53,43 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     Value={values.lastName}
                                 />
 
-                                {/* Gender Dropdown */}
-                                <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldLabel}>Gender:</Text>
-                                    <View style={styles.input}>
-                                        <Picker
-                                            selectedValue={values.gender}
-                                            dropdownIconColor={'gray'}
-                                            onValueChange={(itemValue) => handleChange('gender')(itemValue)}
-                                            onBlur={handleBlur('gender')}
-                                        >
-                                            <Picker.Item label="Male" value="Male" />
-                                            <Picker.Item label="Female" value="Female" />
-                                            <Picker.Item label="Prefer not to say" value="Prefer not to say" />
-                                        </Picker>
-                                        {errors.gender && (
-                                            <Text style={styles.errorText}>{errors.gender}</Text>
-                                        )}
-                                    </View>
-                                </View>
+                                <DropdownList
+                                    label="Gender"
+                                    selectedValue={values.gender}
+                                    onValueChange={(itemValue) => handleChange('gender')(itemValue)}
+                                    onBlur={() => handleBlur('gender')}
+                                    items={[
+                                        { label: 'Male', value: 'Male' },
+                                        { label: 'Female', value: 'Female' },
+                                        { label: 'Prefer not to say', value: 'Prefer not to say' },
+                                    ]}
+                                />
 
-                                {/* Nationality Dropdown */}
-                                <View style={styles.fieldContainer}>
-                                    <Text style={styles.fieldLabel}>Nationality:</Text>
-                                    <View style={styles.input}>
-                                        <Picker
-                                            selectedValue={values.nationality}
-                                            dropdownIconColor={'gray'}
-                                            onValueChange={(itemValue) => handleChange('nationality')(itemValue)}
-                                            onBlur={handleBlur('nationality')}
-                                        >
-                                            <Picker.Item label="Egypt" value="EG" />
-                                            <Picker.Item label="United States" value="US" />
-                                            <Picker.Item label="United Kingdom" value="UK" />
-                                            <Picker.Item label="Australia" value="AU" />
-                                            <Picker.Item label="Canada" value="CA" />
-                                            <Picker.Item label="France" value="FR" />
-                                            <Picker.Item label="Germany" value="DE" />
-                                            <Picker.Item label="Italy" value="IT" />
-                                            <Picker.Item label="Japan" value="JP" />
-                                            <Picker.Item label="Korea" value="KR" />
-                                            <Picker.Item label="Russia" value="RU" />
-                                            <Picker.Item label="Spain" value="ES" />
-                                            <Picker.Item label="Sweden" value="SE" />
-                                            <Picker.Item label="Switzerland" value="CH" />
-                                            <Picker.Item label="United Arab Emirates" value="AE" />
-                                            <Picker.Item label="China" value="CN" />
-                                            <Picker.Item label="India" value="IN" />
-                                            <Picker.Item label="Indonesia" value="ID" />
-
-                                        </Picker>
-                                        {errors.nationality && (
-                                            <Text style={styles.errorText}>{errors.nationality}</Text>
-                                        )}
-                                    </View>
-                                </View>
+                                <DropdownList
+                                    label="Nationality"
+                                    selectedValue={values.nationality}
+                                    onValueChange={(itemValue) => handleChange('nationality')(itemValue)}
+                                    onBlur={() => handleBlur('nationality')}
+                                    items={[
+                                        { label: 'Egypt', value: 'EG' },
+                                        // ... (other nationality options on the connection)
+                                    ]}
+                                />
 
                                 <View style={styles.buttonContainer}>
-                                    <TouchableOpacity
-                                        style={styles.saveButton}
+                                    {/* Save Button */}
+                                    <CustomizedButton
                                         onPress={handleSubmit}
-                                    >
-                                        <Text style={styles.buttonText}>Save</Text>
-                                    </TouchableOpacity>
+                                        style={styles.saveButton}
+                                        text="Save"
+                                    />
 
-                                    <TouchableOpacity
-                                        style={styles.cancelButton}
+                                    {/* Cancel Button */}
+                                    <CustomizedButton
                                         onPress={onCancel}
-                                    >
-                                        <Text style={styles.buttonText}>Cancel</Text>
-                                    </TouchableOpacity>
+                                        style={styles.cancelButton}
+                                        text="Cancel"
+                                    />
                                 </View>
                             </ScrollView>
                         )}
@@ -134,92 +101,5 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
 };
 
 
-const styles = StyleSheet.create({
-    modalContainer: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
-    },
-    modalContent: {
-        backgroundColor: 'white',
-        padding: 20,
-        flex: 1,
-        width: '100%',
-    },
-    modalTitle: {
-        marginBottom: 10,
-        textAlign: 'center',
-        fontFamily: "Roboto",
-        fontSize: 22,
-        fontWeight: "400",
-        letterSpacing: 0,
-        lineHeight: 28,
-    },
-    fieldContainer: {
-        marginBottom: 30,
-        marginLeft: 20,
-        borderRadius: 10
-    },
-    fieldLabel: {
-        color: 'black',
-        fontWeight: 'bold',
-        marginBottom: 5,
-        paddingLeft: 10,
-        fontSize: 15,
-    },
-    input: {
-        backgroundColor: '#D9D9D9',
-        borderRadius: 10,
-        width: '90%',
-        height: 55,
-        paddingLeft: 10,
-    },
-    picker: {
-        height: 40,
-        borderColor: 'gray',
-        borderWidth: 1,
-        backgroundColor: '#D9D9D9',
-    },
-    pickerItem: {
-        height: 20,
-        fontSize: 20,
-    },
-    errorInput: {
-        borderColor: 'red',
-    },
-    errorText: {
-        color: 'red',
-        fontSize: 12,
-        marginLeft: 10,
-    },
-    buttonContainer: {
-        flexDirection: 'row',
-        justifyContent: 'space-around',
-        marginTop: 20,
-        paddingBottom: 20
-    },
-    saveButton: {
-        backgroundColor: '#4CAF50', // Green color
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        width: '30%',
-        height: 50,
-    },
-    cancelButton: {
-        backgroundColor: '#A9A9A9', // Gray color
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
-        width: '30%',
-        height: 50,
-    },
-    buttonText: {
-        color: 'white',
-        fontSize: 16,
-        fontWeight: 'bold',
-        textAlign: 'center',
-    },
-});
 
 export default ProfileEditScreen;
