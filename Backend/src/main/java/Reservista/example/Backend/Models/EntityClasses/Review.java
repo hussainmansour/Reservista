@@ -1,4 +1,4 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.time.LocalDateTime;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
@@ -22,7 +22,7 @@ import java.util.UUID;
 public class Review {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private UUID id;
 
     @NotNull
@@ -39,6 +39,13 @@ public class Review {
     @Column(name = "rating")
     private double rating;
 
-    @OneToOne(mappedBy = "review")
+    @OneToOne(mappedBy = "review" , cascade = CascadeType.ALL)
     private Reservation reservation;
+
+    @OneToMany(mappedBy = "review",cascade = CascadeType.ALL)
+    private Set<Report> reports;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id",referencedColumnName = "id" , nullable = false)
+    private Hotel hotel;
 }

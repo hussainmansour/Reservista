@@ -1,6 +1,6 @@
 package Reservista.example.Backend.DAOs;
 
-import Reservista.example.Backend.Models.BlockedUser;
+import Reservista.example.Backend.Models.EntityClasses.BlockedUser;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
