@@ -2,7 +2,7 @@ package Reservista.example.Backend.MailComponent.mailParsers;
 
 import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
 import Reservista.example.Backend.MailComponent.Mail;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.User;
 
 public class InvoiceParser extends Mail {
     public InvoiceParser(ReservationDTO reservationDTO, User user) {
@@ -11,7 +11,7 @@ public class InvoiceParser extends Mail {
         setSubject("Reservation confirmation");
         setBody(
 
-                "hi" + user.getFirstName() + ",\n\n" +
+                "hi" + user.getFullName().getFirstName() + ",\n\n" +
 
                         "Thank you for choosing Reservista for your hotel reservations. We are delighted to confirm your reservation details. Please review the information below:\n\n" +
 

@@ -1,4 +1,4 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Enums.SystemRoles;
 import jakarta.persistence.*;
@@ -10,6 +10,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -26,6 +27,9 @@ public class Admin implements UserDetails {
     @NotBlank
     @Column(name = "password")
     private String password;
+
+    @OneToMany(mappedBy = "admin" , cascade = CascadeType.ALL)
+    private Set<Report> reports;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

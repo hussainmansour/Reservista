@@ -1,10 +1,11 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.IDClasses;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
+import java.util.UUID;
 
 
 @Data
@@ -12,7 +13,7 @@ import java.io.Serializable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class ReportId implements Serializable {
-    private User user;
-    private Admin admin;
-    private Review review;
+    private String user;
+    private String admin;
+    private UUID review;
 }
