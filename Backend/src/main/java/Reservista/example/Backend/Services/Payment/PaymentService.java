@@ -11,6 +11,7 @@ import com.stripe.param.RefundCreateParams;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -18,11 +19,15 @@ import org.springframework.stereotype.Service;
 @Log4j2
 public class PaymentService {
 
+
+    @Value("${stripe.secretKey}")
+    private String stripeSecretApiKey;
+
     @Autowired
     Logger logger;
 
     public ResponseDTO cancelPayment(String reservationID){
-        Stripe.apiKey = "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
+        Stripe.apiKey = stripeSecretApiKey;
         // get payment intent from database
         String paymentIntentID ="";
         try {
@@ -41,7 +46,7 @@ public class PaymentService {
     }
 
     public ResponseDTO confirmPayment(String clientSecret){
-        Stripe.apiKey = "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
+        Stripe.apiKey = stripeSecretApiKey;
         String paymentIntentId = extractPaymentIntentId(clientSecret);
 
         if (paymentIntentId != null) {
