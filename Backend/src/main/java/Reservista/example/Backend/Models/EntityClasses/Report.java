@@ -17,17 +17,17 @@ import lombok.NoArgsConstructor;
 public class Report {
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false , cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_name", referencedColumnName = "user_name", nullable = false)
     private User user;
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "admin_name", referencedColumnName = "admin_name", nullable = false)
     private Admin admin;
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "review_id", referencedColumnName = "id", nullable = false)
     private Review review;
 }

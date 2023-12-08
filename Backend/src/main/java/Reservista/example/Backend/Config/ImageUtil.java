@@ -13,7 +13,7 @@ import java.net.URI;
 @Component
 public class ImageUtil {
 
-    public byte[] convertImageUrlToBytes(String imageUrl) {
+    public static byte[] convertImageUrlToBytes(String imageUrl) {
         URI uri = URI.create(imageUrl);
         try (InputStream in = uri.toURL().openStream()) {
             return IOUtils.toByteArray(in);

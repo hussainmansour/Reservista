@@ -24,7 +24,7 @@ public class OptionalService {
     private String serviceName;
 
     @Id
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hotel_id", referencedColumnName = "id" , nullable = false)
     private Hotel hotel;
 

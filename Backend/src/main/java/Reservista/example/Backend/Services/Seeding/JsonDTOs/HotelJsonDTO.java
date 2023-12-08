@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -30,9 +31,9 @@ public class HotelJsonDTO {
     private String hotelLocation;
 
     @JsonProperty("explore_the_area")
-    private List<String> exploreTheArea;
+    private Set<String> exploreTheArea;
 
-    private List<AmenityJsonDTO> amenities;
-    private List<HotelImageJsonDTO> images;
-    private List<RoomDescriptionJsonDTO> rooms;
+    private Set<AmenityJsonDTO> amenities;
+    private Set<HotelImageJsonDTO> images;
+    private Set<RoomDescriptionJsonDTO> rooms;
 }

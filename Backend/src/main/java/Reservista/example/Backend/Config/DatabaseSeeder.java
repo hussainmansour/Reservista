@@ -17,9 +17,9 @@ public class DatabaseSeeder implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
         if (!hasSeeded) {
-//            jsonSeedingService.seedFromFile(
-//                    System.getProperty("user.dir")
-//                    + "/src/main/resources/data.json");
+            jsonSeedingService.seedHotelsFromFile(
+                    System.getProperty("user.dir")
+                    + "/src/main/resources/data.json");
             hasSeeded = true;
         }
     }

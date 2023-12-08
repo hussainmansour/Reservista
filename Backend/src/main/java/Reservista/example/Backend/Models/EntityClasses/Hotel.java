@@ -5,10 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
@@ -40,7 +37,7 @@ public class Hotel {
     @Min(0)
     @Max(5)
     @Column(name = "star_rating")
-    private int starRating;
+    private double starRating;
 
     @Column(name = "address")
     private String address;
@@ -76,7 +73,7 @@ public class Hotel {
     private Set<Review> reviews;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false , cascade = CascadeType.PERSIST)
     @JoinColumns({
             @JoinColumn(name = "location_city", referencedColumnName = "city" , nullable = false),
             @JoinColumn(name = "location_country", referencedColumnName = "country" , nullable = false)

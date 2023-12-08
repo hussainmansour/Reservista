@@ -5,17 +5,14 @@ import Reservista.example.Backend.Models.EmbeddedClasses.Coordinates;
 import Reservista.example.Backend.Models.IDClasses.LocationId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.ZoneId;
 import java.util.Set;
 
 
-@Entity
 @Data
+@Entity
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

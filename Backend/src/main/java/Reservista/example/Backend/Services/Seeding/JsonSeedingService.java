@@ -1,47 +1,45 @@
 package Reservista.example.Backend.Services.Seeding;
 
-import Reservista.example.Backend.Config.ImageUtil;
 import Reservista.example.Backend.DAOs.LocationRepository;
-import Reservista.example.Backend.Models.Location;
+import Reservista.example.Backend.Services.Seeding.JsonDTOs.LocationDetailsJsonDTO;
 import Reservista.example.Backend.Services.Seeding.JsonDTOs.LocationJsonDTO;
 import Reservista.example.Backend.Services.Seeding.JsonMappers.LocationMapper;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.List;
 
 @Service
+@AllArgsConstructor
 public class JsonSeedingService {
 
-//    @Autowired
-//    private LocationMapper locationMapper;
-
-    @Autowired
-    private ImageUtil imageUtil;
-
-    @Autowired
+    private LocationMapper locationMapper;
     private LocationRepository locationRepository;
+    private DatabaseEntitySeederService databaseEntitySeederService;
 
-    public void seedFromFile(String jsonFilePath) {
+
+    public void seedAllLocationsFromFile(String jsonFilePath) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            List<LocationJsonDTO> locationJsonDTOs =
+            List<LocationDetailsJsonDTO> locationJsonDTOs =
                     objectMapper.readValue(new File(jsonFilePath), new TypeReference<>() {});
-
-            // todo: mapping
+            databaseEntitySeederService.addAllLocationsToDB(locationJsonDTOs);
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
-
-    // todo : mapping
-    private void addToDB(List<Location> locations) {
-
+    public void seedHotelsFromFile(String jsonFilePath) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            List<LocationJsonDTO> locationJsonDTOs =
+                    objectMapper.readValue(new File(jsonFilePath), new TypeReference<>() {});
+            databaseEntitySeederService.addHotelsToDB(locationJsonDTOs);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
-
 }

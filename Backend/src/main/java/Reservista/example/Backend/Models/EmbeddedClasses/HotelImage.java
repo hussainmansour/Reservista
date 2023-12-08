@@ -17,6 +17,7 @@ public class HotelImage {
 
     @Lob
     @NotNull
+    @Column(length = 2_147_483_647)
     private byte[] source;
 
     private String caption;

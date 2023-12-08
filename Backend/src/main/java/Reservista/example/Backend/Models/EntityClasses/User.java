@@ -60,7 +60,7 @@ public class User implements UserDetails {
     private boolean isActivated;
 
     @Lob
-    @Column(name = "profile_image")
+    @Column(name = "profile_image" , length = 2_147_483_647)
     private byte[] profileImage;
 
     @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)

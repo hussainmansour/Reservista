@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -15,5 +15,5 @@ import java.util.List;
 public class LocationJsonDTO {
     @JsonProperty("location_data")
     private LocationDetailsJsonDTO locationDetails;
-    private List<HotelJsonDTO> hotels;
+    private Set<HotelJsonDTO> hotels;
 }

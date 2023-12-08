@@ -61,7 +61,7 @@ public class Reservation {
     @Column(name = "voucher_applied")
     private boolean voucherApplied;
 
-    // todo: payment data class ??
+    // todo: payment data class ?? -> paymentIntentId : String
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(
@@ -70,7 +70,7 @@ public class Reservation {
     )
     private Review review;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.PERSIST)
     @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
     private User user;
 

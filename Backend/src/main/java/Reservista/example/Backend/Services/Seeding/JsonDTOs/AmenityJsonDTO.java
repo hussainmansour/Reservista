@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,5 +19,5 @@ public class AmenityJsonDTO {
     private String heading;
 
     @JsonProperty("bullet_points")
-    private List<String> bulletPoints;
+    private Set<String> bulletPoints;
 }

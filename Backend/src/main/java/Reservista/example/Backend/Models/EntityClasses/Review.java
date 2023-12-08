@@ -45,7 +45,7 @@ public class Review {
     @OneToMany(mappedBy = "review",cascade = CascadeType.ALL)
     private Set<Report> reports;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hotel_id",referencedColumnName = "id" , nullable = false)
     private Hotel hotel;
 }

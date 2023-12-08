@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Services.Seeding.JsonDTOs;
 
 
-import Reservista.example.Backend.Services.Seeding.JsonDTOs.CoordinatesJsonDTO;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

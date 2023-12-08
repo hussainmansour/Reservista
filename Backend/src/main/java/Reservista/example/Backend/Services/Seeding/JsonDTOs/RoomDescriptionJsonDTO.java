@@ -8,6 +8,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+import java.util.Set;
 
 @Data
 @Builder
@@ -18,10 +19,10 @@ public class RoomDescriptionJsonDTO {
     private String headerTitle;
 
     @JsonProperty("Image Sources")
-    private List<String> imageSources;
+    private Set<String> imageSources;
 
     @JsonProperty("Room Details")
-    private List<String> roomDetails;
+    private Set<String> roomDetails;
 
     @JsonProperty("Total Price")
     private String totalPrice;
