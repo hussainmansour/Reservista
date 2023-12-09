@@ -30,7 +30,7 @@ public enum StatusCode {
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
-    UNSUPPORTED_SERVICE(22,"choosen hotel doesn't have fully refundable option"),
+    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option"),
     UNAUTHORIZED(401 , "Incorrect username or password");
 
 
