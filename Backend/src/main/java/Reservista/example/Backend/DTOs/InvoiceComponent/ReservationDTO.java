@@ -53,7 +53,7 @@ public class ReservationDTO {
     private double voucherPercentage;
 
     private double price;
-    private double finalPrice;
+    private long finalPrice;
 
     @Override
     public String toString(){

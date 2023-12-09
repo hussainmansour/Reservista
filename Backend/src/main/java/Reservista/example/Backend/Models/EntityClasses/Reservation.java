@@ -43,7 +43,7 @@ public class Reservation {
 
     @NotNull
     @Column(name = "price")
-    private double price;
+    private long price;
 
     @NotNull
     @Column(name = "created_at")

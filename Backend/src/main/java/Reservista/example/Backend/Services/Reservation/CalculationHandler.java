@@ -27,6 +27,6 @@ public class CalculationHandler extends ReservationHandler{
         total+=total* reservationDTO.getRefundAdditionalPercentage();
         total-=total* reservationDTO.getVoucherPercentage();
 
-        reservationDTO.setFinalPrice(total);
+        reservationDTO.setFinalPrice((int)Math.ceil(total));
     }
 }
