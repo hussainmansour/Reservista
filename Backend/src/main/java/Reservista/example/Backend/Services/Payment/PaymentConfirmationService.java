@@ -21,7 +21,8 @@ public class PaymentConfirmationService {
             String paymentIntentId = paymentIntent.getId();
 
             // TO DO
-            // confirm the reservation using the paymentID
+            // confirm the reservation using the paymentID in db
+            // send confirmation mail
    
     }
 }
