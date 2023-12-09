@@ -16,7 +16,7 @@ public class CancellationConfirmationHandler extends CancellationHandler{
         // This handler should
         // 1) handle database deletion
         // 2) send confirmation mail
-        
+
         return null;
     }
 }
