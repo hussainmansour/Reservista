@@ -3,6 +3,7 @@ import Reservista.example.Backend.Services.Payment.PaymentConfirmationService;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,37 +15,34 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
-@Log4j2
-public class StripeWebHook {
-
-    @Autowired
-    Logger logger;
+public class StripeWebhook {
 
     @Autowired
     PaymentConfirmationService paymentConfirmationService;
+
+    @Value("${stripe.WebhookSecret}")
+    private String stripeWebhookSecret;
 
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
 
         try {
-            String stripeWebhookSecret ="whsec_18c2acc6762de9e1f49ad87a17eb485318551f4a01894231ab2c2f2ff9ae4bd6";
+
             Event event = Webhook.constructEvent(payload, sigHeader, stripeWebhookSecret);
 
             switch (event.getType()) {
                 case "payment_intent.succeeded":
                     paymentConfirmationService.confirmPayment(event);
                 default:
-                    logger.info(event.getType());
+                    break;
             }
             return ResponseEntity.status(HttpStatus.OK).body("Received successfully.");
 
         }
         catch (SignatureVerificationException e) {
-            logger.info("Stripe webhook signature verification failed: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Signature verification failed.");
         }
         catch (Exception e) {
-            logger.info("Error handling Stripe webhook: " + e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error handling webhook.");
         }
     }

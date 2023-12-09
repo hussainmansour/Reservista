@@ -20,7 +20,8 @@ public class PaymentConfirmationService {
             PaymentIntent paymentIntent = ApiResource.GSON.fromJson(event.getDataObjectDeserializer().deserializeUnsafe().toJson(), PaymentIntent.class);
             String paymentIntentId = paymentIntent.getId();
 
-            // confirm the reservation ( I will need to save the paymentIntentID )
+            // TO DO
+            // confirm the reservation using the paymentID
    
     }
 }
