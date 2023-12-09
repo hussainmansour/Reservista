@@ -2,6 +2,7 @@ package Reservista.example.Backend.Models.EntityClasses;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
+import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -76,4 +77,6 @@ public class Reservation {
 
     @ManyToMany(mappedBy = "reservations", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Room> rooms;
+    @BooleanFlag
+    private Boolean isConfirmed;
 }
