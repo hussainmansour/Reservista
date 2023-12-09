@@ -3,7 +3,7 @@ import {
   CardField,
   useConfirmPayment,
 } from "@stripe/stripe-react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   Modal,
   View,
@@ -15,34 +15,48 @@ import {
 } from "react-native";
 
 const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment }) => {
+
   const [isReady, setIsReady] = useState(false);
   const { confirmPayment, paymentLoading } = useConfirmPayment();
   const [cardDetails, setCardDetails] = useState(null);
   const [error, setError] = useState("");
 
-  const clientDummySecret =
-  "pi_3OKqtPIpHzJgrvA917g0eSGN_secret_e3AbYn2WXeGumMHrap01nIANg"
+  useEffect(() => {
+    if (isVisible) {
+      setError("");
+    }
+  }, [isVisible]);
+
   const pay = async () => {
+
     if (!isReady) {
-      // this error should not be reached
+      // the application won't reach this case
       Alert.alert("Alert:", "Please enter your payment details");
     }
-    console.log("cardDetails",cardDetails);
-
+  
     const { paymentIntent, error } = await confirmPayment(clientSecret, {
       paymentMethodType: "Card",
       paymentMethodData: {
-        card: cardDetails, // Use the actual variable or state holding card details
+        card: cardDetails, 
       },
     });
 
     if (error) {
-      console.log("Payment confirmation error", error);
       setError(error.message);
     } else if (paymentIntent) {
       setError("")
       onSuccessfulPayment();
     }
+  };
+
+  const handleCardChange = (cardDetails) => {
+    if (cardDetails.complete) {
+      setIsReady(true);
+      setCardDetails(cardDetails);
+    } else {
+      setIsReady(false);
+    }
+    setError("");
   };
 
   return (
@@ -67,16 +81,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment }
             <Text style={styles.secondaryText}>Card information</Text>
             <View style={styles.cardFieldContainer}>
               <CardField
-                onCardChange={(cardDetails) => {
-                  if (cardDetails.complete) {
-                    setIsReady(true);
-                    setCardDetails(cardDetails);
-                    setError(""); // Clear the error message when the user starts entering card details
-                  } else {
-                    setIsReady(false);
-                    setError("")
-                  }
-                }}
+                onCardChange={handleCardChange}
                 style={styles.cardField}
                 postalCodeEnabled={false}
                 cardStyle={styles.cardStyle}
@@ -107,9 +112,8 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 40,
     borderRadius: 10,
-    height: 300,
+    height: 310,
     width: "95%",
-    position: "relative", // Added for positioning the close button
   },
   closeButton: {
     position: "absolute",
@@ -123,39 +127,39 @@ const styles = StyleSheet.create({
     color: "grey",
   },
   mainText: {
-    fontSize: 20, // Increase the font size for a bolder look
-    fontWeight: "600", // Use a heavier font weight for a bolder look
-    marginBottom: 5, // Decrease the margin bottom for less space
+    fontSize: 20, 
+    fontWeight: "600",
+    marginBottom: 5, 
   },
   secondaryText: {
     fontSize: 14,
     color: "grey",
-    marginBottom: 10, // Decrease the margin bottom for less space
+    marginBottom: 10, 
   },
   cardField: {
     height: 35,
     width: "100%",
-    marginBottom: 1, // Small space between CardField and errorText
+    marginBottom: 1, 
   },
   cardStyle: {
-    borderColor: "#D3D3D3", // Light grey border color
-    borderRadius: 1, // Adjust the border radius as needed
-    borderWidth: 1, // Adjust the border width a
+    borderColor: "#D3D3D3", 
+    borderRadius: 1, 
+    borderWidth: 1, 
   },
   ButtonStyle: {
     padding: 50,
   },
   testModeLabel: {
     backgroundColor: "#FFD700",
-    padding: 5, // Reduced padding
+    padding: 5, 
     borderRadius: 5,
     marginBottom: 10,
     width: "27%",
   },
   testModeText: {
-    color: "navy", // Dark blue color
+    color: "navy", 
     fontWeight: "bold",
-    fontSize: 12, // Smaller font size
+    fontSize: 12, 
   },
   errorText: {
     color: "red",
@@ -163,77 +167,8 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   cardFieldContainer: {
-    marginBottom: 15,
+    marginBottom: 25,
   },
 });
-
-// dark mode
-// const styles = StyleSheet.create({
-//   modalContainer: {
-//     flex: 1,
-//     justifyContent: "center",
-//     alignItems: "center",
-//     backgroundColor: "rgba(30, 30, 50, 0.8)", // Dark blue background for dark mode
-//   },
-//   modalContent: {
-//     backgroundColor: "#2a2a3a", // Dark blue-grey background color
-//     padding: 40,
-//     borderRadius: 10,
-//     height: 300,
-//     width: "95%",
-//     position: "relative",
-//   },
-//   closeButton: {
-//     position: "absolute",
-//     top: 10,
-//     left: 10,
-//     padding: 10,
-//     zIndex: 1,
-//   },
-//   closeButtonText: {
-//     fontSize: 18,
-//     color: "#ccc", // Light grey text color
-//   },
-//   mainText: {
-//     fontSize: 20,
-//     fontWeight: "600",
-//     marginBottom: 5,
-//     color: "#fff", // White text color
-//   },
-//   secondaryText: {
-//     fontSize: 14,
-//     color: "#aaa", // Light grey text color
-//     marginBottom: 10,
-//   },
-//   cardField: {
-//     height: 35,
-//     width: "100%",
-//     marginBottom: 20,
-//     backgroundColor: "#3a3a4a", // Dark blue-grey background color
-//     borderRadius: 5,
-//     padding: 10,
-//   },
-//   cardStyle: {
-//     borderColor: "#4a4a5a", // Darker blue-grey border color
-//     borderRadius: 5,
-//     borderWidth: 1,
-//   },
-//   ButtonStyle: {
-//     padding: 50,
-//   },
-//   testModeLabel: {
-//     borderRadius: 3,
-//     backgroundColor: "#ffd700", // Brighter yellowish color
-//     padding: 5,
-//     borderRadius: 5,
-//     marginBottom: 10,
-//     width: "27%",
-//   },
-//   testModeText: {
-//     color: "#000080", // Dark blue color
-//     fontWeight: "bold",
-//     fontSize: 12,
-//   },
-// });
 
 export default PaymentModal;

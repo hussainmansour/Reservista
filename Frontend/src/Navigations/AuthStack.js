@@ -5,8 +5,7 @@ import SignupScreen from "../Screens/SignUpScreen";
 import TermsAndConditionsScreen from "../Screens/TermsAndConditionsScreen";
 import VerificationCodeScreen from "../Screens/VerificationCodeScreen";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import MockCartScreen from "../Screens/MockCartScreen";
-import ModalTrialScreen from "../Screens/ModalTrialScreen";
+import CartScreen from "../Screens/CartScreen";
 
 const Stack = createNativeStackNavigator();
 export default function AuthStack() {
@@ -18,8 +17,6 @@ export default function AuthStack() {
                 translucent={true}
             />
             <Stack.Navigator>
-                {/* <Stack.Screen name = "MockModal" component={ModalTrialScreen} /> */}
-                <Stack.Screen name = "Cart" component={MockCartScreen} />
                 <Stack.Screen name = "Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name = 'Signup' component = {SignupScreen}/>
                 <Stack.Screen name = 'TermsAndConditions' component={TermsAndConditionsScreen} />
