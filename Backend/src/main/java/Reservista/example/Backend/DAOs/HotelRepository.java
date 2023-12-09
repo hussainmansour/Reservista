@@ -9,4 +9,6 @@ import java.util.UUID;
 
 @Repository
 public interface HotelRepository extends JpaRepository<Hotel, UUID> {
+    boolean findHaveFullyRefundOptionById(UUID id);
+    double findAdditionalRefundPercentageById(UUID id);
 }

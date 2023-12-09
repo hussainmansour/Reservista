@@ -1,9 +1,6 @@
 package Reservista.example.Backend.DTOs.InvoiceComponent;
 
-import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.*;
 import jdk.jfr.BooleanFlag;
 import lombok.*;
 
@@ -48,6 +45,9 @@ public class ReservationDTO {
     @NotNull
     @BooleanFlag
     private boolean refundable;
+
+    @Max(1)
+    private double additionalRefundPercentage;
 
     private String voucherCode;
 
