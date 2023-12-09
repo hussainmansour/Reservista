@@ -33,6 +33,11 @@ public class Hotel {
     @Column(name = "rating")
     private double rating;
 
+    @Min(0)
+    @Max(100)
+    @Column(name = "fully_refundable_rate")
+    private int fullyRefundableRate;
+
     @Column(name = "review_count")
     private int reviewCount;
 

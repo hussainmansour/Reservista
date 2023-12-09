@@ -21,8 +21,8 @@ import java.util.UUID;
 public class Reservation {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private long id;
 
     @NotNull
     @Column(name = "price")
@@ -55,4 +55,9 @@ public class Reservation {
 
     @ManyToMany(mappedBy = "reservations")
     private List<Room> rooms;
+
+    private String paymentIntentID;
+
+    boolean isFullyRefundable; // default value false
+
 }

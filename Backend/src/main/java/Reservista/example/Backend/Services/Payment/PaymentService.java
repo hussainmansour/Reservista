@@ -16,31 +16,46 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
-@Log4j2
+//@Log4j2
 public class PaymentService {
 
 
     @Value("${stripe.secretKey}")
     private String stripeSecretApiKey;
 
-    @Autowired
-    Logger logger;
+//    @Autowired
+//    Logger logger;
 
     public ResponseDTO cancelPayment(String reservationID){
-        Stripe.apiKey = stripeSecretApiKey;
+
+
         // get payment intent from database
+
+        // should I check if it belongs to a certian user??
+
+        // check if user is allowed to refund
+
+        // calculate the refundable part
+
+        // refund with stripe
+
+        // handle response
+
+        // if successful remove reservation from database
+
+        Stripe.apiKey = stripeSecretApiKey;
+
         String paymentIntentID ="";
         try {
             Refund.create(RefundCreateParams.builder()
                     .setPaymentIntent(paymentIntentID)
                     .build());
 
-            // remove reservation from database
 
             return StatusCode.REFUND_SUCCESSFUL.getRespond();
 
         } catch (StripeException e) {
-            logger.info("can't refund payment: "+e);
+//            logger.info("can't refund payment: "+e);
             return StatusCode.REFUND_UNSUCCESSFUL.getRespond();
         }
     }
@@ -53,7 +68,10 @@ public class PaymentService {
             // Check the payment intent status
             try {
                 PaymentIntent paymentIntent = PaymentIntent.retrieve(paymentIntentId);
-                System.out.println("Payment Intent Status: " + paymentIntent.getStatus());
+//                logger.info("Payment Intent Status: " + paymentIntent.getStatus());
+                if ("succeeded".equals(paymentIntent.getStatus())){
+
+                }
 
             } catch (StripeException e) {
                 e.printStackTrace();
