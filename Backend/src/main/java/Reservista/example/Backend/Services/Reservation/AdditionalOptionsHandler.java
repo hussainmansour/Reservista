@@ -16,7 +16,7 @@ public class AdditionalOptionsHandler extends ReservationHandler{
         for(RoomDTO r : reservationDTO.getRooms()){
             if(r.getOptions()!=null && r.getOptions().size()!=0){
                 for(OptionDTO o: r.getOptions()){
-                    o.setPrice(optionalServiceRepository.findPriceOption(reservationDTO.getHotelID(),o.getName()));
+                    o.setPrice(optionalServiceRepository.findOptionPrice(reservationDTO.getHotelID(),o.getName()));
                 }
             }
         }

@@ -12,6 +12,6 @@ import java.util.UUID;
 public interface OptionalServiceRepository extends JpaRepository<OptionalService,String> {
 
     @Query("SELECT o.price FROM OptionalService o  WHERE o.serviceName=:name AND o.hotel.id=: hotelID")
-    double findPriceOption(@Param("hotelID") UUID hotelId,@Param("name") String name);
+    double findOptionPrice(@Param("hotelID") UUID hotelId,@Param("name") String name);
 
 }
