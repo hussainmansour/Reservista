@@ -5,6 +5,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jdk.jfr.BooleanFlag;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -82,4 +83,10 @@ public class Hotel {
             @JoinColumn(name = "location_country", referencedColumnName = "country" , nullable = false)
     })
     private Location location;
+
+    @BooleanFlag
+    private boolean haveFullyRefundableOption;
+
+    @Max(1)
+    private double refundAdditionalPercentage;
 }
