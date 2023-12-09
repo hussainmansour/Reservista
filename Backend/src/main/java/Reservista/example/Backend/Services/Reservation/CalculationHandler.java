@@ -21,7 +21,7 @@ public class CalculationHandler extends ReservationHandler{
                 }
             }
             r.setOptionsTotalPrice(optionPrice);
-            total+= total+optionPrice;
+            total+=optionPrice;
         }
         reservationDTO.setPrice(total);
         total+=total* reservationDTO.getRefundAdditionalPercentage();
