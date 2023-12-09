@@ -42,9 +42,9 @@ public class ReservationDTO {
     @FutureOrPresent
     private Instant checkOut;
 
-    @NotNull
+
     @BooleanFlag
-    private boolean refundable;
+    private boolean refundable=false;
 
     @Max(1)
     private double additionalRefundPercentage;

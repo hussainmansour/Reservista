@@ -29,7 +29,9 @@ public class AdditionalOptionsHandler extends ReservationHandler{
                 reservationDTO.setAdditionalRefundPercentage(hotelRepository.findAdditionalRefundPercentageById(reservationDTO.getHotelID()));
             }
 //            else return StatusCode.UNSUPPORTED_SERVICE.getRespond();
-
+        }
+        else{
+            reservationDTO.setAdditionalRefundPercentage(0);
         }
         return nextHandler.handleRequest(reservationDTO);
 
