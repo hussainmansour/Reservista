@@ -18,12 +18,6 @@ public class PaymentHandler extends ReservationHandler{
     @Override
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) throws StripeException {
 
-        // create payment intent (done)
-
-        // save the paymentID in database
-
-        // return responds in case of success and not success (done)
-
         try {
             Stripe.apiKey= stripeSecretApiKey;
 
@@ -33,6 +27,10 @@ public class PaymentHandler extends ReservationHandler{
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(createParams);
+            String paymentIntentID = intent.getId();
+            
+            // TO DO : save payment intent id in database
+
             ReservationResponseDTO reservationResponseDTO
                     =ReservationResponseDTO
                     .builder()
@@ -46,7 +44,7 @@ public class PaymentHandler extends ReservationHandler{
         }
         catch ( StripeException e){
             ResponseDTO<ReservationResponseDTO> responseDTO
-                    = new ResponseDTO<>(StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getCode(),StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getMessage(),null);
+                    = new ResponseDTO<>(StatusCode.STRIPE_PAYMENT_INTENT_FAILED.getCode(),StatusCode.STRIPE_PAYMENT_INTENT_FAILED.getMessage(),null);
             return responseDTO;
         }
 
