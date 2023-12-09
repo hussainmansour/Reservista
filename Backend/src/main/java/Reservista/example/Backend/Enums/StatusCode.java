@@ -31,7 +31,7 @@ public enum StatusCode {
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
     UNAUTHORIZED(401 , "Incorrect username or password"),
-    STRIPE_PAYMENT_INTENT_FAILED(60,"failed to create payment intent"),
+    STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
     STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created");
 
 

@@ -35,7 +35,7 @@ public class PaymentHandler extends ReservationHandler{
                     =ReservationResponseDTO
                     .builder()
                     .reservationId(reservationDTO.getReservationID())
-                    .paymentIntentId(intent.getClientSecret())
+                    .clientSecret(intent.getClientSecret())
                     .build();
 
             ResponseDTO<ReservationResponseDTO> responseDTO
