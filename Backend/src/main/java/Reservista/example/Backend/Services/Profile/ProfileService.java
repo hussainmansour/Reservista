@@ -32,10 +32,10 @@ public class ProfileService {
         return profileDTO;
     }
 
-    public Optional<UpdateDTO> updateProfile(String username, UpdateDTO updateDTO){
+    public boolean updateProfile(String username, UpdateDTO updateDTO){
         Optional<User> user = userRepository.findById(username);
         if(user.isEmpty()){
-            return Optional.empty();
+            return false;
         }
         else{
             User updatedUser = user.get();
@@ -46,7 +46,7 @@ public class ProfileService {
             updatedUser.setGender(updateDTO.getGender());
             updatedUser.setNationality(updateDTO.getNationality());
             userRepository.save(updatedUser);
-            return Optional.of(updateDTO);
+            return true;
         }
 
     }

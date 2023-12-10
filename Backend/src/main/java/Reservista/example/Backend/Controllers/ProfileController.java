@@ -38,16 +38,21 @@ public class ProfileController {
 
     @PutMapping("/edit")
     public ResponseEntity<ResponseDTO<Void>> editProfile(@AuthenticationPrincipal String username, @Valid @RequestBody UpdateDTO updateDTO) {
-        Optional<UpdateDTO> update = profileService.updateProfile(username,updateDTO);
-        return update.map(updateDTO1 -> new ResponseEntity<>(
-                ResponseDTO.<Void>builder()
-                        .status(HttpStatus.OK.value())
-                        .message("Profile updated")
-                        .build(), HttpStatus.OK)).orElse(new ResponseEntity<>(
-                ResponseDTO.<Void>builder()
-                        .status(HttpStatus.NOT_FOUND.value())
-                        .message("Profile not found")
-                        .build(), HttpStatus.NOT_FOUND));
+        boolean found = profileService.updateProfile(username,updateDTO);
+        if(found){
+            return new ResponseEntity<>(
+                    ResponseDTO.<Void>builder()
+                            .status(HttpStatus.OK.value())
+                            .message("Profile updated")
+                            .build(), HttpStatus.OK);
+        }
+        else{
+            return new ResponseEntity<>(
+                    ResponseDTO.<Void>builder()
+                            .status(HttpStatus.NOT_FOUND.value())
+                            .message("Profile not found")
+                            .build(), HttpStatus.NOT_FOUND);
+        }
     }
 
 }
