@@ -3,9 +3,9 @@
 import React from 'react';
 import { TouchableOpacity, Text } from 'react-native';
 
-const CustomizedButton = ({ onPress, style, text }) => (
-    <TouchableOpacity style={style} onPress={onPress}>
-        <Text style={styles.buttonText}>{text}</Text>
+const CustomizedButton = ({ onPress, buttonStyle, textStyle, text }) => (
+    <TouchableOpacity style={buttonStyle} onPress={onPress}>
+        <Text style={textStyle}>{text}</Text>
     </TouchableOpacity>
 );
 

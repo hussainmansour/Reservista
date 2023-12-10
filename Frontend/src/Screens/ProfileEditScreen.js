@@ -10,6 +10,7 @@ import styles from '../Styles/Editstyles';
 const validationSchema = Yup.object().shape({
     firstName: Yup.string().required('First Name is required'),
     lastName: Yup.string().required('Last Name is required'),
+    birthDate: Yup.string().required('Date of birth is required')
 });
 
 
@@ -53,6 +54,14 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     Value={values.lastName}
                                 />
 
+                                <CustomTextInput
+                                    title="'Date of birth"
+                                    onChangeText={handleChange('birthDate')}
+                                    onBlur={handleBlur('birthDate')}
+                                    errorMessage={errors.birthDate}
+                                    Value={values.birthDate}
+                                />
+
                                 <DropdownList
                                     label="Gender"
                                     selectedValue={values.gender}
@@ -80,14 +89,16 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     {/* Save Button */}
                                     <CustomizedButton
                                         onPress={handleSubmit}
-                                        style={styles.saveButton}
+                                        buttonStyle={styles.saveButton}
+                                        textStyle={styles.buttonText}
                                         text="Save"
                                     />
 
                                     {/* Cancel Button */}
                                     <CustomizedButton
                                         onPress={onCancel}
-                                        style={styles.cancelButton}
+                                        buttonStyle={styles.cancelButton}
+                                        textStyle={styles.buttonText}
                                         text="Cancel"
                                     />
                                 </View>

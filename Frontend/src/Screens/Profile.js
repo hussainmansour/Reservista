@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import EditButton from '../Components/EditButton'
+import CustomizedButton from '../Components/CustomizedButton';
 import ProfileEditScreen from './ProfileEditScreen';
 
 
@@ -29,23 +29,24 @@ const Profile = ({ route }) => {
     const renderProfile = () => (
         <View style={styles.container}>
 
+            {renderField('User Name', editedUser.userName)}
+            {renderField('Email', editedUser.email)}
             {renderField('First Name', editedUser.firstName)}
             {renderField('Middle Name', editedUser.middleName)}
             {renderField('Last Name', editedUser.lastName)}
-            {renderField('Email', editedUser.email)}
             {renderField('Gender', editedUser.gender)}
             {renderField('Nationality', editedUser.nationality)}
-            {renderField('Birthday', editedUser.birthday)}
+            {renderField('Date of Birth', editedUser.birthDate)}
 
             <ProfileEditScreen
-            isVisible={isEditing}
-            onSave={handleSave}
-            onCancel={handleCancel}
-            user={editedUser}
-            
+                isVisible={isEditing}
+                onSave={handleSave}
+                onCancel={handleCancel}
+                user={editedUser}
+
             ></ProfileEditScreen>
 
-            <EditButton onPress={handleEdit} />
+            <CustomizedButton text={"Edit"} onPress={handleEdit} textStyle={styles.editButtonText} buttonStyle={styles.editButton} ></CustomizedButton>
         </View>
     );
 
@@ -67,7 +68,7 @@ const styles = StyleSheet.create({
         padding: 16,
         margin: 5,
         backgroundColor: '#fff',
-        paddingBottom:40
+        paddingBottom: 40
     },
     fieldContainer: {
         flexDirection: 'row',
@@ -84,6 +85,21 @@ const styles = StyleSheet.create({
         flex: 1,
         fontSize: 16,
         color: '#555',
+    },
+    editButton: {
+        backgroundColor: '#728FF3', // Blue color
+        paddingVertical: 10,
+        paddingHorizontal: 20,
+        borderRadius: 5,
+        width:'50%',
+        height:50,
+        
+    },
+    editButtonText: {
+        color: 'white',
+        fontSize: 16,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
 });
 
