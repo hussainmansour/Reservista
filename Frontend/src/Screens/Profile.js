@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import EditButton from '../Components/EditButton'
+import ProfileEditScreen from './ProfileEditScreen';
 
 
 const Profile = ({ route }) => {
@@ -35,6 +36,14 @@ const Profile = ({ route }) => {
             {renderField('Gender', editedUser.gender)}
             {renderField('Nationality', editedUser.nationality)}
             {renderField('Birthday', editedUser.birthday)}
+
+            <ProfileEditScreen
+            isVisible={isEditing}
+            onSave={handleSave}
+            onCancel={handleCancel}
+            user={editedUser}
+            
+            ></ProfileEditScreen>
 
             <EditButton onPress={handleEdit} />
         </View>
