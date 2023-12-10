@@ -35,28 +35,23 @@ public class VoucherHandler extends ReservationHandler{
         //TODO: I need help here to how handle failure cases is by throwing exception or return status code directly
 
 
-        if(reservationDTO.getVoucherCode() == null){
-            return nextHandler.handleRequest(reservationDTO);
-        }else{
+        if(reservationDTO.getVoucherCode() != null){
+
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
             Instant voucherExpirationDate = voucher.getExpiresAt();
 
-            if(Instant.now().isAfter(voucherExpirationDate)){
-                //Throw exception "Voucher is expired"
-            }else {
-                User user = userRepository.findUserByUserName(reservationDTO.getUserID());
-                Set<Voucher> usedVouchers = user.getVouchers();
-                if(!usedVouchers.contains(voucher)){
-                    usedVouchers.add(voucher);
-                    reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
-                    userRepository.save(user);
-                    nextHandler.handleRequest(reservationDTO);
-                }else{
-                    //Throw exception "Voucher is already used before"
-                }
-            }
-        }
+            if(Instant.now().isAfter(voucherExpirationDate)) return null;//Throw exception "Voucher is expired"}
 
-        return null;
+            User user = userRepository.findUserByUserName(reservationDTO.getUserID());
+            Set<Voucher> usedVouchers = user.getVouchers();
+
+            if(usedVouchers.contains(voucher)) return null;//Throw exception "Voucher is already used before"
+
+            usedVouchers.add(voucher);
+            reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
+            userRepository.save(user);
+
+        }
+        return nextHandler.handleRequest(reservationDTO);
     }
 }
