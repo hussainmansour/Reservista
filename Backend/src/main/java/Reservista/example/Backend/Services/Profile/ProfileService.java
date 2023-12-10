@@ -2,6 +2,7 @@ package Reservista.example.Backend.Services.Profile;
 
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
+import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
 import Reservista.example.Backend.Models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,23 +32,26 @@ public class ProfileService {
         return profileDTO;
     }
 
-    public Optional<ProfileDTO> updateProfile(ProfileDTO profileDTO){
-        String username = profileDTO.getUserName();
+    public Optional<UpdateDTO> updateProfile(String username, UpdateDTO updateDTO){
         Optional<User> user = userRepository.findById(username);
         if(user.isEmpty()){
             return Optional.empty();
         }
         else{
             User updatedUser = user.get();
-            updatedUser.setFirstName(profileDTO.getFirstName());
-            updatedUser.setMiddleName(profileDTO.getMiddleName());
-            updatedUser.setLastName(profileDTO.getLastName());
-            updatedUser.setBirthDate(profileDTO.getBirthDate());
-            updatedUser.setGender(profileDTO.getGender());
-            updatedUser.setNationality(profileDTO.getNationality());
+            updatedUser.setFirstName(updateDTO.getFirstName());
+            updatedUser.setMiddleName(updateDTO.getMiddleName());
+            updatedUser.setLastName(updateDTO.getLastName());
+            updatedUser.setBirthDate(updateDTO.getBirthDate());
+            updatedUser.setGender(updateDTO.getGender());
+            updatedUser.setNationality(updateDTO.getNationality());
             userRepository.save(updatedUser);
-            return Optional.of(profileDTO);
+            return Optional.of(updateDTO);
         }
+
     }
+
+    //TODO: Add Reservations history
+    //TODO: Add Upcoming reservations
 
 }

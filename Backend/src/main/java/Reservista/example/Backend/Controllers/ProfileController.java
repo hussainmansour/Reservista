@@ -1,6 +1,7 @@
 package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
+import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Services.Profile.ProfileService;
 import jakarta.validation.Valid;
@@ -22,13 +23,13 @@ public class ProfileController {
 
     @GetMapping("/view")
     public ResponseEntity<ResponseDTO<ProfileDTO>> viewProfile(@AuthenticationPrincipal String username) {
-        Optional<ProfileDTO> user = profileService.viewProfile(username);
-        return user.map(profileDTO -> new ResponseEntity<>(
+        Optional<ProfileDTO> profile = profileService.viewProfile(username);
+        return profile.map(profileDTO -> new ResponseEntity<>(
                 ResponseDTO.<ProfileDTO>builder()
                         .status(HttpStatus.OK.value())
                         .message("Profile found")
                         .data(profileDTO)
-                        .build(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(
+                        .build(), HttpStatus.OK)).orElse(new ResponseEntity<>(
                 ResponseDTO.<ProfileDTO>builder()
                         .status(HttpStatus.NOT_FOUND.value())
                         .message("Profile not found")
@@ -36,15 +37,14 @@ public class ProfileController {
     }
 
     @PutMapping("/edit")
-    public ResponseEntity<ResponseDTO<ProfileDTO>> editProfile(@AuthenticationPrincipal String username, @Valid @RequestBody ProfileDTO profileDTO) {
-        Optional<ProfileDTO> user = profileService.updateProfile(profileDTO);
-        return user.map(profileDTO1 -> new ResponseEntity<>(
-                ResponseDTO.<ProfileDTO>builder()
+    public ResponseEntity<ResponseDTO<Void>> editProfile(@AuthenticationPrincipal String username, @Valid @RequestBody UpdateDTO updateDTO) {
+        Optional<UpdateDTO> update = profileService.updateProfile(username,updateDTO);
+        return update.map(updateDTO1 -> new ResponseEntity<>(
+                ResponseDTO.<Void>builder()
                         .status(HttpStatus.OK.value())
                         .message("Profile updated")
-                        .data(profileDTO1)
-                        .build(), HttpStatus.OK)).orElseGet(() -> new ResponseEntity<>(
-                ResponseDTO.<ProfileDTO>builder()
+                        .build(), HttpStatus.OK)).orElse(new ResponseEntity<>(
+                ResponseDTO.<Void>builder()
                         .status(HttpStatus.NOT_FOUND.value())
                         .message("Profile not found")
                         .build(), HttpStatus.NOT_FOUND));
