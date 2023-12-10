@@ -1,11 +1,8 @@
 package Reservista.example.Backend.DTOs.Profile;
 
 
-import Reservista.example.Backend.Enums.Gender;
-import Reservista.example.Backend.Validators.BirthDate;
-import Reservista.example.Backend.Validators.Country;
-import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.Username;
+import Reservista.example.Backend.Enums.Genders;
+import Reservista.example.Backend.Validators.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -34,8 +31,8 @@ public class ProfileDTO {
     @BirthDate
     private LocalDate birthDate;
 
-
-    private Gender gender;
+    @Gender
+    private Genders gender;
 
     @Country( message = "Invalid nationality")
     private String nationality;

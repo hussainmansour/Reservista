@@ -1,8 +1,7 @@
 package Reservista.example.Backend.Models;
 
 import Reservista.example.Backend.Enums.SystemRoles;
-import Reservista.example.Backend.Enums.Gender;
-import Reservista.example.Backend.Validators.Country;
+import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.BirthDate;
 import jakarta.persistence.*;
@@ -55,7 +54,7 @@ public class User implements UserDetails {
 
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Genders gender;
 
 //    @Country
     @Column(name = "nationality")
