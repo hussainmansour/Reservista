@@ -17,20 +17,22 @@ public class RoomDTO {
     @NotEmpty
     private String title;
 
-    private List<Option> options;
+    private List<OptionDTO> options;
 
     private double price;
 
+    private double optionsTotalPrice;
 
 
-    public Pair<Double, String> calculate_price() {
-        double total = price;
-        StringBuilder s = new StringBuilder(title + "\t\t\t" + price + "\n");
-        for (int i = 0; i < options.size(); i++) {
-            Pair<Double, String> priceAndDetails = options.get(i).calculate_price();
-            total += priceAndDetails.getFirst();
-            s.append(priceAndDetails.getSecond());
+    @Override
+    public String toString(){
+        StringBuilder s = new StringBuilder(title + ": " + price + "\n");
+        if(options!=null && options.size()!=0){
+            for (OptionDTO o:options){
+                s.append(o.toString());
+            }
+            s.append("\tprice after optional services: ").append(optionsTotalPrice+price).append("\n");
         }
-        return  Pair.of(total, s.toString());
+        return s.toString();
     }
 }
