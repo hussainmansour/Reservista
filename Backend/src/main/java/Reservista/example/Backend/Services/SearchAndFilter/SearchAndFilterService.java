@@ -3,7 +3,7 @@ package Reservista.example.Backend.Services.SearchAndFilter;
 import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.SearchResultDTO;
-import Reservista.example.Backend.Models.Hotel;
+import Reservista.example.Backend.Models.EntityClasses.*;
 import Reservista.example.Backend.Services.Mappers.HotelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -47,5 +47,5 @@ public class SearchAndFilterService {
 
     //TODO: get hotel by name
     //TODO: make the home page
-    //TODO: try make factory
+    //TODO: edit the hotel repo
 }

@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Services.Mappers;
 
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
-import Reservista.example.Backend.Models.Hotel;
+import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
@@ -23,10 +23,8 @@ public interface HotelMapper {
     HotelDTO hotelToHotelDTO(Hotel hotel);
 
     default double calculateMinRoomPrice(Hotel hotel) {
-        // Assuming that each room has a room description and room descriptions have prices
-        return hotel.getRooms().stream()
-                .map(room -> room.getRoomDescription().getPrice())
-                .min(Double::compareTo)
-                .orElse(0.0);
+
+        //TODO: implement this
+        return 5;
     }
 }

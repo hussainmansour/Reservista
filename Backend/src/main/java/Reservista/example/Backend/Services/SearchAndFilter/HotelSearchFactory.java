@@ -2,7 +2,7 @@ package Reservista.example.Backend.Services.SearchAndFilter;
 
 import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
-import Reservista.example.Backend.Models.Hotel;
+import Reservista.example.Backend.Models.EntityClasses.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
