@@ -2,8 +2,12 @@ package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomImage;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Set;
 import java.util.UUID;
@@ -20,32 +24,35 @@ public class RoomDescription {
     @GeneratedValue
     private UUID id;
 
+
     @Column(name = "title")
     private String title;
 
-    @NotNull
     @Column(name = "price")
-    private double price;
+    private int price;
 
+    @Min(1)
     @Column(name = "capacity")
     private int capacity;
 
-    @ElementCollection
-    @CollectionTable(name = "room_image", joinColumns =
-    @JoinColumn(name = "room_description_id" , referencedColumnName = "id"))
-    @AttributeOverrides({
-            @AttributeOverride(
-                    name = "source",
-                    column = @Column(name = "room_image_source" , columnDefinition = "LONGBLOB")
-            ),
-    })
+    @Min(1)
+    @Column(name = "room_count")
+    private int roomCount;
+
+    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
     private Set<RoomImage> roomImages;
 
     @ElementCollection
     @CollectionTable(name = "room_details", joinColumns =
     @JoinColumn(name = "room_description_id" , referencedColumnName = "id"))
+    @Column(name = "room_details" , nullable = false)
     private Set<String> roomDetails;
 
-    @OneToMany(mappedBy = "roomDescription",cascade = CascadeType.ALL)
-    private Set<Room> rooms;
+
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id" , referencedColumnName = "id" , nullable = false)
+    private Hotel hotel;
+
+    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
+    private Set<ReservedRoom> reservedRooms;
 }

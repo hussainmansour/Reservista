@@ -21,12 +21,10 @@ import java.util.Set;
 public class Location {
 
     @Id
-    @NotNull
     @Column(name = "city")
     private String city;
 
     @Id
-    @NotNull
     @Column(name = "country")
     private String country;
 

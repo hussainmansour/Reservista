@@ -28,9 +28,6 @@ public class Admin implements UserDetails {
     @Column(name = "password")
     private String password;
 
-    @OneToMany(mappedBy = "admin" , cascade = CascadeType.ALL)
-    private Set<Report> reports;
-
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return List.of(new SimpleGrantedAuthority(SystemRoles.ADMIN.name()));
