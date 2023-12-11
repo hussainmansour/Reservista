@@ -7,8 +7,8 @@ import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.RegistrationCredentialsException;
 import Reservista.example.Backend.Error.DeactivatedAccountException;
-import Reservista.example.Backend.Models.User;
-import Reservista.example.Backend.Services.Registration.OTPService;
+import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -40,8 +40,10 @@ public class UserRegistrationService {
         User user =
                 User.builder()
                         .userName(registrationRequest.getUserName())
-                        .firstName(registrationRequest.getFirstName())
-                        .lastName(registrationRequest.getLastName())
+                        .fullName(FullName.builder()
+                                .firstName(registrationRequest.getFirstName())
+                                .lastName(registrationRequest.getLastName())
+                                .build())
                         .email(registrationRequest.getEmail())
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
                         .birthDate(registrationRequest.getBirthDate())

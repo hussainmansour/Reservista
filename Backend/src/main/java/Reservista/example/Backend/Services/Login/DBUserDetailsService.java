@@ -2,8 +2,8 @@ package Reservista.example.Backend.Services.Login;
 
 import Reservista.example.Backend.DAOs.AdminRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.Models.Admin;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.Admin;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
