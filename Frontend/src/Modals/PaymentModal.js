@@ -29,11 +29,6 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment }
 
   const pay = async () => {
 
-    if (!isReady) {
-      // the application won't reach this case
-      Alert.alert("Alert:", "Please enter your payment details");
-    }
-  
     const { paymentIntent, error } = await confirmPayment(clientSecret, {
       paymentMethodType: "Card",
       paymentMethodData: {
