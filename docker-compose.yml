@@ -8,12 +8,18 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://reservista.mysql.database.azure.com:3306/ReservistaDB
-      SPRING_DATASOURCE_USERNAME: Reservista_Admin
-      SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: true
+#      SPRING_DATASOURCE_URL: jdbc:mysql://reservista.mysql.database.azure.com:3306/ReservistaDB
+#      SPRING_DATASOURCE_USERNAME: Reservista_Admin
+#      SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_JPA_SHOW_SQL: true
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Reservista?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&useUnicode=true
+        SPRING_DATASOURCE_USERNAME: mysql_user
+        SPRING_DATASOURCE_PASSWORD: password
+        SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+        SPRING_JPA_HIBERNATE_DDL_AUTO: update
+        SPRING_JPA_SHOW_SQL: true
 
     networks:
       - Reservista
@@ -38,6 +44,18 @@ services:
     stdin_open: true
     tty: true
 
+    networks:
+      - Reservista
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: Reservista
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
     networks:
       - Reservista
 
