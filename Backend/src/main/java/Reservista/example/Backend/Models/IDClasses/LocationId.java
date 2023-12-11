@@ -12,7 +12,6 @@ import java.io.Serializable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
 public class LocationId implements Serializable {
     private String city;
     private String country;
