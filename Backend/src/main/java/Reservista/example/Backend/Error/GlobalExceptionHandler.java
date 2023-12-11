@@ -40,8 +40,10 @@ public class GlobalExceptionHandler {
                             .build());
         }
 
-        return ResponseEntity.status(HttpStatus.OK).body(fieldErrors);
-
+        return ResponseEntity.status(HttpStatus.OK).body(ResponseDTO.builder()
+                .status(400)
+                .data(fieldErrors)
+                .build());
     }
 
 

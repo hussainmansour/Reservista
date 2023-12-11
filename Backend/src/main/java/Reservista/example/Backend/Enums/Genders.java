@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Enums;
 
-public enum Gender {
+public enum Genders {
     MALE,
     FEMALE,
     PREFER_NOT_TO_SAY

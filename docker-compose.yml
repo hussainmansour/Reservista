@@ -1,24 +1,40 @@
-version: "3.8"
+version: "3"
 services:
 
   spring-boot-app:
     build:
-      context: 
+      context:
         ./Backend
     ports:
       - "8080:8080"
     environment:
-      SPRING_DATASOURCE_URL: jdbc:mysql://reservista.mysql.database.azure.com:3306/ReservistaDB
-      SPRING_DATASOURCE_USERNAME: Reservista_Admin
-      SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
-      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
-      SPRING_JPA_SHOW_SQL: true
-    
+#      SPRING_DATASOURCE_URL: jdbc:mysql://reservista.mysql.database.azure.com:3306/ReservistaDB
+#      SPRING_DATASOURCE_USERNAME: Reservista_Admin
+#      SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
+#      SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+#      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+#      SPRING_JPA_SHOW_SQL: true
+        SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/Reservista?allowPublicKeyRetrieval=true&useSSL=false&autoReconnect=true&useUnicode=true
+        SPRING_DATASOURCE_USERNAME: mysql_user
+        SPRING_DATASOURCE_PASSWORD: password
+        SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
+        SPRING_JPA_HIBERNATE_DDL_AUTO: update
+        SPRING_JPA_SHOW_SQL: true
+
+    networks:
+      - Reservista
+
+
+  stripe-cli:
+    image: stripe/stripe-cli
+    command: listen --forward-to spring-boot-app:8080/api/payment/webhook --events payment_intent.succeeded --api-key sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI
+    networks:
+        - Reservista
+
 
   react-native-app:
     build:
-      context: 
+      context:
         ./Frontend
     ports:
       - "19000:19000"
@@ -27,3 +43,23 @@ services:
 
     stdin_open: true
     tty: true
+
+    networks:
+      - Reservista
+
+  mysql:
+    image: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: Reservista
+      MYSQL_USER: mysql_user
+      MYSQL_PASSWORD: password
+    ports:
+      - "3307:3306"
+    networks:
+      - Reservista
+
+
+networks:
+    Reservista:
+      driver: bridge
