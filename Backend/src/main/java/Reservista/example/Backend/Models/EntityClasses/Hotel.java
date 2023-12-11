@@ -83,8 +83,10 @@ public class Hotel {
             @JoinColumn(name = "location_country", referencedColumnName = "country" , nullable = false)
     })
     private Location location;
+
     @BooleanFlag
-    private boolean haveFullyRefundOption;
+    private boolean haveFullyRefundableOption;
+
     @Max(1)
-    private double additionalRefundPercentage;
+    private double refundAdditionalPercentage;
 }

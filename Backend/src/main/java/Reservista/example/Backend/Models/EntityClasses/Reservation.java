@@ -43,7 +43,7 @@ public class Reservation {
 
     @NotNull
     @Column(name = "price")
-    private double price;
+    private long price;
 
     @NotNull
     @Column(name = "created_at")
@@ -77,6 +77,9 @@ public class Reservation {
 
     @ManyToMany(mappedBy = "reservations", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Room> rooms;
+
     @BooleanFlag
-    private Boolean isConfirmed;
+    private boolean isRefundable;
+    @BooleanFlag
+    private boolean isConfirmed;
 }

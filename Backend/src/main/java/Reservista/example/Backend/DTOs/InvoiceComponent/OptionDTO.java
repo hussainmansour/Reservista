@@ -7,11 +7,12 @@ import org.springframework.data.util.Pair;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Option {
+public class OptionDTO {
     private String name;
     private double price;
-    public Pair<Double,String> calculate_price(){
-        return Pair.of(this.price,"\t"+name+": "+price+"\n");
+    @Override
+    public String toString(){
+        return "\t"+name+": "+price+"\n";
     }
 }
 
