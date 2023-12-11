@@ -3,7 +3,7 @@ services:
 
   spring-boot-app:
     build:
-      context: 
+      context:
         ./Backend
     ports:
       - "8080:8080"
@@ -14,11 +14,14 @@ services:
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
       SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
-    
+
+    networks:
+      - spring-boot
+
 
   react-native-app:
     build:
-      context: 
+      context:
         ./Frontend
     ports:
       - "19000:19000"
@@ -27,3 +30,9 @@ services:
 
     stdin_open: true
     tty: true
+
+    networks:
+      - spring-boot
+
+networks:
+  spring-boot:
