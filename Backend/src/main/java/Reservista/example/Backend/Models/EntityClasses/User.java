@@ -59,6 +59,9 @@ public class User implements UserDetails {
     @Column(name = "is_activated")
     private boolean isActivated;
 
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
     @Lob
     @Column(name = "profile_image" , length = 2_147_483_647)
     private byte[] profileImage;
@@ -90,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isBlocked;
     }
 
     @Override
