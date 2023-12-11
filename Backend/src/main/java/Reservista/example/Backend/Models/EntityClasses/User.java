@@ -47,6 +47,7 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    // todo: add notnull
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -55,19 +56,19 @@ public class User implements UserDetails {
     @Column(name = "nationality")
     private String nationality;
 
-    @NotNull
     @Column(name = "is_activated")
     private boolean isActivated;
+
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
 
     @Lob
     @Column(name = "profile_image")
     private byte[] profileImage;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Reservation> reservations;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Report> reports;
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Notification> notifications;
@@ -92,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isBlocked;
     }
 
     @Override
