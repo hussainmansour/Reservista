@@ -36,6 +36,9 @@ public class RoomDescription {
     private int roomCount;
 
     @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
+
+    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
     private Set<RoomImage> roomImages;
 
     @ElementCollection

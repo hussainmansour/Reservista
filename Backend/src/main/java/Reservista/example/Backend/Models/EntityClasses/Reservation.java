@@ -52,6 +52,9 @@ public class Reservation {
     @Column(name = "is_refundable")
     private boolean isRefundable = false;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "room_description_id" , referencedColumnName = "id" , nullable = false)
+    private RoomDescription roomDescription;
 
     @OneToOne(mappedBy = "reservation" , cascade = CascadeType.ALL)
     private TempReservationDetails tempReservationDetails;
