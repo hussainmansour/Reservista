@@ -19,28 +19,97 @@ import Checkbox from "expo-checkbox";
 import SmallButton from '../Components/SmallButton';
 
 const CartScreen = () => {
+
+  const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
+  const roomDetails = { price: 100, title: "Room title", count: 4, roomTypeID: "roomTypeID"}
+
   const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [expandedRooms, setExpandedRooms] = useState({});
   const [expandedVouncher, setExpandedVoucher] = useState(true);
+  const [rooms, setRooms] = useState( Array.from({ length: roomDetails.count }, (_, index) => {
+      const room = {
+        id: index + 1,
+        title: `Room ${index + 1}`,
+        price: roomDetails.price,
+        isBreakfastSelected: false,
+        isLunchSelected: false,
+        isDinnerSelected: false,
+      };
+      return room;
+    })
+  )
+
+  const toggleBreakfast = (roomIndex)=>{
+  
+    setRooms ((prevRooms)=>{
+      prevRooms[roomIndex].isBreakfastSelected = prevRooms[roomIndex].isBreakfastSelected === false ? true : false;
+      prevRooms[roomIndex].price += prevRooms[roomIndex].isBreakfastSelected
+      ? foodOptions.breakfastPrice
+      : -foodOptions.breakfastPrice;
+      return [...prevRooms];
+    })
+  }
+  const toggleDinner = (roomIndex)=>{
+    
+    setRooms ((prevRooms)=>{
+      prevRooms[roomIndex].isDinnerSelected = prevRooms[roomIndex].isDinnerSelected === false ? true : false;
+      prevRooms[roomIndex].price += prevRooms[roomIndex].isDinnerSelected
+      ? foodOptions.dinnerPrice
+      : -foodOptions.dinnerPrice;
+      return [...prevRooms];
+    })
+  }
+
+  const toggleLunch = (roomIndex)=>{
+    
+    setRooms ((prevRooms)=>{
+      prevRooms[roomIndex].isLunchSelected = prevRooms[roomIndex].isLunchSelected === false ? true : false;
+      prevRooms[roomIndex].price += prevRooms[roomIndex].isLunchSelected
+      ? foodOptions.lunchPrice
+      : -foodOptions.lunchPrice;
+      return [...prevRooms];
+    })
+  }
+
+
+  // useEffect(() =>{
+
+
+  // }, [rooms]);
+
   const navigation = useNavigation();
 
   // will be sent as prop
   // title
-  // summary description
   // roomTypeID
   // number of rooms
   // price of room
   // price if breakfast, lunch, dinner
   // I will need to iitialize an array with the price of each room to update the price after addding additional options
 
-  const rooms = [
-    { id: 1, title: "Room 1", price: 100 },
-    { id: 2, title: "Room 2", price: 120 },
-    { id: 3, title: "Room 1", price: 100 },
-    { id: 4, title: "Room 1", price: 100 },
-  ];
-  const foodOptions = { breakfastPrice: 10, lunchPrice: 10, dinnerPrice: 10 };
+  // const rooms = [
+  //   { id: 1, title: "Room 1", price: 100 },
+  //   { id: 2, title: "Room 2", price: 120 },
+  //   { id: 3, title: "Room 1", price: 100 },
+  //   { id: 4, title: "Room 1", price: 100 },
+  // ];
+
+  
+
+
+  // const rooms = Array.from({ length: roomDetails.count }, (_, index) => {
+  //   const room = {
+  //     id: index + 1,
+  //     title: `Room ${index + 1}`,
+  //     price: roomDetails.price,
+  //     isBreakfastSelected: 0,
+  //     isLunchSelected: 0,
+  //     isDinnerSelected: 0,
+  //   };
+  
+  //   return room;
+  // });
 
   useEffect(() => {
     let timer;
@@ -133,7 +202,11 @@ const CartScreen = () => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <Text>(+${foodOptions.breakfastPrice})</Text>
-                    <Checkbox style={styles.checkboxStyle} />  
+                    <Checkbox 
+                    style={styles.checkboxStyle}
+                    value={room.isBreakfastSelected}
+                    color= "#131155"
+                    onValueChange={() => toggleBreakfast(room.id-1)} />  
                   </View>
                 </View>
                 <View style={styles.foodInfoContainer}>
@@ -142,7 +215,11 @@ const CartScreen = () => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <Text>(+${foodOptions.lunchPrice})</Text>
-                    <Checkbox style={styles.checkboxStyle} />  
+                    <Checkbox 
+                    style={styles.checkboxStyle}
+                    value={room.isLunchSelected}
+                    color= "#131155"
+                    onValueChange={() => toggleLunch(room.id-1)} />  
                   </View>
                 </View>
                 <View style={styles.foodInfoContainer}>
@@ -151,7 +228,11 @@ const CartScreen = () => {
                   </View>
                   <View style={styles.checkboxContainer}>
                     <Text>(+${foodOptions.dinnerPrice})</Text>
-                    <Checkbox style={styles.checkboxStyle} />  
+                    <Checkbox 
+                    style={styles.checkboxStyle}
+                    value={room.isDinnerSelected}
+                    color= "#131155"
+                    onValueChange={() => toggleDinner(room.id-1)} />  
                   </View>
                 </View>
               </View>
@@ -334,18 +415,18 @@ priceContainer: {
 totalPrice: {
   fontSize: 24,
   fontWeight: 'bold',
-  color: '#131155', // You can adjust the color as needed
+  color: '#131155', 
 },
 
 discountText: {
   fontSize: 18,
-  color: '#555', // You can adjust the color as needed
+  color: '#555', // grey
 },
 
 discountedPriceText: {
   fontSize: 18,
   fontWeight: 'bold',
-  color: '#131155', // You can adjust the color as needed
+  color: '#131155', 
 },
 
 
