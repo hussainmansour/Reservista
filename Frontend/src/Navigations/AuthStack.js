@@ -6,7 +6,7 @@ import TermsAndConditionsScreen from "../Screens/TermsAndConditionsScreen";
 import VerificationCodeScreen from "../Screens/VerificationCodeScreen";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import CartScreen from "../Screens/CartScreen";
-
+// import CartScreen from "../Screens/CartScreen2";
 const Stack = createNativeStackNavigator();
 export default function AuthStack() {
     return (
