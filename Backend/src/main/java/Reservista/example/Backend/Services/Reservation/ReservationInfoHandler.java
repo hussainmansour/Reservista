@@ -32,6 +32,7 @@ public class ReservationInfoHandler extends ReservationHandler {
         fillRoomPrice(reservationDTO, roomPrice);
         fillHotelName(reservationDTO, hotel.getName());
         fillHotelFoodOptions(reservationDTO, hotel.getHotelFoodOptions());
+        fillRoomTitle(reservationDTO);
         if(reservationDTO.isRefundable())
             fillRefundAdditionalPercentage(reservationDTO, hotel.getFullyRefundableRate());
 
@@ -53,5 +54,8 @@ public class ReservationInfoHandler extends ReservationHandler {
 
     private void fillRefundAdditionalPercentage(ReservationDTO reservationDTO, int hotelAdditionalRefundablePercentage){
         reservationDTO.setRefundAdditionalPercentage(hotelAdditionalRefundablePercentage);
+    }
+    private void fillRoomTitle(ReservationDTO reservationDTO){
+        reservationDTO.setRoomTitle(roomDescriptionRepository.findTitleById(reservationDTO.getRoomDescriptionId()));
     }
 }

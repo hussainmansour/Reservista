@@ -14,4 +14,6 @@ public interface RoomDescriptionRepository extends JpaRepository<RoomDescription
     Optional<RoomDescription> findById(UUID id);
     @Query("SELECT desc.price FROM RoomDescription desc WHERE desc.id = :id")
     int findRoomDescriptionPrice(@Param("id") UUID id);
-}
+
+    @Query("SELECT desc.title FROM RoomDescription desc WHERE desc.id = :id")
+    String findTitleById(@Param("id") UUID id);}
