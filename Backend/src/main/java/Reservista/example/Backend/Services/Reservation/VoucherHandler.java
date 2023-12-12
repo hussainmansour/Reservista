@@ -2,7 +2,7 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Models.EntityClasses.User;
@@ -44,7 +44,7 @@ public class VoucherHandler extends ReservationHandler{
 
             if(Instant.now().isAfter(voucherExpirationDate)) return null; //Throw exception "Voucher is expired"}
 
-            User user = userRepository.findUserByUserName(reservationDTO.getUserID());
+            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElse(null);
             Set<Voucher> usedVouchers = user.getVouchers();
 
             if(usedVouchers.contains(voucher)) return null;//Throw exception "Voucher is already used before"
