@@ -19,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean findIsActivatedByEmail(@Param("email") String email);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByUserName(String userName);
 }
 

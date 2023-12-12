@@ -1,4 +1,4 @@
-package Reservista.example.Backend.DTOs.InvoiceComponent;
+package Reservista.example.Backend.DTOs.Reservation;
 
 
 import org.springframework.data.util.Pair;
