@@ -53,7 +53,7 @@ const CartScreen = () => {
     // TO DO : handle the voucher 
     const total = rooms.reduce((acc, room) => acc + room.price, 0);
     setCalculatedTotalPrice(total);
-    setTotalPriceAfterDiscount(total - total*(discountRate/100))
+    setTotalPriceAfterDiscount(Math.ceil(total - total*(discountRate/100)))
 
   }, [rooms,isVoucherApplied]);
 
@@ -85,6 +85,7 @@ const CartScreen = () => {
       return [...prevRooms];
     })
   }
+
   const toggleDinner = (roomIndex)=>{
     
     setRooms ((prevRooms)=>{
@@ -146,7 +147,6 @@ const CartScreen = () => {
       
   }
 
-  
 
   const proceedToCheckout = () => {
     // TO DO
@@ -170,7 +170,7 @@ const CartScreen = () => {
                 toggleExpandedRoom(room.id);
               }}
             >
-              <View style={styles.roomHeader}>
+              <View style={styles.foodInfoContainer}>
                 <Icon
                   name={
                     expandedRooms[room.id]
@@ -237,42 +237,45 @@ const CartScreen = () => {
         
 
       </ScrollView>
-      <View>
+      
+      <View style={styles.priceContainer}>
+       
+          <Text style={styles.totalPrice}>Total Price: ${calculatedTotalPrice}</Text>
+          <View>
         
                 {!isVoucherApplied && (
             <TouchableOpacity onPress={() => setExpandedVoucher(!expandedVouncher)}>
-              <Text style={styles.appliedVoucherText}>add voucher</Text>
+              <Text style={styles.applyVoucherText}>add voucher</Text>
             </TouchableOpacity>
-          )}
-          <Collapsible collapsed={expandedVouncher}>
-            <View style={styles.boxContainer}>
-            <Text style={styles.discountedPriceText}>Enter Your Voucher</Text>
+           )}
+           <Collapsible collapsed={expandedVouncher} duration={0}>
+            <View style={styles.voucherBoxContainer}>
+            <Text style={styles.navyText}>Enter Your Voucher</Text>
             <View style={styles.voucherContainr}>
             <TextInput
-              style={styles.input}
+              style={styles.textInputStyle}
               placeholder="Voucher code"
               onChangeText={(code) => setVoucherCode(code)}
             />
             <TouchableOpacity style={styles.SmallbuttonStyle} onPress={applyVoucher}>
-              <Text style={styles.testModeText}>APPLY</Text>
+              <Text style={styles.whiteText}>APPLY</Text>
             </TouchableOpacity>
             </View>
             {error ? <Text style={styles.errorText}>{error}</Text> : null}
           </View>
-        </Collapsible>
+        </Collapsible>  
         </View>
-      <View style={styles.priceContainer}>
-        
-        <Text style={styles.totalPrice}>Total Price: {calculatedTotalPrice}</Text>
+       
       
         {isVoucherApplied && (
           <>
-            <Text style={styles.discountText}>Discount: {discountRate}%  (-${calculatedTotalPrice*discountRate/100})</Text>
-            <Text style={styles.discountedPriceText}>Final Price: {totalPriceAfterDiscount}</Text>
+            <Text style={styles.discountText}>Discount: {discountRate}%  (-${calculatedTotalPrice- totalPriceAfterDiscount})</Text>
+            <Text style={styles.navyText}>Final Price: ${totalPriceAfterDiscount}</Text>
             <TouchableOpacity onPress={() => {
-                  setIsVoucherApplied(false)
+                  setDiscountRate(0)
+                  setIsVoucherApplied(false)  
                 }}>
-              <Text style={styles.appliedVoucherText}>remove voucher</Text>
+              <Text style={styles.applyVoucherText}>remove voucher</Text>
             </TouchableOpacity>
             
           </>
@@ -287,7 +290,7 @@ const CartScreen = () => {
         />
       </View> */}
       <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
-        <Text style={styles.testModeText}>CHECK OUT</Text>
+        <Text style={styles.whiteText}>CHECK OUT</Text>
       </TouchableOpacity>
 
       <PaymentModal
@@ -331,18 +334,18 @@ const styles = StyleSheet.create({
   },
   roomContainer: {
     backgroundColor: "#E0E5FF",
-    borderRadius: 10,
+    borderRadius: 5,
     marginBottom: 16,
-    padding: 16,
+    padding: 10,
   },
-  roomHeader: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-  },
-  icon: {
-    marginRight: 8,
-  },
+  // roomHeader: {
+  //   flexDirection: "row",
+  //   alignItems: "center",
+  //   justifyContent: "space-between",
+  // },
+  // iconStyle: {
+  //   marginRight: 8,
+  // },
   roomTitle: {
     fontSize: 18,
     fontWeight: "bold",
@@ -353,22 +356,27 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    marginBottom: 5,
+    padding:4,
+
   },
   voucherContainr:{
-    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
-    
-    // padding:20,
+    marginBottom: 5,
+    alignItems: 'stretch',
+
   },
-  input: {
+  textInputStyle: {
     flex: 2,
-    backgroundColor: '#E0E5FF', // Same background color as foodInfoContainer
-    borderRadius: 10, // Same border radius as foodInfoContainer
+    backgroundColor: '#E0E5FF',
     padding: 8,
-    marginRight: 5,
+  },
+  SmallbuttonStyle: {
+
+    backgroundColor: "#131155",
+    flex: 1,
+    padding: 8,
   },
   textContainer: {
     flexDirection: 'row',
@@ -388,12 +396,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#131155",
     marginBottom: 8,
-    // textDecorationLine: 'underline',
   },
   buttonStyle: {
-    // padding: 3/,
     marginBottom: 20,
-    // paddingHorizontal:5,
     width:"95%",
     height: "5%",
     alignItems: 'center',
@@ -402,18 +407,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#131155",
     alignSelf: 'center',
   },
-  SmallbuttonStyle: {
 
-    backgroundColor: "#131155",
-    flex: 1,
-
-    borderRadius: 10, // Same border radius as foodInfoContainer
-    padding: 8,
-    marginRight: 8,
-  },
-  testModeText: {
+  whiteText: {
     paddingTop: 5,
-    color: "#CDD2FF",
+    color: "#FFFFFF",
     fontWeight: "bold",
     fontSize: 12,
     alignSelf: "center",
@@ -421,11 +418,7 @@ const styles = StyleSheet.create({
   checkboxStyle: {
     marginLeft:10,
   },
-  buttonText:{
-    fontSize: 20,
-    color: 'white',
-    marginBottom:8,
-},
+
 priceContainer: {
   padding: 16,
   marginTop: 10,
@@ -442,14 +435,15 @@ discountText: {
   color: '#555', // grey
 },
 
-discountedPriceText: {
+navyText: {
   fontSize: 18,
   fontWeight: 'bold',
   color: '#131155', 
+  marginBottom:2,
 },
 
 
-appliedVoucherText: {
+applyVoucherText: {
   textDecorationLine: 'underline',
   color: '#131155',
   fontSize: 16,
@@ -462,7 +456,7 @@ errorText: {
   fontSize: 12,
   marginTop: 1,
 },
-boxContainer: {
+voucherBoxContainer: {
   borderWidth: 2,
   borderColor: '#131155',
   borderRadius: 10,
