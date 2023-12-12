@@ -1,17 +1,16 @@
-package Reservista.example.Backend.Models.EmbeddedClasses;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -25,10 +24,11 @@ public class HotelImage {
 
     @Lob
     @NotNull
-    @Column(name = "image_source" , nullable = false)
+    @Column(name = "image_source" , columnDefinition = "LONGBLOB")
     private byte[] source;
 
-    @Column(name = "image_caption" , nullable = false)
+    @NotBlank
+    @Column(name = "image_caption")
     private String caption;
 
     @ManyToOne(optional = false)
