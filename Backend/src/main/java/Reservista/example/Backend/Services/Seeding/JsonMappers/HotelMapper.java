@@ -2,20 +2,18 @@ package Reservista.example.Backend.Services.Seeding.JsonMappers;
 
 
 import Reservista.example.Backend.Config.ImageUtil;
-import Reservista.example.Backend.Models.EmbeddedClasses.HotelImage;
+import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
+import Reservista.example.Backend.Models.EntityClasses.HotelImage;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
-import Reservista.example.Backend.Models.EntityClasses.Room;
 import Reservista.example.Backend.Services.Seeding.JsonDTOs.HotelImageJsonDTO;
 import Reservista.example.Backend.Services.Seeding.JsonDTOs.HotelJsonDTO;
-import Reservista.example.Backend.Services.Seeding.JsonDTOs.RoomDescriptionJsonDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Arrays;
-import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Component
 public class HotelMapper {
@@ -24,16 +22,26 @@ public class HotelMapper {
     private RoomDescriptionMapper roomDescriptionMapper;
 
     public Hotel mapToHotel(HotelJsonDTO hotelJsonDTO) {
-        return Hotel.builder()
+        boolean isFullyRefundable = new Random().nextBoolean();
+        int fullyRefundableRate = getFullyRefundableRate(isFullyRefundable);
+
+        Hotel hotel =  Hotel.builder()
                 .name(hotelJsonDTO.getHotelTitle())
-                .starRating(starRatingToDouble(hotelJsonDTO.getStarRating()))
-                .rating(stringToDouble(hotelJsonDTO.getReviewRating()))
-                .reviewCount(stringToInt(hotelJsonDTO.getReviewCount()))
+                .starRating(extractStarRating(hotelJsonDTO.getStarRating()))
+                .rating(extractRating(hotelJsonDTO.getReviewRating()))
+                .reviewCount(extractReviewCount(hotelJsonDTO.getReviewCount()))
                 .address(hotelJsonDTO.getHotelLocation())
                 .areaDescription(hotelJsonDTO.getExploreTheArea())
-//                .hotelImages(mapToHotelImageSet(hotelJsonDTO.getImages()))
-                .rooms(mapRooms(hotelJsonDTO.getRooms()))
+                .hotelImages(mapToHotelImageSet(hotelJsonDTO.getImages()))
+                .hotelFoodOptions(generateRandomHotelFoodOptions())
+                .isFullyRefundable(isFullyRefundable)
+                .fullyRefundableRate(fullyRefundableRate)
+                .roomDescriptions(roomDescriptionMapper.mapToRoomDescriptionSet(hotelJsonDTO.getRooms()))
                 .build();
+
+        hotel.getRoomDescriptions().forEach(roomDescription -> roomDescription.setHotel(hotel));
+        hotel.getHotelImages().forEach(hotelImage -> hotelImage.setHotel(hotel));
+        return hotel;
     }
 
     public Set<Hotel> mapToHotelSet(Set<HotelJsonDTO> hotelJsonDTOs) {
@@ -42,10 +50,9 @@ public class HotelMapper {
                 .collect(Collectors.toSet());
     }
 
-
     public HotelImage mapToHotelImage(HotelImageJsonDTO hotelImageJsonDTO) {
         return HotelImage.builder()
-                .source(urlToByteArray(hotelImageJsonDTO.getSource()))
+                .source(ImageUtil.convertImageUrlToBytes(hotelImageJsonDTO.getSource()))
                 .caption(hotelImageJsonDTO.getCaption())
                 .build();
     }
@@ -56,38 +63,40 @@ public class HotelMapper {
                 .collect(Collectors.toSet());
     }
 
-    public Set<Room> mapRooms(Set<RoomDescriptionJsonDTO> roomDescriptionJsonDTOs) {
-        Set<Room> rooms = new HashSet<>();
-
-        roomDescriptionJsonDTOs.forEach(roomDescriptionDTO ->
-                IntStream.range(0, 10).forEach(index ->
-                        rooms.add(Room.builder()
-                                .roomDescription(roomDescriptionMapper
-                                .mapToRoomDescription(roomDescriptionDTO))
-                                .build())
-                )
-        );
-
-        return rooms;
+    private HotelFoodOptions generateRandomHotelFoodOptions(){
+        return HotelFoodOptions.builder()
+                .breakfastPrice(getRandomInt(10,100))
+                .dinnerPrice(getRandomInt(50,200))
+                .lunchPrice(getRandomInt(30,180))
+                .build();
     }
 
-    private double starRatingToDouble(String starRating) {
+    // "star_rating": "5.0 star property"
+    private int extractStarRating(String starRating) {
         return Arrays.stream(starRating.split(" "))
                 .findFirst()
                 .map(Double::parseDouble)
-                .orElse(3.0);
+                .map(Double::intValue)
+                .orElse(0);
     }
 
-    private double stringToDouble(String val) {
-        return Double.parseDouble(val);
+    private double extractRating(String rating) {
+        return !rating.isEmpty() ?
+                Double.parseDouble(rating) : 0;
     }
 
-    private int stringToInt(String val) {
-        return Integer.parseInt(val);
+    private int extractReviewCount(String reviewCount) {
+        reviewCount = reviewCount.replaceAll("," , "");
+        return !reviewCount.isEmpty() ?
+                Integer.parseInt(reviewCount) : 0;
     }
 
-    private byte[] urlToByteArray(String source) {
-        return ImageUtil.convertImageUrlToBytes(source);
+    private int getRandomInt(int from, int to) {
+        Random random = new Random();
+        return from + random.nextInt(to - from + 1);
     }
 
+    private int getFullyRefundableRate(boolean isFullyRefundable){
+        return isFullyRefundable ? getRandomInt(0,100) : 0;
+    }
 }

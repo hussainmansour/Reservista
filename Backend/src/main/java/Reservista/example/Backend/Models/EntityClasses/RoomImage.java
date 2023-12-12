@@ -1,17 +1,15 @@
-package Reservista.example.Backend.Models.EmbeddedClasses;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.UUID;
 
 
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -20,10 +18,12 @@ import java.util.UUID;
 public class RoomImage {
 
     @Id
+    @GeneratedValue
     private UUID id;
 
     @Lob
     @NotNull
+    @Column(columnDefinition = "LONGBLOB")
     private byte[] source;
 
     @ManyToOne(optional = false)

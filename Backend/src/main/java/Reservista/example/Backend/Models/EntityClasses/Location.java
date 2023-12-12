@@ -11,7 +11,8 @@ import java.time.ZoneId;
 import java.util.Set;
 
 
-@Data
+@Getter
+@Setter
 @Entity
 @Builder
 @NoArgsConstructor
