@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Services.Reservation;
 
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 
