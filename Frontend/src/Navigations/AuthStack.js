@@ -17,6 +17,7 @@ export default function AuthStack() {
                 translucent={true}
             />
             <Stack.Navigator>
+                <Stack.Screen name = "CartScreen" component={CartScreen} options={{ headerShown: false }} />
                 <Stack.Screen name = "Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name = 'Signup' component = {SignupScreen}/>
                 <Stack.Screen name = 'TermsAndConditions' component={TermsAndConditionsScreen} />
