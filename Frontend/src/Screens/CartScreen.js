@@ -20,14 +20,9 @@ import SmallButton from '../Components/SmallButton';
 
 const CartScreen = () => {
 
-  // will be sent as prop
-  // title
-  // roomTypeID
-  // number of rooms
-  // price of room
-  // price if breakfast, lunch, dinner
-  // I will need to iitialize an array with the price of each room to update the price after addding additional options
+  const navigation = useNavigation();
 
+  // these things will be passed as prpos
   const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
   const roomDetails = { price: 100, title: "Room title", count: 4, roomTypeID: "roomTypeID"}
 
@@ -36,6 +31,11 @@ const CartScreen = () => {
   const [expandedRooms, setExpandedRooms] = useState({});
   const [expandedVouncher, setExpandedVoucher] = useState(true);
   const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(roomDetails.count*roomDetails.price);
+  const [totalPriceAfterDiscount, setTotalPriceAfterDiscount] =useState(calculatedTotalPrice)
+  const [discountRate, setDiscountRate] = useState(0)
+  const [voucherCode, setVoucherCode] = useState('');
+  const [isVoucherApplied, setIsVoucherApplied] = useState(false)
+  const [error, setError] = useState("");
   const [rooms, setRooms] = useState( Array.from({ length: roomDetails.count }, (_, index) => {
       const room = {
         id: index + 1,
@@ -48,6 +48,32 @@ const CartScreen = () => {
       return room;
     })
   )
+
+  useEffect(() =>{
+    // TO DO : handle the voucher 
+    const total = rooms.reduce((acc, room) => acc + room.price, 0);
+    setCalculatedTotalPrice(total);
+    setTotalPriceAfterDiscount(total - total*(discountRate/100))
+
+  }, [rooms,isVoucherApplied]);
+
+  useEffect(() => {
+    let timer;
+
+    if (isPaymentModalVisible) {
+      const timeoutDuration = 10 * 60 * 1000; // 10 minutes
+      timer = setTimeout(() => {
+        setPaymentModalVisible(false);
+        Alert.alert("Sorry!", "Your checkout session has expired!");
+      }, timeoutDuration);
+    }
+
+    return () => {
+      if (timer) {
+        clearTimeout(timer);
+      }
+    };
+  }, [isPaymentModalVisible]);
 
   const toggleBreakfast = (roomIndex)=>{
   
@@ -81,31 +107,7 @@ const CartScreen = () => {
     })
   }
 
-  useEffect(() =>{
-    // TO DO : handle the voucher 
-    const total = rooms.reduce((acc, room) => acc + room.price, 0);
-    setCalculatedTotalPrice(total);
-  }, [rooms]);
 
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    let timer;
-
-    if (isPaymentModalVisible) {
-      const timeoutDuration = 10 * 60 * 1000; // 10 minutes
-      timer = setTimeout(() => {
-        setPaymentModalVisible(false);
-        Alert.alert("Sorry!", "Your checkout session has expired!");
-      }, timeoutDuration);
-    }
-
-    return () => {
-      if (timer) {
-        clearTimeout(timer);
-      }
-    };
-  }, [isPaymentModalVisible]);
 
   const handlePaymentSuccess = () => {
     setPaymentModalVisible(false);
@@ -130,13 +132,28 @@ const CartScreen = () => {
       [roomId]: !prevExpandedRooms[roomId],
     }));
   };
+ 
+  const applyVoucher = () =>{
+
+      // call backend to validate voucher
+      // success -> discount rate returned
+      //            update is voucherApplied
+      setDiscountRate(20)
+      setIsVoucherApplied(true)   // use effect will be called to update the total price
+      setExpandedVoucher(true)
+      // failure -> display error message
+      // setError("error message")
+      
+  }
+
+  
 
   const proceedToCheckout = () => {
     // TO DO
     // call the backend API and send the reservationDTO, if Reservation was available
     // the request wil contain the clientSecret of the paymentIntent + the reservationID
     // set the client secret with the one received from the backend
-    // setClientSecret("clientSecret")
+    setClientSecret("pi_3OMCuZIpHzJgrvA93NbsgHP6_secret_IAkXyJpxKjdWXD2HRJFIaKagV")
     setPaymentModalVisible(true);
   };
 
@@ -217,37 +234,58 @@ const CartScreen = () => {
             </Collapsible>
           </View>
         ))}
-        <View>
-          <TouchableOpacity onPress={() => {
-                setExpandedVoucher(!expandedVouncher)
-              }}>
-            <Text style={styles.appliedVoucherText}>add voucher</Text>
-          </TouchableOpacity>
+        
+
+      </ScrollView>
+      <View>
+        
+                {!isVoucherApplied && (
+            <TouchableOpacity onPress={() => setExpandedVoucher(!expandedVouncher)}>
+              <Text style={styles.appliedVoucherText}>add voucher</Text>
+            </TouchableOpacity>
+          )}
           <Collapsible collapsed={expandedVouncher}>
+            <View style={styles.boxContainer}>
+            <Text style={styles.discountedPriceText}>Enter Your Voucher</Text>
             <View style={styles.voucherContainr}>
             <TextInput
               style={styles.input}
               placeholder="Voucher code"
+              onChangeText={(code) => setVoucherCode(code)}
             />
-            <TouchableOpacity style={styles.SmallbuttonStyle} onPress={proceedToCheckout}>
+            <TouchableOpacity style={styles.SmallbuttonStyle} onPress={applyVoucher}>
               <Text style={styles.testModeText}>APPLY</Text>
             </TouchableOpacity>
+            </View>
+            {error ? <Text style={styles.errorText}>{error}</Text> : null}
           </View>
         </Collapsible>
         </View>
-
-      </ScrollView>
       <View style={styles.priceContainer}>
+        
         <Text style={styles.totalPrice}>Total Price: {calculatedTotalPrice}</Text>
-
-        {true && (
+      
+        {isVoucherApplied && (
           <>
-            <Text style={styles.discountText}>Discount: 20%</Text>
-            <Text style={styles.discountedPriceText}>After Discount: calculated price</Text>
+            <Text style={styles.discountText}>Discount: {discountRate}%  (-${calculatedTotalPrice*discountRate/100})</Text>
+            <Text style={styles.discountedPriceText}>Final Price: {totalPriceAfterDiscount}</Text>
+            <TouchableOpacity onPress={() => {
+                  setIsVoucherApplied(false)
+                }}>
+              <Text style={styles.appliedVoucherText}>remove voucher</Text>
+            </TouchableOpacity>
+            
           </>
         )}
       </View>
-
+      {/* </View>
+      <View style={styles.buttonStyle}>
+        <Button
+          title="CHECK OUT"
+          color="#131155"
+          onPress={proceedToCheckout}
+        />
+      </View> */}
       <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
         <Text style={styles.testModeText}>CHECK OUT</Text>
       </TouchableOpacity>
@@ -257,6 +295,7 @@ const CartScreen = () => {
         onCancel={handleCheckoutCancellation}
         clientSecret={clientSecret}
         onSuccessfulPayment={handlePaymentSuccess}
+        price={totalPriceAfterDiscount}
       />
       
     </View>
@@ -266,7 +305,7 @@ const CartScreen = () => {
 
 const styles = StyleSheet.create({
   wholeForm: {
-    backgroundColor: "#CDD2FF",
+    backgroundColor:"#CDD2FF",
     flex: 1,
     paddingTop: 50,
     justifyContent: "flex-start",
@@ -317,9 +356,11 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   voucherContainr:{
+    paddingTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+    
     // padding:20,
   },
   input: {
@@ -415,6 +456,21 @@ appliedVoucherText: {
   marginBottom: 8,
   alignSelf: 'flex-end',
   marginRight:15,
+},
+errorText: {
+  color: "red",
+  fontSize: 12,
+  marginTop: 1,
+},
+boxContainer: {
+  borderWidth: 2,
+  borderColor: '#131155',
+  borderRadius: 10,
+  padding: 16,
+  marginBottom: 16,
+  width:"95%",
+  alignSelf: 'center',
+  
 },
 });
 
