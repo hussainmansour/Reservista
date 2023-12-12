@@ -5,6 +5,7 @@ import Reservista.example.Backend.DAOs.VoucherRepository;
 import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,29 +32,45 @@ public class VoucherHandler extends ReservationHandler{
         //if used return status code with message "Voucher is already used"
         //else: add record in voucher user database table and add voucher price DTO then call the next handler
 
-
         //TODO: I need help here to how handle failure cases is by throwing exception or return status code directly
 
 
         if(reservationDTO.getVoucherCode() != null){
-
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
-            if(voucher == null) return null;  //Throw exception "This voucher doesn't exist at all"
+            User user = userRepository.findUserByUserName(reservationDTO.getUserName());
+            StatusCode statusCode = handleVoucher(user, voucher);
 
-            Instant voucherExpirationDate = voucher.getExpiresAt();
-
-            if(Instant.now().isAfter(voucherExpirationDate)) return null; //Throw exception "Voucher is expired"}
-
-            User user = userRepository.findUserByUserName(reservationDTO.getUserID());
-            Set<Voucher> usedVouchers = user.getVouchers();
-
-            if(usedVouchers.contains(voucher)) return null;//Throw exception "Voucher is already used before"
-
-            usedVouchers.add(voucher);
-            reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
-            userRepository.save(user);
-
+            switch (statusCode){
+                case SUCCESS -> {
+                    user.getVouchers().add(voucher);
+                    reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
+                    userRepository.save(user);
+                    return nextHandler.handleRequest(reservationDTO);
+                }
+                default -> {
+                    ResponseDTO<ReservationResponseDTO> response = new ResponseDTO<>(statusCode.getCode(), statusCode.getMessage(), null);
+                    return response;
+                }
+            }
         }
         return nextHandler.handleRequest(reservationDTO);
+    }
+
+
+    StatusCode handleVoucher (User user, Voucher voucher){
+        if(voucher == null)
+            return StatusCode.NOT_FOUND;
+
+        Instant voucherExpirationDate = voucher.getExpiresAt();
+
+        if(Instant.now().isAfter(voucherExpirationDate))
+            return StatusCode.EXPIREDCODE;
+
+        Set<Voucher> usedVouchers = user.getVouchers();
+
+        if(usedVouchers.contains(voucher))
+            return StatusCode.USEDVOUCHER;
+
+        return StatusCode.SUCCESS;
     }
 }
