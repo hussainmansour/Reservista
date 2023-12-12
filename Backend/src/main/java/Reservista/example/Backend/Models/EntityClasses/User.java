@@ -61,7 +61,7 @@ public class User implements UserDetails {
     private boolean isBlocked;
 
     @Lob
-    @Column(name = "profile_image" , length = 2_147_483_647)
+    @Column(name = "profile_image" , columnDefinition = "LONGBLOB")
     private byte[] profileImage;
 
 
