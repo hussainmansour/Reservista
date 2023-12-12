@@ -9,6 +9,8 @@ import lombok.*;
 
 import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
+
 import org.springframework.data.util.Pair;
 
 
@@ -18,22 +20,11 @@ import org.springframework.data.util.Pair;
 @NoArgsConstructor
 public class ReservationDTO {
 
-    private long reservationID;
+    // Data comes from front-end
 
     @NotBlank
     @NotEmpty
-    private String hotelID;
-
-    @NotNull
-    @NotBlank
-    private String userID;
-
-    @NotBlank
-    @NotEmpty
-    private String hotelName;
-
-    @NotNull
-    private List<RoomDTO> rooms;
+    private UUID hotelID;
 
     @NotNull
     @FutureOrPresent
@@ -47,13 +38,26 @@ public class ReservationDTO {
     @BooleanFlag
     private boolean refundable;
 
-    private double refundAdditionalPercentage;
-
     private String voucherCode;
-    private double voucherPercentage;
 
-    private double price;
-    private long finalPrice;
+    @NotNull
+    private String roomTitle;
+    // Data needed to be filled to use it in chain later
+
+    private Long reservationID;
+
+    private String userName;
+
+    private String hotelName;
+
+
+    private int refundAdditionalPercentage;
+
+    private int voucherPercentage;
+
+    private int price;
+
+    private int finalPrice;
 
     @Override
     public String toString(){

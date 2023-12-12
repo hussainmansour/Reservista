@@ -1,6 +1,5 @@
 package Reservista.example.Backend.Services.Reservation;
 
-import Reservista.example.Backend.DTOs.InvoiceComponent.OptionDTO;
 import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
 import Reservista.example.Backend.DTOs.InvoiceComponent.RoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
@@ -12,7 +11,7 @@ public class CalculationHandler extends ReservationHandler{
         return nextHandler.handleRequest(reservationDTO);
     }
     public void calculate_price(ReservationDTO reservationDTO) {
-        double total = 0;
+        int total = 0;
         for(RoomDTO r:reservationDTO.getRooms()){
             double optionPrice=0;
             if(r.getOptions()!=null ) {
@@ -21,7 +20,7 @@ public class CalculationHandler extends ReservationHandler{
                 }
             }
             r.setOptionsTotalPrice(optionPrice);
-            total+=optionPrice;
+            total += optionPrice;
         }
         reservationDTO.setPrice(total);
         total+=total* reservationDTO.getRefundAdditionalPercentage();
