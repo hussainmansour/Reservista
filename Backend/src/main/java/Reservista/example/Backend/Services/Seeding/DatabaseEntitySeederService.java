@@ -1,10 +1,7 @@
 package Reservista.example.Backend.Services.Seeding;
 
 
-import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DAOs.LocationRepository;
-import Reservista.example.Backend.DAOs.RoomDescriptionRepository;
-import Reservista.example.Backend.DAOs.RoomRepository;
 import Reservista.example.Backend.Models.EntityClasses.Location;
 import Reservista.example.Backend.Services.Seeding.JsonDTOs.LocationDetailsJsonDTO;
 import Reservista.example.Backend.Services.Seeding.JsonDTOs.LocationJsonDTO;
@@ -19,9 +16,6 @@ import java.util.List;
 public class DatabaseEntitySeederService {
 
     private final LocationRepository locationRepository;
-    private final HotelRepository hotelRepository;
-    private final RoomRepository roomRepository;
-    private final RoomDescriptionRepository roomDescriptionRepository;
     private final LocationMapper locationMapper;
 
 
@@ -35,13 +29,7 @@ public class DatabaseEntitySeederService {
     public void addHotelsToDB(List<LocationJsonDTO> locationJsonDTOs) {
         for (LocationJsonDTO locationJsonDTO : locationJsonDTOs) {
             Location location = locationMapper.mapToLocation(locationJsonDTO);
-            saveLocationWithHotels(location);
+            locationRepository.save(location);
         }
     }
-
-    // bug: the persisting doesn't work
-    private void saveLocationWithHotels(Location location) {
-        locationRepository.save(location);
-    }
-
 }

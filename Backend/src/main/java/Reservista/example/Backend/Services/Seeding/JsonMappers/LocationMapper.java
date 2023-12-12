@@ -18,13 +18,16 @@ public class LocationMapper {
     private HotelMapper hotelMapper;
 
     public Location mapToLocation(LocationJsonDTO locationJsonDTO) {
-        return Location.builder()
+        Location location = Location.builder()
                 .city(locationJsonDTO.getLocationDetails().getCity())
                 .country(locationJsonDTO.getLocationDetails().getCountry())
                 .timeZone(convertToZoneId(locationJsonDTO.getLocationDetails().getTimezone()))
                 .coordinates(mapToCoordinates(locationJsonDTO.getLocationDetails().getCoordinates()))
                 .hotels(hotelMapper.mapToHotelSet(locationJsonDTO.getHotels()))
                 .build();
+
+        location.getHotels().forEach(hotel -> hotel.setLocation(location));
+        return location;
     }
 
     public Location mapToLocation(LocationDetailsJsonDTO locationDetailsJsonDTO) {
