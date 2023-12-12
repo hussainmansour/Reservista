@@ -82,7 +82,8 @@ const SignupScreen = () => {
                 email: email,
                 password: password,
                 birthDate: date,
-                userName: username
+                userName: username,
+                nationality:nationality
             };
 
             // Call signUp function only if there are no validation errors

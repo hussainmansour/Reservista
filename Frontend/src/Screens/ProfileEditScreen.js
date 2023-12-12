@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState,useEffect } from 'react';
 import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -6,15 +6,56 @@ import CustomTextInput from '../Components/EditTextInput';
 import CustomizedButton from '../Components/CustomizedButton';
 import DropdownList from '../Components/DropdownList';
 import styles from '../Styles/Editstyles';
+import axios from 'axios';
 
+
+// for validation
 const validationSchema = Yup.object().shape({
-    firstName: Yup.string().required('First Name is required'),
-    lastName: Yup.string().required('Last Name is required'),
-    birthDate: Yup.string().required('Date of birth is required')
+    firstName: Yup.string()
+        .required('First Name is required')
+        .min(2, 'First Name must be at least 2 characters')
+        .max(50, 'First Name must be at most 50 characters'),
+    lastName: Yup.string()
+        .required('Last Name is required')
+        .min(2, 'Last Name must be at least 2 characters')
+        .max(50, 'Last Name must be at most 50 characters'),
+    birthDate: Yup.string()
+        .required('Date of birth is required')
+        .matches(
+            /^\d{4}-\d{2}-\d{2}$/,
+            'Invalid date format. Please use YYYY-MM-DD.'
+        ),
+    gender: Yup.string().required('Gender is required'),
+    nationality: Yup.string().required('Nationality is required'),
 });
 
 
 const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
+
+    const { userName, email, ...updateduser } = user;
+
+    const [countries, setCountries] = useState([])
+
+    // Get the valid countries
+
+    useEffect(() => {
+        const fetchCountries = async () => {
+            try {
+                const response = await axios.get("http://192.168.1.17:8080/config/countries");
+                const unsortedCountries = response.data
+                setCountries(unsortedCountries.sort());
+            } catch (error) {
+                console.log('Error fetching Countries:', error);
+            }
+        };
+
+        fetchCountries();
+    }, []);
+
+    const dropdownItems = countries.map(nationality => ({
+        label: nationality,
+        value: nationality,
+    }));
     return (
         <Modal visible={isVisible} animationType="slide" transparent={true}>
             <View
@@ -23,7 +64,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                     <Text style={styles.modalTitle}>Edit Profile</Text>
 
                     <Formik
-                        initialValues={user}
+                        initialValues={updateduser}
                         validationSchema={validationSchema}
                         onSubmit={onSave}
                     >
@@ -55,7 +96,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                 />
 
                                 <CustomTextInput
-                                    title="'Date of birth"
+                                    title="Date of birth"
                                     onChangeText={handleChange('birthDate')}
                                     onBlur={handleBlur('birthDate')}
                                     errorMessage={errors.birthDate}
@@ -68,9 +109,9 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     onValueChange={(itemValue) => handleChange('gender')(itemValue)}
                                     onBlur={() => handleBlur('gender')}
                                     items={[
-                                        { label: 'Male', value: 'Male' },
-                                        { label: 'Female', value: 'Female' },
-                                        { label: 'Prefer not to say', value: 'Prefer not to say' },
+                                        { label: 'Male', value: 'MALE' },
+                                        { label: 'Female', value: 'FEMALE' },
+                                        { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
                                     ]}
                                 />
 
@@ -79,20 +120,10 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     selectedValue={values.nationality}
                                     onValueChange={(itemValue) => handleChange('nationality')(itemValue)}
                                     onBlur={() => handleBlur('nationality')}
-                                    items={[
-                                        { label: 'Egypt', value: 'EG' },
-                                        // ... (other nationality options on the connection)
-                                    ]}
+                                    items={dropdownItems}
                                 />
 
                                 <View style={styles.buttonContainer}>
-                                    {/* Save Button */}
-                                    <CustomizedButton
-                                        onPress={handleSubmit}
-                                        buttonStyle={styles.saveButton}
-                                        textStyle={styles.buttonText}
-                                        text="Save"
-                                    />
 
                                     {/* Cancel Button */}
                                     <CustomizedButton
@@ -101,6 +132,14 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         textStyle={styles.buttonText}
                                         text="Cancel"
                                     />
+                                    {/* Save Button */}
+                                    <CustomizedButton
+                                        onPress={handleSubmit}
+                                        buttonStyle={styles.saveButton}
+                                        textStyle={styles.buttonText}
+                                        text="Save"
+                                    />
+
                                 </View>
                             </ScrollView>
                         )}

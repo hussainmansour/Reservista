@@ -1,24 +1,26 @@
+import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import UpcomingReservation from '../Screens/UpcomingReservation';
 import ReservationHistory from '../Screens/ResrvationHistory';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
+import Profile from '../Screens/Profile';
 
 const Stack = createStackNavigator();
 
 const ProfileStack = () => {
-  const user = {
-    // dummy user
-    username: 'huussein',
-    firstName: 'Hussein',
-    middleName: 'Khaled',
-    lastName: 'Khadrawy',
-    email: 'husseinkhaled733@gmail.com',
-    gender: 'Male',
-    nationality: 'EG',
-    birthdate: '2002-09-09'
-  };
+  // const user = {
+  //   // dummy user
+  //   username: 'huussein',
+  //   firstName: 'Hussein',
+  //   middleName: 'Khaled',
+  //   lastName: 'Khadrawy',
+  //   email: 'husseinkhaled733@gmail.com',
+  //   gender: 'Male',
+  //   nationality: 'EG',
+  //   birthdate: '2002-09-09'
+  // };
 
   const headerOptions = ({ navigation }) => ({
     headerStyle: {
@@ -48,12 +50,10 @@ const ProfileStack = () => {
   });
 
   return (
-    <NavigationContainer>
       <Stack.Navigator initialRouteName="UserProfile">
         <Stack.Screen
           name="UserProfile"
-          component={UserProfile}
-          initialParams={{ user }}
+          component={Profile}
           options={({ navigation }) => ({
             title: 'Profile',
             ...headerOptions({ navigation }),
@@ -78,7 +78,6 @@ const ProfileStack = () => {
           })}
         />
       </Stack.Navigator>
-    </NavigationContainer>
   );
 };
 

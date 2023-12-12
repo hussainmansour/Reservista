@@ -6,6 +6,8 @@ import Welcome from "../Screens/Welcome";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {StyleSheet} from "react-native";
+import Profile from "../Screens/Profile";
+import ProfileStack from "./ProfileStack";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +23,7 @@ export default function AuthenticatedStack() {
         >
             <Stack.Screen
                 name="Home"
-                component={Home}
+                component={ProfileStack}
                 options={{
                     headerRight: ({tintColor}) => (
                         <IconButton

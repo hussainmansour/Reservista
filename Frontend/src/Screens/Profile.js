@@ -1,48 +1,97 @@
-import React, { useState } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import CustomizedButton from '../Components/CustomizedButton';
 import ProfileEditScreen from './ProfileEditScreen';
+import { AuthContext } from '../Store/authContext';
+import ProfileAPI from '../Utilities/ProfileAPI';
+import LoadingComponent from '../Components/LoadingComponent';
 
 
 const Profile = ({ route }) => {
-    const { user } = route.params;
     const [isEditing, setIsEditing] = useState(false);
-    const [editedUser, setEditedUser] = useState({ ...user });
+    const [user, setUser] = useState({});
+    const [isLoading, setIsLoading] = useState(true);
+    const authCtx = useContext(AuthContext);
+
+    // Getting the profile
+    useEffect(() => {
+        const fetchData = async () => {
+            try {
+                const response = await ProfileAPI.getProfile(authCtx.token);
+                console.log(response);
+                setUser(response.data);
+            } catch (error) {
+                console.log('Error fetching data:', error);
+                Alert.alert("Error", "Can't find your profile");
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        fetchData();
+    }, []);
 
     const handleEdit = () => {
         setIsEditing(true);
     };
 
     const handleCancel = () => {
-        setEditedUser({ ...editedUser });
+        setUser({ ...user });
         setIsEditing(false);
     };
 
-    const handleSave = (values) => {
-        // Validation logic and save/update API call
-        // For simplicity, let's assume the validation is successful
-        setIsEditing(false);
-        setEditedUser(values);
-        Alert.alert('Success', 'Profile updated successfully');
+    // updating the profile
+    const handleSave = async (values) => {
+        try {
+            setIsEditing(false);
+
+            setIsLoading(true);
+
+            console.log(values);
+
+            const response = await ProfileAPI.updateProfile(authCtx.token,values);
+
+            console.log(response);
+            const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
+            setUser(updatedUser);
+
+            console.log("successful update");
+            Alert.alert('Success', 'Profile updated successfully');
+        } catch (error) {
+            console.log("Error updating profile:", error);
+            Alert.alert('Error', 'Failed to update profile');
+        }
+        finally {
+            setIsLoading(false);
+        }
     };
+
+    // Wait until data is loaded before rendering
+    if (isLoading) {
+        return (
+            <LoadingComponent></LoadingComponent>
+        );
+    }
+
+
 
     const renderProfile = () => (
         <View style={styles.container}>
 
-            {renderField('User Name', editedUser.userName)}
-            {renderField('Email', editedUser.email)}
-            {renderField('First Name', editedUser.firstName)}
-            {renderField('Middle Name', editedUser.middleName)}
-            {renderField('Last Name', editedUser.lastName)}
-            {renderField('Gender', editedUser.gender)}
-            {renderField('Nationality', editedUser.nationality)}
-            {renderField('Date of Birth', editedUser.birthDate)}
+            {renderField('User Name', user.userName)}
+            {renderField('Email', user.email)}
+            {renderField('First Name', user.firstName)}
+            {renderField('Middle Name', user.middleName)}
+            {renderField('Last Name', user.lastName)}
+            {renderField('Gender', user.gender)}
+            {renderField('Nationality', user.nationality)}
+            {renderField('Date of Birth', user.birthDate)}
 
             <ProfileEditScreen
                 isVisible={isEditing}
                 onSave={handleSave}
                 onCancel={handleCancel}
-                user={editedUser}
+                user={user}
 
             ></ProfileEditScreen>
 
@@ -91,9 +140,9 @@ const styles = StyleSheet.create({
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
-        width:'50%',
-        height:50,
-        
+        width: '50%',
+        height: 50,
+
     },
     editButtonText: {
         color: 'white',
