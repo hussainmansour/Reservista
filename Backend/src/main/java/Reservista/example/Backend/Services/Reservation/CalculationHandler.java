@@ -1,31 +1,37 @@
 package Reservista.example.Backend.Services.Reservation;
 
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
-import Reservista.example.Backend.DTOs.InvoiceComponent.RoomDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 
-public class CalculationHandler extends ReservationHandler{
-    public  ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO){
-        calculate_price(reservationDTO);
+public class CalculationHandler extends ReservationHandler {
+    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+        calculatePrice(reservationDTO);
         return nextHandler.handleRequest(reservationDTO);
     }
-    public void calculate_price(ReservationDTO reservationDTO) {
+
+    public void calculatePrice(ReservationDTO reservationDTO) {
         int total = 0;
-        for(RoomDTO r:reservationDTO.getRooms()){
-            double optionPrice=0;
-            if(r.getOptions()!=null ) {
-                for (OptionDTO o : r.getOptions()) {
-                    optionPrice+=o.getPrice();
-                }
+        for (ReservedRoomDTO r : reservationDTO.getReservedRooms()) {
+            int optionPrice = 0;
+            if (r.isHasBreakfast()) {
+                optionPrice += reservationDTO.getHotelFoodOptions().getBreakfastPrice();
             }
-            r.setOptionsTotalPrice(optionPrice);
-            total += optionPrice;
+            if (r.isHasLunch()) {
+                optionPrice += reservationDTO.getHotelFoodOptions().getLunchPrice();
+            }
+            if (r.isHasDinner()) {
+                optionPrice += reservationDTO.getHotelFoodOptions().getDinnerPrice();
+            }
+            int roomAfterOptionalService = reservationDTO.getRoomPrice() + optionPrice;
+            r.setTotalPrice(roomAfterOptionalService);
+            total += roomAfterOptionalService;
         }
         reservationDTO.setPrice(total);
-        total+=total* reservationDTO.getRefundAdditionalPercentage();
-        total-=total* reservationDTO.getVoucherPercentage();
+        total += total * (reservationDTO.getRefundAdditionalPercentage()/100);
+        total -= total * (reservationDTO.getVoucherPercentage()/100);
 
-        reservationDTO.setFinalPrice((int)Math.ceil(total));
+        reservationDTO.setFinalPrice(total);
     }
 }

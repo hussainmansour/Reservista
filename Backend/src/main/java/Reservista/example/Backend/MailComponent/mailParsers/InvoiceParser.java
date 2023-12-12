@@ -1,6 +1,6 @@
 package Reservista.example.Backend.MailComponent.mailParsers;
 
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.MailComponent.Mail;
 import Reservista.example.Backend.Models.EntityClasses.User;
 

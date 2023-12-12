@@ -2,7 +2,7 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
@@ -37,7 +37,7 @@ public class VoucherHandler extends ReservationHandler{
 
         if(reservationDTO.getVoucherCode() != null){
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
-            User user = userRepository.findUserByUserName(reservationDTO.getUserName());
+            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElse(null);
             StatusCode statusCode = handleVoucher(user, voucher);
 
             switch (statusCode){
