@@ -38,9 +38,11 @@ public class VoucherHandler extends ReservationHandler{
         if(reservationDTO.getVoucherCode() != null){
 
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
+            if(voucher == null) return null;  //Throw exception "This voucher doesn't exist at all"
+
             Instant voucherExpirationDate = voucher.getExpiresAt();
 
-            if(Instant.now().isAfter(voucherExpirationDate)) return null;//Throw exception "Voucher is expired"}
+            if(Instant.now().isAfter(voucherExpirationDate)) return null; //Throw exception "Voucher is expired"}
 
             User user = userRepository.findUserByUserName(reservationDTO.getUserID());
             Set<Voucher> usedVouchers = user.getVouchers();
