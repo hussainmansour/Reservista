@@ -11,6 +11,7 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.Set;
+import java.util.UUID;
 
 @Entity
 @Data
