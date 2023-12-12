@@ -20,6 +20,14 @@ import SmallButton from '../Components/SmallButton';
 
 const CartScreen = () => {
 
+  // will be sent as prop
+  // title
+  // roomTypeID
+  // number of rooms
+  // price of room
+  // price if breakfast, lunch, dinner
+  // I will need to iitialize an array with the price of each room to update the price after addding additional options
+
   const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
   const roomDetails = { price: 100, title: "Room title", count: 4, roomTypeID: "roomTypeID"}
 
@@ -27,6 +35,7 @@ const CartScreen = () => {
   const [clientSecret, setClientSecret] = useState("");
   const [expandedRooms, setExpandedRooms] = useState({});
   const [expandedVouncher, setExpandedVoucher] = useState(true);
+  const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(roomDetails.count*roomDetails.price);
   const [rooms, setRooms] = useState( Array.from({ length: roomDetails.count }, (_, index) => {
       const room = {
         id: index + 1,
@@ -72,44 +81,13 @@ const CartScreen = () => {
     })
   }
 
-
-  // useEffect(() =>{
-
-
-  // }, [rooms]);
+  useEffect(() =>{
+    // TO DO : handle the voucher 
+    const total = rooms.reduce((acc, room) => acc + room.price, 0);
+    setCalculatedTotalPrice(total);
+  }, [rooms]);
 
   const navigation = useNavigation();
-
-  // will be sent as prop
-  // title
-  // roomTypeID
-  // number of rooms
-  // price of room
-  // price if breakfast, lunch, dinner
-  // I will need to iitialize an array with the price of each room to update the price after addding additional options
-
-  // const rooms = [
-  //   { id: 1, title: "Room 1", price: 100 },
-  //   { id: 2, title: "Room 2", price: 120 },
-  //   { id: 3, title: "Room 1", price: 100 },
-  //   { id: 4, title: "Room 1", price: 100 },
-  // ];
-
-  
-
-
-  // const rooms = Array.from({ length: roomDetails.count }, (_, index) => {
-  //   const room = {
-  //     id: index + 1,
-  //     title: `Room ${index + 1}`,
-  //     price: roomDetails.price,
-  //     isBreakfastSelected: 0,
-  //     isLunchSelected: 0,
-  //     isDinnerSelected: 0,
-  //   };
-  
-  //   return room;
-  // });
 
   useEffect(() => {
     let timer;
@@ -260,7 +238,7 @@ const CartScreen = () => {
 
       </ScrollView>
       <View style={styles.priceContainer}>
-        <Text style={styles.totalPrice}>Total Price: total_price</Text>
+        <Text style={styles.totalPrice}>Total Price: {calculatedTotalPrice}</Text>
 
         {true && (
           <>
