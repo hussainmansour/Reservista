@@ -11,7 +11,7 @@ import Checkbox from "expo-checkbox";
 
 const AdditionalOptionsCollapse = ({ room, expanded, onToggle, onBreakfastToggle, onLunchToggle, onDinnerToggle, foodOptions }) => {
   return (
-    <View>
+    <View style={styles.container} >
       <TouchableOpacity onPress={onToggle}>
         <View style={styles.foodInfoContainer}>
           <Icon
@@ -95,6 +95,16 @@ const styles = StyleSheet.create({
       fontSize: 18,
       color: "#131155",
     },
+    container:{
+      backgroundColor: "#E0E5FF", // Background color to make the shadow more visible
+      borderRadius: 10,
+      shadowColor: '#000',
+      shadowOffset: { width: 0, height: 4 },
+      shadowOpacity: 0.3,
+      shadowRadius: 4,
+      elevation: 5, // for Android
+      padding: 10,
+    },
   
     textContainer: {
       flexDirection: 'row',
@@ -114,6 +124,7 @@ const styles = StyleSheet.create({
       fontWeight: "bold",
       color: "#131155",
       marginBottom: 8,
+      
     },
     
     checkboxStyle: {

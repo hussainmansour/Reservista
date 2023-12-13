@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   ImageBackground,
   TextInput,
+  ActivityIndicator
 } from "react-native";
 import PaymentModal from "../Modals/PaymentModal";
 import { useNavigation } from "@react-navigation/native";
@@ -17,6 +18,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Checkbox from "expo-checkbox";
 import SmallButton from "../Components/SmallButton";
 import AdditionalOptionsCollapse from "./RoomAdditionalOptionsCollapse.js.js";
+import { reserve, rollBackReservation, verifyVoucher } from "../Utilities/UserAPI.js";
 
 const CartScreen = () => {
   const navigation = useNavigation();
@@ -49,6 +51,8 @@ const CartScreen = () => {
   const [isFullRefundApplied, setIsFullRefundApplied] = useState(false);
   const [fullRefundRate, setFullRefundRate] = useState(0)
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState('');
+  const [reservationId, setReservationId] = useState("");
   const [rooms, setRooms] = useState(
     Array.from({ length: reservationDetails.count }, (_, index) => {
       const room = {
@@ -138,9 +142,20 @@ const CartScreen = () => {
     // navigation.navigate("");
   };
 
-  const handleCheckoutCancellation = () => {
+  const handleCheckoutCancellation =  async () => {
     setPaymentModalVisible(false);
     setClientSecret("");
+    setLoading(true);
+    try {
+      const response = await rollBackReservation(reservationId, setLoading);
+      console.log(response);
+    } catch (error) {
+        console.error('Error occured during rolling back the reservation', error.message);
+    } finally {
+        setLoading(false);
+    }
+    
+
     // we will need to call the backend cancel API and send the reservation ID to cancel the reservation
   };
 
@@ -151,18 +166,33 @@ const CartScreen = () => {
     }));
   };
 
-  const applyVoucher = () => {
+  const applyVoucher = async () => {
     // call backend to validate voucher
     // success -> discount rate returned
     //            update is voucherApplied
-    setDiscountRate(20);
-    setIsVoucherApplied(true); // use effect will be called to update the total price
-    setExpandedVoucher(true);
     // failure -> display error message
-    // setError("error message")
+    //            setError("error message")
+    // setLoading(true);
+    // try {
+    //   const response = await verifyVoucher(voucherCode, setLoading);
+    //   console.log(response);
+    //   if (response.status === 200) {
+        setDiscountRate(20);
+        setIsVoucherApplied(true); // use effect will be called to update the total price
+        setExpandedVoucher(true);
+         
+    //   }else if(response.status === 400){
+    //     setError("error message")
+    //   }
+    // } catch (error) {
+    //     console.error('Error in reservation', error.message);
+    //     Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+    // } finally {
+    //     setLoading(false);
+    // }
   };
 
-  const proceedToCheckout = () => {
+  const proceedToCheckout = async () => {
     // TO DO
     // call the backend API and send the reservationDTO, if Reservation was available
     // the request wil contain the clientSecret of the paymentIntent + the reservationID
@@ -189,10 +219,25 @@ const CartScreen = () => {
 
     console.log(reservationDTO);
 
-    setClientSecret(
-      "pi_3OMCuZIpHzJgrvA93NbsgHP6_secret_IAkXyJpxKjdWXD2HRJFIaKagV"
-    );
-    setPaymentModalVisible(true);
+    setLoading(true);
+    try {
+        const response = await reserve(userInfo, setLoading);
+        console.log(response);
+        if (response.status === 200) {
+          setReservationId(reservationDTO.data.reservationID);
+          setClientSecret(response.data.clientSecret);
+          setPaymentModalVisible(true);
+           
+        }else if(response.status === 400){
+            Alert.alert('', response.message);
+        }
+    } catch (error) {
+        console.error('Error in reservation', error.message);
+        Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+    } finally {
+        setLoading(false);
+    }
+    
   };
 
   return (
@@ -221,15 +266,15 @@ const CartScreen = () => {
         </Text>
         {isFullRefundApplied && (
 
-            <Text style={styles.fullRefundText}>
-              Price with full refundability: ${totalPriceAfterFullRefund}
+            <Text style={styles.calculationText}>
+              Full refundability: {reservationDetails.fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
             </Text>
             
             
         )}
         {isVoucherApplied && (
           <>
-            <Text style={styles.fullRefundText}>
+            <Text style={styles.calculationText}>
               Discount: {discountRate}% (-$
               {totalPriceAfterFullRefund - totalPriceAfterDiscount})
             </Text>
@@ -263,7 +308,7 @@ const CartScreen = () => {
           )}
           <Collapsible collapsed={expandedVouncher} duration={0}>
             <View style={styles.voucherBoxContainer}>
-              <Text style={styles.navyText}>Enter Your Voucher</Text>
+              <Text style={styles.fullRefundText}>Enter Your Voucher</Text>
               <View style={styles.voucherContainr}>
                 <TextInput
                   style={styles.textInputStyle}
@@ -292,11 +337,9 @@ const CartScreen = () => {
                 } } />
             </View>
             )}
-            
-        
       </View>
       
-
+      {loading && <ActivityIndicator size="large" color="#0000ff" />}
       <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
         <Text style={styles.whiteText}>CHECK OUT</Text>
       </TouchableOpacity>
@@ -320,12 +363,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   title: {
-    fontSize: 28,
+    fontSize: 32,
     fontWeight: "bold",
     color: "#ffffff",
     backgroundColor: "#131155",
-    paddingLeft: 20,
-    // includeFontPadding:10,
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 20,
+    padding:10
   },
   subtitle: {
     fontSize: 17,
@@ -334,19 +379,23 @@ const styles = StyleSheet.create({
     paddingBottom: 15,
   },
   scrollViewContainer: {
-    padding: 16,
+    padding: 10,
+
   },
   roomContainer: {
-    backgroundColor: "#E0E5FF",
+   
     borderRadius: 5,
     marginBottom: 16,
-    padding: 10,
+    paddingHorizontal:15,
+    
+    // padding: 2,
   },
 
   roomTitle: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#131155",
+    
   },
 
   voucherContainr: {
@@ -355,6 +404,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 5,
     alignItems: "stretch",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
   textInputStyle: {
     flex: 2,
@@ -368,14 +425,22 @@ const styles = StyleSheet.create({
   },
 
   buttonStyle: {
-    marginBottom: 20,
+    marginBottom: 30,
     width: "95%",
-    height: "5%",
+    height: 50,
     alignItems: "center",
     justifyContent: "center",
-    borderRadius: 10,
+    borderRadius: 5,
     backgroundColor: "#131155",
     alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 
   whiteText: {
@@ -395,11 +460,13 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#131155",
+    
   },
 
   discountText: {
     fontSize: 18,
     color: "#131155", // grey
+    
   },
 
   navyText: {
@@ -407,10 +474,19 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#5F0F40",
     marginBottom: 2,
+    // textShadowColor: "#000",
+    // textShadowOffset: { width: 1, height: 1 },
+    // textShadowRadius: 2,
   },
   fullRefundText: {
     fontSize: 18,
     fontWeight: "bold",
+    color: "#131155",
+    marginBottom: 2,
+    
+  },
+  calculationText:{
+    fontSize: 18,
     color: "#131155",
     marginBottom: 2,
   },
@@ -430,14 +506,23 @@ const styles = StyleSheet.create({
     marginTop: 1,
   },
   voucherBoxContainer: {
-    borderWidth: 2,
-    borderColor: "#131155",
     borderRadius: 10,
     padding: 16,
     marginBottom: 16,
     width: "95%",
     alignSelf: "center",
-  },
+    borderColor: "#131155",  // Border Color
+    borderWidth: 2,         // Border Width
+    backgroundColor: "#CDD2FF", // Background Color
+    shadowColor: "#000",
+    shadowOffset: {
+        width: 0,
+        height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+},
   checkboxContainer: {
     flexDirection: "row",
     justifyContent: 'flex-end',
