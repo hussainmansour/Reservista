@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
-@Log4j2
 public class StripeWebhook {
 
     @Autowired
@@ -24,9 +23,6 @@ public class StripeWebhook {
 
     @Value("${stripe.WebhookSecret}")
     private String stripeWebhookSecret;
-
-    @Autowired
-    Logger logger;
 
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
@@ -37,9 +33,8 @@ public class StripeWebhook {
 
             switch (event.getType()) {
                 case "payment_intent.succeeded":
-                    paymentConfirmationService.confirmPayment(event);
+                    paymentConfirmationService.confirmReservation(event);
                 default:
-                    logger.info(event.getType());
                     break;
             }
             return ResponseEntity.status(HttpStatus.OK).body("Received successfully.");
