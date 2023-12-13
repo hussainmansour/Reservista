@@ -1,28 +1,23 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
-import Reservista.example.Backend.Models.EmbeddedClasses.HotelImage;
 import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import org.checkerframework.checker.units.qual.C;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "hotel")
-public class Hotel {
+public class  Hotel {
 
     @Id
     @GeneratedValue
@@ -68,7 +63,8 @@ public class Hotel {
     @Embedded
     private HotelFoodOptions hotelFoodOptions;
 
-    @ManyToOne(optional = false)
+
+    @ManyToOne(optional = false , cascade = CascadeType.PERSIST)
     @JoinColumns({
             @JoinColumn(name = "location_city", referencedColumnName = "city" , nullable = false),
             @JoinColumn(name = "location_country", referencedColumnName = "country" , nullable = false)
