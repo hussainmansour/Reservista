@@ -44,7 +44,8 @@ public class ReservationDTO {
 
     private List<ReservedRoomDTO> reservedRooms;
 
-    // Data needed to be filled to use it in chain later
+    // Data needed to be filled to use it in chain later\
+    private String roomTitle;
     private int roomPrice;
 
     private Long reservationID;

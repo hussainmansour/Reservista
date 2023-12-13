@@ -61,6 +61,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             ReservedRoom reservedRoom = ReservedRoom.builder()
                     .roomDescription(roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow())
                     .roomFoodOptions(new RoomFoodOptions(r.isHasBreakfast(), r.isHasLunch(), r.isHasDinner()))
+                    .title(reservationDTO.getRoomTitle())
                     .build();
             reservedRoomSet.add(reservedRoom);
 
@@ -74,6 +75,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
                 .reservedRooms(reservedRoomSet)
                 .isRefundable(reservationDTO.isRefundable())
                 .isConfirmed(false)
+                .voucherApplied(reservationDTO.getVoucherPercentage()!=0)
                 .build();
     }
 
