@@ -2,6 +2,7 @@ package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.Services.Payment.PaymentConfirmationService;
 import lombok.extern.log4j.Log4j2;
 import org.apache.logging.log4j.Logger;
+import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/payment")
+@Log4j2
 public class StripeWebhook {
 
     @Autowired
@@ -22,6 +24,9 @@ public class StripeWebhook {
 
     @Value("${stripe.WebhookSecret}")
     private String stripeWebhookSecret;
+
+    @Autowired
+    Logger logger;
 
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
@@ -34,6 +39,7 @@ public class StripeWebhook {
                 case "payment_intent.succeeded":
                     paymentConfirmationService.confirmPayment(event);
                 default:
+                    logger.info(event.getType());
                     break;
             }
             return ResponseEntity.status(HttpStatus.OK).body("Received successfully.");
