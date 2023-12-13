@@ -64,6 +64,8 @@ public class ReservationDTO {
 
     private int finalPrice;  //price after voucher and refund fees
 
+    private String invoice;
+
 //    @Override
 //    public String toString(){
 //        StringBuilder s = new StringBuilder("Your Rooms:\n");

@@ -37,7 +37,9 @@ public class InvoiceHandler extends ReservationHandler {
             s.append("Voucher discount : -").append(reservationDTO.getVoucherPercentage()).append("%\n");
         }
         s.append("Total price: ").append(reservationDTO.getFinalPrice());
-        //save to database
+
+        reservationDTO.setInvoice(s.toString());
+        
         return nextHandler.handleRequest(reservationDTO);
     }
 
