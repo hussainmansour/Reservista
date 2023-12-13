@@ -46,6 +46,7 @@ public class ReservationDTO {
 
     // Data needed to be filled to use it in chain later
     private int roomPrice;
+    private String roomTitle;
 
     private Long reservationID;
 
