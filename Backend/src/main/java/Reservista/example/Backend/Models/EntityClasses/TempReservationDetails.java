@@ -1,17 +1,15 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
 
-import Reservista.example.Backend.Validators.Gmail;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+
+import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -19,6 +17,9 @@ import lombok.NoArgsConstructor;
 public class TempReservationDetails {
 
     @Id
+    @GeneratedValue
+    private UUID id;
+
     @OneToOne
     @JoinColumn(columnDefinition = "reservation_id" , referencedColumnName = "id")
     private Reservation reservation;
