@@ -43,8 +43,10 @@ public class VoucherHandler extends ReservationHandler{
             switch (statusCode){
                 case SUCCESS -> {
                     user.getVouchers().add(voucher);
+                    voucher.getUsers().add(user);
                     reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
                     userRepository.save(user);
+                    voucherRepository.save(voucher);
                     return nextHandler.handleRequest(reservationDTO);
                 }
                 default -> {
