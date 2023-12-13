@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/user")
 public class ReservationController {
-
     @Autowired
     ReservationService reservationService;
     @PostMapping("/apply_voucher")
@@ -33,5 +32,4 @@ public class ReservationController {
 //
 //        return null;
 //    }
-
 }
