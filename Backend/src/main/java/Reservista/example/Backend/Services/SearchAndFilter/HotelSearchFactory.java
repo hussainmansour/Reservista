@@ -14,15 +14,16 @@ import java.util.Objects;
 public class HotelSearchFactory {
 
     @Autowired
-    private final HotelRepository hotelRepository;
+    private  HotelRepository hotelRepository;
 
-    public HotelSearchFactory(HotelRepository hotelRepository) {
-        this.hotelRepository = hotelRepository;
-    }
+//    public HotelSearchFactory(HotelRepository hotelRepository) {
+//        this.hotelRepository = hotelRepository;
+//    }
 
     public Page<Hotel> searchHotels(SearchCriteriaDTO searchCriteria, Pageable pageable) {
 
         return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRating(
+                searchCriteria.getCountry(),
                 searchCriteria.getCity(),
                 searchCriteria.getCheckIn(),
                 searchCriteria.getCheckOut(),

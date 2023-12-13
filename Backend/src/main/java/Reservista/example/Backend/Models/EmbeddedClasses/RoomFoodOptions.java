@@ -2,8 +2,13 @@ package Reservista.example.Backend.Models.EmbeddedClasses;
 
 
 import jakarta.persistence.Embeddable;
-import jakarta.validation.constraints.NotNull;
+import lombok.*;
 
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
 @Embeddable
 public class RoomFoodOptions {
     private boolean hasBreakfast = false;

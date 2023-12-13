@@ -12,20 +12,12 @@ import org.springframework.data.domain.Pageable;
 
 @Service
 public class SearchAndFilterService {
-
-    @Autowired
-    private final HotelRepository hotelRepository;
-
-    @Autowired
     private final HotelMapper hotelMapper;
 
-    @Autowired
     private final HotelSearchFactory hotelSearchFactory;
 
-
-
-    public SearchAndFilterService(HotelRepository hotelRepository, HotelMapper hotelMapper, HotelSearchFactory hotelSearchFactory) {
-        this.hotelRepository = hotelRepository;
+    @Autowired
+    public SearchAndFilterService(HotelMapper hotelMapper, HotelSearchFactory hotelSearchFactory) {
         this.hotelMapper = hotelMapper;
         this.hotelSearchFactory = hotelSearchFactory;
     }
@@ -40,6 +32,9 @@ public class SearchAndFilterService {
             hotelPage = hotelSearchFactory.searchHotels(searchCriteria, pageable);
         }
 
+        if (hotelPage == null) {
+            return null;
+        }
         SearchResultDTO searchResult = new SearchResultDTO();
         searchResult.setHotels(hotelPage.map(hotelMapper::hotelToHotelDTO));
         return searchResult;

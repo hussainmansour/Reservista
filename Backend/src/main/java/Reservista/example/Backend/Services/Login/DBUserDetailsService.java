@@ -18,10 +18,6 @@ public class DBUserDetailsService implements UserDetailsService {
 
     @Autowired
     private AdminRepository adminRepository;
-
-    @Autowired
-    private BlockedUserService blockedUserService;
-
     @Override
     public UserDetails loadUserByUsername(String userNameOrEmail) throws UsernameNotFoundException {
 

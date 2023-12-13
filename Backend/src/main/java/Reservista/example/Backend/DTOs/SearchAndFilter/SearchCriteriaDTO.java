@@ -14,6 +14,9 @@ public class SearchCriteriaDTO {
     @NotBlank
     private String city;
 
+    @NotBlank
+    private String country;
+
     @Min(1)
     private int numberOfRooms;
 
@@ -37,10 +40,6 @@ public class SearchCriteriaDTO {
     private double maxRating;
     private String sortBy;
     private String sortOrder;
-
-    public boolean hasFilterCriteria() {
-        return minPrice > 0 || maxPrice > 0 || minStars > 0 || maxStars > 0 || minRating > 0 || maxRating > 0;
-    }
 
     public boolean hasSortCriteria() {
         return sortBy != null && !sortBy.isEmpty();

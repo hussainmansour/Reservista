@@ -1,6 +1,6 @@
 package Reservista.example.Backend.DTOs.SearchAndFilter;
 
-import Reservista.example.Backend.Models.EmbeddedClasses.HotelImage;
+import Reservista.example.Backend.Models.EntityClasses.HotelImage;
 import lombok.Data;
 
 import java.util.List;

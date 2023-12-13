@@ -5,11 +5,13 @@ import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
+import org.springframework.stereotype.Component;
 
 @Mapper
+@Component
 public interface HotelMapper {
 
-    HotelMapper INSTANCE = Mappers.getMapper(HotelMapper.class);
+//    HotelMapper INSTANCE = Mappers.getMapper(HotelMapper.class);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
