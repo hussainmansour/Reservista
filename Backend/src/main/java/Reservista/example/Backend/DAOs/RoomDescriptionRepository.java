@@ -16,5 +16,5 @@ public interface RoomDescriptionRepository extends JpaRepository<RoomDescription
     int findNumberOfRoomsByRoomDescriptionId(@Param("id") UUID id);
 
     Optional<RoomDescription> findRoomDescriptionById(UUID id);
- 
+
 }
