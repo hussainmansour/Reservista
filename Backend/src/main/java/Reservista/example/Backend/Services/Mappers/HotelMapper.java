@@ -7,11 +7,9 @@ import org.mapstruct.Mapping;
 import org.mapstruct.factory.Mappers;
 import org.springframework.stereotype.Component;
 
-@Mapper
-@Component
 public interface HotelMapper {
 
-//    HotelMapper INSTANCE = Mappers.getMapper(HotelMapper.class);
+    //HotelMapper INSTANCE = Mappers.getMapper(HotelMapper.class);
 
     @Mapping(target = "id", source = "id")
     @Mapping(target = "name", source = "name")
@@ -21,7 +19,7 @@ public interface HotelMapper {
     @Mapping(target = "starRating", source = "starRating")
     @Mapping(target = "country", source = "location.country")
     @Mapping(target = "minRoomPrice", expression = "java(calculateMinRoomPrice(hotel))")
-    @Mapping(target = "images", source = "images")
+    @Mapping(target = "images", source = "hotelImages")
     HotelDTO hotelToHotelDTO(Hotel hotel);
 
     default double calculateMinRoomPrice(Hotel hotel) {

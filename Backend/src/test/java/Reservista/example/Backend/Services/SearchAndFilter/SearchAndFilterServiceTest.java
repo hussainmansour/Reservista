@@ -4,26 +4,14 @@ import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 import java.time.Instant;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 
-
-
-
-import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.SearchResultDTO;
-import Reservista.example.Backend.Services.Mappers.HotelMapper;
-import org.junit.jupiter.api.BeforeEach;
-import org.springframework.stereotype.Component;
-
-import static org.mockito.Mockito.*;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
 
 @SpringBootTest
 class SearchAndFilterServiceTest {
@@ -35,8 +23,8 @@ class SearchAndFilterServiceTest {
     public void test_searchHotels() {
         // Arrange
         SearchCriteriaDTO searchCriteria = new SearchCriteriaDTO();
-        searchCriteria.setCity("France");
-        searchCriteria.setCountry("Paris");
+        searchCriteria.setCity("Paris");
+        searchCriteria.setCountry("France");
         searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));
         searchCriteria.setCheckOut(Instant.parse("2024-01-05T00:00:00Z"));
         searchCriteria.setNumberOfRooms(1);
@@ -46,17 +34,18 @@ class SearchAndFilterServiceTest {
         searchCriteria.setMinStars(0);
         searchCriteria.setMaxStars(5);
         searchCriteria.setMinRating(0);
-        searchCriteria.setMaxRating(5);
+        searchCriteria.setMaxRating(10);
+        searchCriteria.setPageSize(20);
 
-        Pageable pageable = PageRequest.of(0, 20);
+//        Pageable pageable = PageRequest.of(0, 20);
 
         // Act
-        SearchResultDTO result = searchAndFilterService.filterAndSortHotels(searchCriteria, pageable);
+        HotelSearchResultDTO result = searchAndFilterService.filterAndSortHotels(searchCriteria);
 
         // Assert
         assertNotNull(result);
         assertNotNull(result.getHotels());
-        assertEquals(0, result.getHotels().getTotalElements());
+        assertEquals(3, result.getHotels().getTotalElements());
     }
 }
 

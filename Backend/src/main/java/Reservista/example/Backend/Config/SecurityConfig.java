@@ -44,7 +44,7 @@ public class SecurityConfig {
                                 "/auth/**",
                                 "/register/**" ,
                                 "/config/**" ,
-                                "/test")
+                                "/test/**")
                         .permitAll()
                         .requestMatchers("/user/**").hasAuthority(SystemRoles.USER.name())
                         .requestMatchers("/admin/**").hasAuthority(SystemRoles.ADMIN.name())

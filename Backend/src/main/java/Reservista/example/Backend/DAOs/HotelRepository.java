@@ -14,8 +14,7 @@ import java.util.List;
 import java.util.UUID;
 
 @Repository
-public interface HotelRepository extends JpaRepository<Hotel, UUID> {
-
+public interface HotelRepository extends JpaRepository<Hotel, UUID>{
 
     @Query("SELECT DISTINCT h FROM Hotel h " +
             "JOIN h.roomDescriptions rd "+
@@ -60,9 +59,11 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price DESC"
+            "GROUP BY h.id "+
+            "ORDER BY min(rd.price) DESC"
     )
     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByPriceDesc(
+            @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
@@ -88,9 +89,11 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price ASC"
+            "GROUP BY h.id "+
+            "ORDER BY min(rd.price) ASC"
     )
     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByPriceASC(
+            @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
@@ -104,10 +107,6 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             @Param("maxRating") double maxRating,
             Pageable pageable
     );
-
-
-
-
 
 
     // TODO: need to write the Query
@@ -124,9 +123,10 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price ASC"
+            "ORDER BY h.starRating DESC"
     )
     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByStarsDesc(
+            @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
@@ -152,9 +152,10 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price ASC"
+            "ORDER BY h.starRating ASC"
     )
     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByStarsASC(
+            @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
@@ -180,11 +181,12 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price ASC"
+            "ORDER BY h.rating DESC"
     )
     //sort by rating
      Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingDesc(
-            @Param("city") String city,
+             @Param("country") String country,
+             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
             @Param("numberOfRooms") int numberOfRooms,
@@ -209,9 +211,10 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID> {
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
-            "ORDER BY rd.price ASC"
+            "ORDER BY h.rating ASC"
     )
      Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingASC(
+            @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
