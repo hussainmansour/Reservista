@@ -27,6 +27,7 @@ public class  Hotel {
     @Column(name = "name")
     private String name;
 
+
     @Min(0)
     @Max(10)
     @Column(name = "rating")

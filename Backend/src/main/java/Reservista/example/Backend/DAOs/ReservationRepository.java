@@ -9,15 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.UUID;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation,Long> {
-
-    Long findIdByPaymentIntentId(String paymentIntentId);
-
-//    @Modifying
-//    @Query("UPDATE Reservation r SET r.isConfirmed = true WHERE r.paymentIntentId = :paymentIntentId")
-//    void setIsConfirmedToTrueByPaymentIntentId(@Param("paymentIntentId") String paymentIntentId);
+public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
 
     @Modifying
     @Query("UPDATE Reservation r SET r.isConfirmed = true WHERE r.paymentIntentId = :paymentIntentId")
@@ -27,5 +22,6 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             "FROM Reservation r " +
             "WHERE r.paymentIntentId = :paymentIntentId ")
     Optional<Object[]> findEmailFirstNameReservationIdByPaymentIntentId(@Param("paymentIntentId") String paymentIntentId);
+
 
 }
