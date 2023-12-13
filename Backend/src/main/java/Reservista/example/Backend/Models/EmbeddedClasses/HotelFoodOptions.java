@@ -1,23 +1,19 @@
 package Reservista.example.Backend.Models.EmbeddedClasses;
 
-import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
+
+import jakarta.persistence.Embeddable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-
-@Embeddable
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class HotelImage {
-
-    @Lob
-    @NotNull
-    private byte[] source;
-
-    private String caption;
+@Embeddable
+public class HotelFoodOptions {
+    private int breakfastPrice;
+    private int lunchPrice;
+    private int dinnerPrice;
 }

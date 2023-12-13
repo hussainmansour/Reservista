@@ -8,10 +8,7 @@ import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.BirthDate;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -47,6 +45,7 @@ public class User implements UserDetails {
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    // todo: add notnull
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
@@ -55,19 +54,19 @@ public class User implements UserDetails {
     @Column(name = "nationality")
     private String nationality;
 
-    @NotNull
     @Column(name = "is_activated")
     private boolean isActivated;
 
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
     @Lob
-    @Column(name = "profile_image")
+    @Column(name = "profile_image" , columnDefinition = "LONGBLOB")
     private byte[] profileImage;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Reservation> reservations;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Report> reports;
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Notification> notifications;
@@ -92,7 +91,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isBlocked;
     }
 
     @Override

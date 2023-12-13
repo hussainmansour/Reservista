@@ -1,26 +1,23 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
-import Reservista.example.Backend.Models.EmbeddedClasses.HotelImage;
+import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
-import jdk.jfr.BooleanFlag;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
 @Entity
-@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "hotel")
-public class Hotel {
+public class  Hotel {
 
     @Id
     @GeneratedValue
@@ -30,13 +27,14 @@ public class Hotel {
     @Column(name = "name")
     private String name;
 
+
     @Min(0)
     @Max(10)
     @Column(name = "rating")
-    private double rating;
+    private double rating = 0;
 
     @Column(name = "review_count")
-    private int reviewCount;
+    private int reviewCount = 0;
 
     @Min(0)
     @Max(5)
@@ -49,42 +47,34 @@ public class Hotel {
     @ElementCollection
     @CollectionTable(name = "area_description", joinColumns =
     @JoinColumn(name = "hotel_id" , referencedColumnName = "id"))
-    @Column(name = "area_description")
+    @Column(name = "area_description" , nullable = false)
     private Set<String> areaDescription;
 
-    @ElementCollection
-    @CollectionTable(name = "hotel_image", joinColumns =
-    @JoinColumn(name = "hotel_id" , referencedColumnName = "id"))
-    @AttributeOverrides({
-            @AttributeOverride(
-                    name = "source",
-                    column = @Column(name = "image_source")
-            ),
-            @AttributeOverride(
-                    name = "caption",
-                    column = @Column(name = "image_caption")
-            ),
-    })
+    @OneToMany(mappedBy = "hotel" , cascade = CascadeType.ALL)
     private Set<HotelImage> hotelImages;
 
-    @OneToMany(mappedBy = "hotel", cascade = CascadeType.ALL)
-    private Set<OptionalService> optionalServices;
+    @Min(0)
+    @Max(100)
+    @Column(name = "fully_refundable_rate")
+    private int fullyRefundableRate = 0;
 
-    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
-    private Set<Room> rooms;
+    @Column(name = "is_fully_refundable")
+    private boolean isFullyRefundable = false;
 
-    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
-    private Set<Review> reviews;
+    @Embedded
+    private HotelFoodOptions hotelFoodOptions;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false , cascade = CascadeType.PERSIST)
     @JoinColumns({
             @JoinColumn(name = "location_city", referencedColumnName = "city" , nullable = false),
             @JoinColumn(name = "location_country", referencedColumnName = "country" , nullable = false)
     })
     private Location location;
-    @BooleanFlag
-    private boolean haveFullyRefundOption;
-    @Max(1)
-    private double additionalRefundPercentage;
+
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
+    private Set<RoomDescription> roomDescriptions;
+
+    @OneToMany(mappedBy = "hotel",cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 }
