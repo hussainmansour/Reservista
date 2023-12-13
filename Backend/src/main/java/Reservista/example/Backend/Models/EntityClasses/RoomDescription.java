@@ -1,19 +1,15 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
-import Reservista.example.Backend.Models.EmbeddedClasses.RoomImage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -40,6 +36,9 @@ public class RoomDescription {
     private int roomCount;
 
     @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
+
+    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
     private Set<RoomImage> roomImages;
 
     @ElementCollection
@@ -49,7 +48,7 @@ public class RoomDescription {
     private Set<String> roomDetails;
 
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false , cascade = CascadeType.PERSIST)
     @JoinColumn(name = "hotel_id" , referencedColumnName = "id" , nullable = false)
     private Hotel hotel;
 

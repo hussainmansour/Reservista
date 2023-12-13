@@ -3,17 +3,15 @@ package Reservista.example.Backend.Models.EntityClasses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -71,6 +69,9 @@ public class Reservation {
     @Column(name = "is_refundable")
     private boolean isRefundable = false;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "room_description_id" , referencedColumnName = "id" , nullable = false)
+    private RoomDescription roomDescription;
 
     @OneToOne(mappedBy = "reservation" , cascade = CascadeType.ALL)
     private TempReservationDetails tempReservationDetails;
