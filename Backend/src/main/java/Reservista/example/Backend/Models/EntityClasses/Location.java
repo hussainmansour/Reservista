@@ -1,6 +1,8 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Converters.ZoneIdConverter;
+import Reservista.example.Backend.Models.EmbeddedClasses.Coordinates;
+import Reservista.example.Backend.Models.IDClasses.LocationId;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,8 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.ZoneId;
-import java.util.List;
-import java.util.UUID;
+import java.util.Set;
+
 
 @Entity
 @Data
@@ -18,17 +20,14 @@ import java.util.UUID;
 @NoArgsConstructor
 @AllArgsConstructor
 @Table(name = "location")
+@IdClass(LocationId.class)
 public class Location {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private UUID id;
-
-    @NotNull
     @Column(name = "city")
     private String city;
 
-    @NotNull
+    @Id
     @Column(name = "country")
     private String country;
 
@@ -37,8 +36,18 @@ public class Location {
     private ZoneId timeZone;
 
     @Embedded
+    @AttributeOverrides({
+            @AttributeOverride(
+                    name = "longitude",
+                    column = @Column(name = "coordinates_longitude")
+            ),
+            @AttributeOverride(
+                    name = "latitude",
+                    column = @Column(name = "coordinates_latitude")
+            ),
+    })
     private Coordinates coordinates;
 
     @OneToMany(mappedBy = "location",cascade = CascadeType.ALL)
-    private List<Hotel> hotels;
+    private Set<Hotel> hotels;
 }

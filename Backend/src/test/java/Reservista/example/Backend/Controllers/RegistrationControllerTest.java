@@ -7,7 +7,7 @@ import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.RegistrationCredentialsException;
 import Reservista.example.Backend.Error.DeactivatedAccountException;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.Test;

@@ -1,7 +1,7 @@
 package Reservista.example.Backend.DAOs;
 
 
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -19,5 +19,7 @@ public interface UserRepository extends JpaRepository<User, String> {
     boolean findIsActivatedByEmail(@Param("email") String email);
 
     Optional<User> findByEmail(String email);
+
+    Optional<User> findByUserName(String userName);
 }
 

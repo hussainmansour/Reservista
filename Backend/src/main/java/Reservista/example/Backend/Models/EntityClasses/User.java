@@ -1,7 +1,8 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Enums.SystemRoles;
 import Reservista.example.Backend.Enums.Gender;
+import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Validators.Country;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.BirthDate;
@@ -11,7 +12,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.checkerframework.common.aliasing.qual.Unique;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -19,6 +19,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
 @Data
@@ -36,47 +37,44 @@ public class User implements UserDetails {
     private String password;
 
     @Gmail
-    @Unique
-    @Column(name = "email")
+    @Column(name = "email" , unique = true)
     private String email;
 
-    @Column(name = "first_name")
-    private String firstName;
-
-    @Column(name = "middle_name")
-    private String middleName;
-
-    @Column(name = "last_name")
-    private String lastName;
+    @Embedded
+    private FullName fullName;
 
     @BirthDate
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    // todo: add notnull
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
     private Gender gender;
 
-//    @Country
+    @Country
     @Column(name = "nationality")
     private String nationality;
 
-    @NotNull
     @Column(name = "is_activated")
     private boolean isActivated;
+
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
 
     @Lob
     @Column(name = "profile_image")
     private byte[] profileImage;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private List<Reservation> reservations;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Notification> notifications;
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
-    @ManyToMany(mappedBy = "users")
-    private List<Voucher> vouchers;
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Notification> notifications;
+
+    @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    private Set<Voucher> vouchers;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -95,7 +93,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return isBlocked;
     }
 
     @Override

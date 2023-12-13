@@ -7,8 +7,8 @@ import Reservista.example.Backend.MailComponent.Mail;
 import Reservista.example.Backend.MailComponent.MailService;
 import Reservista.example.Backend.MailComponent.mailParsers.AccountActivationMailParser;
 import Reservista.example.Backend.MailComponent.mailParsers.RegistrationMailParser;
-import Reservista.example.Backend.Models.OTP;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.OTP;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -62,7 +62,7 @@ public class OTPService {
 
         OTP newOtp = new OTP(user.getEmail());
         otpRepository.save(newOtp);
-        Mail mail = new AccountActivationMailParser(newOtp.getCode(), user.getEmail(), user.getFirstName());
+        Mail mail = new AccountActivationMailParser(newOtp.getCode(), user.getEmail(), user.getFullName().getFirstName());
         MailService mailService = new MailService();
         return mailService.sendMail(mail);
 

@@ -1,4 +1,6 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.IDClasses;
+
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -6,13 +8,11 @@ import lombok.NoArgsConstructor;
 
 import java.io.Serializable;
 
-
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ReportId implements Serializable {
-    private User user;
-    private Admin admin;
-    private Review review;
+public class BlockedUserId implements Serializable {
+    private String userName;
+    private String email;
 }

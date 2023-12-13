@@ -1,5 +1,6 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EmbeddedClasses;
 
+import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -9,28 +10,28 @@ import lombok.NoArgsConstructor;
 
 import java.util.UUID;
 
-@Entity
+
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Entity
 @Table(name = "hotel_image")
 public class HotelImage {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private UUID id;
 
     @Lob
     @NotNull
-    @Column(name = "source")
+    @Column(name = "image_source" , nullable = false)
     private byte[] source;
 
-    @Column(name = "caption")
+    @Column(name = "image_caption" , nullable = false)
     private String caption;
 
-    @ManyToOne
-    @JoinColumn(name = "hotel_id", referencedColumnName = "id")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "hotel_id" , referencedColumnName = "id" , nullable = false)
     private Hotel hotel;
-
 }
