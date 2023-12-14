@@ -24,7 +24,9 @@ const SearchAndFilter = ({route, navigation}) => {
         travellersCount,
         setTravellersCount,
         loading,
-        setLoading
+        setLoading,
+        searchDTO,
+        listOfHotels
     } = route.params;
 
     useEffect(() => {

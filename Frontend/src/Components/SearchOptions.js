@@ -52,6 +52,7 @@ const SearchOptions = ({navigation}) => {
     const search = async () => {
         let listOfHotels = await searchForHotels(getSearchDTO() , setLoading)
         navigation.navigate('SearchAndFilter' , {
+            searchDTO : getSearchDTO(),
             listOfHotels,
             selectedLocation,
             setSelectedLocation,

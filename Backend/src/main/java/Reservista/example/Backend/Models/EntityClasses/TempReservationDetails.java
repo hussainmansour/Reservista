@@ -4,12 +4,13 @@ package Reservista.example.Backend.Models.EntityClasses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
+
 import java.util.UUID;
 
 
-
-@Data
 @Entity
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor

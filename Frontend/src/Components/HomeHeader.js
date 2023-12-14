@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {
     Avatar, AvatarFallbackText, AvatarImage,
     Icon
@@ -38,6 +38,11 @@ const HomeHeader = () => {
         fetchData();
     }, []);
 
+    const onPress = () => {
+        // navigate to profile
+        console.log("profile")
+    }
+
 
     return (
         <View style={styles.header}>
@@ -46,13 +51,15 @@ const HomeHeader = () => {
             </Text>
 
             <View style={styles.avatar}>
-                <Avatar size="md">
-                    {hasImage ? (
-                        <AvatarImage source={{uri: profileImage}} alt={profileImage}/>
-                    ) : (
-                        <AvatarFallbackText>{`${firstName[0]} ${lastName[0]}`}</AvatarFallbackText>
-                    )}
-                </Avatar>
+                <TouchableOpacity onPress={onPress}>
+                    <Avatar size="md">
+                        {hasImage ? (
+                            <AvatarImage source={{uri: profileImage}} alt={profileImage}/>
+                        ) : (
+                            <AvatarFallbackText>{`${firstName[0]} ${lastName[0]}`}</AvatarFallbackText>
+                        )}
+                    </Avatar>
+                </TouchableOpacity>
             </View>
         </View>
     );
