@@ -3,17 +3,15 @@ package Reservista.example.Backend.Models.EntityClasses;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,11 +22,10 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-
     @Column(name = "price")
     private int price;
 
-    @NotNull
+
     @Column(name = "reservation_date")
     @CreationTimestamp
     private Instant reservationDate;
@@ -45,7 +42,7 @@ public class Reservation {
     private boolean voucherApplied = false;
 
     @NotBlank
-    @Column(name = "payment_intent_id" , unique = true)
+    @Column(name = "payment_intent_id" , unique = true, nullable = true)
     private String paymentIntentId;
 
     @Column(name = "is_confirmed")
@@ -54,6 +51,9 @@ public class Reservation {
     @Column(name = "is_refundable")
     private boolean isRefundable = false;
 
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "room_description_id" , referencedColumnName = "id" , nullable = false)
+    private RoomDescription roomDescription;
 
     @OneToOne(mappedBy = "reservation" , cascade = CascadeType.ALL)
     private TempReservationDetails tempReservationDetails;
