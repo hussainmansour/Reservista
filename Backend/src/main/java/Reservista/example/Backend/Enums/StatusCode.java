@@ -37,10 +37,12 @@ public enum StatusCode {
     UNAUTHORIZED(401 , "Incorrect username or password"),
 
     STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
-    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created");
+    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created"),
 
 
 
+
+    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
 
 
     private final int code;

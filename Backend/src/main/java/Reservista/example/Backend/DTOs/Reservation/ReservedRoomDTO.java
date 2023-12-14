@@ -1,8 +1,6 @@
 package Reservista.example.Backend.DTOs.Reservation;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
+import lombok.*;
 
 @Data
 @Builder
