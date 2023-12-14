@@ -59,7 +59,7 @@ public class Reservation {
     @OneToOne(mappedBy = "reservation" , cascade = CascadeType.ALL)
     private TempReservationDetails tempReservationDetails;
 
-    @OneToMany(mappedBy = "reservation" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<ReservedRoom> reservedRooms;
 
     @ManyToOne(optional = false)

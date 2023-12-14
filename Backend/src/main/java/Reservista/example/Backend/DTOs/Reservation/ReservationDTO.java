@@ -66,6 +66,8 @@ public class ReservationDTO {
 
     private String invoice;
 
+    private String paymentIntentId;
+
 //    @Override
 //    public String toString(){
 //        StringBuilder s = new StringBuilder("Your Rooms:\n");
