@@ -14,7 +14,7 @@ import {
   Alert,
 } from "react-native";
 
-const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment }) => {
+const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, price }) => {
 
   const [isReady, setIsReady] = useState(false);
   const { confirmPayment, paymentLoading } = useConfirmPayment();
@@ -84,7 +84,8 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment }
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
             <Button
-              title="Pay"
+              title={"Pay  $" + String(price)}
+              color= "#75C2F6"
               style={styles.ButtonStyle}
               onPress={pay}
               disabled={paymentLoading || !isReady}
