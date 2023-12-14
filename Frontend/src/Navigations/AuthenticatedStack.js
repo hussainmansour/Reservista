@@ -6,10 +6,16 @@ import Welcome from "../Screens/Welcome";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {StyleSheet} from "react-native";
+import Profile from "../Screens/Profile";
+import ProfileStack from "./ProfileStack";
+
+import CartScreen from "../Screens/CartScreen";
+
 import SearchAndFilter from "../Screens/SearchAndFilter";
 import SearchOptions from "../Components/SearchOptions";
 import SearchAndFilterHeader from "../Components/SearchAndFilterHeader";
 import SortAndFilterSelector from "../Components/SortAndFilterSelector";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -23,6 +29,7 @@ export default function AuthenticatedStack() {
                 contentStyle: {backgroundColor: Colors.primary100},
             }}
         >
+            
             <Stack.Screen
                 name="Home"
                 component={Home}
@@ -53,11 +60,22 @@ export default function AuthenticatedStack() {
                 component={SearchAndFilterHeader}
                 options={{headerShown: false}}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="SortAndFilterSelector"
                 component={SortAndFilterSelector}
                 options={{headerShown: false}}
-            />
+                component={ProfileStack}
+                options={{
+                    headerRight: ({tintColor}) => (
+                        <IconButton
+                            icon="exit"
+                            color={tintColor}
+                            size={24}
+                            onPress={authCtx.logout}
+                        />
+                    ),
+                }}
+            /> */}
         </Stack.Navigator>
     );
 }

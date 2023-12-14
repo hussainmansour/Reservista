@@ -22,7 +22,7 @@ public enum StatusCode {
     EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
     REGISTRATION_RACE_CONDITION(21, "Email or username already exists"),
     SUCCESS(200, "success"),
-    NOT_FOUND(404, "Not found"),
+    NOT_FOUND(404, "Voucher not found"),
     SERVER_ERROR(500, "Server error"),
     CREDENTIAL_ERROR(1, "Credential errors "),
     NOT_REGISTERED_USER(2, "This email didn't register"),
@@ -30,7 +30,19 @@ public enum StatusCode {
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
-    UNAUTHORIZED(401 , "Incorrect username or password");
+
+    EXPIREDCODE(330 , "This code is expired"),
+    USEDVOUCHER(99, "This code is used already"),
+    NOT_AVAILABLE(30,"Rooms are not avaialble"),
+    UNAUTHORIZED(401 , "Incorrect username or password"),
+
+    STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
+    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created"),
+
+
+
+
+    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
 
 
     private final int code;
@@ -40,8 +52,11 @@ public enum StatusCode {
         this.code = code;
         this.message = message;
     }
-
+//
     public ResponseDTO<Void> getRespond() {
         return new ResponseDTO<>(code,message,null);
     }
+//    public ResponseDTO<Object> getRespond() {
+//        return new ResponseDTO<Object>(code,message,null);
+//    }
 }

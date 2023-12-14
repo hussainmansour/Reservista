@@ -1,9 +1,11 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
+import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Enums.SystemRoles;
-import Reservista.example.Backend.Enums.Gender;
+
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Validators.Country;
+import Reservista.example.Backend.Validators.Gender;
 import Reservista.example.Backend.Validators.Gmail;
 import Reservista.example.Backend.Validators.BirthDate;
 import jakarta.persistence.*;
@@ -46,9 +48,10 @@ public class User implements UserDetails {
     private LocalDate birthDate;
 
     // todo: add notnull
+
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Genders gender;
 
     @Country
     @Column(name = "nationality")

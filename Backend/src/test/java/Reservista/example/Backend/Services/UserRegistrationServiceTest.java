@@ -20,7 +20,7 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
- import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserRegistrationServiceTest {

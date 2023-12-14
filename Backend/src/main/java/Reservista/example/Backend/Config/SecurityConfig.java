@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
+                                "/api/payment/**",
                                 "/auth/**",
                                 "/register/**" ,
                                 "/config/**" ,
