@@ -6,15 +6,18 @@ import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.data.domain.PageRequest;
 
 @Data
 public class HotelSearchCriteriaDTO {
     @NotBlank
+    @NotNull
     private String city;
 
     @NotBlank
+    @NotNull
     private String country;
 
     @Min(1)
@@ -30,10 +33,10 @@ public class HotelSearchCriteriaDTO {
     private int pageSize = 0;
 
     @NotNull
-    private Instant checkIn;
+    private Instant checkIn = Instant.now();
 
     @NotNull
-    private Instant checkOut;
+    private Instant checkOut = Instant.now().plus(2, ChronoUnit.DAYS);
 
     private int minPrice = 0;
     private int maxPrice = 10000;

@@ -27,9 +27,4 @@ public class SearchAndFilterService {
         return roomSearchService.getRoomsInSpecificHotel(roomSearchCriteriaDTO);
     }
 
-
-
-    //TODO: get hotel by name
-    //TODO: make the home page
-    //TODO: edit the hotel repo
 }
