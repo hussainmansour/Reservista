@@ -29,11 +29,12 @@ public class ReservationService {
     private final ReservationHandler reservationHandler;
 
     @Autowired
-    public ReservationService (CalculationHandler calculationHandler, DatabaseReservationHandler databaseReservationHandler, InvoiceHandler invoiceHandler, PaymentHandler paymentHandler, RoomAvailabilityHandler roomAvailabilityHandler, VoucherHandler voucherHandler){
+    public ReservationService (CalculationHandler calculationHandler, DatabaseReservationHandler databaseReservationHandler, InvoiceHandler invoiceHandler, PaymentHandler paymentHandler,ReservationInfoHandler reservationInfoHandler, RoomAvailabilityHandler roomAvailabilityHandler, VoucherHandler voucherHandler){
 
         paymentHandler.setNextHandler(databaseReservationHandler);
         invoiceHandler.setNextHandler(paymentHandler);
-        calculationHandler.setNextHandler(invoiceHandler);
+        reservationInfoHandler.setNextHandler(invoiceHandler);
+        calculationHandler.setNextHandler(reservationInfoHandler);
         roomAvailabilityHandler.setNextHandler(calculationHandler);
         voucherHandler.setNextHandler(roomAvailabilityHandler);
         this.reservationHandler = voucherHandler;
@@ -57,8 +58,7 @@ public class ReservationService {
     public ResponseDTO<ReservationResponseDTO> reserve(String userName,ReservationDTO reservationDTO){
 
         reservationDTO.setUserName(userName);
-        this.reservationHandler.handleRequest(reservationDTO);
+        return this.reservationHandler.handleRequest(reservationDTO);
 
-        return null;
     }
 }
