@@ -29,9 +29,12 @@ public class PaymentConfirmationService {
 
     public void confirmReservation(Event event) throws EventDataObjectDeserializationException {
 
+        System.out.println("confirm reservation");
         PaymentIntent paymentIntent = ApiResource.GSON.fromJson(event.getDataObjectDeserializer().deserializeUnsafe().toJson(), PaymentIntent.class);
         String paymentIntentId = paymentIntent.getId();
+        System.out.println(paymentIntentId);
         reservationRepository.setIsConfirmedToTrueByPaymentIntentId(paymentIntentId);
+        System.out.println("after confirming reservation");
         sendReservationConfirmationMail(paymentIntentId);
    
     }

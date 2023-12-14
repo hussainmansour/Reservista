@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class InvoiceHandler extends ReservationHandler {
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO){
+
+        System.out.println("invoice reservation handler");
         StringBuilder s = new StringBuilder();
         s.append("Reservation Details:\n")
                 .append("Reservation ID: ").append(reservationDTO.getReservationID()).append("\n")

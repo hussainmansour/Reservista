@@ -20,29 +20,29 @@ import SmallButton from "../Components/SmallButton";
 import AdditionalOptionsCollapse from "./RoomAdditionalOptionsCollapse.js.js";
 import { reserve, rollBackReservation, verifyVoucher } from "../Utilities/UserAPI.js";
 
-const CartScreen = () => {
+const CartScreen = ({route}) => {
   const navigation = useNavigation();
-
+  const {price,title,count,roomDescriptionId,hotelID,refundable,fullyRefundableRate,checkIn,checkOut,foodOptions}=route.params;
   // these things will be passed as prpos
-  const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
-  const reservationDetails = {
-    price: 100,
-    title: "Room title",
-    count: 4,
-    roomDescriptionId: "0002d331-89d7-4f19-b6bf-8cf553b767c5",
-    hotelID:"001cc902-bea3-4381-86af-4064e3b90fc8",
-    refundable:true,
-    fullyRefundableRate: 15,
-    checkIn: "2024-03-01T00:00:00Z",
-    checkOut: "2024-03-02T00:00:00Z",
+  // const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
+  // const reservationDetails = {
+  //   price: 100,
+  //   title: "Room title",
+  //   count: 4,
+  //   roomDescriptionId: "0002d331-89d7-4f19-b6bf-8cf553b767c5",
+  //   hotelID:"001cc902-bea3-4381-86af-4064e3b90fc8",
+  //   refundable:true,
+  //   fullyRefundableRate: 15,
+  //   checkIn: "2024-06-08T00:00:00Z",
+  //   checkOut: "2024-06-09T00:00:00Z",
 
-  };
+  // };
 
   const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [expandedRooms, setExpandedRooms] = useState({});
   const [expandedVouncher, setExpandedVoucher] = useState(true);
-  const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(reservationDetails.count * reservationDetails.price);
+  const [calculatedTotalPrice, setCalculatedTotalPrice] = useState(count * price);
   const [totalPriceAfterFullRefund, setTotalPriceAfterFullRefund] = useState(calculatedTotalPrice);
   const [totalPriceAfterDiscount, setTotalPriceAfterDiscount] =useState(calculatedTotalPrice);
   const [discountRate, setDiscountRate] = useState(0);
@@ -54,11 +54,11 @@ const CartScreen = () => {
   const [loading, setLoading] = useState('');
   const [reservationId, setReservationId] = useState("");
   const [rooms, setRooms] = useState(
-    Array.from({ length: reservationDetails.count }, (_, index) => {
+    Array.from({ length: count }, (_, index) => {
       const room = {
         id: index + 1,
         title: `Room ${index + 1}`,
-        price: reservationDetails.price,
+        price: price,
         hasBreakfast: false,
         hasLunch: false,
         hasDinner: false,
@@ -70,7 +70,7 @@ const CartScreen = () => {
   useEffect(() => {
     
     const total = rooms.reduce((acc, room) => acc + room.price, 0);
-    const refundRate = isFullRefundApplied? reservationDetails.fullyRefundableRate:0;
+    const refundRate = isFullRefundApplied? fullyRefundableRate:0;
     const totalWithRefund = Math.ceil(total+ total*refundRate/100);
     const totalWithVoucher = (Math.ceil(totalWithRefund - totalWithRefund * (discountRate / 100)))
 
@@ -172,6 +172,9 @@ const CartScreen = () => {
          
       }else{
         setError(response.message)
+        setIsVoucherApplied(false);
+        setDiscountRate(0);
+        setVoucherCode("");
       }
     } catch (error) {
         console.error('Error in verifying voucher', error.message);
@@ -193,13 +196,13 @@ const CartScreen = () => {
       });
 
     const reservationDTO = {
-        hotelID: reservationDetails.hotelID,
-        checkIn: reservationDetails.checkIn,
-        checkOut: reservationDetails.checkOut,
-        refundable: reservationDetails.refundable,
+        hotelID: hotelID,
+        checkIn: checkIn,
+        checkOut: checkOut,
+        refundable: refundable,
         voucherCode: voucherCode==""? null:voucherCode, 
         reservedRooms: reservedRooms,
-        roomDescriptionId: reservationDetails.roomDescriptionId,
+        roomDescriptionId: roomDescriptionId,
       };
 
     console.log(reservationDTO);
@@ -227,7 +230,7 @@ const CartScreen = () => {
 
   return (
     <View style={styles.wholeForm}>
-      <Text style={styles.title}>{reservationDetails.title}</Text>
+      <Text style={styles.title}>{title}</Text>
 
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         {rooms.map((room) => (
@@ -252,7 +255,7 @@ const CartScreen = () => {
         {isFullRefundApplied && (
 
             <Text style={styles.calculationText}>
-              Full refundability: {reservationDetails.fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
+              Full refundability: {fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
             </Text>
             
             
@@ -307,14 +310,14 @@ const CartScreen = () => {
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
           </Collapsible>
-            {reservationDetails.refundable&& (
+            {refundable&& (
                 <View style={styles.checkboxContainer}>
-                <Text style={styles.fullRefundText}>Fully refundable (+{reservationDetails.fullyRefundableRate}%)</Text>
+                <Text style={styles.fullRefundText}>Fully refundable (+{fullyRefundableRate}%)</Text>
                 <Checkbox 
                 value={isFullRefundApplied}
                 style={styles.checkboxStyle} color="#45474B"
                 onValueChange={() =>{
-                    setFullRefundRate(reservationDetails.fullyRefundableRate)
+                    setFullRefundRate(fullyRefundableRate)
                     setIsFullRefundApplied(prev=>!prev)
                 } } />
             </View>

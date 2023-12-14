@@ -3,17 +3,17 @@ import  { useContext} from 'react';
 import { AuthContext } from '../Store/authContext';
 const BASE_URL = 'http://192.168.1.9:8080/test';
 
-// const authCtx = useContext(AuthContext);
+
 
 
 const userApiPostRequest = async (endpoint, data, setLoading) => {
-    
+  const authCtx = useContext(AuthContext);
     try {
       setLoading(true); // Set loading to true to show the ActivityIndicator
       console.log('Data', data);
       const response = await axios.post(`${BASE_URL}/${endpoint}`, data,{
         headers: {
-            // 'Authorization': `Bearer ${authCtx.token}`,
+            'Authorization': `Bearer ${authCtx.token}`,
             'Content-Type': 'application/json', 
         }
     });
@@ -32,13 +32,13 @@ const userApiPostRequest = async (endpoint, data, setLoading) => {
 };
 
 const userApiPostRequestParam = async (endpoint, setLoading) => {
-    
+  const authCtx = useContext(AuthContext);
   try {
     setLoading(true); // Set loading to true to show the ActivityIndicator
     // console.log('Data', data);
     const response = await axios.post(`${BASE_URL}/${endpoint}`,{
       headers: {
-          // 'Authorization': `Bearer ${authCtx.token}`,
+          'Authorization': `Bearer ${authCtx.token}`,
           'Content-Type': 'application/json', 
       }
   });
@@ -57,13 +57,13 @@ const userApiPostRequestParam = async (endpoint, setLoading) => {
 };
 
 const userApiGetRequest = async (endpoint, data, setLoading) => {
-    
+  const authCtx = useContext(AuthContext);
     try {
       setLoading(true); // Set loading to true to show the ActivityIndicator
       console.log('Data', data);
       const response = await axios.get(`${BASE_URL}/${endpoint}`, data,{
         headers: {
-            // 'Authorization': `Bearer ${authCtx.token}`,
+            'Authorization': `Bearer ${authCtx.token}`,
             'Content-Type': 'application/json', 
         }
     });

@@ -30,7 +30,7 @@ public class DatabaseReservationHandler extends ReservationHandler{
     @Transactional
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
 
-
+        System.out.println("databaseReservationHandler");
         Reservation reservation =reservationRepository.findById(reservationDTO.getReservationID()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
 
         Iterator<ReservedRoom> roomIterator = reservation.getReservedRooms().iterator();
@@ -42,14 +42,14 @@ public class DatabaseReservationHandler extends ReservationHandler{
 
         reservation.setPrice(reservationDTO.getFinalPrice());
         reservation.setPaymentIntentId(reservationDTO.getPaymentIntentId());
-
+        System.out.println(reservationDTO.getPaymentIntentId());
         TempReservationDetails tempReservationDetails = TempReservationDetails.builder().invoice(reservationDTO.getInvoice()).reservation(reservation).build();
 
         reservation.setTempReservationDetails(tempReservationDetails);
         tempReservationDetailsRepository.save(tempReservationDetails);
         reservationRepository.save(reservation);
 
-        return nextHandler.handleRequest(reservationDTO);
+        return null;
     }
 
 }

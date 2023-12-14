@@ -21,6 +21,7 @@ public class PaymentHandler extends ReservationHandler{
     @Override
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
 
+        System.out.println("payment reservation handler");
         try {
             Stripe.apiKey= "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
 
@@ -40,7 +41,7 @@ public class PaymentHandler extends ReservationHandler{
                     .reservationId(reservationDTO.getReservationID())
                     .clientSecret(intent.getClientSecret())
                     .build();
-
+            nextHandler.handleRequest(reservationDTO);
             ResponseDTO<ReservationResponseDTO> responseDTO
                     = new ResponseDTO<>(StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getCode(),StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getMessage(),reservationResponseDTO);
             return responseDTO;

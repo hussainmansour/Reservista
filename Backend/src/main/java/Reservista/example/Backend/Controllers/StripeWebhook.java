@@ -26,15 +26,18 @@ public class StripeWebhook {
 
     @PostMapping("/webhook")
     public ResponseEntity<String> handleWebhook(@RequestBody String payload, @RequestHeader("Stripe-Signature") String sigHeader) {
-
+        System.out.println("webhook");
         try {
 
-            Event event = Webhook.constructEvent(payload, sigHeader, stripeWebhookSecret);
+
+            Event event = Webhook.constructEvent(payload, sigHeader, "whsec_18c2acc6762de9e1f49ad87a17eb485318551f4a01894231ab2c2f2ff9ae4bd6");
 
             switch (event.getType()) {
                 case "payment_intent.succeeded":
+                    System.out.println("yesssssss");
                     paymentConfirmationService.confirmReservation(event);
                 default:
+                    System.out.println("another event");
                     break;
             }
             return ResponseEntity.status(HttpStatus.OK).body("Received successfully.");

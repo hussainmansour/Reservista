@@ -9,21 +9,21 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test")
+@RequestMapping("/user")
 public class ReservationController {
 
     @Autowired
     ReservationService reservationService;
 
     @PostMapping("/apply_voucher")
-    public ResponseDTO<Integer> applyVoucher(/*@AuthenticationPrincipal String username,*/ @RequestBody String voucherCode){
+    public ResponseDTO<Integer> applyVoucher(@AuthenticationPrincipal String username, @RequestBody String voucherCode){
         System.out.println(voucherCode);
-        return reservationService.applyVoucher("zezo123", voucherCode);
+        return reservationService.applyVoucher(username, voucherCode);
     }
 
     @PostMapping("/reserve")
-    public ResponseDTO<ReservationResponseDTO> reserve(/*@AuthenticationPrincipal*/  @Valid @RequestBody ReservationDTO reservationDTO) {
-       return reservationService.reserve("mariam",reservationDTO);
+    public ResponseDTO<ReservationResponseDTO> reserve(@AuthenticationPrincipal String username, @Valid @RequestBody ReservationDTO reservationDTO) {
+       return reservationService.reserve(username,reservationDTO);
     }
 
     @PostMapping("/rollback")

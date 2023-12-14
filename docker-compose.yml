@@ -12,7 +12,6 @@ services:
       SPRING_DATASOURCE_USERNAME: Reservista_Admin
       SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
 
     networks:
