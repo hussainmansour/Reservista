@@ -3,6 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import HotelView from '../Screens/HotelView';
 import Reservation from './Resrvation';
+import CartScreen from '../Screens/CartScreen';
 
 const Stack = createStackNavigator();
 
@@ -49,8 +50,8 @@ const ReservationNavigation = () => {
           }}
         />
         <Stack.Screen
-          name="Reservation"
-          component={Reservation}
+          name="CartScreen"
+          component={CartScreen}
           options={{
             title: 'Reservation',
             headerStyle: {

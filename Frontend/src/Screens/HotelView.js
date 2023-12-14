@@ -40,7 +40,7 @@ const HotelView = ({ hotelId, name, city, country, address, fullyRefundableRate,
             foodOptions : { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 }
         };
         console.log(Reservation);
-        navigation.navigate('Reservation',Reservation);
+        navigation.navigate('CartScreen',Reservation);
     }
 
     const HotelDTO = {

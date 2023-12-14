@@ -84,7 +84,6 @@ const CartScreen = ({route}) => {
 
   useEffect(() => {
     let timer;
-
     if (isPaymentModalVisible) {
       const timeoutDuration = 10 * 60 * 1000; // 10 minutes
       timer = setTimeout(() => {
@@ -141,7 +140,7 @@ const CartScreen = ({route}) => {
     );
     // TO DO
     // navigate to the desired screen
-    navigation.navigate('Home');
+    navigation.navigate('HotelView');
   };
 
   const handleCheckoutCancellation =  async () => {
