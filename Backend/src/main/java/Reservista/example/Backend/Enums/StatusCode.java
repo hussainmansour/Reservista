@@ -30,9 +30,14 @@ public enum StatusCode {
     EXPIRED_VERIFICATION_COD(4, "This code has expired"),
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
-    UNAUTHORIZED(401 , "Incorrect username or password"),
+
     EXPIREDCODE(330 , "This code is expired"),
-    USEDVOUCHER(99, "This code is used already");
+    USEDVOUCHER(99, "This code is used already"),
+    NOT_AVAILABLE(30,"Rooms are not avaialble"),
+    UNAUTHORIZED(401 , "Incorrect username or password");
+
+
+
 
 
 

@@ -7,7 +7,9 @@ import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class ReservationResponseDTO {
     private String paymentIntentId;
-    private String reservationId;
+    private Long reservationId;
 }
