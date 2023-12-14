@@ -1,7 +1,7 @@
 import axios from 'axios';
 import  { useContext} from 'react';
 import { AuthContext } from '../Store/authContext';
-const BASE_URL = 'http://192.168.73.50:8080/user';
+const BASE_URL = 'http://192.168.2.39:8080/user';
 
 
 
@@ -98,4 +98,3 @@ export const rollBackReservation = async (data, setLoading, token) => {
 
 
 
-  

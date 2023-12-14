@@ -26,7 +26,7 @@ public class SearchAndFilterController {
 
 
     @PostMapping("/rooms")
-    public ResponseEntity<RoomSearchResultDTO> filterRooms(@Valid @RequestBody RoomSearchCriteriaDTO searchCriteria) {
+    public ResponseEntity<RoomSearchResultDTO> filterRooms(@RequestBody RoomSearchCriteriaDTO searchCriteria) {
         RoomSearchResultDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
         return new ResponseEntity<>(searchResult, HttpStatus.OK);
     }

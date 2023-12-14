@@ -15,6 +15,7 @@ import SearchAndFilter from "../Screens/SearchAndFilter";
 import SearchOptions from "../Components/SearchOptions";
 import SearchAndFilterHeader from "../Components/SearchAndFilterHeader";
 import SortAndFilterSelector from "../Components/SortAndFilterSelector";
+import HotelView from "../Screens/HotelView";
 
 
 const Stack = createNativeStackNavigator();
@@ -33,17 +34,16 @@ export default function AuthenticatedStack() {
             <Stack.Screen
                 name="Home"
                 component={Home}
-                options={{headerShown: false}}
-                // options={{
-                //     headerRight: ({tintColor}) => (
-                //         <IconButton
-                //             icon="exit"
-                //             color={tintColor}
-                //             size={24}
-                //             onPress={authCtx.logout}
-                //         />
-                //     ),
-                // }}
+                options={{
+                    headerRight: ({tintColor}) => (
+                        <IconButton
+                            icon="exit"
+                            color={tintColor}
+                            size={24}
+                            onPress={authCtx.logout}
+                        />
+                    ),
+                }}
             />
             <Stack.Screen
                 name="SearchAndFilter"
@@ -58,6 +58,16 @@ export default function AuthenticatedStack() {
             <Stack.Screen
                 name="SearchAndFilterHeader"
                 component={SearchAndFilterHeader}
+                options={{headerShown: false}}
+            />
+            <Stack.Screen
+            name="Hotel"
+            component={HotelView}
+            options={{headerShown: false}}
+            />
+            <Stack.Screen
+                name="CartScreen"
+                component={CartScreen}
                 options={{headerShown: false}}
             />
             {/* <Stack.Screen

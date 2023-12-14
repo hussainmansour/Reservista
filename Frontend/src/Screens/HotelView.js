@@ -7,7 +7,12 @@ import RoomAPI from '../Utilities/RoomsAPI';
 import { useNavigation } from '@react-navigation/native';
 import HotelImages from '../Components/HotelImages';
 
-const HotelView = ({ hotelId, name, city, country, address, fullyRefundableRate, isFullyRefundable, hotelFoodOptions, rating, reviewCount, starRating, minRoomPrice }) => {
+const HotelView = ({ route }) => {
+
+    const {item,searchDTO}=route.params;
+    const{address,city,country,fullyRefundable,fullyRefundableRate,hotelFoodOptions,id,images,minRoomPrice,name,rating,reviewCount,starRating}=item;
+    const{checkIn,checkOut,numberOfTravelers,numberOfRooms}=searchDTO;
+
 
     const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
 
@@ -30,29 +35,30 @@ const HotelView = ({ hotelId, name, city, country, address, fullyRefundableRate,
         const Reservation={
             price: price,
             title: title,
-            count: 4,
+            count: numberOfRooms,
             roomDescriptionId: roomId,
-            hotelID:hotelId,
-            refundable:true,
-            fullyRefundableRate: 15,
-            checkIn: "2024-03-01T00:00:00Z",
-            checkOut: "2024-03-02T00:00:00Z",
-            foodOptions : { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 }
+            hotelID:id,
+            refundable:fullyRefundable,
+            fullyRefundableRate: fullyRefundableRate,
+            checkIn: checkIn,
+            checkOut: checkOut,
+            foodOptions : hotelFoodOptions
         };
         console.log(Reservation);
         navigation.navigate('CartScreen',Reservation);
     }
 
     const HotelDTO = {
-        "hotelId": "d10a9c49-add1-44bd-98c6-2674c5b8fd78",
-        "numberOfRooms": 4,
-        "numberOfTravelers": 1,
-        "checkIn": "2024-01-01T00:00:00Z",
-        "checkOut": "2024-01-05T00:00:00Z"
+        "hotelId": id,
+        "numberOfRooms": numberOfRooms,
+        "numberOfTravelers": numberOfTravelers,
+        "checkIn": checkIn,
+        "checkOut": checkOut
     }
+    console.log("from hotel")
     console.log(HotelDTO);
 
-    
+
 
     // Getting the profile
     useEffect(() => {
@@ -108,20 +114,23 @@ const HotelView = ({ hotelId, name, city, country, address, fullyRefundableRate,
                     {/* Map and Address Container */}
                     <View style={styles.mapAndAddressContainer}>
                         {/* Map */}
-                        <MapView
-                            style={styles.map}
-                            initialRegion={{
-                                latitude,
-                                longitude,
-                                latitudeDelta: 0.0922,
-                                longitudeDelta: 0.0421,
-                            }}
-                        >
-                            <Marker coordinate={{ latitude, longitude }} title={hotelTitle} />
-                        </MapView>
+                        {/*<MapView*/}
+                        {/*    style={styles.map}*/}
+                        {/*    initialRegion={{*/}
+                        {/*        latitude,*/}
+                        {/*        longitude,*/}
+                        {/*        latitudeDelta: 0.0922,*/}
+                        {/*        longitudeDelta: 0.0421,*/}
+                        {/*    }}*/}
+                        {/*>*/}
+                        {/*    <Marker coordinate={{ latitude, longitude }} title={hotelTitle} />*/}
+                        {/*</MapView>*/}
 
                         {/* Address */}
                         <Text style={styles.address}>{`Address: ${address}`}</Text>
+                        <Text style={styles.address}>{`City: ${city}`}</Text>
+                        <Text style={styles.address}>{`Country: ${country}`}</Text>
+
                     </View>
                 </View>
 

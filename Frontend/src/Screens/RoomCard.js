@@ -7,30 +7,8 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, r
 
     const filteredDetails = roomDetails.filter(detail => !detail.includes('Sleeps'));
 
-    const images = [
-        require('../../assets/room11.jpg'),
-        require('../../assets/room12.jpg')
-        // Add more images here if needed
-    ];
-
-    const renderItem = ({ item }) => (
-        <Image style={styles.image} source={item} />
-    );
-
     return (
         <View style={styles.roomCardContainer}>
-
-            <View style={styles.roomImagesContainer}>
-                <FlatList
-                    horizontal
-                    data={images}
-                    keyExtractor={(item, index) => index.toString()}
-                    renderItem={renderItem}
-                    showsHorizontalScrollIndicator={false}
-                    contentContainerStyle={styles.roomImage}
-                />
-            </View>
-
             <View style={styles.roomInfoContainer}>
                 <Text style={styles.roomType}>{title}</Text>
                 <Text>{`Price: ${price}$`}</Text>

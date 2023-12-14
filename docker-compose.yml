@@ -24,21 +24,6 @@ services:
     networks:
       - Reservista
 
-  react-native-app:
-    build:
-      context:
-        ./Frontend
-    ports:
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
-
-    stdin_open: true
-    tty: true
-
-    networks:
-      - Reservista
-
 networks:
   Reservista:
     driver: bridge

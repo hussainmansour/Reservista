@@ -56,21 +56,21 @@ const CartScreen = ({route}) => {
   const authCtx = useContext(AuthContext);
   const [reservationId, setReservationId] = useState("");
   const [rooms, setRooms] = useState(
-    Array.from({ length: count }, (_, index) => {
-      const room = {
-        id: index + 1,
-        title: `Room ${index + 1}`,
-        price: price,
-        hasBreakfast: false,
-        hasLunch: false,
-        hasDinner: false,
-      };
-      return room;
-    })
+      Array.from({ length: count }, (_, index) => {
+        const room = {
+          id: index + 1,
+          title: `Room ${index + 1}`,
+          price: price,
+          hasBreakfast: false,
+          hasLunch: false,
+          hasDinner: false,
+        };
+        return room;
+      })
   );
 
   useEffect(() => {
-    
+
     const total = rooms.reduce((acc, room) => acc + room.price, 0);
     const refundRate = isFullRefundApplied? fullyRefundableRate:0;
     const totalWithRefund = Math.ceil(total+ total*refundRate/100);
@@ -102,10 +102,10 @@ const CartScreen = ({route}) => {
   const toggleBreakfast = (roomIndex) => {
     setRooms((prevRooms) => {
       prevRooms[roomIndex].hasBreakfast =
-        prevRooms[roomIndex].hasBreakfast === false ? true : false;
+          prevRooms[roomIndex].hasBreakfast === false ? true : false;
       prevRooms[roomIndex].price += prevRooms[roomIndex].hasBreakfast
-        ? foodOptions.breakfastPrice
-        : -foodOptions.breakfastPrice;
+          ? foodOptions.breakfastPrice
+          : -foodOptions.breakfastPrice;
       return [...prevRooms];
     });
   };
@@ -113,10 +113,10 @@ const CartScreen = ({route}) => {
   const toggleDinner = (roomIndex) => {
     setRooms((prevRooms) => {
       prevRooms[roomIndex].hasDinner =
-        prevRooms[roomIndex].hasDinner === false ? true : false;
+          prevRooms[roomIndex].hasDinner === false ? true : false;
       prevRooms[roomIndex].price += prevRooms[roomIndex].hasDinner
-        ? foodOptions.dinnerPrice
-        : -foodOptions.dinnerPrice;
+          ? foodOptions.dinnerPrice
+          : -foodOptions.dinnerPrice;
       return [...prevRooms];
     });
   };
@@ -124,10 +124,10 @@ const CartScreen = ({route}) => {
   const toggleLunch = (roomIndex) => {
     setRooms((prevRooms) => {
       prevRooms[roomIndex].hasLunch =
-        prevRooms[roomIndex].hasLunch === false ? true : false;
+          prevRooms[roomIndex].hasLunch === false ? true : false;
       prevRooms[roomIndex].price += prevRooms[roomIndex].hasLunch
-        ? foodOptions.lunchPrice
-        : -foodOptions.lunchPrice;
+          ? foodOptions.lunchPrice
+          : -foodOptions.lunchPrice;
       return [...prevRooms];
     });
   };
@@ -135,12 +135,12 @@ const CartScreen = ({route}) => {
   const handlePaymentSuccess = () => {
     setPaymentModalVisible(false);
     Alert.alert(
-      "Reservation successful!",
-      "You can check your upcoming reservations now."
+        "Reservation successful!",
+        "You can check your upcoming reservations now."
     );
     // TO DO
     // navigate to the desired screen
-    navigation.navigate('HotelView');
+    navigation.navigate('Home');
   };
 
   const handleCheckoutCancellation =  async () => {
@@ -149,8 +149,8 @@ const CartScreen = ({route}) => {
     try {
       const response = await rollBackReservation(reservationId, setLoading, authCtx.token);
     } catch (error) {
-        console.error('Error occured during rolling back the reservation', error.message);
-    } 
+      console.error('Error occured during rolling back the reservation', error.message);
+    }
   };
 
   const toggleExpandedRoom = (roomId) => {
@@ -161,16 +161,16 @@ const CartScreen = ({route}) => {
   };
 
   const applyVoucher = async () => {
-    
+
     try {
- 
+
       const response = await verifyVoucher(`${voucherCode}`, setLoading, authCtx.token);
       console.log(response);
       if (response.status === 200) {
         setDiscountRate(response.data);
-        setIsVoucherApplied(true); 
+        setIsVoucherApplied(true);
         setExpandedVoucher(true);
-         
+
       }else{
         setError(response.message)
         setIsVoucherApplied(false);
@@ -178,132 +178,132 @@ const CartScreen = ({route}) => {
         setVoucherCode("");
       }
     } catch (error) {
-        console.error('Error in verifying voucher', error.message);
-        Alert.alert('Error', 'An error occurred while applying your voucher. Please try again.');
+      console.error('Error in verifying voucher', error.message);
+      Alert.alert('Error', 'An error occurred while applying your voucher. Please try again.');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
   };
 
   const proceedToCheckout = async () => {
-    
+
     const reservedRooms = rooms.map((room) => {
-        const {hasBreakfast, hasLunch, hasDinner } = room;
-        return {
-          hasBreakfast,
-          hasLunch,
-          hasDinner,
-        };
-      });
+      const {hasBreakfast, hasLunch, hasDinner } = room;
+      return {
+        hasBreakfast,
+        hasLunch,
+        hasDinner,
+      };
+    });
 
     const reservationDTO = {
-        hotelID: hotelID,
-        checkIn: checkIn,
-        checkOut: checkOut,
-        refundable: refundable,
-        voucherCode: voucherCode==""? null:voucherCode, 
-        reservedRooms: reservedRooms,
-        roomDescriptionId: roomDescriptionId,
-      };
+      hotelID: hotelID,
+      checkIn: checkIn,
+      checkOut: checkOut,
+      refundable: refundable,
+      voucherCode: voucherCode==""? null:voucherCode,
+      reservedRooms: reservedRooms,
+      roomDescriptionId: roomDescriptionId,
+    };
 
     console.log(reservationDTO);
 
     setLoading(true);
     try {
-        const response = await reserve(reservationDTO, setLoading,authCtx.token);
-        console.log(response);
-        if (response.status === 61) {
-          setReservationId(response.data.reservationId);
-          setClientSecret(response.data.clientSecret);
-          setPaymentModalVisible(true);
-           
-        }else{
-            Alert.alert('', response.message);
-        }
+      const response = await reserve(reservationDTO, setLoading,authCtx.token);
+      console.log(response);
+      if (response.status === 61) {
+        setReservationId(response.data.reservationId);
+        setClientSecret(response.data.clientSecret);
+        setPaymentModalVisible(true);
+
+      }else{
+        Alert.alert('', response.message);
+      }
     } catch (error) {
-        console.error('Error in reservation', error.message);
-        Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+      console.error('Error in reservation', error.message);
+      Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
     } finally {
-        setLoading(false);
+      setLoading(false);
     }
-    
+
   };
 
   return (
-    <View style={styles.wholeForm}>
-      <Text style={styles.title}>{title}</Text>
+      <View style={styles.wholeForm}>
+        <Text style={styles.title}>{title}</Text>
 
-      <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-        {rooms.map((room) => (
-          <View key={room.id} style={styles.roomContainer}>
-            <AdditionalOptionsCollapse
-              room={room}
-              expanded={expandedRooms[room.id]}
-              onToggle={() => toggleExpandedRoom(room.id)}
-              onBreakfastToggle={() => toggleBreakfast(room.id - 1)}
-              onLunchToggle={() => toggleLunch(room.id - 1)}
-              onDinnerToggle={() => toggleDinner(room.id - 1)}
-              foodOptions={foodOptions}
-            />
-          </View>
-        ))}
-      </ScrollView>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+          {rooms.map((room) => (
+              <View key={room.id} style={styles.roomContainer}>
+                <AdditionalOptionsCollapse
+                    room={room}
+                    expanded={expandedRooms[room.id]}
+                    onToggle={() => toggleExpandedRoom(room.id)}
+                    onBreakfastToggle={() => toggleBreakfast(room.id - 1)}
+                    onLunchToggle={() => toggleLunch(room.id - 1)}
+                    onDinnerToggle={() => toggleDinner(room.id - 1)}
+                    foodOptions={foodOptions}
+                />
+              </View>
+          ))}
+        </ScrollView>
 
-      <View style={styles.priceContainer}>
-        <Text style={styles.totalPrice}>
-          Total Price: ${calculatedTotalPrice}
-        </Text>
-        {isFullRefundApplied && (
+        <View style={styles.priceContainer}>
+          <Text style={styles.totalPrice}>
+            Total Price: ${calculatedTotalPrice}
+          </Text>
+          {isFullRefundApplied && (
 
-            <Text style={styles.calculationText}>
-              Full refundability: {fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
-            </Text>
-            
-            
-        )}
-        {isVoucherApplied && (
-          <>
-            <Text style={styles.calculationText}>
-              Discount: {discountRate}% (-$
-              {totalPriceAfterFullRefund - totalPriceAfterDiscount})
-            </Text>
-          </>
-        )}
-        {(isVoucherApplied || isFullRefundApplied) &&(
-            <Text style={styles.navyText}>
+              <Text style={styles.calculationText}>
+                Full refundability: {fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
+              </Text>
+
+
+          )}
+          {isVoucherApplied && (
+              <>
+                <Text style={styles.calculationText}>
+                  Discount: {discountRate}% (-$
+                  {totalPriceAfterFullRefund - totalPriceAfterDiscount})
+                </Text>
+              </>
+          )}
+          {(isVoucherApplied || isFullRefundApplied) &&(
+              <Text style={styles.navyText}>
                 Final Price: ${totalPriceAfterDiscount}
-            </Text>
-        )}
-        {isVoucherApplied && (
-            <TouchableOpacity
-                onPress={() => {
-                setDiscountRate(0);
-                setIsVoucherApplied(false);
-                }}
-            >
+              </Text>
+          )}
+          {isVoucherApplied && (
+              <TouchableOpacity
+                  onPress={() => {
+                    setDiscountRate(0);
+                    setIsVoucherApplied(false);
+                  }}
+              >
                 <Text style={styles.applyVoucherText}>Remove voucher</Text>
-            </TouchableOpacity>
-        )}
-        
+              </TouchableOpacity>
+          )}
+
           {!isVoucherApplied && (
-            <TouchableOpacity
-              onPress={() => setExpandedVoucher(!expandedVouncher)}
-            >
-              <Text style={styles.applyVoucherText}>Add voucher</Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                  onPress={() => setExpandedVoucher(!expandedVouncher)}
+              >
+                <Text style={styles.applyVoucherText}>Add voucher</Text>
+              </TouchableOpacity>
           )}
           <Collapsible collapsed={expandedVouncher} duration={0}>
             <View style={styles.voucherBoxContainer}>
               <Text style={styles.fullRefundText}>Enter Your Voucher</Text>
               <View style={styles.voucherContainr}>
                 <TextInput
-                  style={styles.textInputStyle}
-                  placeholder="Voucher code"
-                  onChangeText={(code) => setVoucherCode(code)}
+                    style={styles.textInputStyle}
+                    placeholder="Voucher code"
+                    onChangeText={(code) => setVoucherCode(code)}
                 />
                 <TouchableOpacity
-                  style={styles.SmallbuttonStyle}
-                  onPress={applyVoucher}
+                    style={styles.SmallbuttonStyle}
+                    onPress={applyVoucher}
                 >
                   <Text style={styles.whiteText}>APPLY</Text>
                 </TouchableOpacity>
@@ -311,33 +311,33 @@ const CartScreen = ({route}) => {
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
           </Collapsible>
-            {refundable&& (
-                <View style={styles.checkboxContainer}>
+          {refundable&& (
+              <View style={styles.checkboxContainer}>
                 <Text style={styles.fullRefundText}>Fully refundable (+{fullyRefundableRate}%)</Text>
-                <Checkbox 
-                value={isFullRefundApplied}
-                style={styles.checkboxStyle} color="#45474B"
-                onValueChange={() =>{
-                    setFullRefundRate(fullyRefundableRate)
-                    setIsFullRefundApplied(prev=>!prev)
-                } } />
-            </View>
-            )}
-      </View>
-      
-      {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
-        <Text style={styles.whiteText}>CHECK OUT</Text>
-      </TouchableOpacity>
+                <Checkbox
+                    value={isFullRefundApplied}
+                    style={styles.checkboxStyle} color="#45474B"
+                    onValueChange={() =>{
+                      setFullRefundRate(fullyRefundableRate)
+                      setIsFullRefundApplied(prev=>!prev)
+                    } } />
+              </View>
+          )}
+        </View>
 
-      <PaymentModal
-        isVisible={isPaymentModalVisible}
-        onCancel={handleCheckoutCancellation}
-        clientSecret={clientSecret}
-        onSuccessfulPayment={handlePaymentSuccess}
-        price={totalPriceAfterDiscount}
-      />
-    </View>
+        {loading && <ActivityIndicator size="large" color="#0000ff" />}
+        <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
+          <Text style={styles.whiteText}>CHECK OUT</Text>
+        </TouchableOpacity>
+
+        <PaymentModal
+            isVisible={isPaymentModalVisible}
+            onCancel={handleCheckoutCancellation}
+            clientSecret={clientSecret}
+            onSuccessfulPayment={handlePaymentSuccess}
+            price={totalPriceAfterDiscount}
+        />
+      </View>
   );
 };
 
@@ -378,7 +378,7 @@ const styles = StyleSheet.create({
     fontSize: 18,
     fontWeight: "bold",
     color: "#0000000",
-    
+
   },
 
   voucherContainr: {
@@ -442,13 +442,13 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#000000",
-    
+
   },
 
   discountText: {
     fontSize: 18,
     color: "#45474B", // grey
-    
+
   },
 
   navyText: {
@@ -456,14 +456,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#45474B",
     marginBottom: 2,
-    
+
   },
   fullRefundText: {
     fontSize: 18,
     fontWeight: "bold",
     color: "#45474B",
     marginBottom: 2,
-    
+
   },
   calculationText:{
     fontSize: 18,
@@ -496,13 +496,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFFFFF", // Background Color
     shadowColor: "#000",
     shadowOffset: {
-        width: 0,
-        height: 2,
+      width: 0,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-},
+  },
   checkboxContainer: {
     flexDirection: "row",
     justifyContent: 'flex-end',
