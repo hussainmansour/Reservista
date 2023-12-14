@@ -43,7 +43,7 @@ public class Reservation {
     private boolean voucherApplied = false;
 
     @NotBlank
-    @Column(name = "payment_intent_id" , unique = true)
+    @Column(name = "payment_intent_id" , unique = true, nullable = true)
     private String paymentIntentId;
 
     @Column(name = "is_confirmed")
