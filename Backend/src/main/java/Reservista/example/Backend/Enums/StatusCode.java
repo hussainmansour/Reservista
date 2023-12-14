@@ -31,8 +31,13 @@ public enum StatusCode {
     INVALID_REQUEST(5, "Invalid request,there isn't Deactivated account of this email or there this account already activated"),
     INVALID_ARGUMENT(400, "Invalid argument"),
     UNAUTHORIZED(401 , "Incorrect username or password"),
+
     EXPIREDCODE(330 , "This code is expired"),
-    USEDVOUCHER(99, "This code is used already");
+    USEDVOUCHER(99, "This code is used already"),
+    STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
+    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created");
+
+
 
 
 
@@ -43,8 +48,11 @@ public enum StatusCode {
         this.code = code;
         this.message = message;
     }
-
+//
     public ResponseDTO<Void> getRespond() {
         return new ResponseDTO<>(code,message,null);
     }
+//    public ResponseDTO<Object> getRespond() {
+//        return new ResponseDTO<Object>(code,message,null);
+//    }
 }
