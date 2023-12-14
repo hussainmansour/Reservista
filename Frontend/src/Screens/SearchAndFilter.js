@@ -5,12 +5,19 @@ import HotelCard from "../Components/HotelCard";
 import SortAndFilterSelector from "../Components/SortAndFilterSelector";
 
 const SearchAndFilter = ({route, navigation}) => {
-    const renderItem = ({item}) => <HotelCard hotel={item}/>;
+    const renderItem = ({item}) => <HotelCard hotel={item} onPress={() => onHotelPress(item)}/>;
 
     const [isSortModalVisible, setSortModalVisible] = useState(false);
     const [isFilterModalVisible, setFilterSortModalVisible] = useState(false);
 
     const [hotels, setHotels] = useState([]);
+
+    const onHotelPress = (item) => {
+        navigation.navigate('Hotel' , {
+            searchDTO,
+            item
+        })
+    }
 
     const {
         selectedLocation,
