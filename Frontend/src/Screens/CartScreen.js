@@ -1,4 +1,5 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
+import { AuthContext } from '../Store/authContext';
 import {
   StyleSheet,
   Text,
@@ -52,6 +53,7 @@ const CartScreen = ({route}) => {
   const [fullRefundRate, setFullRefundRate] = useState(0)
   const [error, setError] = useState("");
   const [loading, setLoading] = useState('');
+  const authCtx = useContext(AuthContext);
   const [reservationId, setReservationId] = useState("");
   const [rooms, setRooms] = useState(
     Array.from({ length: count }, (_, index) => {
@@ -146,7 +148,7 @@ const CartScreen = ({route}) => {
     setPaymentModalVisible(false);
     setClientSecret("");
     try {
-      const response = await rollBackReservation(reservationId, setLoading);
+      const response = await rollBackReservation(reservationId, setLoading, authCtx.token);
     } catch (error) {
         console.error('Error occured during rolling back the reservation', error.message);
     } 
@@ -163,7 +165,7 @@ const CartScreen = ({route}) => {
     
     try {
  
-      const response = await verifyVoucher(`${voucherCode}`, setLoading);
+      const response = await verifyVoucher(`${voucherCode}`, setLoading, authCtx.token);
       console.log(response);
       if (response.status === 200) {
         setDiscountRate(response.data);
@@ -209,7 +211,7 @@ const CartScreen = ({route}) => {
 
     setLoading(true);
     try {
-        const response = await reserve(reservationDTO, setLoading);
+        const response = await reserve(reservationDTO, setLoading,authCtx.token);
         console.log(response);
         if (response.status === 61) {
           setReservationId(response.data.reservationId);

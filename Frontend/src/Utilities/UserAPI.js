@@ -1,19 +1,19 @@
 import axios from 'axios';
 import  { useContext} from 'react';
 import { AuthContext } from '../Store/authContext';
-const BASE_URL = 'http://192.168.1.9:8080/test';
+const BASE_URL = 'http://192.168.73.50:8080/user';
 
 
 
 
-const userApiPostRequest = async (endpoint, data, setLoading) => {
-  const authCtx = useContext(AuthContext);
+
+const userApiPostRequest = async (endpoint, data, setLoading, token) => {
     try {
       setLoading(true); // Set loading to true to show the ActivityIndicator
       console.log('Data', data);
       const response = await axios.post(`${BASE_URL}/${endpoint}`, data,{
         headers: {
-            'Authorization': `Bearer ${authCtx.token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json', 
         }
     });
@@ -31,14 +31,14 @@ const userApiPostRequest = async (endpoint, data, setLoading) => {
     }
 };
 
-const userApiPostRequestParam = async (endpoint, setLoading) => {
-  const authCtx = useContext(AuthContext);
+const userApiPostRequestParam = async (endpoint, setLoading, token) => {
+  // const authCtx = useContext(AuthContext);
   try {
     setLoading(true); // Set loading to true to show the ActivityIndicator
     // console.log('Data', data);
     const response = await axios.post(`${BASE_URL}/${endpoint}`,{
       headers: {
-          'Authorization': `Bearer ${authCtx.token}`,
+          'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json', 
       }
   });
@@ -56,14 +56,14 @@ const userApiPostRequestParam = async (endpoint, setLoading) => {
   }
 };
 
-const userApiGetRequest = async (endpoint, data, setLoading) => {
-  const authCtx = useContext(AuthContext);
+const userApiGetRequest = async (endpoint, data, setLoading, token) => {
+  // const authCtx = useContext(AuthContext);
     try {
       setLoading(true); // Set loading to true to show the ActivityIndicator
       console.log('Data', data);
       const response = await axios.get(`${BASE_URL}/${endpoint}`, data,{
         headers: {
-            'Authorization': `Bearer ${authCtx.token}`,
+            'Authorization': `Bearer ${token}`,
             'Content-Type': 'application/json', 
         }
     });
@@ -81,16 +81,16 @@ const userApiGetRequest = async (endpoint, data, setLoading) => {
     }
 };
 
-export const verifyVoucher = async (voucherCode, setLoading) => {
-    return await userApiPostRequestParam(`apply_voucher?voucherCode=${voucherCode}`, setLoading);
+export const verifyVoucher = async (voucherCode, setLoading, token) => {
+    return await userApiPostRequestParam(`apply_voucher?voucherCode=${voucherCode}`, setLoading, token);
 };
 
-export const reserve = async (reservationDTO, setLoading) => {
-    return await userApiPostRequest('reserve', reservationDTO, setLoading);
+export const reserve = async (reservationDTO, setLoading, token) => {
+    return await userApiPostRequest('reserve', reservationDTO, setLoading, token);
 };
 
-export const rollBackReservation = async (data, setLoading) => {
-    return await userApiPostRequestParam(`rollback?reservationId=${data}`, setLoading);
+export const rollBackReservation = async (data, setLoading, token) => {
+    return await userApiPostRequestParam(`rollback?reservationId=${data}`, setLoading, token);
 };
 
 

@@ -14,7 +14,7 @@ class MailServiceTest {
     void testSendWithCorrectEmail()  {
         Mail mail=new Mail();
         mail.setSubject("TESTING");
-        mail.setTo("mariam.gerges1188@gmail.com");
+        mail.setTo("elsamnimariam@gmail.com");
         mail.setBody("testing send with correct email");
         MailService mailservice=new MailService();
         ResponseDTO statusCode=mailservice.sendMail(mail);
