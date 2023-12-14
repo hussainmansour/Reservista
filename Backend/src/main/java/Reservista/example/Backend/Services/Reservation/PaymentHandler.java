@@ -17,7 +17,7 @@ public class PaymentHandler extends ReservationHandler{
     private String stripeSecretApiKey;
 
     @Override
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) throws StripeException {
+    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
 
         try {
             Stripe.apiKey= stripeSecretApiKey;

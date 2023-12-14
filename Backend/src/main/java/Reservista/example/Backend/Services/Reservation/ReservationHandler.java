@@ -8,7 +8,7 @@ import com.stripe.exception.StripeException;
 public abstract class ReservationHandler {
     protected ReservationHandler nextHandler;
 
-    public abstract ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) throws StripeException;
+    public abstract ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) ;
     public void setNextHandler(ReservationHandler reservationHandler){
         if(reservationHandler != null)
             this.nextHandler = reservationHandler;
