@@ -1,6 +1,13 @@
 package Reservista.example.Backend.DAOs;
 
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
+
+import java.util.Optional;
+
+
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -13,7 +20,9 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Repository
-public interface ReservationRepository extends JpaRepository<Reservation, UUID> {
+public interface ReservationRepository extends JpaRepository<Reservation,Long> {
+
+    Optional<Reservation> findById(Long id);
 
     @Modifying
     @Query("UPDATE Reservation r SET r.isConfirmed = true WHERE r.paymentIntentId = :paymentIntentId")
@@ -24,6 +33,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, UUID> 
             "FROM Reservation r " +
             "WHERE r.paymentIntentId = :paymentIntentId ")
     Optional<List<Object[]>> findEmailFirstNameReservationIdByPaymentIntentId(@Param("paymentIntentId") String paymentIntentId);
+
 
 
 }

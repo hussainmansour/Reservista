@@ -40,9 +40,8 @@ public class Reservation {
 
     @Column(name = "voucher_applied")
     private boolean voucherApplied = false;
-
-    @NotBlank
-    @Column(name = "payment_intent_id" , unique = true, nullable = true)
+    
+    @Column(name = "payment_intent_id", unique = true, nullable = true)
     private String paymentIntentId;
 
     @Column(name = "is_confirmed")
@@ -58,7 +57,7 @@ public class Reservation {
     @OneToOne(mappedBy = "reservation" , cascade = CascadeType.ALL)
     private TempReservationDetails tempReservationDetails;
 
-    @OneToMany(mappedBy = "reservation" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "reservation" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<ReservedRoom> reservedRooms;
 
     @ManyToOne(optional = false)

@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @ControllerAdvice
-public class GlobalExceptionHandler {
+public class GlobalExceptionHandler extends RuntimeException{
 
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<Object> handleValidationExceptions(MethodArgumentNotValidException ex) {
@@ -82,6 +82,11 @@ public class GlobalExceptionHandler {
                         .ACCOUNT_DEACTIVATED
                         .getRespond());
 
+    }
+    @ExceptionHandler(CustomizedException.class)
+    public ResponseEntity<ResponseDTO> customizedException(CustomizedException ex){
+        return ResponseEntity
+                .status(HttpStatus.OK).body(ResponseDTO.builder().status(ex.getCode()).message(ex.getMessage()).build());
     }
 
 }
