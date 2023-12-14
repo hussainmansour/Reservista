@@ -1,7 +1,8 @@
 package Reservista.example.Backend.DAOs;
 
 
-import Reservista.example.Backend.Models.User;
+
+import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

@@ -3,7 +3,8 @@ package Reservista.example.Backend.Services.Profile;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
 import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -22,9 +23,9 @@ public class ProfileService {
         profileDTO = user.map(value -> ProfileDTO.builder().
                 userName(value.getUsername()).
                 email(value.getEmail()).
-                firstName(value.getFirstName()).
-                middleName(value.getMiddleName()).
-                lastName(value.getLastName()).
+                firstName(value.getFullName().getFirstName()).
+                middleName(value.getFullName().getMiddleName()).
+                lastName(value.getFullName().getLastName()).
                 birthDate(value.getBirthDate()).
                 gender(value.getGender()).
                 nationality(value.getNationality()).
@@ -39,9 +40,11 @@ public class ProfileService {
         }
         else{
             User updatedUser = user.get();
-            updatedUser.setFirstName(updateDTO.getFirstName());
-            updatedUser.setMiddleName(updateDTO.getMiddleName());
-            updatedUser.setLastName(updateDTO.getLastName());
+            updatedUser.setFullName(FullName.builder()
+                    .firstName(updateDTO.getFirstName())
+                    .middleName(updateDTO.getMiddleName())
+                    .lastName(updateDTO.getLastName())
+                    .build());
             updatedUser.setBirthDate(updateDTO.getBirthDate());
             updatedUser.setGender(updateDTO.getGender());
             updatedUser.setNationality(updateDTO.getNationality());

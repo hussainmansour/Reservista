@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Services.Login;
 
 import Reservista.example.Backend.DAOs.BlockedUserRepository;
-import Reservista.example.Backend.Models.BlockedUser;
+import Reservista.example.Backend.Models.EntityClasses.BlockedUser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

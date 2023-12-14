@@ -3,8 +3,9 @@ package Reservista.example.Backend.Services;
 import Reservista.example.Backend.DAOs.OTPRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Models.OTP;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
+import Reservista.example.Backend.Models.EntityClasses.OTP;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.OTPService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -31,8 +32,13 @@ class OTPServiceTest {
     User setUPUser1NotValidated() {
         return User.builder()
                 .userName("mariam")
-                .firstName("mariam")
-                .lastName("gerges")
+                .fullName(
+                        FullName
+                                .builder()
+                                .firstName("mariam")
+                                .lastName("gerges")
+                                .build()
+                )
                 .email("mariam.gerges1188@gmail.com")
                 .password("jKK&123jgj")
                 .isActivated(false)
@@ -42,8 +48,13 @@ class OTPServiceTest {
     User setUPUser2NotValidated() {
         return User.builder()
                 .userName("mariamgerges")
-                .firstName("mariam")
-                .lastName("gerges")
+                .fullName(
+                        FullName
+                                .builder()
+                                .firstName("mariam")
+                                .lastName("gerges")
+                                .build()
+                )
                 .email("mariamgerges575@gmail.com")
                 .password("jKK&123jgj")
                 .isActivated(false)
@@ -53,8 +64,13 @@ class OTPServiceTest {
     User setUPUser1Validated() {
         return User.builder()
                 .userName("mariam")
-                .firstName("mariam")
-                .lastName("gerges")
+                .fullName(
+                        FullName
+                                .builder()
+                                .firstName("mariam")
+                                .lastName("gerges")
+                                .build()
+                )
                 .email("mariam.gerges1188@gmail.com")
                 .password("jKK&123jgj")
                 .isActivated(true)

@@ -9,9 +9,8 @@ import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.RegistrationCredentialsException;
 import Reservista.example.Backend.Error.DeactivatedAccountException;
-import Reservista.example.Backend.Models.User;
+import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +19,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
- import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.*;
 
 @SpringBootTest
 class UserRegistrationServiceTest {
