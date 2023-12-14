@@ -17,14 +17,14 @@ public class SearchAndFilterController {
     @Autowired
     private SearchAndFilterService searchAndFilterService;
 
-    @GetMapping("/hotels")
+    @PostMapping("/hotels")
     public ResponseEntity<HotelSearchResultDTO> filterAndSortHotels(@RequestBody HotelSearchCriteriaDTO searchCriteria) {
         HotelSearchResultDTO searchResult = searchAndFilterService.filterAndSortHotels(searchCriteria);
         return new ResponseEntity<>(searchResult, HttpStatus.OK);
     }
 
 
-    @GetMapping("/rooms")
+    @PostMapping("/rooms")
     public ResponseEntity<RoomSearchResultDTO> filterRooms(@RequestBody RoomSearchCriteriaDTO searchCriteria) {
         RoomSearchResultDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
         return new ResponseEntity<>(searchResult, HttpStatus.OK);

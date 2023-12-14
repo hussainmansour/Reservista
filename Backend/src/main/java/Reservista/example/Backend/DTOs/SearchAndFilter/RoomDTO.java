@@ -4,6 +4,7 @@ import Reservista.example.Backend.Models.EntityClasses.RoomImage;
 import lombok.Data;
 
 import java.util.Set;
+import java.util.UUID;
 
 @Data
 public class RoomDTO {
@@ -14,5 +15,5 @@ public class RoomDTO {
     private Set<String> roomDetails;
 //    private Set<RoomImage> roomImages;
     private int roomAvailability;
-
+    private UUID id;
 }

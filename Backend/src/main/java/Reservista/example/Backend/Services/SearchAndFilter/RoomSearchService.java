@@ -36,6 +36,7 @@ public class RoomSearchService {
             roomDTO.setCapacity(room.getCapacity());
             roomDTO.setPrice(room.getPrice());
             roomDTO.setTitle(room.getTitle());
+            roomDTO.setId(room.getId());
             roomDTO.setRoomAvailability(getNumberOfAvailableRoomsByRoomDescriptionID(room, roomSearchCriteriaDTO));
             roomDTOList.add(roomDTO);
         }
