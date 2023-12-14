@@ -9,12 +9,11 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 
-
+@Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
 @Embeddable
-@Data
 public class HotelFoodOptions {
     private int breakfastPrice;
     private int lunchPrice;

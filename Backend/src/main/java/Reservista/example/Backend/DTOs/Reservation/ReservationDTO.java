@@ -46,6 +46,7 @@ public class ReservationDTO {
 
     // Data needed to be filled to use it in chain later
     private int roomPrice;
+    private String roomTitle;
 
     private Long reservationID;
 
@@ -62,6 +63,10 @@ public class ReservationDTO {
     private int price;       //price of the reservation itself
 
     private int finalPrice;  //price after voucher and refund fees
+
+    private String invoice;
+
+    private String paymentIntentId;
 
 //    @Override
 //    public String toString(){
