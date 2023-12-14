@@ -12,9 +12,8 @@ import java.time.Instant;
 import java.util.UUID;
 @Repository
 public interface ReservedRoomRepository extends JpaRepository<ReservedRoom, UUID> {
-  @Lock(LockModeType.PESSIMISTIC_WRITE)
-  @Query("SELECT count(r.id) FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId " +
-          "AND (r.reservation.checkIn >= :checkin AND r.reservation.checkIn < :checkout) " +
-          "OR (r.reservation.checkOut > :checkin AND r.reservation.checkOut <= :checkout)")
-  int getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId,@Param("checkin") Instant checkIn, @Param("checkout") Instant checkOut);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT count(r.id) FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId "+
+            "AND r.reservation.checkOut >= :checkIn AND r.reservation.checkIn <= :checkOut")
+  int getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId,@Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
 }

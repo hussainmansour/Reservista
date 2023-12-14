@@ -15,7 +15,5 @@ import java.util.UUID;
 
 @Repository
 public interface ReservationRepository extends JpaRepository<Reservation,Long> {
-
-
-    Optional<Reservation> findById(long id);
+    Optional<Reservation> findById(Long id);
 }

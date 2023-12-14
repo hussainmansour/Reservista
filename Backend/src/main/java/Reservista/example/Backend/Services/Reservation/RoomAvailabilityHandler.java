@@ -10,8 +10,9 @@ import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.ReservedRoom;
+import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -21,7 +22,8 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@Component
+@Service
+@Transactional
 public class RoomAvailabilityHandler extends ReservationHandler {
     @Autowired
     UserRepository userRepository;
@@ -35,17 +37,15 @@ public class RoomAvailabilityHandler extends ReservationHandler {
     ReservationRepository reservationRepository;
 
 
-    @Override
+//    @Override
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
-
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
-
-        reservationDTO.setReservationID(reservation.getId());
         try {
-            checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
-            executor.schedule(() -> deleteAfter10min(reservation.getId()), 10, TimeUnit.MINUTES);
+            Reservation confirmedReservation=checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
+            reservationDTO.setReservationID(confirmedReservation.getId());
+            executor.schedule(() -> deleteAfter10min(confirmedReservation.getId()), 10, TimeUnit.MINUTES);
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
@@ -56,35 +56,37 @@ public class RoomAvailabilityHandler extends ReservationHandler {
     }
 
     public Reservation prepareReservation(ReservationDTO reservationDTO) {
-        Set<ReservedRoom> reservedRoomSet = new HashSet<ReservedRoom>();
-        for (ReservedRoomDTO r : reservationDTO.getReservedRooms()) {
-            ReservedRoom reservedRoom = ReservedRoom.builder()
-                    .roomDescription(roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow())
-                    .roomFoodOptions(new RoomFoodOptions(r.isHasBreakfast(), r.isHasLunch(), r.isHasDinner()))
-                    .title(reservationDTO.getRoomTitle())
-                    .build();
-            reservedRoomSet.add(reservedRoom);
-
-        }
-
-        return Reservation.builder()
+        RoomDescription roomDescription=roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
+        Reservation reservation= Reservation.builder()
                 .user(userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow())
                 .hotel(hotelRepository.findById(reservationDTO.getHotelID()).orElseThrow())
                 .checkIn(reservationDTO.getCheckIn())
                 .checkOut(reservationDTO.getCheckOut())
-                .reservedRooms(reservedRoomSet)
                 .isRefundable(reservationDTO.isRefundable())
+                .roomDescription(roomDescription)
                 .isConfirmed(false)
                 .voucherApplied(reservationDTO.getVoucherPercentage()!=0)
                 .build();
+        Set<ReservedRoom> reservedRoomSet = new HashSet<ReservedRoom>();
+        for (ReservedRoomDTO r : reservationDTO.getReservedRooms()) {
+            ReservedRoom reservedRoom = ReservedRoom.builder()
+                    .roomDescription(roomDescription)
+                    .roomFoodOptions(new RoomFoodOptions(r.isHasBreakfast(), r.isHasLunch(), r.isHasDinner()))
+                    .title(reservationDTO.getRoomTitle())
+                    .reservation(reservation)
+                    .build();
+            reservedRoomSet.add(reservedRoom);
+        }
+        reservation.setReservedRooms(reservedRoomSet);
+        return reservation;
     }
 
     @Transactional
-    public void checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
+    public Reservation checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
         int nonAvailableRooms = reservedRoomRepository.getNumberOfConflictedRooms(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
         int availableRooms = roomCount - nonAvailableRooms;
         if (availableRooms >= reservation.getReservedRooms().size()) {
-            reservationRepository.save(reservation);
+            return reservationRepository.save(reservation);
         } else {
             throw new RuntimeException("Not enough available rooms for reservation.");
         }
@@ -95,7 +97,6 @@ public class RoomAvailabilityHandler extends ReservationHandler {
         if (!reservation.isConfirmed()) {
             reservationRepository.delete(reservation);
         }
-
     }
 
 }

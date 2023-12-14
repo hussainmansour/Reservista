@@ -8,7 +8,6 @@ import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
 import java.util.Set;
-import java.util.UUID;
 
 @Entity
 @Getter
@@ -19,23 +18,6 @@ import java.util.UUID;
 @Table(name = "reservation")
 public class Reservation {
 
-    /*
-    * reasons why string is unnecessary:
-    *
-    * (integer or long) has enough capacity (2 billion for INTEGER, 2^63 for long/BIGINT)
-    * that it will suffice for 200+ years of use at the largest reasonably possible
-    * transaction volumes.
-    *
-    * For example, at a current 10,000 records per day volume:
-    * 3.65 million per year
-    * times 20 for business growth = 73 million per year
-    * times 200 years = 14.6 billion
-    *
-    * This is only ~34 bits -- too big for 'int', but using a long (63 bits positive)
-    * it gives you spare capacity by a factor of 2^29 (~500 million) times.
-    *
-    * */
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -44,7 +26,7 @@ public class Reservation {
     @Column(name = "price")
     private int price;
 
-    @NotNull
+
     @Column(name = "reservation_date")
     @CreationTimestamp
     private Instant reservationDate;
@@ -59,9 +41,8 @@ public class Reservation {
 
     @Column(name = "voucher_applied")
     private boolean voucherApplied = false;
-
-    @NotBlank
-    @Column(name = "payment_intent_id" , unique = true)
+    
+    @Column(name = "payment_intent_id", unique = true, nullable = true)
     private String paymentIntentId;
 
     @Column(name = "is_confirmed")
