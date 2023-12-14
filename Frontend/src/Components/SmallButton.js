@@ -15,14 +15,15 @@ export default SmallButton
 
 const styles = StyleSheet.create({
     ButtonContainer:{
-        backgroundColor: '#728FF3',
-        alignSelf: 'center',
+        
         marginTop: 30,
         width: 118,
         height: 43,
-        borderRadius: 10,
         alignItems: 'center',
         justifyContent: 'center',
+        borderRadius: 10,
+        backgroundColor: '#728FF3',
+        alignSelf: 'center',
     },
     Text:{
         fontSize: 20,
