@@ -16,4 +16,5 @@ public interface ReservedRoomRepository extends JpaRepository<ReservedRoom, UUID
     @Query("SELECT count(r.id) FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId "+
             "AND r.reservation.checkOut >= :checkIn AND r.reservation.checkIn <= :checkOut")
   int getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId,@Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
+
 }

@@ -5,7 +5,9 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.*;
 
+
 import java.util.UUID;
+
 
 @Entity
 @Data
@@ -18,6 +20,7 @@ public class TempReservationDetails {
     @Id
     @GeneratedValue
     private UUID id;
+
 
     @OneToOne
     @JoinColumn(columnDefinition = "reservation_id" , referencedColumnName = "id")
