@@ -1,0 +1,785 @@
+[
+  {
+    "location_data": {
+      "city": "Phu Quoc",
+      "country": "Viet Nam",
+      "timezone": "Asia/Ho_Chi_Minh",
+      "population": 179480,
+      "coordinates": {
+        "longitude": 104.01047,
+        "latitude": 10.28715
+      }
+    },
+    "hotels": [
+      {
+        "hotel_title": "Seashells Hotel and Spa Phu Quoc",
+        "star_rating": "5.0 star property",
+        "review_rating": "8.4",
+        "review_count": "322",
+        "amenities": [
+          {
+            "heading": "Top family friendly amenities",
+            "bullet_points": [
+              "Kids pool"
+            ]
+          },
+          {
+            "heading": "Popular amenities",
+            "bullet_points": [
+              "Parking included",
+              "Pool",
+              "Free WiFi",
+              "Spa",
+              "Air conditioning",
+              "Free airport shuttle",
+              "Laundry",
+              "Gym",
+              "Restaurant",
+              "Bar",
+              "Room service",
+              "Housekeeping",
+              "Business services",
+              "24/7 front desk"
+            ]
+          },
+          {
+            "heading": "Outdoors",
+            "bullet_points": [
+              "Barbecue grill",
+              "Garden",
+              "On the beach",
+              "Pool loungers"
+            ]
+          },
+          {
+            "heading": "Internet",
+            "bullet_points": [
+              "Available in all rooms: Free WiFi",
+              "Available in some public areas: Free WiFi"
+            ]
+          },
+          {
+            "heading": "Parking and transportation",
+            "bullet_points": [
+              "Free roundtrip airport shuttle during limited hours",
+              "Free self parking on site",
+              "Limited onsite parking"
+            ]
+          },
+          {
+            "heading": "Food and drink",
+            "bullet_points": [
+              "A bar/lounge",
+              "A coffee shop/cafe",
+              "A poolside bar",
+              "A restaurant",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Things to do",
+            "bullet_points": [
+              "Children's pool",
+              "Full-service spa",
+              "Gym",
+              "Outdoor pool"
+            ]
+          },
+          {
+            "heading": "Family friendly",
+            "bullet_points": [
+              "Children's pool",
+              "Laundry facilities",
+              "Outdoor pool",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Conveniences",
+            "bullet_points": [
+              "24-hour front desk",
+              "Free newspapers in lobby",
+              "Laundry facilities",
+              "Luggage storage",
+              "Safe at front desk"
+            ]
+          },
+          {
+            "heading": "Guest services",
+            "bullet_points": [
+              "Concierge services",
+              "Daily housekeeping",
+              "Dry cleaning/laundry service",
+              "Tour and ticket assistance"
+            ]
+          },
+          {
+            "heading": "Business services",
+            "bullet_points": [
+              "5 meeting rooms",
+              "8,611 square feet of conference space"
+            ]
+          },
+          {
+            "heading": "Full-service spa",
+            "bullet_points": [
+              "Body scrubs",
+              "Body wraps",
+              "Deep-tissue massages",
+              "Facials",
+              "Spa open daily",
+              "Thai massages"
+            ]
+          },
+          {
+            "heading": "More",
+            "bullet_points": [
+              "Smoke-free property"
+            ]
+          }
+        ],
+        "hotel_location": "1 Vo Thi Sau, Duong Dong, Phu Quoc",
+        "explore_the_area": [
+          "Dinh Cau - 4 min walk",
+          "Phu Quoc Night Market - 4 min walk",
+          "San Van Dong Duong Dong Stadium - 2 min drive",
+          "Phu Quoc (PQC-Phu Quoc Intl.) - 17 min drive"
+        ],
+        "images": [
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          },
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          }
+        ],
+        "rooms": [
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          },
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          }
+        ]
+      },
+      {
+        "hotel_title": "Seashells Hotel and Spa Phu Quoc",
+        "star_rating": "5.0 star property",
+        "review_rating": "8.4",
+        "review_count": "322",
+        "amenities": [
+          {
+            "heading": "Top family friendly amenities",
+            "bullet_points": [
+              "Kids pool"
+            ]
+          },
+          {
+            "heading": "Popular amenities",
+            "bullet_points": [
+              "Parking included",
+              "Pool",
+              "Free WiFi",
+              "Spa",
+              "Air conditioning",
+              "Free airport shuttle",
+              "Laundry",
+              "Gym",
+              "Restaurant",
+              "Bar",
+              "Room service",
+              "Housekeeping",
+              "Business services",
+              "24/7 front desk"
+            ]
+          },
+          {
+            "heading": "Outdoors",
+            "bullet_points": [
+              "Barbecue grill",
+              "Garden",
+              "On the beach",
+              "Pool loungers"
+            ]
+          },
+          {
+            "heading": "Internet",
+            "bullet_points": [
+              "Available in all rooms: Free WiFi",
+              "Available in some public areas: Free WiFi"
+            ]
+          },
+          {
+            "heading": "Parking and transportation",
+            "bullet_points": [
+              "Free roundtrip airport shuttle during limited hours",
+              "Free self parking on site",
+              "Limited onsite parking"
+            ]
+          },
+          {
+            "heading": "Food and drink",
+            "bullet_points": [
+              "A bar/lounge",
+              "A coffee shop/cafe",
+              "A poolside bar",
+              "A restaurant",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Things to do",
+            "bullet_points": [
+              "Children's pool",
+              "Full-service spa",
+              "Gym",
+              "Outdoor pool"
+            ]
+          },
+          {
+            "heading": "Family friendly",
+            "bullet_points": [
+              "Children's pool",
+              "Laundry facilities",
+              "Outdoor pool",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Conveniences",
+            "bullet_points": [
+              "24-hour front desk",
+              "Free newspapers in lobby",
+              "Laundry facilities",
+              "Luggage storage",
+              "Safe at front desk"
+            ]
+          },
+          {
+            "heading": "Guest services",
+            "bullet_points": [
+              "Concierge services",
+              "Daily housekeeping",
+              "Dry cleaning/laundry service",
+              "Tour and ticket assistance"
+            ]
+          },
+          {
+            "heading": "Business services",
+            "bullet_points": [
+              "5 meeting rooms",
+              "8,611 square feet of conference space"
+            ]
+          },
+          {
+            "heading": "Full-service spa",
+            "bullet_points": [
+              "Body scrubs",
+              "Body wraps",
+              "Deep-tissue massages",
+              "Facials",
+              "Spa open daily",
+              "Thai massages"
+            ]
+          },
+          {
+            "heading": "More",
+            "bullet_points": [
+              "Smoke-free property"
+            ]
+          }
+        ],
+        "hotel_location": "1 Vo Thi Sau, Duong Dong, Phu Quoc",
+        "explore_the_area": [
+          "Dinh Cau - 4 min walk",
+          "Phu Quoc Night Market - 4 min walk",
+          "San Van Dong Duong Dong Stadium - 2 min drive",
+          "Phu Quoc (PQC-Phu Quoc Intl.) - 17 min drive"
+        ],
+        "images": [
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          },
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          }
+        ],
+        "rooms": [
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          },
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "location_data": {
+      "city": "Phu Quoc",
+      "country": "Viet Nam",
+      "timezone": "Asia/Ho_Chi_Minh",
+      "coordinates": {
+        "longitude": 104.01047,
+        "latitude": 10.28715
+      }
+    },
+    "hotels": [
+      {
+        "hotel_title": "Seashells Hotel and Spa Phu Quoc",
+        "star_rating": "5.0 star property",
+        "review_rating": "8.4",
+        "review_count": "322",
+        "amenities": [
+          {
+            "heading": "Top family friendly amenities",
+            "bullet_points": [
+              "Kids pool"
+            ]
+          },
+          {
+            "heading": "Popular amenities",
+            "bullet_points": [
+              "Parking included",
+              "Pool",
+              "Free WiFi",
+              "Spa",
+              "Air conditioning",
+              "Free airport shuttle",
+              "Laundry",
+              "Gym",
+              "Restaurant",
+              "Bar",
+              "Room service",
+              "Housekeeping",
+              "Business services",
+              "24/7 front desk"
+            ]
+          },
+          {
+            "heading": "Outdoors",
+            "bullet_points": [
+              "Barbecue grill",
+              "Garden",
+              "On the beach",
+              "Pool loungers"
+            ]
+          },
+          {
+            "heading": "Internet",
+            "bullet_points": [
+              "Available in all rooms: Free WiFi",
+              "Available in some public areas: Free WiFi"
+            ]
+          },
+          {
+            "heading": "Parking and transportation",
+            "bullet_points": [
+              "Free roundtrip airport shuttle during limited hours",
+              "Free self parking on site",
+              "Limited onsite parking"
+            ]
+          },
+          {
+            "heading": "Food and drink",
+            "bullet_points": [
+              "A bar/lounge",
+              "A coffee shop/cafe",
+              "A poolside bar",
+              "A restaurant",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Things to do",
+            "bullet_points": [
+              "Children's pool",
+              "Full-service spa",
+              "Gym",
+              "Outdoor pool"
+            ]
+          },
+          {
+            "heading": "Family friendly",
+            "bullet_points": [
+              "Children's pool",
+              "Laundry facilities",
+              "Outdoor pool",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Conveniences",
+            "bullet_points": [
+              "24-hour front desk",
+              "Free newspapers in lobby",
+              "Laundry facilities",
+              "Luggage storage",
+              "Safe at front desk"
+            ]
+          },
+          {
+            "heading": "Guest services",
+            "bullet_points": [
+              "Concierge services",
+              "Daily housekeeping",
+              "Dry cleaning/laundry service",
+              "Tour and ticket assistance"
+            ]
+          },
+          {
+            "heading": "Business services",
+            "bullet_points": [
+              "5 meeting rooms",
+              "8,611 square feet of conference space"
+            ]
+          },
+          {
+            "heading": "Full-service spa",
+            "bullet_points": [
+              "Body scrubs",
+              "Body wraps",
+              "Deep-tissue massages",
+              "Facials",
+              "Spa open daily",
+              "Thai massages"
+            ]
+          },
+          {
+            "heading": "More",
+            "bullet_points": [
+              "Smoke-free property"
+            ]
+          }
+        ],
+        "hotel_location": "1 Vo Thi Sau, Duong Dong, Phu Quoc",
+        "explore_the_area": [
+          "Dinh Cau - 4 min walk",
+          "Phu Quoc Night Market - 4 min walk",
+          "San Van Dong Duong Dong Stadium - 2 min drive",
+          "Phu Quoc (PQC-Phu Quoc Intl.) - 17 min drive"
+        ],
+        "images": [
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          },
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          }
+        ],
+        "rooms": [
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          },
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          }
+        ]
+      },
+      {
+        "hotel_title": "Seashells Hotel and Spa Phu Quoc",
+        "star_rating": "5.0 star property",
+        "review_rating": "8.4",
+        "review_count": "322",
+        "amenities": [
+          {
+            "heading": "Top family friendly amenities",
+            "bullet_points": [
+              "Kids pool"
+            ]
+          },
+          {
+            "heading": "Popular amenities",
+            "bullet_points": [
+              "Parking included",
+              "Pool",
+              "Free WiFi",
+              "Spa",
+              "Air conditioning",
+              "Free airport shuttle",
+              "Laundry",
+              "Gym",
+              "Restaurant",
+              "Bar",
+              "Room service",
+              "Housekeeping",
+              "Business services",
+              "24/7 front desk"
+            ]
+          },
+          {
+            "heading": "Outdoors",
+            "bullet_points": [
+              "Barbecue grill",
+              "Garden",
+              "On the beach",
+              "Pool loungers"
+            ]
+          },
+          {
+            "heading": "Internet",
+            "bullet_points": [
+              "Available in all rooms: Free WiFi",
+              "Available in some public areas: Free WiFi"
+            ]
+          },
+          {
+            "heading": "Parking and transportation",
+            "bullet_points": [
+              "Free roundtrip airport shuttle during limited hours",
+              "Free self parking on site",
+              "Limited onsite parking"
+            ]
+          },
+          {
+            "heading": "Food and drink",
+            "bullet_points": [
+              "A bar/lounge",
+              "A coffee shop/cafe",
+              "A poolside bar",
+              "A restaurant",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Things to do",
+            "bullet_points": [
+              "Children's pool",
+              "Full-service spa",
+              "Gym",
+              "Outdoor pool"
+            ]
+          },
+          {
+            "heading": "Family friendly",
+            "bullet_points": [
+              "Children's pool",
+              "Laundry facilities",
+              "Outdoor pool",
+              "Snack bar/deli"
+            ]
+          },
+          {
+            "heading": "Conveniences",
+            "bullet_points": [
+              "24-hour front desk",
+              "Free newspapers in lobby",
+              "Laundry facilities",
+              "Luggage storage",
+              "Safe at front desk"
+            ]
+          },
+          {
+            "heading": "Guest services",
+            "bullet_points": [
+              "Concierge services",
+              "Daily housekeeping",
+              "Dry cleaning/laundry service",
+              "Tour and ticket assistance"
+            ]
+          },
+          {
+            "heading": "Business services",
+            "bullet_points": [
+              "5 meeting rooms",
+              "8,611 square feet of conference space"
+            ]
+          },
+          {
+            "heading": "Full-service spa",
+            "bullet_points": [
+              "Body scrubs",
+              "Body wraps",
+              "Deep-tissue massages",
+              "Facials",
+              "Spa open daily",
+              "Thai massages"
+            ]
+          },
+          {
+            "heading": "More",
+            "bullet_points": [
+              "Smoke-free property"
+            ]
+          }
+        ],
+        "hotel_location": "1 Vo Thi Sau, Duong Dong, Phu Quoc",
+        "explore_the_area": [
+          "Dinh Cau - 4 min walk",
+          "Phu Quoc Night Market - 4 min walk",
+          "San Van Dong Duong Dong Stadium - 2 min drive",
+          "Phu Quoc (PQC-Phu Quoc Intl.) - 17 min drive"
+        ],
+        "images": [
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          },
+          {
+            "src": "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/88aa284b.jpg?impolicy=resizecrop&rw=1200&ra=fit",
+            "caption": "Exterior"
+          }
+        ],
+        "rooms": [
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          },
+          {
+            "Header Title": "Classic Twin Room, City View",
+            "Image Sources": [
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/ad01bbcb.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c20811db.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium",
+              "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/c478609a.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium"
+            ],
+            "Room Details": [
+              "355 sq ft",
+              "Free breakfast",
+              "Free WiFi",
+              "Free self parking",
+              "Sleeps 3",
+              "City view",
+              "2 Twin Beds"
+            ],
+            "Price": "$78",
+            "Total Price": "$148 total",
+            "Taxes and Fees": "includes taxes & fees"
+          }
+        ]
+      }
+    ]
+  }
+]

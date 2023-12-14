@@ -1,4 +1,4 @@
-version: "3.8"
+version: "3"
 services:
 
   spring-boot-app:
@@ -16,7 +16,14 @@ services:
       SPRING_JPA_SHOW_SQL: true
 
     networks:
-      - spring-boot
+      - Reservista
+
+
+  stripe-cli:
+    image: stripe/stripe-cli
+    command: listen --forward-to spring-boot-app:8080/api/payment/webhook --events payment_intent.succeeded --api-key sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI
+    networks:
+      - Reservista
 
 
   react-native-app:
@@ -32,7 +39,9 @@ services:
     tty: true
 
     networks:
-      - spring-boot
+      - Reservista
+
 
 networks:
-  spring-boot:
+  Reservista:
+    driver: bridge

@@ -1,17 +1,14 @@
-package Reservista.example.Backend.Models.EmbeddedClasses;
+package Reservista.example.Backend.DTOs.Reservation;
 
-
-import jakarta.persistence.Embeddable;
 import lombok.*;
-
 
 @Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-@Embeddable
-public class RoomFoodOptions {
+public class ReservedRoomDTO {
     private boolean hasBreakfast = false;
     private boolean hasLunch = false;
     private boolean hasDinner = false;
+    private int totalPrice;
+
 }
