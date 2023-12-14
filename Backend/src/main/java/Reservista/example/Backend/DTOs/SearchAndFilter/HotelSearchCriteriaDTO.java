@@ -2,17 +2,15 @@ package Reservista.example.Backend.DTOs.SearchAndFilter;
 
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
-import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 
 import java.time.Instant;
 
 import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
 
 @Data
-public class SearchCriteriaDTO {
+public class HotelSearchCriteriaDTO {
     @NotBlank
     private String city;
 
@@ -37,12 +35,12 @@ public class SearchCriteriaDTO {
     @NotNull
     private Instant checkOut;
 
-    private int minPrice;
-    private int maxPrice;
-    private int minStars;
-    private int maxStars;
-    private double minRating;
-    private double maxRating;
+    private int minPrice = 0;
+    private int maxPrice = 10000;
+    private int minStars = 0;
+    private int maxStars = 5;
+    private double minRating = 0;
+    private double maxRating = 10;
     private String sortBy;
     private String sortOrder;
 

@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,15 +41,18 @@ public class HotelSearchService {
             hotelDTO.setStarRating(hotel.getStarRating());
             hotelDTO.setCountry(hotel.getLocation().getCountry());
             hotelDTO.setMinRoomPrice(calculateMinRoomPrice(hotel));
+            hotelDTO.setHotelFoodOptions(hotel.getHotelFoodOptions());
+            hotelDTO.setFullyRefundable(hotel.isFullyRefundable());
+            hotelDTO.setAddress(hotel.getAddress());
+            hotelDTO.setFullyRefundableRate(hotel.getFullyRefundableRate());
 //            hotelDTO.setImages(hotel.getHotelImages()); // Assuming getHotelImages returns Set<HotelImage>
-
             hotelDTOList.add(hotelDTO);
         }
 
         return hotelDTOList;
     }
 
-    public HotelSearchResultDTO getHotelsWithCriteria(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public HotelSearchResultDTO getHotelsWithCriteria(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
 
         Page<Hotel> hotelPage;
 

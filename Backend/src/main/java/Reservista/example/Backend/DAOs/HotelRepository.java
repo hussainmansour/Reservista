@@ -1,6 +1,7 @@
 package Reservista.example.Backend.DAOs;
 
 
+import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
@@ -228,4 +229,34 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             @Param("maxRating") double maxRating,
             Pageable pageable
     );
+
+
+    @Query("SELECT DISTINCT rd "+
+            "FROM RoomDescription rd "+
+            "LEFT JOIN rd.reservedRooms rr "+
+            "LEFT JOIN rr.reservation res "+
+            "WHERE rd.hotel.id = :hotelId "+
+            "AND rd.roomCount >= :numberOfRooms "+
+            "AND rd.capacity * :numberOfRooms >= :numberOfTravelers "+
+            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms"
+    )
+    List<RoomDescription> findAvailableRooms(
+            @Param("hotelId") UUID hotelId,
+            @Param("checkIn") Instant checkIn,
+            @Param("checkOut") Instant checkOut,
+            @Param("numberOfRooms") int numberOfRooms,
+            @Param("numberOfTravelers") int numberOfTravelers
+    );
+
+
+    @Query("SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = :id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut")
+    int getNumberOfConflictedRooms(
+            @Param("id") UUID roomDescriptionId,
+            @Param("checkIn") Instant checkIn,
+            @Param("checkOut") Instant checkOut
+    );
+
+
+
+
 }

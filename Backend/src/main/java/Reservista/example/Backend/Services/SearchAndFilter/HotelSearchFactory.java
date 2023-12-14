@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
 import Reservista.example.Backend.DAOs.HotelRepository;
-import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.Models.EntityClasses.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,7 @@ public class HotelSearchFactory {
 //        this.hotelRepository = hotelRepository;
 //    }
 
-    public Page<Hotel> searchHotels(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public Page<Hotel> searchHotels(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
 
         return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRating(
                 searchCriteria.getCountry(),
@@ -39,7 +39,7 @@ public class HotelSearchFactory {
         );
     }
 
-    public Page<Hotel> sortHotelsByPrice(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public Page<Hotel> sortHotelsByPrice(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
         if(Objects.equals(searchCriteria.getSortOrder().toLowerCase(), "desc"))
             return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByPriceDesc(
                     searchCriteria.getCountry(),
@@ -74,7 +74,7 @@ public class HotelSearchFactory {
             );
     }
 
-    public Page<Hotel> sortHotelsByStars(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public Page<Hotel> sortHotelsByStars(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
         if(Objects.equals(searchCriteria.getSortOrder().toLowerCase(), "desc"))
             return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByStarsDesc(
                     searchCriteria.getCountry(),
@@ -109,7 +109,7 @@ public class HotelSearchFactory {
             );
     }
 
-    public Page<Hotel> sortHotelsByRating(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public Page<Hotel> sortHotelsByRating(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
          if(Objects.equals(searchCriteria.getSortOrder().toLowerCase(), "desc"))
             return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingDesc(
                     searchCriteria.getCountry(),
@@ -144,7 +144,7 @@ public class HotelSearchFactory {
             );
     }
 
-    public Page<Hotel> sortHotelsByCriteria(SearchCriteriaDTO searchCriteria, Pageable pageable) {
+    public Page<Hotel> sortHotelsByCriteria(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
         if ("price".equalsIgnoreCase(searchCriteria.getSortBy())) {
             return sortHotelsByPrice(searchCriteria, pageable);
         } else if ("stars".equalsIgnoreCase(searchCriteria.getSortBy())) {

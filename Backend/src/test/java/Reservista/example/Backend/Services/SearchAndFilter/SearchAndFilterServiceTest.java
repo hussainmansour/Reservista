@@ -10,7 +10,7 @@ import java.time.Instant;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
 
 @SpringBootTest
@@ -22,7 +22,7 @@ class SearchAndFilterServiceTest {
     @Test
     public void test_searchHotels() {
         // Arrange
-        SearchCriteriaDTO searchCriteria = new SearchCriteriaDTO();
+        HotelSearchCriteriaDTO searchCriteria = new HotelSearchCriteriaDTO();
         searchCriteria.setCity("Paris");
         searchCriteria.setCountry("France");
         searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));

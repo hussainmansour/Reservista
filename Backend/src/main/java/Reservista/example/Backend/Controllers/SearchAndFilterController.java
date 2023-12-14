@@ -1,7 +1,9 @@
 package Reservista.example.Backend.Controllers;
 
-import Reservista.example.Backend.DTOs.SearchAndFilter.SearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchResultDTO;
 import Reservista.example.Backend.Services.SearchAndFilter.SearchAndFilterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,12 +18,15 @@ public class SearchAndFilterController {
     private SearchAndFilterService searchAndFilterService;
 
     @GetMapping("/hotels")
-    public ResponseEntity<HotelSearchResultDTO> filterAndSortHotels(@RequestBody SearchCriteriaDTO searchCriteria) {
+    public ResponseEntity<HotelSearchResultDTO> filterAndSortHotels(@RequestBody HotelSearchCriteriaDTO searchCriteria) {
         HotelSearchResultDTO searchResult = searchAndFilterService.filterAndSortHotels(searchCriteria);
         return new ResponseEntity<>(searchResult, HttpStatus.OK);
     }
 
 
     @GetMapping("/rooms")
-    public ResponseEntity<>
+    public ResponseEntity<RoomSearchResultDTO> filterRooms(@RequestBody RoomSearchCriteriaDTO searchCriteria) {
+        RoomSearchResultDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
+        return new ResponseEntity<>(searchResult, HttpStatus.OK);
+    }
 }
