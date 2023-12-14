@@ -4,7 +4,9 @@ import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import org.springframework.stereotype.Service;
 
+@Service
 public class InvoiceHandler extends ReservationHandler {
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO){
         StringBuilder s = new StringBuilder();
