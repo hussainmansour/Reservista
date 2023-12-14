@@ -29,12 +29,12 @@ const CartScreen = () => {
     price: 100,
     title: "Room title",
     count: 4,
-    roomDescriptionID: "roomTypeID",
-    hotelID:"hotelID",
+    roomDescriptionId: "0002d331-89d7-4f19-b6bf-8cf553b767c5",
+    hotelID:"001cc902-bea3-4381-86af-4064e3b90fc8",
     refundable:true,
     fullyRefundableRate: 15,
-    checkIn: "",
-    checkOut: "",
+    checkIn: "2024-03-01T00:00:00Z",
+    checkOut: "2024-03-02T00:00:00Z",
 
   };
 
@@ -155,8 +155,6 @@ const CartScreen = () => {
         setLoading(false);
     }
     
-
-    // we will need to call the backend cancel API and send the reservation ID to cancel the reservation
   };
 
   const toggleExpandedRoom = (roomId) => {
@@ -173,23 +171,24 @@ const CartScreen = () => {
     // failure -> display error message
     //            setError("error message")
     // setLoading(true);
-    // try {
-    //   const response = await verifyVoucher(voucherCode, setLoading);
-    //   console.log(response);
-    //   if (response.status === 200) {
-        setDiscountRate(20);
+    try {
+      // const dto = {"voucherCode":{voucherCode}};
+      const response = await verifyVoucher(`${voucherCode}`, setLoading);
+      console.log(response);
+      if (response.status === 200) {
+        setDiscountRate(response.data);
         setIsVoucherApplied(true); // use effect will be called to update the total price
         setExpandedVoucher(true);
          
-    //   }else if(response.status === 400){
-    //     setError("error message")
-    //   }
-    // } catch (error) {
-    //     console.error('Error in reservation', error.message);
-    //     Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
-    // } finally {
-    //     setLoading(false);
-    // }
+      }else if(response.status === 400){
+        setError("error message")
+      }
+    } catch (error) {
+        console.error('Error in reservation', error.message);
+        Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+    } finally {
+        setLoading(false);
+    }
   };
 
   const proceedToCheckout = async () => {
@@ -212,23 +211,23 @@ const CartScreen = () => {
         checkIn: reservationDetails.checkIn,
         checkOut: reservationDetails.checkOut,
         refundable: reservationDetails.refundable,
-        voucherCode: voucherCode, 
+        voucherCode: voucherCode==""? null:voucherCode, 
         reservedRooms: reservedRooms,
-        roomDescriptionID: reservationDetails.roomDescriptionID,
+        roomDescriptionId: reservationDetails.roomDescriptionId,
       };
 
     console.log(reservationDTO);
 
     setLoading(true);
     try {
-        const response = await reserve(userInfo, setLoading);
+        const response = await reserve(reservationDTO, setLoading);
         console.log(response);
-        if (response.status === 200) {
-          setReservationId(reservationDTO.data.reservationID);
+        if (response.status === 61) {
+          setReservationId(response.data.reservationId);
           setClientSecret(response.data.clientSecret);
           setPaymentModalVisible(true);
            
-        }else if(response.status === 400){
+        }else{
             Alert.alert('', response.message);
         }
     } catch (error) {
@@ -278,9 +277,6 @@ const CartScreen = () => {
               Discount: {discountRate}% (-$
               {totalPriceAfterFullRefund - totalPriceAfterDiscount})
             </Text>
-            {/* <Text style={styles.navyText}>
-              Final Price: ${totalPriceAfterDiscount}
-            </Text> */}
           </>
         )}
         {(isVoucherApplied || isFullRefundApplied) &&(
@@ -383,12 +379,9 @@ const styles = StyleSheet.create({
 
   },
   roomContainer: {
-   
     borderRadius: 5,
     marginBottom: 16,
     paddingHorizontal:15,
-    
-    // padding: 2,
   },
 
   roomTitle: {
@@ -474,9 +467,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#5F0F40",
     marginBottom: 2,
-    // textShadowColor: "#000",
-    // textShadowOffset: { width: 1, height: 1 },
-    // textShadowRadius: 2,
+    
   },
   fullRefundText: {
     fontSize: 18,
