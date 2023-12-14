@@ -1,6 +1,7 @@
 package Reservista.example.Backend.Services.Reservation;
 
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
+
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
@@ -29,7 +30,7 @@ public class PaymentHandler extends ReservationHandler{
             PaymentIntent intent = PaymentIntent.create(createParams);
             String paymentIntentID = intent.getId();
             
-            // TO DO : save payment intent id in database
+            reservationDTO.setPaymentIntentId(paymentIntentID);
 
             ReservationResponseDTO reservationResponseDTO
                     =ReservationResponseDTO
