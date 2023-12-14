@@ -141,7 +141,7 @@ const CartScreen = ({route}) => {
     );
     // TO DO
     // navigate to the desired screen
-    // navigation.navigate("");
+    navigation.navigate('Home');
   };
 
   const handleCheckoutCancellation =  async () => {
