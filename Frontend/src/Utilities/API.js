@@ -37,3 +37,7 @@ export const signIn = async (userInfo, setLoading) => {
 export const refreshCode = async (userInfo, setLoading) => {
   return await apiRequest('auth/refresh-verification-code', userInfo, setLoading);
 };
+
+export const searchForHotels = async (searchDTO, setLoading) => {
+  return await apiRequest('test/search/hotels', searchDTO, setLoading);
+}
