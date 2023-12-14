@@ -1,20 +1,18 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Enums.NotificationType;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.Instant;
-import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -22,7 +20,7 @@ import java.util.UUID;
 public class Notification {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
+    @GeneratedValue
     private UUID id;
 
     @Column(name = "content")
@@ -38,11 +36,11 @@ public class Notification {
     @Enumerated(EnumType.STRING)
     private NotificationType type;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     @JoinTable(
             name = "user_notification",
-            joinColumns = @JoinColumn(name = "notification_id" , referencedColumnName = "id"),
-            inverseJoinColumns = @JoinColumn(name = "user_name" , referencedColumnName = "user_name")
+            joinColumns = @JoinColumn(name = "notification_id", referencedColumnName = "id"),
+            inverseJoinColumns = @JoinColumn(name = "user_name", referencedColumnName = "user_name")
     )
-    private List<User> users;
+    private Set<User> users;
 }

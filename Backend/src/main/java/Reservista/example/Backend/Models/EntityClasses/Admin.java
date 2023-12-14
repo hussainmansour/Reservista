@@ -1,4 +1,4 @@
-package Reservista.example.Backend.Models;
+package Reservista.example.Backend.Models.EntityClasses;
 
 import Reservista.example.Backend.Enums.SystemRoles;
 import jakarta.persistence.*;
@@ -10,9 +10,11 @@ import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
 import java.util.List;
+import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
