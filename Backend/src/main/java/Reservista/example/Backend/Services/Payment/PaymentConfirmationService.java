@@ -32,6 +32,7 @@ public class PaymentConfirmationService {
         PaymentIntent paymentIntent = ApiResource.GSON.fromJson(event.getDataObjectDeserializer().deserializeUnsafe().toJson(), PaymentIntent.class);
         String paymentIntentId = paymentIntent.getId();
         reservationRepository.setIsConfirmedToTrueByPaymentIntentId(paymentIntentId);
+        sendReservationConfirmationMail(paymentIntentId);
    
     }
 
