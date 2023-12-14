@@ -33,9 +33,9 @@ public class ReservationService {
 
         paymentHandler.setNextHandler(databaseReservationHandler);
         invoiceHandler.setNextHandler(paymentHandler);
-        reservationInfoHandler.setNextHandler(invoiceHandler);
-        calculationHandler.setNextHandler(reservationInfoHandler);
-        roomAvailabilityHandler.setNextHandler(calculationHandler);
+        calculationHandler.setNextHandler(invoiceHandler);
+        reservationInfoHandler.setNextHandler(calculationHandler);
+        roomAvailabilityHandler.setNextHandler(reservationInfoHandler);
         voucherHandler.setNextHandler(roomAvailabilityHandler);
         this.reservationHandler = voucherHandler;
 

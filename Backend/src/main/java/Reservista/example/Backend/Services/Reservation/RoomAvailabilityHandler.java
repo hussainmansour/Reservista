@@ -49,6 +49,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(StatusCode.NOT_AVAILABLE.getCode(),StatusCode.NOT_AVAILABLE.getMessage(),null);
             return responseDTO;
         }

@@ -21,8 +21,9 @@ public class ReservationDTO {
 
     // Data comes from front-end
 
-    @NotBlank
-    @NotEmpty
+//    @NotBlank
+//    @NotEmpty
+    @NotNull
     private UUID hotelID;
 
     @NotNull
