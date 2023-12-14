@@ -26,7 +26,7 @@ public class PaymentHandler extends ReservationHandler{
 
             PaymentIntentCreateParams createParams = new PaymentIntentCreateParams.Builder()
                     .setCurrency("usd")
-                    .setAmount((long) reservationDTO.getPrice())
+                    .setAmount((long) reservationDTO.getPrice()*100)
                     .build();
 
             PaymentIntent intent = PaymentIntent.create(createParams);

@@ -1,9 +1,11 @@
 package Reservista.example.Backend.Services.Reservation;
 
+import Reservista.example.Backend.DAOs.ReservationRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
 import com.stripe.param.tax.RegistrationCreateParams;
@@ -25,6 +27,9 @@ public class ReservationService {
 
     @Autowired
     VoucherHandler voucherHandler;
+
+    @Autowired
+    ReservationRepository reservationRepository;
 
     private final ReservationHandler reservationHandler;
 
@@ -60,5 +65,12 @@ public class ReservationService {
         reservationDTO.setUserName(userName);
         return this.reservationHandler.handleRequest(reservationDTO);
 
+    }
+
+    public void rollbackReservation(long reservationId){
+        Reservation reservation = reservationRepository.findById(reservationId).orElseThrow();
+        if (!reservation.isConfirmed()) {
+            reservationRepository.delete(reservation);
+        }
     }
 }

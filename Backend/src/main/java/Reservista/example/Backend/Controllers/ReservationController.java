@@ -26,10 +26,9 @@ public class ReservationController {
        return reservationService.reserve("mariam",reservationDTO);
     }
 
+    @PostMapping("/rollback")
+    public void rollback(@RequestParam long reservationId) {
+        reservationService.rollbackReservation(reservationId);
+    }
 
-//    @PostMapping("/cancel")
-//    public ResponseDTO<String> cancelReservation(@Valid @RequestBody String reservationId) {
-//
-//        return null;
-//    }
 }

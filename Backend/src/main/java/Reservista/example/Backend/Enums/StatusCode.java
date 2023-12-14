@@ -22,7 +22,7 @@ public enum StatusCode {
     EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
     REGISTRATION_RACE_CONDITION(21, "Email or username already exists"),
     SUCCESS(200, "success"),
-    NOT_FOUND(404, "Not found"),
+    NOT_FOUND(404, "Voucher not found"),
     SERVER_ERROR(500, "Server error"),
     CREDENTIAL_ERROR(1, "Credential errors "),
     NOT_REGISTERED_USER(2, "This email didn't register"),
