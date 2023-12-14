@@ -6,6 +6,7 @@ import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Error.CustomizedException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,7 +38,7 @@ public class VoucherHandler extends ReservationHandler{
 
         if(reservationDTO.getVoucherCode() != null){
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
-            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElse(null);
+            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow();
             StatusCode statusCode = handleVoucher(user, voucher);
 
             switch (statusCode){
