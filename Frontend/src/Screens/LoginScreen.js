@@ -16,10 +16,11 @@ const LoginScreen = ({ navigation }) => {
       userNameOrEmail: username, 
       password: password
     }
-    let data = await signIn(userInfo, setLoading);
-    if(data.status === 200){
+    let response = await signIn(userInfo, setLoading);
+    if(response.status === 200){
       setIsAuthenticating(true);
-      const token = data.data.token; // may need to change this
+      const token = response.data.token; // may need to change this
+      console.log(token);
       authCtx.authenticate(token);
     }else{
       Alert.alert('Error', 'Please enter correct username or password');

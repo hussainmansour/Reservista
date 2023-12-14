@@ -6,6 +6,8 @@ import Welcome from "../Screens/Welcome";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {StyleSheet} from "react-native";
+import Profile from "../Screens/Profile";
+import ProfileStack from "./ProfileStack";
 
 import CartScreen from "../Screens/CartScreen";
 
@@ -58,11 +60,22 @@ export default function AuthenticatedStack() {
                 component={SearchAndFilterHeader}
                 options={{headerShown: false}}
             />
-            <Stack.Screen
+            {/* <Stack.Screen
                 name="SortAndFilterSelector"
                 component={SortAndFilterSelector}
                 options={{headerShown: false}}
-            />
+                component={ProfileStack}
+                options={{
+                    headerRight: ({tintColor}) => (
+                        <IconButton
+                            icon="exit"
+                            color={tintColor}
+                            size={24}
+                            onPress={authCtx.logout}
+                        />
+                    ),
+                }}
+            /> */}
         </Stack.Navigator>
     );
 }

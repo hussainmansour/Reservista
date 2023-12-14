@@ -1,12 +1,16 @@
 package Reservista.example.Backend.MailComponent.mailParsers;
 import Reservista.example.Backend.MailComponent.Mail;
 
+import Reservista.example.Backend.Models.EntityClasses.User;
+
+
 public class InvoiceParser extends Mail {
     public InvoiceParser(String email, String firstname, String invoice) {
 
         setTo(email);
         setSubject("Reservation confirmation");
         setBody(
+
 
                 "hi " + firstname + ",\n\n" +
 

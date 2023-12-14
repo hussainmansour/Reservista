@@ -22,6 +22,7 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
+
     @Column(name = "price")
     private int price;
 
@@ -40,8 +41,9 @@ public class Reservation {
 
     @Column(name = "voucher_applied")
     private boolean voucherApplied = false;
-    
+
     @Column(name = "payment_intent_id", unique = true, nullable = true)
+
     private String paymentIntentId;
 
     @Column(name = "is_confirmed")

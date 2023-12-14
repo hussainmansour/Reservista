@@ -24,7 +24,6 @@ services:
     networks:
       - Reservista
 
-
   react-native-app:
     build:
       context:
@@ -40,7 +39,7 @@ services:
     networks:
       - Reservista
 
-
 networks:
   Reservista:
     driver: bridge
+

@@ -33,6 +33,12 @@ public class JWTAuthorizationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain) throws ServletException, IOException {
 
+        // If there is already an authenticated user, then do nothing just for testing purposes
+        if (SecurityContextHolder.getContext().getAuthentication() != null){
+            filterChain.doFilter(request, response);
+            return;
+        }
+
         String authorizationHeader = request.getHeader(HttpHeaders.AUTHORIZATION);
 
         String userName = null;

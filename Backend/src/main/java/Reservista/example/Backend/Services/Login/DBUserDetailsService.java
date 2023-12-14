@@ -20,7 +20,6 @@ public class DBUserDetailsService implements UserDetailsService {
     private AdminRepository adminRepository;
 
 
-
     @Override
     public UserDetails loadUserByUsername(String userNameOrEmail) throws UsernameNotFoundException {
 

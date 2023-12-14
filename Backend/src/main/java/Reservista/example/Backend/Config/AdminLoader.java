@@ -34,4 +34,6 @@ public class AdminLoader implements CommandLineRunner {
             adminRepository.save(admin);
         }
     }
+
 }
+

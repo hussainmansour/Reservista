@@ -24,4 +24,5 @@ public class CountryValidator implements ConstraintValidator<Country, String> {
     public boolean isValid(String value, ConstraintValidatorContext context) {
         return (value == null) || validCountries.contains(value.trim());
     }
+
 }
