@@ -312,7 +312,7 @@ const CartScreen = () => {
                 <Text style={styles.fullRefundText}>Fully refundable (+{reservationDetails.fullyRefundableRate}%)</Text>
                 <Checkbox 
                 value={isFullRefundApplied}
-                style={styles.checkboxStyle} color="#131155"
+                style={styles.checkboxStyle} color="#45474B"
                 onValueChange={() =>{
                     setFullRefundRate(reservationDetails.fullyRefundableRate)
                     setIsFullRefundApplied(prev=>!prev)
@@ -339,7 +339,7 @@ const CartScreen = () => {
 
 const styles = StyleSheet.create({
   wholeForm: {
-    backgroundColor: "#CDD2FF",
+    backgroundColor: "#f5f5f5",
     flex: 1,
     paddingTop: 50,
     justifyContent: "flex-start",
@@ -348,7 +348,7 @@ const styles = StyleSheet.create({
     fontSize: 32,
     fontWeight: "bold",
     color: "#ffffff",
-    backgroundColor: "#131155",
+    backgroundColor: "#5FBDFF",
     paddingHorizontal: 20,
     paddingVertical: 10,
     marginBottom: 20,
@@ -356,7 +356,7 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 17,
-    color: "#131155",
+    color: "#000000",
     paddingLeft: 20,
     paddingBottom: 15,
   },
@@ -373,7 +373,7 @@ const styles = StyleSheet.create({
   roomTitle: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#131155",
+    color: "#0000000",
     
   },
 
@@ -394,11 +394,11 @@ const styles = StyleSheet.create({
   },
   textInputStyle: {
     flex: 2,
-    backgroundColor: "#E0E5FF",
+    backgroundColor: "#f5f5f5",
     padding: 8,
   },
   SmallbuttonStyle: {
-    backgroundColor: "#131155",
+    backgroundColor: "#45474B",
     flex: 1,
     padding: 8,
   },
@@ -410,7 +410,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
-    backgroundColor: "#131155",
+    backgroundColor: "#5FBDFF",
     alignSelf: "center",
     shadowColor: "#000",
     shadowOffset: {
@@ -438,39 +438,39 @@ const styles = StyleSheet.create({
   totalPrice: {
     fontSize: 32,
     fontWeight: "bold",
-    color: "#131155",
+    color: "#000000",
     
   },
 
   discountText: {
     fontSize: 18,
-    color: "#131155", // grey
+    color: "#45474B", // grey
     
   },
 
   navyText: {
     fontSize: 22,
     fontWeight: "bold",
-    color: "#5F0F40",
+    color: "#45474B",
     marginBottom: 2,
     
   },
   fullRefundText: {
     fontSize: 18,
     fontWeight: "bold",
-    color: "#131155",
+    color: "#45474B",
     marginBottom: 2,
     
   },
   calculationText:{
     fontSize: 18,
-    color: "#131155",
+    color: "#45474B",
     marginBottom: 2,
   },
 
   applyVoucherText: {
     textDecorationLine: "underline",
-    color: "#131155",
+    color: "#45474B",
     fontSize: 16,
     marginBottom: 5,
     marginTop: 10,
@@ -488,9 +488,9 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     width: "95%",
     alignSelf: "center",
-    borderColor: "#131155",  // Border Color
+    borderColor: "#45474B",  // Border Color
     borderWidth: 2,         // Border Width
-    backgroundColor: "#CDD2FF", // Background Color
+    backgroundColor: "#FFFFFF", // Background Color
     shadowColor: "#000",
     shadowOffset: {
         width: 0,

@@ -17,7 +17,7 @@ const AdditionalOptionsCollapse = ({ room, expanded, onToggle, onBreakfastToggle
           <Icon
             name={expanded ? 'chevron-up-outline' : 'chevron-down-outline'}
             size={24}
-            color="#131155"
+            color="#0766AD"
           />
           <Text style={styles.roomTitle}>{room.title}</Text>
           <Text style={styles.roomTitle}>${room.price}</Text>
@@ -27,45 +27,45 @@ const AdditionalOptionsCollapse = ({ room, expanded, onToggle, onBreakfastToggle
       <Collapsible collapsed={!expanded}>
         <View>
           <View style={styles.horizontalLine} />
-          <Text style={styles.additionalOptionsLabel}>
+          {/* <Text style={styles.additionalOptionsLabel}>
             Additional Food Options:
-          </Text>
+          </Text> */}
           <View style={styles.foodInfoContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.optionsText}>Breakfast</Text>
+              <Text style={styles.optionsText2}>Breakfast</Text>
             </View>
             <View style={styles.checkboxContainer}>
-              <Text style={styles.optionsText}>(+${foodOptions.breakfastPrice})</Text>
+              <Text style={styles.optionsText2}>(+${foodOptions.breakfastPrice})</Text>
               <Checkbox 
                 style={styles.checkboxStyle}
                 value={room.hasBreakfast}
-                color= "#131155"
+                color= "#3081D0"
                 onValueChange={() => onBreakfastToggle(room.id-1)} />  
             </View>
           </View>
           <View style={styles.foodInfoContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.optionsText}>Lunch</Text>
+              <Text style={styles.optionsText2}>Lunch</Text>
             </View>
             <View style={styles.checkboxContainer}>
-              <Text style={styles.optionsText}>(+${foodOptions.lunchPrice})</Text>
+              <Text style={styles.optionsText2}>(+${foodOptions.lunchPrice})</Text>
               <Checkbox 
                 style={styles.checkboxStyle}
                 value={room.hasLunch}
-                color= "#131155"
+                color= "#3081D0"
                 onValueChange={() => onLunchToggle(room.id-1)} />  
             </View>
           </View>
           <View style={styles.foodInfoContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.optionsText}>Dinner</Text>
+              <Text style={styles.optionsText2}>Dinner</Text>
             </View>
             <View style={styles.checkboxContainer}>
-              <Text style={styles.optionsText}>(+${foodOptions.dinnerPrice})</Text>
+              <Text style={styles.optionsText2}>(+${foodOptions.dinnerPrice})</Text>
               <Checkbox 
                 style={styles.checkboxStyle}
                 value={room.hasDinner}
-                color= "#131155"
+                color= "#3081D0"
                 onValueChange={() => onDinnerToggle(room.id-1)} />  
             </View>
           </View>
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     roomTitle: {
       fontSize: 18,
       fontWeight: "bold",
-      color: "#131155",
+      color: "#0766AD",
     },
    
     foodInfoContainer: {
@@ -93,10 +93,14 @@ const styles = StyleSheet.create({
     },
     optionsText: {
       fontSize: 18,
-      color: "#131155",
+      color: "#0000000",
+    },
+    optionsText2: {
+      fontSize: 18,
+      color: "#0766AD",
     },
     container:{
-      backgroundColor: "#E0E5FF", // Background color to make the shadow more visible
+      backgroundColor: "#ffffff", // Background color to make the shadow more visible
       borderRadius: 10,
       shadowColor: '#000',
       shadowOffset: { width: 0, height: 4 },
@@ -115,14 +119,14 @@ const styles = StyleSheet.create({
       alignItems: 'center',
     },
     horizontalLine: {
-      borderBottomColor: "#131155",
+      borderBottomColor: "#0766AD",
       borderBottomWidth: 1,
       marginVertical: 8,
     },
     additionalOptionsLabel: {
       fontSize: 16,
       fontWeight: "bold",
-      color: "#131155",
+      color: "#000000",
       marginBottom: 8,
       
     },

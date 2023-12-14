@@ -85,7 +85,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, 
             </View>
             <Button
               title={"Pay  $" + String(price)}
-              color= "#131155"
+              color= "#75C2F6"
               style={styles.ButtonStyle}
               onPress={pay}
               disabled={paymentLoading || !isReady}
