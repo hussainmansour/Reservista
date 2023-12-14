@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 public abstract class ReservationHandler {
     protected ReservationHandler nextHandler;
 
-    public abstract ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO);
+    public abstract ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) ;
     public void setNextHandler(ReservationHandler reservationHandler){
         if(reservationHandler != null)
             this.nextHandler = reservationHandler;

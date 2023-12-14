@@ -34,8 +34,10 @@ public enum StatusCode {
     EXPIREDCODE(330 , "This code is expired"),
     USEDVOUCHER(99, "This code is used already"),
     NOT_AVAILABLE(30,"Rooms are not avaialble"),
-    UNAUTHORIZED(401 , "Incorrect username or password");
+    UNAUTHORIZED(401 , "Incorrect username or password"),
 
+    STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
+    STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created");
 
 
 
@@ -48,8 +50,11 @@ public enum StatusCode {
         this.code = code;
         this.message = message;
     }
-
+//
     public ResponseDTO<Void> getRespond() {
         return new ResponseDTO<>(code,message,null);
     }
+//    public ResponseDTO<Object> getRespond() {
+//        return new ResponseDTO<Object>(code,message,null);
+//    }
 }

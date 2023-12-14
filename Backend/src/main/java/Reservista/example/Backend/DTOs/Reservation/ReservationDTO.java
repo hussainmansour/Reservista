@@ -58,8 +58,8 @@ public class ReservationDTO {
 
     private int refundAdditionalPercentage;
 
-
-    private int voucherPercentage=0;
+    
+    private int voucherPercentage = 0;
 
     private int price;       //price of the reservation itself
 
