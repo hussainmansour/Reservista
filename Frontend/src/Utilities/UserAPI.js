@@ -82,8 +82,6 @@ const userApiGetRequest = async (endpoint, data, setLoading) => {
 };
 
 export const verifyVoucher = async (voucherCode, setLoading) => {
-  console.log("line 61")
-   console.log(voucherCode)
     return await userApiPostRequestParam(`apply_voucher?voucherCode=${voucherCode}`, setLoading);
 };
 

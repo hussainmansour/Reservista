@@ -145,16 +145,11 @@ const CartScreen = () => {
   const handleCheckoutCancellation =  async () => {
     setPaymentModalVisible(false);
     setClientSecret("");
-    setLoading(true);
     try {
       const response = await rollBackReservation(reservationId, setLoading);
-      console.log(response);
     } catch (error) {
         console.error('Error occured during rolling back the reservation', error.message);
-    } finally {
-        setLoading(false);
-    }
-    
+    } 
   };
 
   const toggleExpandedRoom = (roomId) => {
@@ -165,38 +160,29 @@ const CartScreen = () => {
   };
 
   const applyVoucher = async () => {
-    // call backend to validate voucher
-    // success -> discount rate returned
-    //            update is voucherApplied
-    // failure -> display error message
-    //            setError("error message")
-    // setLoading(true);
+    
     try {
-      // const dto = {"voucherCode":{voucherCode}};
+ 
       const response = await verifyVoucher(`${voucherCode}`, setLoading);
       console.log(response);
       if (response.status === 200) {
         setDiscountRate(response.data);
-        setIsVoucherApplied(true); // use effect will be called to update the total price
+        setIsVoucherApplied(true); 
         setExpandedVoucher(true);
          
-      }else if(response.status === 400){
-        setError("error message")
+      }else{
+        setError(response.message)
       }
     } catch (error) {
-        console.error('Error in reservation', error.message);
-        Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+        console.error('Error in verifying voucher', error.message);
+        Alert.alert('Error', 'An error occurred while applying your voucher. Please try again.');
     } finally {
         setLoading(false);
     }
   };
 
   const proceedToCheckout = async () => {
-    // TO DO
-    // call the backend API and send the reservationDTO, if Reservation was available
-    // the request wil contain the clientSecret of the paymentIntent + the reservationID
-    // set the client secret with the one received from the backend
-
+    
     const reservedRooms = rooms.map((room) => {
         const {hasBreakfast, hasLunch, hasDinner } = room;
         return {
@@ -241,7 +227,7 @@ const CartScreen = () => {
 
   return (
     <View style={styles.wholeForm}>
-      <Text style={styles.title}>Room title</Text>
+      <Text style={styles.title}>{reservationDetails.title}</Text>
 
       <ScrollView contentContainerStyle={styles.scrollViewContainer}>
         {rooms.map((room) => (
@@ -323,7 +309,7 @@ const CartScreen = () => {
           </Collapsible>
             {reservationDetails.refundable&& (
                 <View style={styles.checkboxContainer}>
-                <Text style={styles.fullRefundText}>fully refundable (+{reservationDetails.fullyRefundableRate}%)</Text>
+                <Text style={styles.fullRefundText}>Fully refundable (+{reservationDetails.fullyRefundableRate}%)</Text>
                 <Checkbox 
                 value={isFullRefundApplied}
                 style={styles.checkboxStyle} color="#131155"
