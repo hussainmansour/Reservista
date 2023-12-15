@@ -6,7 +6,7 @@ import SearchOptions from "../Components/SearchOptions";
 const Home = ({navigation}) => {
   return (
     <View style = {styles.container}>
-        <HomeHeader/>
+        <HomeHeader navigation={navigation}/>
         <SearchOptions navigation={navigation}/>
         {/*<View style={styles.tabs}>*/}
         {/*    <Text style={{fontSize: 25}}>Tab Navigator</Text>*/}

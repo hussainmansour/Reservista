@@ -7,7 +7,7 @@ import ProfileAPI from '../Utilities/ProfileAPI';
 import LoadingComponent from '../Components/LoadingComponent';
 
 
-const Profile = ({ route }) => {
+const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(true);

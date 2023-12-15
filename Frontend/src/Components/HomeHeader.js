@@ -6,7 +6,7 @@ import {
 } from "@gluestack-ui/themed"
 import {User} from "lucide-react-native";
 
-const HomeHeader = () => {
+const HomeHeader = ({navigation}) => {
 
     const [profileImage, setProfileImage] = useState(null);
     const [firstName, setFirstName] = useState('Mohamed');
@@ -39,7 +39,7 @@ const HomeHeader = () => {
     }, []);
 
     const onPress = () => {
-        // navigate to profile
+        navigation.navigate('Profile');
         console.log("profile")
     }
 

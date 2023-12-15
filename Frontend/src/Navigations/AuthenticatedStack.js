@@ -46,6 +46,12 @@ export default function AuthenticatedStack() {
                 }}
             />
             <Stack.Screen
+            name="Profile"
+            component={ProfileStack}
+            options={{headerShown:false}}
+            ></Stack.Screen>
+
+            <Stack.Screen
                 name="SearchAndFilter"
                 component={SearchAndFilter}
                 options={{headerShown: false}}
