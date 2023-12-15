@@ -36,6 +36,7 @@ public class StripeWebhook {
                 case "payment_intent.succeeded":
                     System.out.println("yesssssss");
                     paymentConfirmationService.confirmReservation(event);
+                    break;
                 default:
                     System.out.println("another event");
                     break;
