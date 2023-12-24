@@ -48,7 +48,7 @@ Before you begin, ensure that you have the following installed on your machine:
 4. **Build and run the Docker containers using Docker Compose:**
 
    ```bash
-   docker-compose up -d --build
+   docker-compose up --build
 
 5. **Wait for the containers to start.** You can check the logs using:
    
