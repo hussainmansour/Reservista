@@ -184,7 +184,7 @@ class SearchAndFilterServiceTest {
         searchCriteria.setMinRating(0);
         searchCriteria.setMaxRating(10);
         searchCriteria.setPageSize(20);
-        searchCriteria.setSortBy("starRating");
+        searchCriteria.setSortBy("stars");
         searchCriteria.setSortOrder("asc");
         // Act
         HotelSearchResultDTO result = searchAndFilterService.filterAndSortHotels(searchCriteria);
@@ -213,7 +213,7 @@ class SearchAndFilterServiceTest {
         searchCriteria.setMinRating(0);
         searchCriteria.setMaxRating(10);
         searchCriteria.setPageSize(20);
-        searchCriteria.setSortBy("starRating");
+        searchCriteria.setSortBy("stars");
         searchCriteria.setSortOrder("DESC");
         // Act
         HotelSearchResultDTO result = searchAndFilterService.filterAndSortHotels(searchCriteria);
@@ -273,7 +273,6 @@ class SearchAndFilterServiceTest {
     public void test10_searchHotelsWithNoCity() {
         // Arrange
         HotelSearchCriteriaDTO searchCriteria = new HotelSearchCriteriaDTO();
-       // searchCriteria.setCity("Paris");
         searchCriteria.setCountry("France");
         searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));
         searchCriteria.setCheckOut(Instant.parse("2024-01-05T00:00:00Z"));
@@ -330,8 +329,6 @@ class SearchAndFilterServiceTest {
     public void test12_searchRoomsWithoutCheckinAndCheckout() {
         // Arrange
         RoomSearchCriteriaDTO searchCriteria = new RoomSearchCriteriaDTO();
-        //searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));
-        //searchCriteria.setCheckOut(Instant.parse("2024-01-05T00:00:00Z"));
         searchCriteria.setNumberOfRooms(1);
         searchCriteria.setNumberOfTravelers(1);
         searchCriteria.setHotelId(UUID.fromString("d10a9c49-add1-44bd-98c6-2674c5b8fd78"));
