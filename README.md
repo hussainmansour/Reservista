@@ -40,7 +40,6 @@ Before you begin, ensure that you have the following installed on your machine:
       ./mvnw clean
       ./mvnw install -DskipTests
 
-
    4. **Return to the project directory then continue from step 4:**
       ```bash
       cd ..
