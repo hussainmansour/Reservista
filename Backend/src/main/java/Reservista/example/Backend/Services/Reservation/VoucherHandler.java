@@ -9,6 +9,7 @@ import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.CustomizedException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class VoucherHandler extends ReservationHandler{
     @Autowired
     private UserRepository userRepository;
     @Override
+    @Transactional()
     public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
         //Here I have Reservation DTO that have UserID and VoucherName
         //Check if the voucher is not null
@@ -59,7 +61,7 @@ public class VoucherHandler extends ReservationHandler{
         return nextHandler.handleRequest(reservationDTO);
     }
 
-
+     @Transactional
     StatusCode handleVoucher (User user, Voucher voucher){
         if(voucher == null)
             return StatusCode.NOT_FOUND;

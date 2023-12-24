@@ -33,7 +33,6 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             "FROM Reservation r " +
             "WHERE r.paymentIntentId = :paymentIntentId ")
     Optional<List<Object[]>> findEmailFirstNameReservationIdByPaymentIntentId(@Param("paymentIntentId") String paymentIntentId);
-
-
+    void deleteById(Long id);
 
 }
