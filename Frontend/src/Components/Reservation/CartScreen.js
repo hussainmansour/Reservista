@@ -1,5 +1,5 @@
 import { useState, useEffect, useContext } from "react";
-import { AuthContext } from '../Store/authContext';
+import { AuthContext } from '../../Store/authContext.js';
 import {
   StyleSheet,
   Text,
@@ -12,14 +12,13 @@ import {
   TextInput,
   ActivityIndicator
 } from "react-native";
-import PaymentModal from "../Modals/PaymentModal";
+import PaymentModal from "../Components/Modals/PaymentModal.js";
 import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/Ionicons";
 import Checkbox from "expo-checkbox";
-import SmallButton from "../Components/SmallButton";
 import AdditionalOptionsCollapse from "./RoomAdditionalOptionsCollapse.js.js";
-import { reserve, rollBackReservation, verifyVoucher } from "../Utilities/UserAPI.js";
+import { reserve, rollBackReservation, verifyVoucher } from "../../Utilities/UserAPI.js";
 
 const CartScreen = ({route}) => {
   const navigation = useNavigation();

@@ -1,21 +1,21 @@
 import {useContext} from "react";
 import {AuthContext} from "../Store/authContext";
-import Home from "../Screens/Home";
+import Home from "../Components/Home/Home";
 import IconButton from "../Components/IconButton";
 import Welcome from "../Screens/Welcome";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {StyleSheet} from "react-native";
-import Profile from "../Screens/Profile";
+import Profile from "../Components/Profile/Profile";
 import ProfileStack from "./ProfileStack";
 
-import CartScreen from "../Screens/CartScreen";
+import CartScreen from "../Components/Reservation/CartScreen";
 
-import SearchAndFilter from "../Screens/SearchAndFilter";
-import SearchOptions from "../Components/SearchOptions";
-import SearchAndFilterHeader from "../Components/SearchAndFilterHeader";
-import SortAndFilterSelector from "../Components/SortAndFilterSelector";
-import HotelView from "../Screens/HotelView";
+import SearchAndFilter from "../Components/SearchAndFilter/SearchAndFilter";
+import SearchOptions from "../Components/Home/SearchOptions";
+import SearchAndFilterHeader from "../Components/SearchAndFilter/SearchAndFilterHeader";
+import SortAndFilterSelector from "../Components/SearchAndFilter/SortAndFilterSelector";
+import HotelView from "../Components/Hotel/HotelView";
 
 
 const Stack = createNativeStackNavigator();

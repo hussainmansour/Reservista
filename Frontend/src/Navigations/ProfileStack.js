@@ -2,10 +2,10 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import UpcomingReservation from '../Screens/UpcomingReservation';
-import ReservationHistory from '../Screens/ResrvationHistory';
+import UpcomingReservation from '../Components/Profile/UpcomingReservation';
+import ReservationHistory from '../Components/Profile/ResrvationHistory';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
-import Profile from '../Screens/Profile';
+import Profile from '../Components/Profile/Profile';
 
 const Stack = createStackNavigator();
 

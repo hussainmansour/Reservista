@@ -1,23 +1,23 @@
-import React, {useState} from 'react';
-import {View, StyleSheet} from 'react-native';
+import React, { useState } from 'react';
+import { View, StyleSheet } from 'react-native';
 import CounterButton from "./CounterButton";
 import ScalableText from "react-native-text";
 
 const Counter = ({
-                     count,
-                     setCount,
-                     minus = '-',
-                     plus = '+',
-                     min = 0,
-                     max = 10,
-                     onChange,
-                     onChangeBefore = null,
-                     minusIcon = null,
-                     plusIcon = null,
-                     buttonStyle = {},
-                     buttonTextStyle = {},
-                     countTextStyle = {},
-                 }) => {
+    count,
+    setCount,
+    minus = '-',
+    plus = '+',
+    min = 0,
+    max = 10,
+    onChange,
+    onChangeBefore = null,
+    minusIcon = null,
+    plusIcon = null,
+    buttonStyle = {},
+    buttonTextStyle = {},
+    countTextStyle = {},
+}) => {
 
     const [beforeLoading, setBeforeLoading] = useState(false);
 

@@ -2,10 +2,10 @@ import React, { useState,useEffect } from 'react';
 import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
-import CustomTextInput from '../Components/EditTextInput';
-import CustomizedButton from '../Components/CustomizedButton';
-import DropdownList from '../Components/DropdownList';
-import styles from '../Styles/Editstyles';
+import CustomTextInput from '../Inputs/EditTextInput';
+import CustomizedButton from '../General/Buttons/CustomizedButton';
+import DropdownList from '../General/DropdownList';
+import styles from '../../Styles/Editstyles';
 import axios from 'axios';
 
 

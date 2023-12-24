@@ -6,7 +6,7 @@ import {Poppins_700Bold , Poppins_300Light} from "@expo-google-fonts/poppins"
 import {Layout, RangeDatepicker} from '@ui-kitten/components';
 import Counter from "./Counter";
 import CounterInput from "react-native-counter-input";
-import {searchForHotels} from "../Utilities/API";
+import {searchForHotels} from "../../Utilities/API";
 
 const SearchOptions = ({navigation}) => {
     const [selectedLocation, setSelectedLocation] = useState(null);

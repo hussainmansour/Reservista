@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Modal, Button} from 'react-native';
 import SearchAndFilterHeader from "../Components/SearchAndFilterHeader";
-import HotelCard from "../Components/HotelCard";
+import HotelCard from "./HotelCard";
 import SortAndFilterSelector from "../Components/SortAndFilterSelector";
 
 const SearchAndFilter = ({route, navigation}) => {

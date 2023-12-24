@@ -1,7 +1,7 @@
 import {Dimensions, StyleSheet, Text, View} from 'react-native'
 import React from 'react'
-import HomeHeader from "../Components/HomeHeader";
-import SearchOptions from "../Components/SearchOptions";
+import HomeHeader from "./HomeHeader";
+import SearchOptions from "./SearchOptions";
 
 const Home = ({navigation}) => {
   return (

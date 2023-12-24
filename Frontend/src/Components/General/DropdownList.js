@@ -3,7 +3,7 @@
 import React from 'react';
 import {Picker} from '@react-native-picker/picker';
 import { View, Text } from 'react-native';
-import styles from '../Styles/Editstyles';
+import styles from '../../Styles/Editstyles';
 
 
 

@@ -1,9 +1,9 @@
 import React, { useState , useContext } from 'react';
 import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
-import CustomTextInput from '../Components/CustomTextInput';
-import SmallButton from '../Components/SmallButton';
-import {signIn} from '../Utilities/API';
-import {AuthContext} from '../Store/authContext';
+import CustomTextInput from '../Inputs/CustomTextInput';
+import {signIn} from '../../Utilities/API';
+import {AuthContext} from '../../Store/authContext';
+import CustomizedButton from '../General/Buttons/CustomizedButton';
 
 const LoginScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
@@ -49,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
       />
 
       {loading && <ActivityIndicator size="large" color="#0000ff" />}
-      <SmallButton text={"Login"} handlePressing={handleLoginRequest} />
+      <CustomizedButton text={"Login"} onPress={handleLoginRequest} />
 
       <View style={styles.signup}>
         <Text style={{ color: 'white' }}>Don’t have an account?</Text>

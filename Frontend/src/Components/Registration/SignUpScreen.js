@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigation } from '@react-navigation/native';
-import CustomTextInput from '../Components/CustomTextInput';
+import CustomTextInput from '../Inputs/CustomTextInput';
 import Checkbox from 'expo-checkbox';
-import SmallButton from '../Components/SmallButton';
 import {
     View,
     Text,
@@ -11,7 +10,8 @@ import {
     Alert,
     ActivityIndicator
 } from 'react-native';
-import { signUp } from "../Utilities/API";
+import { signUp } from "../../Utilities/API";
+import CustomizedButton from '../General/Buttons/CustomizedButton';
 
 const SignupScreen = () => {
     const [firstName, setFirstName] = useState('');
@@ -205,7 +205,7 @@ const SignupScreen = () => {
 
                 {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
-                <SmallButton text={"Sign up"} handlePressing={handleSignUp} />
+                <CustomizedButton text={"Sign up"} onPress={handleSignUp} />
             </View>
         </ScrollView>
     );

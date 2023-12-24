@@ -9,7 +9,7 @@ import {useFonts} from "expo-font";
 import {Poppins_700Bold} from "@expo-google-fonts/poppins";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {RangeDatepicker} from "@ui-kitten/components";
-import Counter from "./Counter";
+import Counter from "../Home/Counter";
 
 const SearchAndFilterHeader = (
     {

@@ -8,9 +8,9 @@ import {
     StyleSheet,
     Alert, ActivityIndicator,
 } from 'react-native';
-import CustomTextInput from '../Components/CustomTextInput';
-import SmallButton from '../Components/SmallButton';
-import {refreshCode, verifyEmail} from '../Utilities/API'
+import CustomTextInput from '../Inputs/CustomTextInput';
+import { refreshCode, verifyEmail } from '../../Utilities/API'
+import CustomizedButton from '../General/Buttons/CustomizedButton';
 
 
 const VerificationCodeScreen = ({ route, navigation }) => {
@@ -26,13 +26,13 @@ const VerificationCodeScreen = ({ route, navigation }) => {
 
         if (data.status === 200) {
             Alert.alert('Successful', 'Welcome In Reservista');
-             navigation.navigate('Login');
+            navigation.navigate('Login');
         } else {
             console.log(data);
             Alert.alert('Error', 'Incorrect verification code. Please try again.');
         }
     };
-    
+
     const handleResendCode = async () => {
         const dto = {
             email: route.params.email
@@ -40,28 +40,28 @@ const VerificationCodeScreen = ({ route, navigation }) => {
 
         await refreshCode(dto, setLoading);
     };
-    
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.wholeForm}>
                 <CustomTextInput
                     placeholder={'123456'}
                     title={'Enter Verification Code'}
-                    secure = {false}
+                    secure={false}
                     onChangeText={(text) => setVerificationCode(text)}
-                    keyboardType= 'numeric'
+                    keyboardType='numeric'
                 />
-                
+
                 {loading && <ActivityIndicator size="large" color="#0000ff" />}
-                
-                <SmallButton text={"Verify Code"} handlePressing={handleVerifyCode}/>
+
+                <CustomizedButton text={"Verify Code"} onPress={handleVerifyCode} />
                 <TouchableOpacity
                     style={styles.resendButtonContainer}
                     onPress={() => handleResendCode()}
                 >
                     <Text style={styles.resendText}>Resend Code</Text>
                 </TouchableOpacity>
-                
+
             </View>
         </ScrollView>
     );

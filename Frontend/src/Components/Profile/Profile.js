@@ -1,10 +1,10 @@
 import React, { useState, useContext, useEffect } from 'react';
 import { View, Text, StyleSheet, Image, Alert } from 'react-native';
-import CustomizedButton from '../Components/CustomizedButton';
+import CustomizedButton from '../General/Buttons/CustomizedButton';
 import ProfileEditScreen from './ProfileEditScreen';
-import { AuthContext } from '../Store/authContext';
-import ProfileAPI from '../Utilities/ProfileAPI';
-import LoadingComponent from '../Components/LoadingComponent';
+import { AuthContext } from '../../Store/authContext';
+import ProfileAPI from '../../Utilities/ProfileAPI';
+import LoadingComponent from '../General/LoadingComponent';
 
 
 const Profile = () => {

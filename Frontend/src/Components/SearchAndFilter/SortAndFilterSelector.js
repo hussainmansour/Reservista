@@ -18,7 +18,7 @@ import {
 } from "lucide-react-native";
 import {Actionsheet} from '@gluestack-ui/themed';
 import Slider from "react-native-a11y-slider";
-import {searchForHotels} from "../Utilities/API";
+import {searchForHotels} from "../../Utilities/API";
 
 
 const SortAndFilterSelector = (
