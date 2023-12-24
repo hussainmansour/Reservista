@@ -37,7 +37,9 @@ Before you begin, ensure that you have the following installed on your machine:
         
    3. **Generate the Jar file:**
       ```bash
-      ./mvnw clean install
+      ./mvnw clean
+      ./mvnw install -DskipTests
+
 
    4. **Return to the project directory then continue from step 4:**
       ```bash
