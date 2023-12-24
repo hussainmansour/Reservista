@@ -217,7 +217,10 @@ const CartScreen = ({route}) => {
         setClientSecret(response.data.clientSecret);
         setPaymentModalVisible(true);
 
-      }else{
+      }else if (response.status === 400 ){
+        Alert.alert('', "Unable to complete your reservation");
+      }
+      else{
         Alert.alert('', response.message);
       }
     } catch (error) {
