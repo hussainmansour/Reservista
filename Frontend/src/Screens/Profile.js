@@ -43,6 +43,9 @@ const Profile = () => {
     // updating the profile
     const handleSave = async (values) => {
         try {
+
+            console.log("in save");
+
             setIsEditing(false);
 
             setIsLoading(true);
@@ -51,7 +54,8 @@ const Profile = () => {
 
             const response = await ProfileAPI.updateProfile(authCtx.token,values);
 
-            console.log(response);
+            console.log("response", response);
+
             const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
             setUser(updatedUser);
 

@@ -80,7 +80,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                 />
 
                                 <CustomTextInput
-                                    title="Middle Name"
+                                    title="Middle Name (Optional)"
                                     onChangeText={handleChange('middleName')}
                                     onBlur={handleBlur('middleName')}
                                     errorMessage={errors.middleName}

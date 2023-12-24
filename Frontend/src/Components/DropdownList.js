@@ -8,9 +8,9 @@ import styles from '../Styles/Editstyles';
 
 
 const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items }) => {
-    console.log(`Label: ${label}`);
-    console.log(`Selected Value: ${selectedValue}`);
-    console.log('Items:', items);
+    // console.log(`Label: ${label}`);
+    // console.log(`Selected Value: ${selectedValue}`);
+    // console.log('Items:', items);
 
     return (
         <View style={styles.fieldContainer}>
