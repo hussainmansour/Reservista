@@ -12,7 +12,6 @@ services:
       SPRING_DATASOURCE_USERNAME: Reservista_Admin
       SPRING_DATASOURCE_PASSWORD: )Yg#EQE$
       SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
-      SPRING_JPA_HIBERNATE_DDL_AUTO: update
       SPRING_JPA_SHOW_SQL: true
 
     networks:
@@ -23,25 +22,9 @@ services:
     image: stripe/stripe-cli
     command: listen --forward-to spring-boot-app:8080/api/payment/webhook --events payment_intent.succeeded --api-key sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI
     networks:
-        - Reservista
-
-
-  react-native-app:
-    build:
-      context:
-        ./Frontend
-    ports:
-      - "19000:19000"
-      - "19001:19001"
-      - "19002:19002"
-
-    stdin_open: true
-    tty: true
-
-    networks:
       - Reservista
 
-
 networks:
-    Reservista:
-      driver: bridge
+  Reservista:
+    driver: bridge
+

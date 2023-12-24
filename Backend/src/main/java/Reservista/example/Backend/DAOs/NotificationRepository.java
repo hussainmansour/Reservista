@@ -1,7 +1,7 @@
 package Reservista.example.Backend.DAOs;
 
 
-import Reservista.example.Backend.Models.Notification;
+import Reservista.example.Backend.Models.EntityClasses.Notification;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
