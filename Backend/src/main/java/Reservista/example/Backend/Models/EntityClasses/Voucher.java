@@ -31,7 +31,7 @@ public class Voucher {
     @Column(name = "expires_at")
     private Instant expiresAt;
 
-    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH},fetch = FetchType.EAGER)
     @JoinTable(
             name = "user_voucher",
             joinColumns = @JoinColumn(name = "voucher_code", referencedColumnName = "voucher_code"),
