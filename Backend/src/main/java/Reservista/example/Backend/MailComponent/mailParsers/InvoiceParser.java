@@ -18,8 +18,6 @@ public class InvoiceParser extends Mail {
 
                         " We are delighted to confirm your reservation details. Please review the information below:\n\n" +
 
-                        "Reservation Details:\n" +
-
                         invoice +
 
                         "\n" +

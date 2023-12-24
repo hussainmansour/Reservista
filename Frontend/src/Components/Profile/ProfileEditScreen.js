@@ -41,7 +41,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get("http://192.168.1.17:8080/config/countries");
+                const response = await axios.get("http://192.168.1.5:8080/config/countries");
                 const unsortedCountries = response.data
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -134,7 +134,9 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     />
                                     {/* Save Button */}
                                     <CustomizedButton
-                                        onPress={handleSubmit}
+                                        onPress={()=>{
+                                            onSave(values)
+                                        }}
                                         buttonStyle={styles.saveButton}
                                         textStyle={styles.buttonText}
                                         text="Save"

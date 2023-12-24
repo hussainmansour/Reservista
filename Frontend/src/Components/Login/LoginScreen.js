@@ -31,7 +31,7 @@ const LoginScreen = ({ navigation }) => {
   return (
     <View style={styles.wholeForm}>
 
-      <Image source={require('../Data/Logo.png')} style={{ alignSelf: 'center' }} />
+      <Image source={require('../../Data/Logo.png')} style={{ alignSelf: 'center' }} />
 
       <CustomTextInput
           placeholder={'Username'}

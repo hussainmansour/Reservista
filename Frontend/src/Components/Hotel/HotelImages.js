@@ -3,8 +3,8 @@ import { View, Image, FlatList, StyleSheet } from 'react-native';
 
 const HotelImages = () => {
     const images = [
-        require('../../assets/hotel1.jpg'),
-        require('../../assets/hotel2.jpg')
+        require('../../../assets/hotel1.jpg'),
+        require('../../../assets/hotel2.jpg')
         // Add more images here if needed
     ];
 

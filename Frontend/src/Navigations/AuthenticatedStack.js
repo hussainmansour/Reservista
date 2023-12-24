@@ -1,12 +1,10 @@
 import {useContext} from "react";
 import {AuthContext} from "../Store/authContext";
 import Home from "../Components/Home/Home";
-import IconButton from "../Components/IconButton";
-import Welcome from "../Screens/Welcome";
+import IconButton from "../Components/General/Buttons/IconButton";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
 import {Colors} from "react-native/Libraries/NewAppScreen";
 import {StyleSheet} from "react-native";
-import Profile from "../Components/Profile/Profile";
 import ProfileStack from "./ProfileStack";
 
 import CartScreen from "../Components/Reservation/CartScreen";
@@ -14,7 +12,6 @@ import CartScreen from "../Components/Reservation/CartScreen";
 import SearchAndFilter from "../Components/SearchAndFilter/SearchAndFilter";
 import SearchOptions from "../Components/Home/SearchOptions";
 import SearchAndFilterHeader from "../Components/SearchAndFilter/SearchAndFilterHeader";
-import SortAndFilterSelector from "../Components/SearchAndFilter/SortAndFilterSelector";
 import HotelView from "../Components/Hotel/HotelView";
 
 

@@ -2,10 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import RoomCard from '../Components/Cards/RoomCard';
+import RoomCard from './RoomCard';
 import RoomAPI from '../../Utilities/RoomsAPI';
 import { useNavigation } from '@react-navigation/native';
-import HotelImages from '../Components/HotelImages';
+import HotelImages from './HotelImages';
 
 const HotelView = ({ route }) => {
 

@@ -1,8 +1,8 @@
 import React, {useEffect, useState} from 'react';
 import {View, Text, StyleSheet, FlatList, Modal, Button} from 'react-native';
-import SearchAndFilterHeader from "../Components/SearchAndFilterHeader";
+import SearchAndFilterHeader from './SearchAndFilterHeader';
 import HotelCard from "./HotelCard";
-import SortAndFilterSelector from "../Components/SortAndFilterSelector";
+import SortAndFilterSelector from "./SortAndFilterSelector";
 
 const SearchAndFilter = ({route, navigation}) => {
     const renderItem = ({item}) => <HotelCard hotel={item} onPress={() => onHotelPress(item)}/>;

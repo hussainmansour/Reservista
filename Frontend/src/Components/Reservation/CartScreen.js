@@ -12,7 +12,7 @@ import {
   TextInput,
   ActivityIndicator
 } from "react-native";
-import PaymentModal from "../Components/Modals/PaymentModal.js";
+import PaymentModal from "./PaymentModal.js";
 import { useNavigation } from "@react-navigation/native";
 import Collapsible from "react-native-collapsible";
 import Icon from "react-native-vector-icons/Ionicons";
