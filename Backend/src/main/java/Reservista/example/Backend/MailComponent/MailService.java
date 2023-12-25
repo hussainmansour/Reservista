@@ -13,6 +13,7 @@ public class MailService {
             MailServiceProxy mailServiceProxy = new MailServiceProxy();
             return mailServiceProxy.sendMail(mail);
         } catch (Exception e) {
+            System.out.println(e.getMessage());
             return StatusCode.CREDENTIAL_ERROR.getRespond();
         }
     }

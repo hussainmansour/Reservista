@@ -17,7 +17,7 @@ public class OTPController {
     }
 
     @PostMapping("/refresh-verification-code")
-    public ResponseDTO refreshOTP(@RequestBody String email){
+    public ResponseDTO refreshOTP(@RequestParam String email){
         return otpService.refreshOTP(email);
     }
 }
