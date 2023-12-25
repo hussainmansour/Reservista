@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Services.Registration;
 
 
-import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
@@ -20,9 +19,6 @@ public class UserRegistrationService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private BlockedUserRepository blockedUserRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -66,12 +62,12 @@ public class UserRegistrationService {
 
     private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws RegistrationCredentialsException, DeactivatedAccountException {
 
-        if (userRepository.findIsBlockedByEmail(registrationRequest.getEmail()))
-            throw new RegistrationCredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 
-
+            if (userRepository.findIsBlockedByEmail(registrationRequest.getEmail()) ){
+                throw new RegistrationCredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
+            }
             if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail())) {
                 otpService.refreshOTP(registrationRequest.getEmail());
                 throw new DeactivatedAccountException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());

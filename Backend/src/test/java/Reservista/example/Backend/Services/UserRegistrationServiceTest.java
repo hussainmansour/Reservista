@@ -3,7 +3,6 @@ package Reservista.example.Backend.Services;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,9 +29,6 @@ class UserRegistrationServiceTest {
     @MockBean
     UserRepository userRepository;
 
-    @MockBean
-    BlockedUserRepository blockedUserRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
 
@@ -42,9 +37,7 @@ class UserRegistrationServiceTest {
 
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -65,8 +58,6 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
-        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -86,12 +77,8 @@ class UserRegistrationServiceTest {
     @Test
     public void whenUserIsBlocked_thenUserAccountNotCreated(){
 
-
-
-        Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
+        Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
+        Mockito.when(userRepository.findIsBlockedByEmail("mariam@gmail.com")).thenReturn(true);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -112,9 +99,7 @@ class UserRegistrationServiceTest {
     public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain(){
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -135,8 +120,6 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);
             savedUser.setPassword(passwordEncoder.encode("password"));
