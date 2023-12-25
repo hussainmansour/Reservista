@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigation } from '@react-navigation/native';
 import CustomTextInput from '../Inputs/CustomTextInput';
 import Checkbox from 'expo-checkbox';
@@ -12,6 +12,45 @@ import {
 } from 'react-native';
 import { signUp } from "../../Utilities/API";
 import CustomizedButton from '../General/Buttons/CustomizedButton';
+import DropdownList from '../General/DropdownList';
+
+
+const validationSchema = Yup.object().shape({
+    firstName: Yup.string()
+        .required('First Name is required')
+        .min(2, 'First Name must be at least 2 characters')
+        .max(50, 'First Name must be at most 50 characters'),
+    lastName: Yup.string()
+        .required('Last Name is required')
+        .min(2, 'Last Name must be at least 2 characters')
+        .max(50, 'Last Name must be at most 50 characters'),
+    birthDate: Yup.string()
+        .required('Date of birth is required')
+        .matches(
+            /^\d{4}-\d{2}-\d{2}$/,
+            'Invalid date format. Please use YYYY-MM-DD.'
+        ),
+    email: Yup.string()
+        .required('Email is required')
+        .email('Please enter a valid email address')
+        .matches(/@gmail.com$/, 'Please enter a valid Gmail address'),
+    userName: Yup.string()
+        .required('Username is required')
+        .min(1, 'Username must be at least 6 characters'),
+    //password is required and must be at least 8 characters and have lowercase, uppercase, number, and special character
+    password: Yup.string()
+        .required('Password is required')
+        .min(8, 'Password must be at least 8 characters')
+        .matches(
+            /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,   //regex for password validation 
+            'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'
+        ),
+        nationality: Yup.string()
+        .required('Nationality is required')
+        
+});
+
+            
 
 const SignupScreen = () => {
     const [firstName, setFirstName] = useState('');
@@ -23,6 +62,7 @@ const SignupScreen = () => {
     const [nationality, setNationality] = useState('');
     const [agreeTerms, setAgreeTerms] = useState(false);
     const [loading, setLoading] = useState('');
+    const [countries, setCountries] = useState([])
 
     // Error states for each input field
     const [firstNameError, setFirstNameError] = useState('');
@@ -118,6 +158,36 @@ const SignupScreen = () => {
         }
     };
 
+    useEffect(() => {
+        //Todo: need to refactor this code
+        const fetchCountries = async () => {
+            try {
+                const response = await axios.get("http://192.168.1.5:8080/config/countries");
+                const unsortedCountries = response.data
+                setCountries(unsortedCountries.sort());
+            } catch (error) {
+                console.log('Error fetching Countries:', error);
+            }
+        };
+
+        const addCountries = async () => {
+            try {
+                let tempCountries = ["Egypt"];
+                setCountries(tempCountries.sort());
+            } catch (error) { 
+                console.log('Error adding Countries:', error);
+            }
+        };
+
+        addCountries();
+        // fetchCountries();
+    }, []);
+
+    const dropdownItems = countries.map(nationality => ({
+        label: nationality,
+        value: nationality,
+    }));
+
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.wholeForm}>
@@ -176,13 +246,14 @@ const SignupScreen = () => {
                         errorMessage={passwordError}
                         keyboardType="visible-password"
                     />
-                    <CustomTextInput 
-                        placeholder={'Nationality'}
-                        title={'Nationality'}
-                        secure={false} 
-                        onChangeText={(text) => setNationality(text)} 
-                        errorMessage={nationalityError}
+
+                    <DropdownList
+                        label="Nationality"
+
+                        items={dropdownItems}
+                        color={'white'}
                     />
+                   
 
                 </View>
 

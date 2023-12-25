@@ -34,8 +34,8 @@ const LoginScreen = ({ navigation }) => {
       <Image source={require('../../Data/Logo.png')} style={{ alignSelf: 'center' }} />
 
       <CustomTextInput
-          placeholder={'Username'}
-          title={'Username'}
+          placeholder={'Username or Email'}
+          title={'Username or Email'}
           secure={false}
           onChangeText={(text) => setUsername(text)}
       />

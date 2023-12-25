@@ -21,7 +21,7 @@ export default CustomizedButton;
 
 const styles = StyleSheet.create({
     ButtonContainer:{
-        
+        marginBottom: 60,
         marginTop: 30,
         width: 118,
         height: 43,
