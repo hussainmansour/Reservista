@@ -41,9 +41,7 @@ public class DBUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException(
                     String.format("User %s not found", userNameOrEmail)
             );
-
-        System.out.println(user.isAccountNonLocked());
-
+        
         return user == null ? admin : user;
     }
 }
