@@ -47,7 +47,7 @@ public class GlobalExceptionHandler extends RuntimeException{
     }
 
 
-     @ExceptionHandler(DataAccessException.class)
+    @ExceptionHandler(DataAccessException.class)
     public ResponseEntity<Object> handleDatabaseExceptions(DataAccessException ex){
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
