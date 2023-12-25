@@ -7,6 +7,7 @@ services:
         ./Backend
     ports:
       - "8080:8080"
+      - "8086:8086"
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://reservista.mysql.database.azure.com:3306/ReservistaDB
       SPRING_DATASOURCE_USERNAME: Reservista_Admin

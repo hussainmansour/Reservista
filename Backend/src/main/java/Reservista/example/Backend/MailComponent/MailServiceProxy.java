@@ -60,7 +60,7 @@ public class MailServiceProxy {
                 .build();
 
 
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8086).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 

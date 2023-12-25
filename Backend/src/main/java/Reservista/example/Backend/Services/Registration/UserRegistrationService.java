@@ -66,7 +66,7 @@ public class UserRegistrationService {
 
     private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws RegistrationCredentialsException, DeactivatedAccountException {
 
-        if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
+        if (userRepository.findIsBlockedByEmail(registrationRequest.getEmail()))
             throw new RegistrationCredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
