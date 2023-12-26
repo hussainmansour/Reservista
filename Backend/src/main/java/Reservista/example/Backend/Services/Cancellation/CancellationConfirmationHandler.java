@@ -46,5 +46,6 @@ public class CancellationConfirmationHandler extends CancellationHandler{
         mailService.sendMail(registrationMail);
 
         return cancellationRequestDTO.getRefundedAmount();
+
     }
 }
