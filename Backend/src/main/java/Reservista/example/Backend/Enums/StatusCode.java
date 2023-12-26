@@ -39,7 +39,12 @@ public enum StatusCode {
     // Error code for testing purposes
     TEST_CODE(0,"testing message"),
 
-    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
+    //Reservation cancellation errors
+    RESERVATION_NOT_FOUND(77,"Reservation not found"),  //404
+    RESERVATION_NOT_CONFIRMED(78,"Reservation not confirmed"), // 409 conflict
+    RESERVATION_OUTDATED(78,"Reservation outdated"); // 409 conflict
+
+
 
     private final int code;
     private final String message;

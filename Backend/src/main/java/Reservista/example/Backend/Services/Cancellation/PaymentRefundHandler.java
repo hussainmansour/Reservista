@@ -3,6 +3,7 @@ import Reservista.example.Backend.DTOs.Cancellation.CancellationRequestDTO;
 import Reservista.example.Backend.DTOs.Cancellation.CancellationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 
+import Reservista.example.Backend.Error.GlobalException;
 import org.springframework.stereotype.Service;
 
 
@@ -11,7 +12,7 @@ public class PaymentRefundHandler extends CancellationHandler{
 
 
     @Override
-    public ResponseDTO<CancellationResponseDTO> handleRequest(CancellationRequestDTO cancellationRequestDTO)  {
+    public long handleRequest(CancellationRequestDTO cancellationRequestDTO) throws GlobalException {
 
         return nextHandler.handleRequest(cancellationRequestDTO);
 
