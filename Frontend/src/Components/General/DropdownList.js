@@ -7,14 +7,19 @@ import styles from '../../Styles/Editstyles';
 
 
 
-const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items }) => {
+const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items, color }) => {
     // console.log(`Label: ${label}`);
     // console.log(`Selected Value: ${selectedValue}`);
     // console.log('Items:', items);
 
+    const labelStyle = {
+        ...styles.fieldLabel,
+        color: color || styles.fieldLabel.color
+    };
+
     return (
         <View style={styles.fieldContainer}>
-            <Text style={styles.fieldLabel}>{label}:</Text>
+            <Text style={labelStyle}>{label}</Text>
             <View style={styles.input}>
                 <Picker
                     selectedValue={selectedValue}
