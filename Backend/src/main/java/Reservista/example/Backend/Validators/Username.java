@@ -8,12 +8,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+import static Reservista.example.Backend.Config.ValidationUtil.invalidUsername;
+
 @Target({ElementType.FIELD, ElementType.PARAMETER})
 @Retention(RetentionPolicy.RUNTIME)
 @Constraint(validatedBy = UsernameValidator.class)
 public @interface Username {
 
-    String message() default "please enter a username that does not include @";
+    String message() default invalidUsername;
 
     Class<?>[] groups() default {};
 

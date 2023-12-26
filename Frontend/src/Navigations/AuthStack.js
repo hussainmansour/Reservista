@@ -1,10 +1,11 @@
 import {StyleSheet, View} from "react-native";
 import {StatusBar} from "expo-status-bar";
-import LoginScreen from "../Screens/LoginScreen";
-import SignupScreen from "../Screens/SignUpScreen";
-import TermsAndConditionsScreen from "../Screens/TermsAndConditionsScreen";
-import VerificationCodeScreen from "../Screens/VerificationCodeScreen";
+import LoginScreen from "../Components/Login/LoginScreen";
+import SignupScreen from "../Components/Registration/SignUpScreen";
+import TermsAndConditionsScreen from "../Components/Registration/TermsAndConditionsScreen";
+import VerificationCodeScreen from "../Components/Registration/VerificationCodeScreen";
 import {createNativeStackNavigator} from "@react-navigation/native-stack";
+
 
 const Stack = createNativeStackNavigator();
 export default function AuthStack() {
@@ -16,6 +17,7 @@ export default function AuthStack() {
                 translucent={true}
             />
             <Stack.Navigator>
+                {/* <Stack.Screen name = "CartScreen" component={CartScreen} options={{ headerShown: false }} /> */}
                 <Stack.Screen name = "Login" component={LoginScreen} options={{ headerShown: false }} />
                 <Stack.Screen name = 'Signup' component = {SignupScreen}/>
                 <Stack.Screen name = 'TermsAndConditions' component={TermsAndConditionsScreen} />

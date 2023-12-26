@@ -1,17 +1,14 @@
 package Reservista.example.Backend.Models.EntityClasses;
 
+import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Enums.SystemRoles;
-import Reservista.example.Backend.Enums.Gender;
+
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
-import Reservista.example.Backend.Validators.Country;
+import Reservista.example.Backend.Validators.Nationality;
 import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.BirthDate;
+import Reservista.example.Backend.Validators.Age;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -22,7 +19,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,36 +41,38 @@ public class User implements UserDetails {
     @Embedded
     private FullName fullName;
 
-    @BirthDate
+    @Age
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
+    // todo: add notnull
+
     @Column(name = "gender")
     @Enumerated(EnumType.STRING)
-    private Gender gender;
+    private Genders gender;
 
-    @Country
+    @Nationality
     @Column(name = "nationality")
     private String nationality;
 
-    @NotNull
     @Column(name = "is_activated")
     private boolean isActivated;
 
+    @Column(name = "is_blocked")
+    private boolean isBlocked;
+
     @Lob
-    @Column(name = "profile_image")
+    @Column(name = "profile_image" , columnDefinition = "LONGBLOB")
     private byte[] profileImage;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Reservation> reservations;
 
-    @OneToMany(mappedBy = "user",cascade = CascadeType.ALL)
-    private Set<Report> reports;
+    @OneToMany(mappedBy = "user" , cascade = CascadeType.ALL)
+    private Set<Reservation> reservations;
 
     @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Notification> notifications;
 
-    @ManyToMany(mappedBy = "users", cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
+    @ManyToMany(mappedBy = "users", fetch = FetchType.EAGER,cascade = {CascadeType.DETACH, CascadeType.MERGE, CascadeType.PERSIST, CascadeType.REFRESH})
     private Set<Voucher> vouchers;
 
     @Override

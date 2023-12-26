@@ -13,7 +13,8 @@ import java.util.List;
 import java.util.Set;
 
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
@@ -27,9 +28,6 @@ public class Admin implements UserDetails {
     @NotBlank
     @Column(name = "password")
     private String password;
-
-    @OneToMany(mappedBy = "admin" , cascade = CascadeType.ALL)
-    private Set<Report> reports;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -7,7 +7,9 @@ import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Refund;
 import com.stripe.param.RefundCreateParams;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframeworhttps://github.com/hussainmansour/Reservista/pull/26/conflict?name=Backend%252Fsrc%252Fmain%252Fjava%252FReservista%252Fexample%252FBackend%252FServices%252FCancellation%252FPaymentRefundHandler.java&ancestor_oid=24b03fce01b1862519460bc960df3508f91b6b33&base_oid=434796449656bbbf06ec9bb46f51522016a35c64&head_oid=8140f1e55a6f1df18b3fff087732b19fa23afb4bk.beans.factory.annotation.Value;
+import Reservista.example.Backend.Error.GlobalException;
+
 import org.springframework.stereotype.Service;
 
 
@@ -19,7 +21,7 @@ public class PaymentRefundHandler extends CancellationHandler{
     private String stripeSecretApiKey;
 
     @Override
-    public ResponseDTO<CancellationResponseDTO> handleRequest(CancellationRequestDTO cancellationRequestDTO)  {
+    public long handleRequest(CancellationRequestDTO cancellationRequestDTO) throws GlobalException {
 
         Stripe.apiKey = stripeSecretApiKey;
 
