@@ -84,7 +84,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
     @Transactional
     public Reservation checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
-       HashSet<Integer>  nonAvailableRooms = reservedRoomRepository.getNumberOfConflictedRooms(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
+       HashSet<Integer>  nonAvailableRooms = reservedRoomRepository.getConflictedRoomNumbers(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
         int availableRooms = roomCount - nonAvailableRooms.size();
         if (availableRooms >= reservation.getReservedRooms().size()) {
             int i=0;

@@ -16,6 +16,6 @@ public interface ReservedRoomRepository extends JpaRepository<ReservedRoom, UUID
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @Query("SELECT r.roomNumber FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId "+
             "AND r.reservation.checkOut >= :checkIn AND r.reservation.checkIn <= :checkOut")
-    HashSet<Integer> getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId, @Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
+    HashSet<Integer> getConflictedRoomNumbers(@Param("roomDescId") UUID roomDescId, @Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
 
 }
