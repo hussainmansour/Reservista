@@ -5,12 +5,12 @@ import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Error.RegistrationCredentialsException;
-import Reservista.example.Backend.Error.DeactivatedAccountException;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +30,7 @@ public class UserRegistrationService {
     @Autowired
     private OTPService otpService;
 
-    public User registerUser(RegistrationRequestDTO registrationRequest) throws RegistrationCredentialsException, DeactivatedAccountException {
+    public User registerUser(RegistrationRequestDTO registrationRequest) throws GlobalException {
 
 
         //check users credentials
@@ -59,29 +59,29 @@ public class UserRegistrationService {
             return savedUser;
         }
         catch (DataIntegrityViolationException e){
-            throw new RegistrationCredentialsException("Email or username already exists");
+            throw new GlobalException(StatusCode.REGISTRATION_RACE_CONDITION,HttpStatus.CONFLICT);
         }
 
     }
 
-    private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws RegistrationCredentialsException, DeactivatedAccountException {
+    private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws GlobalException {
 
         if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
-            throw new RegistrationCredentialsException(StatusCode.ACCOUNT_BLOCKED.getMessage());
+            // locked, forbidden, unauthorized ??
+            throw new GlobalException(StatusCode.ACCOUNT_BLOCKED, HttpStatus.LOCKED);
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 
 
             if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail())) {
                 otpService.refreshOTP(registrationRequest.getEmail());
-                throw new DeactivatedAccountException(StatusCode.ACCOUNT_DEACTIVATED.getMessage());
+                throw new GlobalException(StatusCode.ACCOUNT_DEACTIVATED, HttpStatus.CONFLICT);
             }
-
-            throw new RegistrationCredentialsException(StatusCode.EMAIL_ALREADY_EXIST.getMessage());
+            throw new GlobalException(StatusCode.EMAIL_ALREADY_EXIST, HttpStatus.CONFLICT);
         }
 
         if (userRepository.existsByUserName(registrationRequest.getUserName()))
-            throw new RegistrationCredentialsException(StatusCode.USERNAME_ALREADY_EXIST.getMessage());
+            throw new GlobalException(StatusCode.USERNAME_ALREADY_EXIST, HttpStatus.CONFLICT);
 
     }
 
