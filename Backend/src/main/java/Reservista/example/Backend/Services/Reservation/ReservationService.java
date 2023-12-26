@@ -5,6 +5,7 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
@@ -46,21 +47,16 @@ public class ReservationService {
 
     }
 
-    public ResponseDTO<Integer> applyVoucher(String username, String voucherCode) {
+    public int applyVoucher(String username, String voucherCode) throws GlobalException {
         User user = userRepository.findByUserName(username).orElse(null);
         Voucher voucher = voucherRepository.findVoucherByVoucherCode(voucherCode);
-        StatusCode statusCode = voucherHandler.handleVoucher(user, voucher);
-        switch (statusCode) {
-            case SUCCESS -> {
-                return new ResponseDTO<>(statusCode.getCode(), statusCode.getMessage(), voucher.getDiscountRate());
-            }
-            default -> {
-                return new ResponseDTO<>(statusCode.getCode(), statusCode.getMessage(), null);
-            }
-        }
+        voucherHandler.handleVoucher(user, voucher);
+
+        return voucher.getDiscountRate();
+
     }
 
-    public ResponseDTO<ReservationResponseDTO> reserve(String userName,ReservationDTO reservationDTO){
+    public ReservationResponseDTO reserve(String userName,ReservationDTO reservationDTO) throws GlobalException {
 
         reservationDTO.setUserName(userName);
         return this.reservationHandler.handleRequest(reservationDTO);

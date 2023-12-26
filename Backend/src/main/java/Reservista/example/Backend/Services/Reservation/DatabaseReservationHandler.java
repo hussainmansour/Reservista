@@ -28,7 +28,7 @@ public class DatabaseReservationHandler extends ReservationHandler{
 
 
     @Transactional
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) {
 
         System.out.println("databaseReservationHandler");
         Reservation reservation =reservationRepository.findById(reservationDTO.getReservationID()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));

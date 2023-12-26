@@ -20,16 +20,12 @@ public class AuthenticationController {
     private AuthenticationService authenticationService;
 
     @PostMapping("/login")
-    public ResponseEntity<ResponseDTO<AuthenticationResponseDTO>>
+    public ResponseEntity<String>
     login(@RequestBody AuthenticationRequestDTO authenticationRequest) {
         System.out.println(authenticationRequest.toString());
         String token = authenticationService.authenticate(
                 authenticationRequest.getUserNameOrEmail(),
                 authenticationRequest.getPassword());
-        return ResponseEntity.ok(ResponseDTO.<AuthenticationResponseDTO>builder()
-                .status(StatusCode.SUCCESSFUL_LOGIN.getCode())
-                .message(StatusCode.SUCCESSFUL_LOGIN.getMessage())
-                .data(new AuthenticationResponseDTO(token))
-                .build());
+        return ResponseEntity.ok(token);
     }
 }

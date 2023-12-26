@@ -4,11 +4,12 @@ import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class CalculationHandler extends ReservationHandler {
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
         calculatePrice(reservationDTO);
         return nextHandler.handleRequest(reservationDTO);
     }

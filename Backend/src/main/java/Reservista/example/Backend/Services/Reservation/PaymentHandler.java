@@ -5,11 +5,13 @@ import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Error.GlobalException;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.PaymentIntent;
 import com.stripe.param.PaymentIntentCreateParams;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,7 +21,7 @@ public class PaymentHandler extends ReservationHandler{
     private String stripeSecretApiKey;
 
     @Override
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
 
         System.out.println("payment reservation handler");
         try {
@@ -42,14 +44,10 @@ public class PaymentHandler extends ReservationHandler{
                     .clientSecret(intent.getClientSecret())
                     .build();
             nextHandler.handleRequest(reservationDTO);
-            ResponseDTO<ReservationResponseDTO> responseDTO
-                    = new ResponseDTO<>(StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getCode(),StatusCode.STRIPE_PAYMENT_INTENT_SUCCESSFUL.getMessage(),reservationResponseDTO);
-            return responseDTO;
+            return reservationResponseDTO;
         }
-        catch ( StripeException e){
-            ResponseDTO<ReservationResponseDTO> responseDTO
-                    = new ResponseDTO<>(StatusCode.STRIPE_PAYMENT_INTENT_FAILED.getCode(),StatusCode.STRIPE_PAYMENT_INTENT_FAILED.getMessage(),null);
-            return responseDTO;
+        catch (StripeException | GlobalException e){
+            throw new GlobalException(StatusCode.STRIPE_PAYMENT_INTENT_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
     }
