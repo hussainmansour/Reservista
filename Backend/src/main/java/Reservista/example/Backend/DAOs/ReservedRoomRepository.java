@@ -9,12 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
+import java.util.HashSet;
+import java.util.Set;
 import java.util.UUID;
 @Repository
 public interface ReservedRoomRepository extends JpaRepository<ReservedRoom, UUID> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("SELECT count(r.id) FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId "+
+//    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT r.roomNumber FROM ReservedRoom r WHERE r.roomDescription.id = :roomDescId "+
             "AND r.reservation.checkOut >= :checkIn AND r.reservation.checkIn <= :checkOut")
-  int getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId,@Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
+    HashSet<Integer> getNumberOfConflictedRooms(@Param("roomDescId") UUID roomDescId, @Param("checkIn") Instant checkIn, @Param("checkOut") Instant checkOut);
 
 }
