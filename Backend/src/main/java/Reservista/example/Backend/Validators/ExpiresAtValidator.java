@@ -1,12 +1,13 @@
 package Reservista.example.Backend.Validators;
 
-import Reservista.example.Backend.DTOs.Admin.VoucherDTO;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.Instant;
 
-class ExpiresAtValidator implements ConstraintValidator<ExpiresAt, VoucherDTO> {
+
+// To check if the expiration date is after the current date
+class ExpiresAtValidator implements ConstraintValidator<ExpiresAt, Instant> {
 
     @Override
     public void initialize(ExpiresAt constraintAnnotation) {
@@ -14,7 +15,11 @@ class ExpiresAtValidator implements ConstraintValidator<ExpiresAt, VoucherDTO> {
     }
 
     @Override
-    public boolean isValid(VoucherDTO voucherDTO, ConstraintValidatorContext context) {
-        return voucherDTO.getExpiresAt() != null && voucherDTO.getExpiresAt().isAfter(Instant.now());
+    public boolean isValid(Instant expiresAt, ConstraintValidatorContext constraintValidatorContext) {
+        if (expiresAt == null) {
+            return false;
+        }
+        Instant now = Instant.now();
+        return expiresAt.isAfter(now);
     }
 }
