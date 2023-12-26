@@ -7,8 +7,7 @@ import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Error.RegistrationCredentialsException;
-import Reservista.example.Backend.Error.DeactivatedAccountException;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import org.junit.jupiter.api.Test;
@@ -16,7 +15,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -52,9 +50,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.EMAIL_ALREADY_EXIST.getMessage(), exception.getMessage());
+        assertEquals(StatusCode.EMAIL_ALREADY_EXIST, exception.getStatusCode());
 
         verify(userRepository,never()).save(any());
 
@@ -74,9 +72,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.USERNAME_ALREADY_EXIST.getMessage(), exception.getMessage());
+        assertEquals(StatusCode.USERNAME_ALREADY_EXIST, exception.getStatusCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -99,9 +97,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception =assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_BLOCKED.getMessage(), exception.getMessage());
+        assertEquals(StatusCode.ACCOUNT_BLOCKED, exception.getStatusCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -122,16 +120,16 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        DeactivatedAccountException exception =assertThrows(DeactivatedAccountException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_DEACTIVATED.getMessage(), exception.getMessage());
+        assertEquals(StatusCode.ACCOUNT_DEACTIVATED, exception.getStatusCode());
 
         verify(userRepository,never()).save(any(User.class));
 
     }
 
     @Test
-    public void whenValidUserCredentials_thenUserAccountCreated() throws RegistrationCredentialsException, DeactivatedAccountException {
+    public void whenValidUserCredentials_thenUserAccountCreated() throws GlobalException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);

@@ -1,22 +1,18 @@
 package Reservista.example.Backend.Enums;
 
+import Reservista.example.Backend.DTOs.ErrorDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import lombok.Getter;
 
 @Getter
 public enum StatusCode {
 
-    INVALID_EMAIL(10, "please enter your gmail"),
+
+
     EMAIL_ALREADY_EXIST(11, "Email already exists"),
     USERNAME_ALREADY_EXIST(12, "Username already exists"),
     ACCOUNT_DEACTIVATED(200, "This account already exists and needs to be activated, check your email!"),
     ACCOUNT_BLOCKED(14, "This account is blocked"),
-    INVALID_USERNAME(15, "please enter a username that does not include @"),
-    INVALID_NATIONALITY(21, "Invalid nationality"),
-    INVALID_BIRTHDATE(16, "Invalid age"),
-    INVALID_FIRSTNAME(17, "please provide your first name"),
-    WEAK_PASSWORD(18, "Please enter a strong password"),
-    SUCCESSFUL_REGISTRATION(200, "Registration complete, verify your email!"),
     SUCCESSFUL_LOGIN(200, "Login completed successfully"),
     BAD_USER_CREDENTIALS(400,"Bad credentials"),
     EMAIL_NOT_REACHED(20,"Couldn't reach your email"),
@@ -40,10 +36,9 @@ public enum StatusCode {
     STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created"),
 
 
-
+    TEST_CODE(0,"testing message"),
 
     UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
-
 
     private final int code;
     private final String message;
@@ -52,6 +47,7 @@ public enum StatusCode {
         this.code = code;
         this.message = message;
     }
+
 //
     public ResponseDTO<Void> getRespond() {
         return new ResponseDTO<>(code,message,null);
@@ -59,4 +55,7 @@ public enum StatusCode {
 //    public ResponseDTO<Object> getRespond() {
 //        return new ResponseDTO<Object>(code,message,null);
 //    }
+    public ErrorDTO<String> getError (){
+        return new ErrorDTO<String> (code,message);
+    }
 }
