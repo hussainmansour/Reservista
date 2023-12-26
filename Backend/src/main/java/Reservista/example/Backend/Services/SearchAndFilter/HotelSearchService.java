@@ -3,6 +3,7 @@ package Reservista.example.Backend.Services.SearchAndFilter;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSummaryDTO;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -28,46 +29,39 @@ public class HotelSearchService {
     }
 
 
-    private List<HotelDTO> convertToHotelDTOList(List<Hotel> hotels) {
-        List<HotelDTO> hotelDTOList = new ArrayList<>();
+    private List<HotelSummaryDTO> convertToHotelSummaryDTOList(List<Hotel> hotels) {
+        List<HotelSummaryDTO> hotelSummaryDTOList = new ArrayList<>();
 
         for (Hotel hotel : hotels) {
-            HotelDTO hotelDTO = new HotelDTO();
-            hotelDTO.setId(hotel.getId());
-            hotelDTO.setName(hotel.getName());
-            hotelDTO.setCity(hotel.getLocation().getCity());
-            hotelDTO.setRating(hotel.getRating());
-            hotelDTO.setReviewCount(hotel.getReviewCount());
-            hotelDTO.setStarRating(hotel.getStarRating());
-            hotelDTO.setCountry(hotel.getLocation().getCountry());
-            hotelDTO.setMinRoomPrice(calculateMinRoomPrice(hotel));
-            hotelDTO.setHotelFoodOptions(hotel.getHotelFoodOptions());
-            hotelDTO.setFullyRefundable(hotel.isFullyRefundable());
-            hotelDTO.setAddress(hotel.getAddress());
-            hotelDTO.setFullyRefundableRate(hotel.getFullyRefundableRate());
-//            hotelDTO.setImages(hotel.getHotelImages()); // Assuming getHotelImages returns Set<HotelImage>
-            hotelDTOList.add(hotelDTO);
+            HotelSummaryDTO hotelSummaryDTO = new HotelSummaryDTO();
+            hotelSummaryDTO.setId(hotel.getId());
+            hotelSummaryDTO.setName(hotel.getName());
+            hotelSummaryDTO.setCity(hotel.getLocation().getCity());
+            hotelSummaryDTO.setRating(hotel.getRating());
+            hotelSummaryDTO.setReviewCount(hotel.getReviewCount());
+            hotelSummaryDTO.setStarRating(hotel.getStarRating());
+            hotelSummaryDTO.setCountry(hotel.getLocation().getCountry());
+            hotelSummaryDTO.setMinRoomPrice(calculateMinRoomPrice(hotel));
+//            hotelSummaryDTO.setImages(hotel.getHotelImages()); // Assuming getHotelImages returns Set<HotelImage>
+            hotelSummaryDTOList.add(hotelSummaryDTO);
         }
-
-        return hotelDTOList;
+        return hotelSummaryDTOList;
     }
 
     public HotelSearchResultDTO getHotelsWithCriteria(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
 
-        Page<Hotel> hotelPage;
+        Page<Hotel> hotelSummaryPage;
 
         if (searchCriteria.hasSortCriteria()) {
-            hotelPage = hotelSearchFactory.sortHotelsByCriteria(searchCriteria, pageable);
+            hotelSummaryPage = hotelSearchFactory.sortHotelsByCriteria(searchCriteria, pageable);
         } else {
-            hotelPage = hotelSearchFactory.searchHotels(searchCriteria, pageable);
+            hotelSummaryPage = hotelSearchFactory.searchHotels(searchCriteria, pageable);
         }
 
-        if (hotelPage == null) {
+        if (hotelSummaryPage == null) {
             return null;
         }
-        List<HotelDTO> hotelDTOList = convertToHotelDTOList(hotelPage.getContent());
-//        Page<HotelDTO> hotelDTOPage = new PageImpl<>(hotelDTOList, hotelPage.getPageable(), hotelPage.getTotalElements());
-
+        List<HotelSummaryDTO> hotelDTOList = convertToHotelSummaryDTOList(hotelSummaryPage.getContent());
         HotelSearchResultDTO searchResult = new HotelSearchResultDTO();
         searchResult.setHotels(hotelDTOList);
         return searchResult;

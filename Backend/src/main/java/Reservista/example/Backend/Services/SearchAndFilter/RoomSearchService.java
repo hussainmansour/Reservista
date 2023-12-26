@@ -4,16 +4,14 @@ import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.RoomDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchResultDTO;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
+import java.util.Set;
 
 
 @Service
@@ -43,7 +41,7 @@ public class RoomSearchService {
         return roomDTOList;
     }
 
-    public RoomSearchResultDTO getRoomsInSpecificHotel (RoomSearchCriteriaDTO roomSearchCriteriaDTO){
+    public HotelDTO getRoomsInSpecificHotel (RoomSearchCriteriaDTO roomSearchCriteriaDTO){
         List<RoomDescription> roomDescriptions = hotelRepository.findAvailableRooms(
                 roomSearchCriteriaDTO.getHotelId(),
                 roomSearchCriteriaDTO.getCheckIn(),
@@ -51,10 +49,25 @@ public class RoomSearchService {
                 roomSearchCriteriaDTO.getNumberOfRooms(),
                 roomSearchCriteriaDTO.getNumberOfTravelers());
 
-        RoomSearchResultDTO roomSearchResultDTO = new RoomSearchResultDTO();
-        roomSearchResultDTO.setRoomDTOList(convertToRoomDTOList(roomDescriptions, roomSearchCriteriaDTO));
-        return roomSearchResultDTO;
-    }
+
+        Hotel hotel = hotelRepository.findById(roomSearchCriteriaDTO.getHotelId()).get();
+        HotelDTO hotelDTO = new HotelDTO();
+        hotelDTO.setId(hotel.getId());
+        hotelDTO.setName(hotel.getName());
+        hotelDTO.setCity(hotel.getLocation().getCity());
+        hotelDTO.setCountry(hotel.getLocation().getCountry());
+        hotelDTO.setAddress(hotel.getAddress());
+        hotelDTO.setFullyRefundableRate(hotel.getFullyRefundableRate());
+        hotelDTO.setFullyRefundable(hotel.isFullyRefundable());
+        hotelDTO.setHotelFoodOptions(hotel.getHotelFoodOptions());
+        hotelDTO.setRating(hotel.getRating());
+        hotelDTO.setImages(hotel.getHotelImages());
+        hotelDTO.setReviewCount(hotel.getReviewCount());
+        hotelDTO.setStarRating(hotel.getStarRating());
+        hotelDTO.setRooms((Set<RoomDTO>) convertToRoomDTOList(roomDescriptions, roomSearchCriteriaDTO));
+
+        return hotelDTO;
+     }
 
 
 }

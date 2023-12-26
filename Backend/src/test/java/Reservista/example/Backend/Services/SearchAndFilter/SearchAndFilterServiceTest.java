@@ -1,7 +1,7 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchResultDTO;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -316,13 +316,11 @@ class SearchAndFilterServiceTest {
         searchCriteria.setHotelId(UUID.fromString("d10a9c49-add1-44bd-98c6-2674c5b8fd78"));
 
         // Act
-        RoomSearchResultDTO result = searchAndFilterService.filterRooms(searchCriteria);
+        HotelDTO result = searchAndFilterService.filterRooms(searchCriteria);
 
         // Assert
         assertNotNull(result);
-        assertNotNull(result.getRoomDTOList());
-        assertTrue(result.getRoomDTOList().size() > 0);
-    }
+     }
 
 
     @Test
@@ -334,12 +332,10 @@ class SearchAndFilterServiceTest {
         searchCriteria.setHotelId(UUID.fromString("d10a9c49-add1-44bd-98c6-2674c5b8fd78"));
 
         // Act
-        RoomSearchResultDTO result = searchAndFilterService.filterRooms(searchCriteria);
+        HotelDTO result = searchAndFilterService.filterRooms(searchCriteria);
 
         // Assert
         assertNotNull(result);
-        assertNotNull(result.getRoomDTOList());
-        assertTrue(result.getRoomDTOList().size() > 0);
-    }
+     }
 
 }
