@@ -10,7 +10,6 @@ import org.springframework.stereotype.Repository;
 
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Set;
 import java.util.UUID;
 @Repository
 public interface ReservedRoomRepository extends JpaRepository<ReservedRoom, UUID> {
