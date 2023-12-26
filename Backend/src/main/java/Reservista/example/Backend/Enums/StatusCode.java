@@ -34,11 +34,14 @@ public enum StatusCode {
 
     STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"),
     STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created"),
-
-
     TEST_CODE(0,"testing message"),
 
+    VOUCHER_ALREADY_EXISTS(23,"Voucher already exists"),
+
+    ADMIN_ALREADY_EXISTS(24,"Admin already exists"),
+
     UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
+
 
     private final int code;
     private final String message;
