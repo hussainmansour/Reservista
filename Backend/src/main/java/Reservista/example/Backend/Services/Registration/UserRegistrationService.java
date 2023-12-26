@@ -68,7 +68,7 @@ public class UserRegistrationService {
 
         if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
             // locked, forbidden, unauthorized ??
-            throw new GlobalException(StatusCode.ACCOUNT_BLOCKED, HttpStatus.LOCKED);
+            throw new GlobalException(StatusCode.ACCOUNT_BLOCKED, HttpStatus.FORBIDDEN); //403
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 

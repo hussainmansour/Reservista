@@ -7,6 +7,7 @@ import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
@@ -25,7 +26,7 @@ public class ReservationInfoHandler extends ReservationHandler {
     RoomDescriptionRepository roomDescriptionRepository;
 
     @Override
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
         Hotel hotel = hotelRepository.findById(reservationDTO.getHotelID()).orElse(null);
         int roomPrice = roomDescriptionRepository.findRoomDescriptionPrice(reservationDTO.getRoomDescriptionId());
 

@@ -17,8 +17,7 @@ class MailServiceTest {
         mail.setTo("elsamnimariam@gmail.com");
         mail.setBody("testing send with correct email");
         MailService mailservice=new MailService();
-        ResponseDTO statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode.getStatus(), StatusCode.SUCCESS.getCode());
+        assertEquals(mailservice.sendMail(mail), true);
     }
     @Test
     void testSendWithNoDomain(){
@@ -27,8 +26,7 @@ class MailServiceTest {
         mail.setTo("mariam.gerges1188");
         mail.setBody("testing send with no domain");
         MailService mailservice=new MailService();
-        ResponseDTO statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
+        assertEquals(mailservice.sendMail(mail), false);
     }
     @Test
     void testSendWithEmptyEmail(){
@@ -37,7 +35,6 @@ class MailServiceTest {
         mail.setTo("");
         mail.setBody("testing send with empty email");
         MailService mailservice=new MailService();
-        ResponseDTO statusCode=mailservice.sendMail(mail);
-        assertEquals(statusCode.getStatus(), StatusCode.INVALID_ARGUMENT.getCode());
+        assertEquals(mailservice.sendMail(mail), false);
     }
 }

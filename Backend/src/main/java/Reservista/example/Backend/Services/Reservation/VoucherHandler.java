@@ -6,26 +6,29 @@ import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.Set;
 
 @Service
-public class VoucherHandler extends ReservationHandler{
+public class VoucherHandler extends ReservationHandler {
 
     @Autowired
     private VoucherRepository voucherRepository;
 
     @Autowired
     private UserRepository userRepository;
+
     @Override
     @Transactional()
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
         //Here I have Reservation DTO that have UserID and VoucherName
         //Check if the voucher is not null
         //If (OK): firstly check the expiration date of the voucher
@@ -37,44 +40,40 @@ public class VoucherHandler extends ReservationHandler{
         //TODO: I need help here to how handle failure cases is by throwing exception or return status code directly
 
 
-        if(reservationDTO.getVoucherCode() != null){
+        if (reservationDTO.getVoucherCode() != null) {
             Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
             User user = userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow();
-            StatusCode statusCode = handleVoucher(user, voucher);
+            handleVoucher(user, voucher);
 
-            switch (statusCode){
-                case SUCCESS -> {
-                    user.getVouchers().add(voucher);
-                    voucher.getUsers().add(user);
-                    reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
-                    userRepository.save(user);
-                    voucherRepository.save(voucher);
-                    return nextHandler.handleRequest(reservationDTO);
-                }
-                default -> {
-                    ResponseDTO<ReservationResponseDTO> response = new ResponseDTO<>(statusCode.getCode(), statusCode.getMessage(), null);
-                    return response;
-                }
-            }
+
+            user.getVouchers().add(voucher);
+            voucher.getUsers().add(user);
+            reservationDTO.setVoucherPercentage(voucher.getDiscountRate());
+            userRepository.save(user);
+            voucherRepository.save(voucher);
+            return nextHandler.handleRequest(reservationDTO);
+
+
         }
         return nextHandler.handleRequest(reservationDTO);
     }
 
-     @Transactional
-    StatusCode handleVoucher (User user, Voucher voucher){
-        if(voucher == null)
-            return StatusCode.NOT_FOUND;
+    @Transactional
+    public void handleVoucher(User user, Voucher voucher) throws GlobalException {
+        if (voucher == null)
+            throw new GlobalException(StatusCode.VOUCHER_NOT_FOUND, HttpStatus.NOT_FOUND);
 
         Instant voucherExpirationDate = voucher.getExpiresAt();
 
-        if(Instant.now().isAfter(voucherExpirationDate))
-            return StatusCode.EXPIREDCODE;
+        if (Instant.now().isAfter(voucherExpirationDate))
+            throw new GlobalException(StatusCode.EXPIRED_CODE, HttpStatus.GONE);
+
 
         Set<Voucher> usedVouchers = user.getVouchers();
 
-        if(usedVouchers.contains(voucher))
-            return StatusCode.USEDVOUCHER;
+        if (usedVouchers.contains(voucher))
+            throw new GlobalException(StatusCode.USED_VOUCHER, HttpStatus.CONFLICT);
 
-        return StatusCode.SUCCESS;
     }
+
 }
