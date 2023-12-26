@@ -78,7 +78,6 @@ const SignupScreen = () => {
         },
         // validationSchema,
         onSubmit: async (values) => {
-            navigation.navigate('Verification Code', { email: values.email });
             if(!agreeTerms) {
                 Alert.alert('', 'Please agree to the Terms and Conditions');
                 return;
