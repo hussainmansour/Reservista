@@ -4,6 +4,7 @@ import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.HotelImage;
 import lombok.Data;
 
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -21,5 +22,5 @@ public class HotelDTO {
     private Set<HotelImage> images;
     private int reviewCount;
     private int starRating;
-    private Set<RoomDTO> rooms;
+    private List<RoomDTO> rooms;
 }

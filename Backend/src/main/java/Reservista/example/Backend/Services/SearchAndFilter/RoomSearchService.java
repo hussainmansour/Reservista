@@ -64,7 +64,7 @@ public class RoomSearchService {
         hotelDTO.setImages(hotel.getHotelImages());
         hotelDTO.setReviewCount(hotel.getReviewCount());
         hotelDTO.setStarRating(hotel.getStarRating());
-        hotelDTO.setRooms((Set<RoomDTO>) convertToRoomDTOList(roomDescriptions, roomSearchCriteriaDTO));
+        hotelDTO.setRooms(convertToRoomDTOList(roomDescriptions, roomSearchCriteriaDTO));
 
         return hotelDTO;
      }
