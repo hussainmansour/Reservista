@@ -4,6 +4,8 @@ import Reservista.example.Backend.Enums.StatusCode;
 import lombok.Data;
 import org.springframework.http.HttpStatus;
 
+import java.util.function.Supplier;
+
 @Data
 public class GlobalException extends Exception{
 
@@ -13,7 +15,10 @@ public class GlobalException extends Exception{
 
     public GlobalException(StatusCode statusCode, HttpStatus httpStatus){
 //        this.code=statusCode.getCode();
+        super();
         this.statusCode = statusCode;
         this.httpStatus=httpStatus;
     }
+
+
 }

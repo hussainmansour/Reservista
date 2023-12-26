@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Enums;
 
 import Reservista.example.Backend.DTOs.ErrorDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import lombok.Getter;
 
 @Getter
@@ -30,8 +29,12 @@ public enum StatusCode {
     STRIPE_PAYMENT_INTENT_FAILED(60,"Failed to create payment intent"), // internal service error 500
 
 
-    UNAUTHORIZED(401 , "Incorrect username or password"),
+    //Login error codes
+    LOGIN_FAILED(401 , "Incorrect username or password"),
     SUCCESSFUL_LOGIN(200, "Login completed successfully"),
+
+    //Profile error codes
+    PROFILE_NOT_FOUND(421,"Profile not found"),
 
     // Error code for testing purposes
     TEST_CODE(0,"testing message"),
