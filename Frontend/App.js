@@ -4,7 +4,11 @@ import AuthContextProvider, {AuthContext} from './src/Store/authContext';
 import {useContext, useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Navigation} from "./src/Navigations/Navigation";
-
+import {GluestackUIProvider, Box} from "@gluestack-ui/themed"
+import {config} from "@gluestack-ui/config"
+import {AutocompleteDropdownContextProvider} from "react-native-autocomplete-dropdown";
+import * as eva from '@eva-design/eva';
+import { ApplicationProvider } from '@ui-kitten/components';
 
 function Root() {
     const [isTryingLogin, setIsTryingLogin] = useState(true);
@@ -33,12 +37,16 @@ function Root() {
 export default function App() {
 
     return (
-        <>
-            <StatusBar style="light"/>
-            <AuthContextProvider>
-                <Root/>
-            </AuthContextProvider>
-        </>
+        <ApplicationProvider {...eva} theme={eva.light}>
+            <AutocompleteDropdownContextProvider>
+                <GluestackUIProvider config={config}>
+                    <StatusBar style="light"/>
+                    <AuthContextProvider>
+                        <Root/>
+                    </AuthContextProvider>
+                </GluestackUIProvider>
+            </AutocompleteDropdownContextProvider>
+        </ApplicationProvider>
     );
 }
 

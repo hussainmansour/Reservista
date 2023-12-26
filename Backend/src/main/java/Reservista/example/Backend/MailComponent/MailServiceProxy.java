@@ -25,6 +25,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
@@ -64,7 +65,7 @@ public class MailServiceProxy {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public ResponseDTO<Void> sendMail(Mail m) throws Exception {
+    public boolean sendMail(Mail m) throws Exception {
         String to = m.getTo();
         String subject = m.getSubject();
         String message = m.getBody();
@@ -75,8 +76,7 @@ public class MailServiceProxy {
         try {
             email.addRecipient(TO, new InternetAddress(to));
         } catch (AddressException e) {
-
-            return StatusCode.INVALID_ARGUMENT.getRespond();
+            return false;
         }
 
         email.setSubject(subject);
@@ -90,11 +90,11 @@ public class MailServiceProxy {
         msg.setRaw(encodedEmail);
 
         try {
-            msg = service.users().messages().send("me", msg).execute();
-            return StatusCode.SUCCESS.getRespond();
+            service.users().messages().send("me", msg).execute();
+            return true;
         } catch (GoogleJsonResponseException e) {
-            GoogleJsonError error = e.getDetails();
-            return new ResponseDTO( error.getCode(),error.getMessage(),null);
+            System.out.println(e.getDetails().getMessage());
+            return false;
 
         }
 

@@ -1,35 +1,36 @@
 package Reservista.example.Backend.Controllers;
-
-import Reservista.example.Backend.DTOs.InvoiceComponent.ReservationDTO;
-import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
 import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Error.DeactivatedAccountException;
-import Reservista.example.Backend.Error.RegistrationCredentialsException;
+import Reservista.example.Backend.Error.GlobalException;
+import Reservista.example.Backend.Services.Reservation.ReservationService;
 import jakarta.validation.Valid;
-import org.apache.coyote.Response;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/reserve")
-
+@RequestMapping("/user")
 public class ReservationController {
 
-    @PostMapping("/confirm")
-    public ResponseDTO<String> confirm(@Valid @RequestBody ReservationDTO request) {
+    @Autowired
+    ReservationService reservationService;
 
-       return null;
+    @PostMapping("/apply_voucher")
+    public ResponseEntity<Integer> applyVoucher(@AuthenticationPrincipal String username, @RequestBody String voucherCode) throws GlobalException {
+        Integer n = reservationService.applyVoucher(username, voucherCode);
+        return ResponseEntity.ok(n);
     }
 
+    @PostMapping("/reserve")
+    public ReservationResponseDTO reserve(@AuthenticationPrincipal String username, @Valid @RequestBody ReservationDTO reservationDTO) throws GlobalException {
+       return reservationService.reserve(username,reservationDTO);
+    }
 
-//    @PostMapping("/cancel")
-//    public ResponseDTO<String> cancelReservation(@Valid @RequestBody String reservationId) {
-//
-//        return null;
-//    }
+    @PostMapping("/rollback")
+    public void rollback(@RequestParam long reservationId) {
+        reservationService.rollbackReservation(reservationId);
+    }
 
 }
