@@ -84,9 +84,19 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
     @Transactional
     public Reservation checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
-        int nonAvailableRooms = reservedRoomRepository.getNumberOfConflictedRooms(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
-        int availableRooms = roomCount - nonAvailableRooms;
+       HashSet<Integer>  nonAvailableRooms = reservedRoomRepository.getConflictedRoomNumbers(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
+        int availableRooms = roomCount - nonAvailableRooms.size();
         if (availableRooms >= reservation.getReservedRooms().size()) {
+            int i=0;
+            for(ReservedRoom r:reservation.getReservedRooms()){
+                while (i<roomCount){
+                    if(!nonAvailableRooms.contains(i)){
+                        r.setRoomNumber(i++);
+                        break;
+                    }
+                    i++;
+                }
+            }
             return reservationRepository.save(reservation);
         } else {
             throw new RuntimeException("Not enough available rooms for reservation.");
