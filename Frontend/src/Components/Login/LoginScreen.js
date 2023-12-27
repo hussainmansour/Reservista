@@ -27,7 +27,7 @@ const LoginScreen = ({navigation}) => {
             if (responseBody.data !== undefined) {
                 // check for error code
 
-                Alert.alert('Error', 'Please enter correct username or password');
+                Alert.alert('Error', responseBody.data);
                 setIsAuthenticating(false);
             } else {
                 // if it doesn't have the data attribute then it's not the errorDTO
