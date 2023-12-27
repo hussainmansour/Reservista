@@ -7,6 +7,8 @@ import {Layout, RangeDatepicker} from '@ui-kitten/components';
 import Counter from "./Counter";
 import CounterInput from "react-native-counter-input";
 import {searchForHotels} from "../../Utilities/API";
+import {NetworkInfo} from "react-native-network-info";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
 const SearchOptions = ({navigation}) => {
     const [selectedLocation, setSelectedLocation] = useState(null);
@@ -50,7 +52,15 @@ const SearchOptions = ({navigation}) => {
     }
 
     const search = async () => {
-        let listOfHotels = await searchForHotels(getSearchDTO() , setLoading)
+        let listOfHotels = await SearchAndFilterAPI.filterAndSortHotels(
+            getSearchDTO(),
+            null,
+            setLoading
+        )
+
+        console.log(listOfHotels)
+
+        // let listOfHotels = await searchForHotels(getSearchDTO() , setLoading)
         navigation.navigate('SearchAndFilter' , {
             searchDTO : getSearchDTO(),
             listOfHotels,
