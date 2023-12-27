@@ -43,6 +43,26 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
     },
+    googleButtonContainer:{
+        backgroundColor: '#728FF3',
+        alignSelf: 'center',
+        marginTop: 30,
+        width: 240,
+        height: 43,
+        borderRadius: 10,
+        justifyContent: 'space-evenly',
+        flexDirection: 'row',
+        paddingTop: 10
+    },
+    googleText:{
+        color: 'white',
+        fontSize: 15,
+        paddingLeft: 25
+    },
+    img:{
+        width:28,
+        height: 25,
+    }
 });
 
 export default styles;

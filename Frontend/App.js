@@ -9,6 +9,7 @@ import {config} from "@gluestack-ui/config"
 import {AutocompleteDropdownContextProvider} from "react-native-autocomplete-dropdown";
 import * as eva from '@eva-design/eva';
 import { ApplicationProvider } from '@ui-kitten/components';
+import { registerRootComponent } from 'expo';
 
 function Root() {
     const [isTryingLogin, setIsTryingLogin] = useState(true);
@@ -49,6 +50,8 @@ export default function App() {
         </ApplicationProvider>
     );
 }
+
+registerRootComponent(App);
 
 
 const styles = StyleSheet.create({
