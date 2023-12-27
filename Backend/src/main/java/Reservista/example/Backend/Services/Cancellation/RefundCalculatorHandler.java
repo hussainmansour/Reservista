@@ -34,7 +34,7 @@ public class RefundCalculatorHandler extends CancellationHandler{
             refundedAmount = (long) Math.ceil( 0.5 * totalAmount );
         }
         cancellationRequestDTO.setRefundedAmount(refundedAmount);
-
+        if (this.nextHandler == null) return refundedAmount;
         return nextHandler.handleRequest(cancellationRequestDTO);
     }
 }

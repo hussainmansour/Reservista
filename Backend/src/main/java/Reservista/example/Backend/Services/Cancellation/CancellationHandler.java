@@ -8,9 +8,6 @@ import org.springframework.beans.factory.annotation.Value;
 
 public abstract class CancellationHandler {
 
-    @Value("${stripe.secretKey}")
-    private String stripeSecretApiKey;
-
     protected CancellationHandler nextHandler;
 
     public abstract long handleRequest(CancellationRequestDTO cancellationRequestDTO) throws GlobalException;

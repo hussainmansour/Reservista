@@ -14,33 +14,57 @@ import org.springframework.stereotype.Service;
 public class CancellationService {
 
 
-    private final CancellationHandler cancellationChecker;
-    private final CancellationHandler cancellationHandler;
+//    private final CancellationHandler cancellationChecker;
+//    private final CancellationHandler cancellationHandler;
+////    private final CancellationHandler paymentRefundHandler;
+
+    @Autowired
+    PaymentRefundHandler paymentRefundHandler;
+
+    @Autowired
+    RefundAvailabilityCheckerHandler refundAvailabilityCheckerHandler;
+
+    @Autowired
+    RefundCalculatorHandler refundCalculatorHandler;
+
+    @Autowired
+    CancellationConfirmationHandler cancellationConfirmationHandler;
+
+
 
     @Autowired
     ReservationRepository reservationRepository;
 
-    @Autowired
-    public CancellationService(CancellationConfirmationHandler cancellationConfirmationHandler, PaymentRefundHandler paymentRefundHandler, RefundCalculatorHandler refundCalculatorHandler, RefundAvailabilityCheckerHandler refundAvailabilityCheckerHandler ) {
+//    @Autowired
+//    public CancellationService(CancellationConfirmationHandler cancellationConfirmationHandler, PaymentRefundHandler paymentRefundHandler, RefundCalculatorHandler refundCalculatorHandler, RefundAvailabilityCheckerHandler refundAvailabilityCheckerHandler ) {
+//
+//        paymentRefundHandler.setNextHandler(cancellationConfirmationHandler);
+//        this.cancellationHandler = paymentRefundHandler;
+//
+//        refundAvailabilityCheckerHandler.setNextHandler(refundCalculatorHandler);
+//        this.cancellationChecker = refundAvailabilityCheckerHandler;
+//
+//    }
 
-        paymentRefundHandler.setNextHandler(cancellationConfirmationHandler);
-        this.cancellationHandler = paymentRefundHandler;
-
-        refundCalculatorHandler.setNextHandler(refundCalculatorHandler);
-        this.cancellationChecker = refundAvailabilityCheckerHandler;
-
-    }
-    
     public long cancelReservation(String username, CancellationRequestDTO cancellationRequestDTO) throws GlobalException {
-        cancellationChecker.setNextHandler(cancellationHandler);
+
         cancellationRequestDTO.setUsername(username);
-        return this.cancellationChecker.handleRequest(cancellationRequestDTO);
+        paymentRefundHandler.setNextHandler(cancellationConfirmationHandler);
+        refundCalculatorHandler.setNextHandler(paymentRefundHandler);
+        refundAvailabilityCheckerHandler.setNextHandler(refundCalculatorHandler);
+        return refundAvailabilityCheckerHandler.handleRequest(cancellationRequestDTO);
+//        cancellationChecker.setNextHandler(cancellationHandler);
+//        cancellationRequestDTO.setUsername(username);
+//        return this.cancellationChecker.handleRequest(cancellationRequestDTO);
+
+
     }
 
     public long getRefundedAmount(String username, CancellationRequestDTO cancellationRequestDTO) throws GlobalException {
-        cancellationChecker.setNextHandler(null);
         cancellationRequestDTO.setUsername(username);
-        return this.cancellationChecker.handleRequest(cancellationRequestDTO);
+        refundCalculatorHandler.setNextHandler(null);
+        refundAvailabilityCheckerHandler.setNextHandler(refundCalculatorHandler);
+        return refundAvailabilityCheckerHandler.handleRequest(cancellationRequestDTO);
     }
 
 
