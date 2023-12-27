@@ -9,6 +9,7 @@ import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
+import Reservista.example.Backend.Services.Registration.OTPService;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
@@ -34,6 +35,9 @@ class UserRegistrationServiceTest {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private OTPService otpService;
 
     @Test
     public void whenEmailAlreadyExists_thenUserAccountNotCreated(){
@@ -107,12 +111,13 @@ class UserRegistrationServiceTest {
 
 
     @Test
-    public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain(){
+    public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain() throws GlobalException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
+        doNothing().when(otpService).refreshOTP("mariam@gmail.com");
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -135,6 +140,7 @@ class UserRegistrationServiceTest {
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(otpService.createAndSendOTP(any(User.class))).thenReturn(true);
         Mockito.when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);
             savedUser.setPassword(passwordEncoder.encode("password"));

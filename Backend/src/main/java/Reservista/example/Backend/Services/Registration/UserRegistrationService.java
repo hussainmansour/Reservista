@@ -55,7 +55,7 @@ public class UserRegistrationService {
         try {
             //save user in the database
             User savedUser = userRepository.save(user);
-            otpService.createAndSendOTP(savedUser);
+            if (!otpService.createAndSendOTP(savedUser)) throw new GlobalException(StatusCode.EMAIL_NOT_REACHED, HttpStatus.SERVICE_UNAVAILABLE);
             return savedUser;
         }
         catch (DataIntegrityViolationException e){

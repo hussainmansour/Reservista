@@ -33,6 +33,7 @@ import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -71,107 +72,95 @@ class ProfileControllerTest {
         // End of Authentication
     }
 
-//
-//    @Test
-//    void viewExistingProfileReturnProfileFoundWithTheProfileDTO() throws Exception {
-//        String username = "husseinkhaled";
-//        ProfileDTO profileDTO = ProfileDTO.builder().userName("husseinkhaled")
-//                .firstName("hussein")
-//                .lastName("khadrawy")
-//                .middleName("khaled")
-//                .birthDate(LocalDate.parse("2002-09-09"))
-//                .email("husseinkhaled733@gmail.com")
-//                .nationality("Egypt")
-//                .gender(Genders.MALE)
-//                .build();
-//        System.out.println(profileDTO);
-//
-//        when(profileService.viewProfile(username)).thenReturn(profileDTO);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isOk())
-////                .andExpect(jsonPath("$.status").value(200))
-////                .andExpect(jsonPath("$.message").value("Profile found"))
-////                .andExpect(jsonPath("$.data").exists())
-//                .andExpect(jsonPath("$.userName").value("husseinkhaled"))
-//        .andExpect(jsonPath("$.firstName").value("hussein"))
-//        .andExpect(jsonPath("$.lastName").value("khadrawy"))
-//        .andExpect(jsonPath("$.middleName").value("khaled"))
-//        .andExpect(jsonPath("$.birthDate").value("2002-09-09"))
-//        .andExpect(jsonPath("$.email").value("husseinkhaled733@gmail.com"))
-//                .andExpect(jsonPath("$.gender").value(Genders.MALE.name()));
-//    }
-//
-//    @Test
-//    void viewNonExistingProfileReturnProfileNotFound() throws Exception {
-//        String username = "mohamedkhaled";
-//
-//        when(profileService.viewProfile(username)).thenThrow(new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND));
-//
-//        mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
-//                        .contentType(MediaType.APPLICATION_JSON))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.errorCode").value(StatusCode.PROFILE_NOT_FOUND.getCode()))
-//                .andExpect(jsonPath("$.data").value(StatusCode.PROFILE_NOT_FOUND.getMessage()));
-////                .andExpect(jsonPath("$.data").doesNotExist());
-//
-//        HttpStatus mockHttpsStatus = HttpStatus.BAD_REQUEST;
-//
-//        ErrorDTO<String> expected = StatusCode.TEST_CODE.getError();
-//        when(profileService.viewProfile(username)).thenThrow(new GlobalException(StatusCode.TEST_CODE, mockHttpsStatus));
-//
-//        mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        )
-//                .andExpect(MockMvcResultMatchers.status().isNotFound())
-//                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
-//    }
-//
-//    @Test
-//    void updateExistingProfileReturnProfieupdated() throws Exception {
-//        String username = "husseinkhaled";
-//        UpdateDTO updateDTO = UpdateDTO.builder()
-//                .firstName("hussein")
-//                .lastName("khadrawy")
-//                .middleName("khaled")
-//                .birthDate(LocalDate.parse("2002-09-09"))
-//                .nationality("Egypt")
-//                .gender(Genders.MALE)
-//                .build();
-//
-//        assertDoesNotThrow(()->profileService.updateProfile(username, updateDTO));
-////                when(profileService.updateProfile(username, updateDTO)).thenReturn(true);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(updateDTO)))
-//                .andExpect(status().isOk());
-////                .andExpect(jsonPath("$.status").value(200))
-////                .andExpect(jsonPath("$.message").value("Profile updated"))
-////                .andExpect(jsonPath("$.data").doesNotExist());
-//    }
 
-//    @Test
-//    void updateNonExistingProfileReturnProfilenotfound() throws Exception {
-//        String username = "Ibrahimkhaled";
-//        UpdateDTO updateDTO = UpdateDTO.builder()
-//                .firstName("hussein")
-//                .lastName("khadrawy")
-//                .middleName("khaled")
-//                .birthDate(LocalDate.parse("2002-09-09"))
-//                .nationality("Egypt")
-//                .gender(Genders.MALE)
-//                .build();
-//
-//        when(profileService.updateProfile(username, updateDTO)).thenReturn(false);
-//
-//        mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
-//                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(objectMapper.writeValueAsString(updateDTO)))
-//                .andExpect(status().isNotFound())
-//                .andExpect(jsonPath("$.status").value(404))
-//                .andExpect(jsonPath("$.message").value("Profile not found"))
-//                .andExpect(jsonPath("$.data").doesNotExist());
-//    }
+    @Test
+    void viewExistingProfileReturnProfileFoundWithTheProfileDTO() throws Exception {
+        String username = "husseinkhaled";
+        ProfileDTO profileDTO = ProfileDTO.builder().userName("husseinkhaled")
+                .firstName("hussein")
+                .lastName("khadrawy")
+                .middleName("khaled")
+                .birthDate(LocalDate.parse("2002-09-09"))
+                .email("husseinkhaled733@gmail.com")
+                .nationality("Egypt")
+                .gender(Genders.MALE)
+                .build();
+        System.out.println(profileDTO);
+
+        when(profileService.viewProfile(username)).thenReturn(profileDTO);
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk())
+//                .andExpect(jsonPath("$.status").value(200))
+//                .andExpect(jsonPath("$.message").value("Profile found"))
+//                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.userName").value("husseinkhaled"))
+        .andExpect(jsonPath("$.firstName").value("hussein"))
+        .andExpect(jsonPath("$.lastName").value("khadrawy"))
+        .andExpect(jsonPath("$.middleName").value("khaled"))
+        .andExpect(jsonPath("$.birthDate").value("2002-09-09"))
+        .andExpect(jsonPath("$.email").value("husseinkhaled733@gmail.com"))
+                .andExpect(jsonPath("$.gender").value(Genders.MALE.name()));
+    }
+
+    @Test
+    void viewNonExistingProfileReturnProfileNotFound() throws Exception {
+
+        when(profileService.viewProfile("husseinkhaled")).thenThrow(new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        ErrorDTO<String> expected = StatusCode.PROFILE_NOT_FOUND.getError();
+
+        mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
+
+
+    }
+
+    @Test
+    void updateExistingProfileReturnProfieupdated() throws Exception {
+        String username = "husseinkhaled";
+        UpdateDTO updateDTO = UpdateDTO.builder()
+                .firstName("hussein")
+                .lastName("khadrawy")
+                .middleName("khaled")
+                .birthDate(LocalDate.parse("2002-09-09"))
+                .nationality("Egypt")
+                .gender(Genders.MALE)
+                .build();
+
+        assertDoesNotThrow(()->profileService.updateProfile(username, updateDTO));
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDTO)))
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    void updateNonExistingProfileReturnProfilenotfound() throws Exception {
+        String username = "husseinkhaled";
+        UpdateDTO updateDTO = UpdateDTO.builder()
+                .firstName("hussein")
+                .lastName("khadrawy")
+                .middleName("khaled")
+                .birthDate(LocalDate.parse("2002-09-09"))
+                .nationality("Egypt")
+                .gender(Genders.MALE)
+                .build();
+
+        doThrow(new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND))
+                .when(profileService)
+                .updateProfile(username, updateDTO);
+
+        ErrorDTO<String> expected = StatusCode.PROFILE_NOT_FOUND.getError();
+
+        mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(objectMapper.writeValueAsString(updateDTO)))
+                .andExpect(status().isNotFound())
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
+    }
 }
