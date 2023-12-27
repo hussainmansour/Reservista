@@ -20,8 +20,10 @@ public class OTPController {
     }
 
     @PostMapping("/refresh-verification-code")
+
     public ResponseEntity<Void> refreshOTP(@RequestBody String email) throws GlobalException {
         otpService.refreshOTP(email);
         return ResponseEntity.status(HttpStatus.OK).build();
+
     }
 }
