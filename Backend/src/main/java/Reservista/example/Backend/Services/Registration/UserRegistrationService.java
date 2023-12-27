@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Services.Registration;
 
 
-import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
 import Reservista.example.Backend.Enums.ErrorCode;
@@ -20,9 +19,6 @@ public class UserRegistrationService {
 
     @Autowired
     private UserRepository userRepository;
-
-    @Autowired
-    private BlockedUserRepository blockedUserRepository;
 
     @Autowired
     private PasswordEncoder passwordEncoder;
@@ -48,6 +44,7 @@ public class UserRegistrationService {
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))
                         .birthDate(registrationRequest.getBirthDate())
                         .nationality(registrationRequest.getNationality())
+                        .gender(registrationRequest.getGender())
                         .isActivated(false) //this attribute should be enabled after the user verifies his email using OTP
                         .build();
 
@@ -66,13 +63,12 @@ public class UserRegistrationService {
 
     private void checkUserCredentials(RegistrationRequestDTO registrationRequest) throws GlobalException {
 
-        if (blockedUserRepository.existsByEmail(registrationRequest.getEmail()))
-            // locked, forbidden, unauthorized ??
-            throw new GlobalException(ErrorCode.ACCOUNT_BLOCKED, HttpStatus.FORBIDDEN); //403
 
         if (userRepository.existsByEmail(registrationRequest.getEmail())) {
 
-
+            if (userRepository.findIsBlockedByEmail(registrationRequest.getEmail()) ){
+                throw new GlobalException(ErrorCode.ACCOUNT_BLOCKED, HttpStatus.FORBIDDEN); //403
+            }
             if (!userRepository.findIsActivatedByEmail(registrationRequest.getEmail())) {
                 otpService.refreshOTP(registrationRequest.getEmail());
                 throw new GlobalException(ErrorCode.ACCOUNT_DEACTIVATED, HttpStatus.CONFLICT);
