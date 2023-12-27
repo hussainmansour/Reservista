@@ -58,8 +58,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     }));
     return (
         <Modal visible={isVisible} animationType="slide" transparent={true}>
-            <View
-                style={styles.modalContainer}>
+            <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                     <Text style={styles.modalTitle}>Edit Profile</Text>
 

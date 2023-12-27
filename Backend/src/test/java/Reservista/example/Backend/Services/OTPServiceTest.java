@@ -2,7 +2,7 @@ package Reservista.example.Backend.Services;
 
 import Reservista.example.Backend.DAOs.OTPRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.OTP;
@@ -99,14 +99,14 @@ class OTPServiceTest {
     void verifyOTPWithNotExistingOTPInDatabase() throws GlobalException {
 
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP("mariam.gerges118@gmail.com", "456789"));
-        assertEquals(StatusCode.NOT_REGISTERED_USER, exception.getStatusCode());
+        assertEquals(ErrorCode.NOT_REGISTERED_USER, exception.getErrorCode());
 
     }
 
     @Test
     void verifyOTPWithWrongCode() {
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP("mariam.gerges1188@gmail.com", "456789"));
-        assertEquals(StatusCode.WRONG_VERIFICATION_CODE, exception.getStatusCode());
+        assertEquals(ErrorCode.WRONG_VERIFICATION_CODE, exception.getErrorCode());
     }
 
     @Test
@@ -117,7 +117,7 @@ class OTPServiceTest {
         OTP opt2 = OTP.builder().code("222222").email(user.getEmail()).expirationDate(expiredDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt2);
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP(user.getEmail(), "222222"));
-        assertEquals(StatusCode.EXPIRED_VERIFICATION_CODE, exception.getStatusCode());
+        assertEquals(ErrorCode.EXPIRED_VERIFICATION_CODE, exception.getErrorCode());
 
     }
 
@@ -144,7 +144,7 @@ class OTPServiceTest {
     void refreshOTPRequestWithNonExistingUser() throws GlobalException {
 
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.refreshOTP("mariamgerges575@gmail.com"));
-        assertEquals(StatusCode.INVALID_OTP_REQUEST, exception.getStatusCode());
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 
@@ -156,7 +156,7 @@ class OTPServiceTest {
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt);
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.refreshOTP("mariam.gerges1188@gmail.com"));
-        assertEquals(StatusCode.INVALID_OTP_REQUEST, exception.getStatusCode());
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 
@@ -177,14 +177,14 @@ class OTPServiceTest {
     @Test
     void verifyGmailAccountWithWrongCode() throws GlobalException {
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount("mariam.gerges1188@gmail.com", "245698"));
-        assertEquals(StatusCode.WRONG_VERIFICATION_CODE, exception.getStatusCode());
+        assertEquals(ErrorCode.WRONG_VERIFICATION_CODE, exception.getErrorCode());
 
     }
 
     @Test
     void verifyGmailAccountWithCorrectCodeButNotExistingUser() throws GlobalException {
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount("mariam@gmail.com", "111111"));
-        assertEquals(StatusCode.NOT_REGISTERED_USER, exception.getStatusCode());
+        assertEquals(ErrorCode.NOT_REGISTERED_USER, exception.getErrorCode());
     }
 
     @Test
@@ -195,7 +195,7 @@ class OTPServiceTest {
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt);
         GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount(user.getEmail(), "111111"));
-        assertEquals(StatusCode.INVALID_OTP_REQUEST, exception.getStatusCode());
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 

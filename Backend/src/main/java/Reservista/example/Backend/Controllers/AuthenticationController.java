@@ -1,9 +1,6 @@
 package Reservista.example.Backend.Controllers;
 
-import Reservista.example.Backend.DTOs.Request.AuthenticationRequestDTO;
-import Reservista.example.Backend.DTOs.Response.AuthenticationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.DTOs.Login.AuthenticationRequestDTO;
 import Reservista.example.Backend.Services.Login.AuthenticationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

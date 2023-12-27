@@ -3,16 +3,13 @@ package Reservista.example.Backend.Services.Reservation;
 import Reservista.example.Backend.DAOs.ReservationRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
-import com.stripe.param.tax.RegistrationCreateParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 
 
 import org.springframework.stereotype.Service;
@@ -56,7 +53,7 @@ public class ReservationService {
 
     }
 
-    public ReservationResponseDTO reserve(String userName,ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO reserve(String userName, ReservationRequestDTO reservationDTO) throws GlobalException {
 
         reservationDTO.setUserName(userName);
         return this.reservationHandler.handleRequest(reservationDTO);

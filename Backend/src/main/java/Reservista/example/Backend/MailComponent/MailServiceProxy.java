@@ -8,9 +8,7 @@ import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import Reservista.example.Backend.Enums.StatusCode;
 
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -61,7 +59,7 @@ public class MailServiceProxy {
                 .build();
 
 
-        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8080).build();
+        LocalServerReceiver receiver = new LocalServerReceiver.Builder().setPort(8086).build();
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 

@@ -2,10 +2,10 @@
 package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.*;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
@@ -39,7 +39,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
 
 //    @Override
-    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
@@ -51,15 +51,15 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
 //            System.out.println(e.getMessage());
-//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(StatusCode.NOT_AVAILABLE.getCode(),StatusCode.NOT_AVAILABLE.getMessage(),null);
+//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(ErrorCode.NOT_AVAILABLE.getCode(),ErrorCode.NOT_AVAILABLE.getMessage(),null);
 //            return responseDTO;
-            throw new GlobalException(StatusCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
+            throw new GlobalException(ErrorCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
         }
 
 
     }
 
-    public Reservation prepareReservation(ReservationDTO reservationDTO) {
+    public Reservation prepareReservation(ReservationRequestDTO reservationDTO) {
         RoomDescription roomDescription=roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
         Reservation reservation= Reservation.builder()
                 .user(userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow())
@@ -87,9 +87,19 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
     @Transactional
     public Reservation checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
-        int nonAvailableRooms = reservedRoomRepository.getNumberOfConflictedRooms(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
-        int availableRooms = roomCount - nonAvailableRooms;
+       HashSet<Integer>  nonAvailableRooms = reservedRoomRepository.getConflictedRoomNumbers(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
+        int availableRooms = roomCount - nonAvailableRooms.size();
         if (availableRooms >= reservation.getReservedRooms().size()) {
+            int i=0;
+            for(ReservedRoom r:reservation.getReservedRooms()){
+                while (i<roomCount){
+                    if(!nonAvailableRooms.contains(i)){
+                        r.setRoomNumber(i++);
+                        break;
+                    }
+                    i++;
+                }
+            }
             return reservationRepository.save(reservation);
         } else {
             throw new RuntimeException("Not enough available rooms for reservation.");

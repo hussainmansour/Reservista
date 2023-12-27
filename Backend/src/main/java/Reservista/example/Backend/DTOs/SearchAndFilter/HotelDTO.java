@@ -22,5 +22,5 @@ public class HotelDTO {
     private Set<HotelImage> images;
     private int reviewCount;
     private int starRating;
-    private double minRoomPrice;
+    private List<RoomDTO> rooms;
 }
