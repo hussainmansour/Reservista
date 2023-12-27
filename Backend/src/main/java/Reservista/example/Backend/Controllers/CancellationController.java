@@ -17,9 +17,9 @@ public class CancellationController{
     CancellationService cancellationService;
 
     @PostMapping("/cancel-reservation")
-    public ResponseEntity<Long> cancelReservation(@AuthenticationPrincipal String username,@RequestParam long reservationID) throws GlobalException {
+    public ResponseEntity<Long> cancelReservation(@AuthenticationPrincipal String username,@RequestParam long reservationId) throws GlobalException {
 
-        long refundedAmount = cancellationService.cancelReservation(username, reservationID);
+        long refundedAmount = cancellationService.cancelReservation(username, reservationId);
         return  ResponseEntity.ok(refundedAmount);
     }
 
