@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Services.Cancellation;
 import Reservista.example.Backend.DAOs.ReservationRepository;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,13 +19,13 @@ public class RefundAvailabilityCheckerHandler extends CancellationHandler{
     @Override
     public long handleRequest(CancellationRequest cancellationRequest) throws GlobalException {
 
-        Reservation reservation = reservationRepository.findByIdAndUserUserName(cancellationRequest.getReservationID(), cancellationRequest.getUsername()).orElseThrow(()->new GlobalException(StatusCode.RESERVATION_NOT_FOUND, HttpStatus.NOT_FOUND));
+        Reservation reservation = reservationRepository.findByIdAndUserUserName(cancellationRequest.getReservationID(), cancellationRequest.getUsername()).orElseThrow(()->new GlobalException(ErrorCode.RESERVATION_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if (!reservation.isConfirmed() )
-            throw new GlobalException(StatusCode.RESERVATION_NOT_CONFIRMED, HttpStatus.CONFLICT);
+            throw new GlobalException(ErrorCode.RESERVATION_NOT_CONFIRMED, HttpStatus.CONFLICT);
 
         if (!reservation.getCheckIn().isAfter(Instant.now()))
-            throw new GlobalException(StatusCode.RESERVATION_OUTDATED, HttpStatus.CONFLICT);
+            throw new GlobalException(ErrorCode.RESERVATION_OUTDATED, HttpStatus.CONFLICT);
 
         cancellationRequest.setFullyRefundable(reservation.isRefundable());
         cancellationRequest.setTotalAmount(reservation.getPrice());

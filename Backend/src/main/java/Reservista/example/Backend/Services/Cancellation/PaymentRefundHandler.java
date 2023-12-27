@@ -1,6 +1,6 @@
 package Reservista.example.Backend.Services.Cancellation;
 
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import com.stripe.Stripe;
 import com.stripe.exception.StripeException;
 import com.stripe.model.Refund;
@@ -30,7 +30,7 @@ public class PaymentRefundHandler extends CancellationHandler{
 
         } catch (StripeException e) {
             System.out.println(e.getMessage());
-            throw new GlobalException(StatusCode.STRIPE_CANCELLATION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
+            throw new GlobalException(ErrorCode.STRIPE_CANCELLATION_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
 }
