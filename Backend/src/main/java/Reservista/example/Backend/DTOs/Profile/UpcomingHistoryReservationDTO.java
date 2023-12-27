@@ -19,7 +19,7 @@ public class UpcomingHistoryReservationDTO {
     private Instant reservationDate;
     private Instant checkIn;
     private Instant checkOut;
-    private int price;
     private int noOfRooms;
+    private int price;
     private String invoice;
 }

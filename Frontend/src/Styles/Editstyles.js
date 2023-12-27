@@ -2,14 +2,14 @@ import { StyleSheet } from "react-native";
 import Color from "./Color";
 
 
-const styles = StyleSheet.create({
+const editStyles = StyleSheet.create({
     modalContainer: {
         flex: 1,
         justifyContent: 'center',
         alignItems: 'center'
     },
     modalContent: {
-        backgroundColor: 'white',
+        backgroundColor: Color.PALEBLUE,
         padding: 20,
         flex: 1,
         width: '100%',
@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
         paddingBottom: 20
     },
     saveButton: {
-        backgroundColor: '#4CAF50', // Green color
+        backgroundColor: Color.SEABLUE, // Green color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -75,7 +75,7 @@ const styles = StyleSheet.create({
         height: 50,
     },
     cancelButton: {
-        backgroundColor: '#A9A9A9', // Gray color
+        backgroundColor: Color.GREY, // Gray color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,
@@ -88,6 +88,12 @@ const styles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
+        invoiceText: {
+        fontSize: 16,
+        color: '#555555',
+        lineHeight: 24,
+        textAlign: 'justify',
+    },
 });
 
-export default styles;
+export default editStyles;
