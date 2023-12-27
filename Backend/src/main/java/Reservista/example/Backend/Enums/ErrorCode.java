@@ -28,6 +28,12 @@ public enum ErrorCode {
     ROOMS_NOT_AVAILABLE(23,"Rooms are not available"), // not found 404
     STRIPE_PAYMENT_INTENT_FAILED(24,"Failed to create payment intent"), // internal service error 500
 
+    //Reservation cancellation errors
+    RESERVATION_NOT_FOUND(77,"Reservation not found"),  //404
+    RESERVATION_NOT_CONFIRMED(78,"Reservation not confirmed"), // 409 conflict
+    RESERVATION_OUTDATED(78,"Reservation outdated"), // 409 conflict
+    STRIPE_CANCELLATION_FAILED(79,"Cancellation declined, unable to refund money"), // 500 internal service error
+
 
     //Login error codes
     LOGIN_FAILED(30 , "Incorrect username or password"),

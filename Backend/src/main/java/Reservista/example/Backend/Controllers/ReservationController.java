@@ -16,8 +16,9 @@ public class ReservationController {
     @Autowired
     ReservationService reservationService;
 
-    @PostMapping("/apply_voucher")
-    public ResponseEntity<Integer> applyVoucher(@AuthenticationPrincipal String username, @RequestBody String voucherCode) throws GlobalException {
+
+    @PostMapping("/apply-voucher")
+    public ResponseEntity<Integer> applyVoucher(@AuthenticationPrincipal String username, @RequestParam String voucherCode) throws GlobalException {
         Integer discountPercentage = reservationService.applyVoucher(username, voucherCode);
         return ResponseEntity.ok(discountPercentage);
     }

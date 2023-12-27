@@ -45,7 +45,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
         Reservation reservation = prepareReservation(reservationDTO);
         try {
             Reservation confirmedReservation=checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
-            reservationDTO.setReservationID(confirmedReservation.getId());
+            reservationDTO.setReservationId(confirmedReservation.getId());
             executor.schedule(() -> deleteAfter10min(confirmedReservation.getId()), 10, TimeUnit.MINUTES);
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);

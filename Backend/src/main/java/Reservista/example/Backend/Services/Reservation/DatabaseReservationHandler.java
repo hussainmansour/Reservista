@@ -2,8 +2,10 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.ReservationRepository;
 import Reservista.example.Backend.DAOs.TempReservationDetailsRepository;
+
 import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
+
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.ReservedRoom;
 import Reservista.example.Backend.Models.EntityClasses.TempReservationDetails;
@@ -28,7 +30,7 @@ public class DatabaseReservationHandler extends ReservationHandler{
     public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) {
 
         System.out.println("databaseReservationHandler");
-        Reservation reservation =reservationRepository.findById(reservationDTO.getReservationID()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
+        Reservation reservation =reservationRepository.findById(reservationDTO.getReservationId()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
 
         Iterator<ReservedRoom> roomIterator = reservation.getReservedRooms().iterator();
 

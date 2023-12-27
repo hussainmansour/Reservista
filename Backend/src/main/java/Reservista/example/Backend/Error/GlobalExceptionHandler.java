@@ -42,4 +42,6 @@ public class GlobalExceptionHandler extends Exception{
                 .status(ex.getHttpStatus()).body(error);
     }
 
+
+
 }
