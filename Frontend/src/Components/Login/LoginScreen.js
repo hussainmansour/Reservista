@@ -7,30 +7,45 @@ import CustomizedButton from '../General/Buttons/CustomizedButton';
 import {LinearGradient} from 'expo-linear-gradient';
 import styles from '../../Styles/Loginstyles';
 import colors from '../../Styles/Color';
+import {AuthenticationAPI} from "../../Utilities/New/APIs/AuthenticationAPI";
 
-const LoginScreen = ({ navigation }) => {
+const LoginScreen = ({navigation}) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
     const [isAuthenticating, setIsAuthenticating] = useState(false);
     const authCtx = useContext(AuthContext);
-
     const handleLoginRequest = async () => {
         const userInfo = {
             userNameOrEmail: username,
-            password: password,
-        };
+            password: password
+        }
 
-        let response = await signIn(userInfo, setLoading);
+        let response = await AuthenticationAPI.login(userInfo, (response) => {
 
-        if (response.status === 200) {
+            // in case of an expected error this should be the errorDTO
+            const responseBody = response.data;
+
+
+            if (responseBody.data !== undefined) {
+                // check for error code
+
+                Alert.alert('Error', responseBody.data);
+                setIsAuthenticating(false);
+            } else {
+                // if it doesn't have the data attribute then it's not the errorDTO
+                // so, it's an unhandled exception
+                console.log(responseBody)
+            }
+
+        }, setLoading);
+
+        // success
+        if (response !== undefined) {
             setIsAuthenticating(true);
-            const token = response.data.token; // may need to change this
+            const token = response;
             console.log(token);
             authCtx.authenticate(token);
-        } else {
-            Alert.alert('Error', 'Please enter correct username or password');
-            setIsAuthenticating(false);
         }
     };
 

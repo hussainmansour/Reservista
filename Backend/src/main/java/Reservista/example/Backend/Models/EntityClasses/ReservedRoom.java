@@ -30,6 +30,9 @@ public class ReservedRoom {
     @Column(name = "title")
     private String title;
 
+    @Column(name="room_number")
+    private int roomNumber;
+
     @ManyToOne(optional = false)
     @JoinColumn(name = "room_description_id",referencedColumnName = "id" , nullable = false)
     private RoomDescription roomDescription;
