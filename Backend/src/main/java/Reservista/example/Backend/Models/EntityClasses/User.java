@@ -4,12 +4,10 @@ import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Enums.SystemRoles;
 
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
-import Reservista.example.Backend.Validators.Country;
-import Reservista.example.Backend.Validators.Gender;
+import Reservista.example.Backend.Validators.Nationality;
 import Reservista.example.Backend.Validators.Gmail;
-import Reservista.example.Backend.Validators.BirthDate;
+import Reservista.example.Backend.Validators.Age;
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -43,7 +41,7 @@ public class User implements UserDetails {
     @Embedded
     private FullName fullName;
 
-    @BirthDate
+    @Age
     @Column(name = "birth_date")
     private LocalDate birthDate;
 
@@ -53,7 +51,7 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Genders gender;
 
-    @Country
+    @Nationality
     @Column(name = "nationality")
     private String nationality;
 

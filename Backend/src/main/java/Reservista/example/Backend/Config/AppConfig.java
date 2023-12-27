@@ -1,11 +1,8 @@
 package Reservista.example.Backend.Config;
 
 
-import Reservista.example.Backend.Validators.CountryValidator;
-import jakarta.validation.Validator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -14,6 +11,7 @@ import java.util.Set;
 public class AppConfig {
 
     //todo: fix di for ConstraintValidator
+
     @Bean
     public static Set<String> validCountries() {
         return new HashSet<>(Set.of(

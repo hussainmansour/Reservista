@@ -2,7 +2,8 @@ package Reservista.example.Backend.Services;
 
 import Reservista.example.Backend.DAOs.OTPRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.OTP;
 import Reservista.example.Backend.Models.EntityClasses.User;
@@ -95,98 +96,106 @@ class OTPServiceTest {
     }
 
     @Test
-    void verifyOTPWithNotExistingOTPInDatabase() {
-        assertEquals(otpService.verifyOTP("mariam@gmail.com", "456789").getStatus(), StatusCode.NOT_REGISTERED_USER.getCode());
+    void verifyOTPWithNotExistingOTPInDatabase() throws GlobalException {
+
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP("mariam.gerges118@gmail.com", "456789"));
+        assertEquals(ErrorCode.NOT_REGISTERED_USER, exception.getErrorCode());
 
     }
 
     @Test
     void verifyOTPWithWrongCode() {
-        assertEquals(otpService.verifyOTP("mariam.gerges1188@gmail.com", "456789").getStatus(), StatusCode.WRONG_VERIFICATION_CODE.getCode());
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP("mariam.gerges1188@gmail.com", "456789"));
+        assertEquals(ErrorCode.WRONG_VERIFICATION_CODE, exception.getErrorCode());
     }
 
     @Test
-    void verifyOTPWithExpiredCode() {
+    void verifyOTPWithExpiredCode() throws GlobalException {
         LocalDateTime expiredDate = getExpiredDate();
         User user = setUPUser2NotValidated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt2 = OTP.builder().code("222222").email(user.getEmail()).expirationDate(expiredDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt2);
-        assertEquals(otpService.verifyOTP(user.getEmail(), "222222").getStatus(), StatusCode.EXPIRED_VERIFICATION_COD.getCode());
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyOTP(user.getEmail(), "222222"));
+        assertEquals(ErrorCode.EXPIRED_VERIFICATION_CODE, exception.getErrorCode());
 
     }
 
     @Test
-    void verifyOTPWithExistingCorrectAndNotExpiredCode() {
-        assertEquals(otpService.verifyOTP("mariam.gerges1188@gmail.com", "111111").getStatus(), StatusCode.SUCCESS.getCode());
+    void verifyOTPWithExistingCorrectAndNotExpiredCode() throws GlobalException {
+        assertEquals(otpService.verifyOTP("mariam.gerges1188@gmail.com", "111111"), true);
     }
 
     @Test
     void createAndSendOTPWithAlreadyExistingCodeForTheSameUser() {
         User user = setUPUser1NotValidated();
-        assertEquals(otpService.createAndSendOTP(user).getStatus(), StatusCode.SUCCESS.getCode());
+        assertEquals(otpService.createAndSendOTP(user), true);
 
     }
 
     @Test
     void createAndSendOTPWithNotExistingCodeForTheSameUser() {
         User user = setUPUser2NotValidated();
-        assertEquals(otpService.createAndSendOTP(user).getStatus(), StatusCode.SUCCESS.getCode());
+        assertEquals(otpService.createAndSendOTP(user), true);
 
     }
 
     @Test
-    void refreshOTPRequestWithNonExistingUser() {
-        assertEquals(otpService.refreshOTP("mariamgerges575@gmail.com").getStatus(), StatusCode.INVALID_REQUEST.getCode());
+    void refreshOTPRequestWithNonExistingUser() throws GlobalException {
+
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.refreshOTP("mariamgerges575@gmail.com"));
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 
     @Test
-    void refreshOTPRequestWithAlreadyActivatedAccount() {
+    void refreshOTPRequestWithAlreadyActivatedAccount() throws GlobalException {
         LocalDateTime activeDate = getActiveDate();
         User user = setUPUser1Validated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt);
-
-        assertEquals(otpService.refreshOTP("mariam.gerges1188@gmail.com").getStatus(), StatusCode.INVALID_REQUEST.getCode());
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.refreshOTP("mariam.gerges1188@gmail.com"));
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 
     @Test
-    void refreshOTPRequestWithNotActivatedAccount() {
+    void refreshOTPRequestWithNotActivatedAccount() throws GlobalException {
         User user = setUPUser2NotValidated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
-        assertEquals(otpService.refreshOTP("mariamgerges575@gmail.com").getStatus(), StatusCode.SUCCESS.getCode());
+        assertDoesNotThrow(() -> otpService.refreshOTP("mariamgerges575@gmail.com"));
 
     }
 
     @Test
-    void verifyGmailAccountWithCorrectCode() {
-        assertEquals(otpService.verifyGmailAccount("mariam.gerges1188@gmail.com", "111111").getStatus(), StatusCode.SUCCESS.getCode());
+    void verifyGmailAccountWithCorrectCode() throws GlobalException {
+        assertDoesNotThrow(() -> otpService.verifyGmailAccount("mariam.gerges1188@gmail.com", "111111"));
 
     }
 
     @Test
-    void verifyGmailAccountWithWrongCode() {
-        assertEquals(otpService.verifyGmailAccount("mariam.gerges1188@gmail.com", "245698").getStatus(), StatusCode.WRONG_VERIFICATION_CODE.getCode());
+    void verifyGmailAccountWithWrongCode() throws GlobalException {
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount("mariam.gerges1188@gmail.com", "245698"));
+        assertEquals(ErrorCode.WRONG_VERIFICATION_CODE, exception.getErrorCode());
 
     }
 
     @Test
-    void verifyGmailAccountWithCorrectCodeButNotExistingUser() {
-        assertEquals(otpService.verifyGmailAccount("mariam@gmail.com", "111111").getStatus(), StatusCode.NOT_REGISTERED_USER.getCode());
-
+    void verifyGmailAccountWithCorrectCodeButNotExistingUser() throws GlobalException {
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount("mariam@gmail.com", "111111"));
+        assertEquals(ErrorCode.NOT_REGISTERED_USER, exception.getErrorCode());
     }
 
     @Test
-    void verifyGmailAccountWithCorrectCodeAndActivatedUser() {
+    void verifyGmailAccountWithCorrectCodeAndActivatedUser() throws GlobalException {
         LocalDateTime activeDate = getActiveDate();
         User user = setUPUser1Validated();
         when(userRepository.findByEmail(user.getEmail())).thenReturn(Optional.of(user));
         OTP opt = OTP.builder().code("111111").email(user.getEmail()).expirationDate(activeDate).build();
         when(otpRepository.findByEmail(user.getEmail())).thenReturn(opt);
-        assertEquals(otpService.verifyGmailAccount(user.getEmail(), "111111").getStatus(), StatusCode.INVALID_REQUEST.getCode());
+        GlobalException exception = assertThrows(GlobalException.class,()->otpService.verifyGmailAccount(user.getEmail(), "111111"));
+        assertEquals(ErrorCode.INVALID_OTP_REQUEST, exception.getErrorCode());
 
     }
 

@@ -1,4 +1,4 @@
-package Reservista.example.Backend.DTOs.Response;
+package Reservista.example.Backend.DTOs.Reservation;
 
 import lombok.*;
 
