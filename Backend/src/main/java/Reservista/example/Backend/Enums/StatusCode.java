@@ -39,7 +39,10 @@ public enum StatusCode {
     // Error code for testing purposes
     TEST_CODE(0,"testing message"),
 
-    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option");
+    UNSUPPORTED_SERVICE(22,"Chosen hotel doesn't have fully refundable option"),
+
+    // reservation error codes
+    RESERVATIONS_NOT_FOUND(404, "There is no upcoming reservations"); // not found 404
 
     private final int code;
     private final String message;

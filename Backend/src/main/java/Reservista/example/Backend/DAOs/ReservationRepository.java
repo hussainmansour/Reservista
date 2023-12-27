@@ -5,6 +5,7 @@ import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.time.Instant;
 import java.util.Optional;
 
 
@@ -34,5 +35,10 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             "WHERE r.paymentIntentId = :paymentIntentId ")
     Optional<List<Object[]>> findEmailFirstNameReservationIdByPaymentIntentId(@Param("paymentIntentId") String paymentIntentId);
     void deleteById(Long id);
+
+
+    // Get all upcoming reservations for a user
+    @Query("SELECT r FROM Reservation r WHERE r.user.userName = :userName AND r.checkIn > :currentDate")
+    Optional<List<Reservation>> findUpcomingReservationsByUserName(@Param("userName") String userName, @Param("currentDate") Instant currentDate);
 
 }

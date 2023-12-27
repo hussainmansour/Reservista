@@ -1,8 +1,8 @@
 package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
+import Reservista.example.Backend.DTOs.Profile.UpcomingHistoryReservationDTO;
 import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.Profile.ProfileService;
 import jakarta.validation.Valid;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/user/profile")
@@ -52,6 +52,13 @@ public class ProfileController {
 //                            .message("Profile not found")
 //                            .build(), HttpStatus.NOT_FOUND);
 //        }
+    }
+
+    @GetMapping("/upcoming")
+    public ResponseEntity<List<UpcomingHistoryReservationDTO>> getUpcomingReservations(@AuthenticationPrincipal String username) throws GlobalException {
+        List<UpcomingHistoryReservationDTO> reservations = profileService.getUpcomingReservations(username);
+        return ResponseEntity.ok(reservations);
+
     }
 
 }
