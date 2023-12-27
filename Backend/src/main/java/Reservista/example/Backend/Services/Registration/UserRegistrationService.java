@@ -9,6 +9,7 @@ import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -58,7 +59,7 @@ public class UserRegistrationService {
             if (!otpService.createAndSendOTP(savedUser)) throw new GlobalException(StatusCode.EMAIL_NOT_REACHED, HttpStatus.SERVICE_UNAVAILABLE);
             return savedUser;
         }
-        catch (DataIntegrityViolationException e){
+        catch (DataAccessException e){
             throw new GlobalException(StatusCode.REGISTRATION_RACE_CONDITION,HttpStatus.CONFLICT);
         }
 

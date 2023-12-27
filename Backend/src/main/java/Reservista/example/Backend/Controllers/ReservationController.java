@@ -18,8 +18,8 @@ public class ReservationController {
 
     @PostMapping("/apply_voucher")
     public ResponseEntity<Integer> applyVoucher(@AuthenticationPrincipal String username, @RequestBody String voucherCode) throws GlobalException {
-        Integer n = reservationService.applyVoucher(username, voucherCode);
-        return ResponseEntity.ok(n);
+        Integer discountPercentage = reservationService.applyVoucher(username, voucherCode);
+        return ResponseEntity.ok(discountPercentage);
     }
 
     @PostMapping("/reserve")
