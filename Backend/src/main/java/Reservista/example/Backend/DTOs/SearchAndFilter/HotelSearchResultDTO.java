@@ -6,5 +6,5 @@ import java.util.List;
 
 @Data
 public class HotelSearchResultDTO {
-    private List<HotelDTO> hotels;
+    private List<HotelSummaryDTO> hotels;
 }

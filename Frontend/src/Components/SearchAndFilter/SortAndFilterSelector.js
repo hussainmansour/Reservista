@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from 'react-native';
 import {
     ActionsheetBackdrop,
@@ -19,18 +19,13 @@ import {
 import {Actionsheet} from '@gluestack-ui/themed';
 import Slider from "react-native-a11y-slider";
 import {searchForHotels} from "../../Utilities/API";
+import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 
 
 const SortAndFilterSelector = (
     {
-        selectedLocation,
-        locations,
-        range,
-        roomCount,
-        travellersCount,
-        hotels,
         setHotels,
-        loading,
         setLoading
     }
 ) => {
@@ -45,6 +40,18 @@ const SortAndFilterSelector = (
     const [starsSliderRange, setStarsSliderRange] = useState([0, 5]);
 
     const [doneState,setDoneState] = useState(false);
+
+    const {updateSearchCriteria,...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
+
+
+    const {
+        selectedLocation,
+        locations,
+        checkInOutTimes,
+        roomCount,
+        travellersCount,
+    } = searchOptions;
 
 
     const handlePriceChange = (values) => {
@@ -90,7 +97,7 @@ const SortAndFilterSelector = (
             setHotels(hotelsList["hotels"]);
             setDoneState(false);
         }
-        getHotels();
+        getHotels().catch(console.error);
     }, [sortBy, sortDirection , doneState]);
 
 
@@ -102,27 +109,30 @@ const SortAndFilterSelector = (
         setModalVisible(true);
     };
 
-    const search = async () => {
-        const searchDTO = {
-            "city": locations[selectedLocation - 1].split("/")[0],
-            "country": locations[selectedLocation - 1].split("/")[1],
-            "numberOfRooms": roomCount,
-            "numberOfTravelers": travellersCount,
-            "pageNumber": 0,
-            "pageSize": 20,
-            "checkIn": range["startDate"],
-            "checkOut": range["endDate"],
-            "minPrice": priceSliderRange[0],
-            "maxPrice": priceSliderRange[1],
-            "minStars": starsSliderRange[0],
-            "maxStars": starsSliderRange[1],
-            "minRating": ratingSliderRange[0],
-            "maxRating": ratingSliderRange[1],
-            "sortBy": sortBy,
-            "sortOrder": sortDirection
+    const getSearchCriteriaDTO = () => {
+        return {
+            city: locations[selectedLocation - 1].split("/")[0],
+            country: locations[selectedLocation - 1].split("/")[1],
+            numberOfRooms: roomCount,
+            numberOfTravelers: travellersCount,
+            pageNumber: 0,
+            pageSize: 20,
+            checkIn: checkInOutTimes["startDate"],
+            checkOut: checkInOutTimes["endDate"],
+            minPrice: priceSliderRange[0],
+            maxPrice: priceSliderRange[1],
+            minStars: starsSliderRange[0],
+            maxStars: starsSliderRange[1],
+            minRating: ratingSliderRange[0],
+            maxRating: ratingSliderRange[1],
+            sortBy: sortBy,
+            sortOrder: sortDirection
         };
+    }
 
-        return await searchForHotels(searchDTO, setLoading)
+    const search = async () => {
+        updateSearchCriteria(getSearchCriteriaDTO());
+        return await searchForHotels(searchCriteria, setLoading)
     }
 
     const handleDoneButton = () => {

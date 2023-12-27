@@ -1,6 +1,7 @@
 // Create the TermsAndConditions screen
 import React from 'react';
 import { View, Text, ScrollView, StyleSheet } from 'react-native';
+import colors from '../../Styles/Color';
 
 // TermsAndConditionsScreen component
 const TermsAndConditionsScreen = () => {
@@ -33,7 +34,7 @@ export default TermsAndConditionsScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#131141',
+        backgroundColor: colors.MIDNIGHTBLUE,
         padding: 16,
     },
     title: {

@@ -7,6 +7,7 @@ import Reservista.example.Backend.DTOs.Profile.UpcomingHistoryReservationDTO;
 import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
@@ -48,7 +49,7 @@ public class ProfileService {
     }
 
     public void updateProfile(String username, UpdateDTO updateDTO) throws GlobalException {
-        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(StatusCode.PROFILE_NOT_FOUND,HttpStatus.NOT_FOUND));
+        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(ErrorCode.PROFILE_NOT_FOUND,HttpStatus.NOT_FOUND));
         user.setFullName(FullName.builder()
                 .firstName(updateDTO.getFirstName())
                 .middleName(updateDTO.getMiddleName())

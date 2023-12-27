@@ -2,19 +2,13 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DAOs.RoomDescriptionRepository;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
-import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ReservationInfoHandler extends ReservationHandler {
@@ -26,7 +20,7 @@ public class ReservationInfoHandler extends ReservationHandler {
     RoomDescriptionRepository roomDescriptionRepository;
 
     @Override
-    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         Hotel hotel = hotelRepository.findById(reservationDTO.getHotelID()).orElse(null);
         int roomPrice = roomDescriptionRepository.findRoomDescriptionPrice(reservationDTO.getRoomDescriptionId());
 
@@ -41,22 +35,22 @@ public class ReservationInfoHandler extends ReservationHandler {
 
     }
 
-    private void fillHotelName(ReservationDTO reservationDTO, String hotelName) {
+    private void fillHotelName(ReservationRequestDTO reservationDTO, String hotelName) {
         reservationDTO.setHotelName(hotelName);
     }
 
-    private void fillRoomPrice(ReservationDTO reservationDTO, int roomPrice){
+    private void fillRoomPrice(ReservationRequestDTO reservationDTO, int roomPrice){
         reservationDTO.setRoomPrice(roomPrice);
     }
 
-    private void fillHotelFoodOptions(ReservationDTO reservationDTO, HotelFoodOptions hotelFoodOptions){
+    private void fillHotelFoodOptions(ReservationRequestDTO reservationDTO, HotelFoodOptions hotelFoodOptions){
         reservationDTO.setHotelFoodOptions(hotelFoodOptions);
     }
 
-    private void fillRefundAdditionalPercentage(ReservationDTO reservationDTO, int hotelAdditionalRefundablePercentage){
+    private void fillRefundAdditionalPercentage(ReservationRequestDTO reservationDTO, int hotelAdditionalRefundablePercentage){
         reservationDTO.setRefundAdditionalPercentage(hotelAdditionalRefundablePercentage);
     }
-    private void fillRoomTitle(ReservationDTO reservationDTO){
+    private void fillRoomTitle(ReservationRequestDTO reservationDTO){
         reservationDTO.setRoomTitle(roomDescriptionRepository.findTitleById(reservationDTO.getRoomDescriptionId()));
     }
 }
