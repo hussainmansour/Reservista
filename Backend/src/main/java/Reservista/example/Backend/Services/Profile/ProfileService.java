@@ -3,12 +3,13 @@ package Reservista.example.Backend.Services.Profile;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
 import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -17,40 +18,35 @@ public class ProfileService {
     private UserRepository userRepository;
 
 
-    public Optional<ProfileDTO> viewProfile(String username) {
-        Optional<User> user = userRepository.findById(username);
-        Optional<ProfileDTO> profileDTO;
-        profileDTO = user.map(value -> ProfileDTO.builder().
-                userName(value.getUsername()).
-                email(value.getEmail()).
-                firstName(value.getFullName().getFirstName()).
-                middleName(value.getFullName().getMiddleName()).
-                lastName(value.getFullName().getLastName()).
-                birthDate(value.getBirthDate()).
-                gender(value.getGender()).
-                nationality(value.getNationality()).
-                build());
+    public ProfileDTO viewProfile(String username) throws GlobalException {
+
+        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND)); // 404
+//        Optional<User> user = userRepository.findById(username);
+        ProfileDTO profileDTO = ProfileDTO.builder()
+                .userName(user.getUsername())
+                .email(user.getEmail())
+                .firstName(user.getFullName().getFirstName())
+                .middleName(user.getFullName().getMiddleName())
+                .lastName(user.getFullName().getLastName())
+                .birthDate(user.getBirthDate())
+                .gender(user.getGender())
+                .nationality(user.getNationality())
+                .build();
+
         return profileDTO;
     }
 
-    public boolean updateProfile(String username, UpdateDTO updateDTO){
-        Optional<User> user = userRepository.findById(username);
-        if(user.isEmpty()){
-            return false;
-        }
-        else{
-            User updatedUser = user.get();
-            updatedUser.setFullName(FullName.builder()
-                    .firstName(updateDTO.getFirstName())
-                    .middleName(updateDTO.getMiddleName())
-                    .lastName(updateDTO.getLastName())
-                    .build());
-            updatedUser.setBirthDate(updateDTO.getBirthDate());
-            updatedUser.setGender(updateDTO.getGender());
-            updatedUser.setNationality(updateDTO.getNationality());
-            userRepository.save(updatedUser);
-            return true;
-        }
+    public void updateProfile(String username, UpdateDTO updateDTO) throws GlobalException {
+        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(ErrorCode.PROFILE_NOT_FOUND,HttpStatus.NOT_FOUND));
+        user.setFullName(FullName.builder()
+                .firstName(updateDTO.getFirstName())
+                .middleName(updateDTO.getMiddleName())
+                .lastName(updateDTO.getLastName())
+                .build());
+        user.setBirthDate(updateDTO.getBirthDate());
+        user.setGender(updateDTO.getGender());
+        user.setNationality(updateDTO.getNationality());
+        userRepository.save(user);
 
     }
 

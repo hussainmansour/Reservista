@@ -5,7 +5,7 @@ import jakarta.validation.ConstraintValidatorContext;
 
 import java.time.LocalDate;
 
-public class BirthDateValidator implements ConstraintValidator<BirthDate, LocalDate> {
+public class AgeValidator implements ConstraintValidator<Age, LocalDate> {
 
     @Override
     public boolean isValid(LocalDate birthDate, ConstraintValidatorContext context) {
