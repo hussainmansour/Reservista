@@ -1,5 +1,5 @@
 import axios from "axios";
-const API_BASE_URL = 'http://192.168.1.5:8080/user/profile';
+const API_BASE_URL = 'http://192.168.1.109:8080/user/profile';
 const VIEW_PATH = '/view';
 const EDIT_PATH = '/edit';
 
