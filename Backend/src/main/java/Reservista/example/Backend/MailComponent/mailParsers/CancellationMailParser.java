@@ -1,6 +1,6 @@
 package Reservista.example.Backend.MailComponent.mailParsers;
 
-import Reservista.example.Backend.DTOs.Cancellation.CancellationRequestDTO;
+import Reservista.example.Backend.Services.Cancellation.CancellationRequest;
 import Reservista.example.Backend.MailComponent.Mail;
 
 import java.time.Instant;
@@ -10,7 +10,7 @@ import java.time.format.DateTimeFormatter;
 
 public class CancellationMailParser extends Mail {
 
-    public  CancellationMailParser(CancellationRequestDTO request) {
+    public  CancellationMailParser(CancellationRequest request) {
 
 
         String to = request.getEmail();

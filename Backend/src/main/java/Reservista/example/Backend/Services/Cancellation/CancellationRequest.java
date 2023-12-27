@@ -1,7 +1,6 @@
-package Reservista.example.Backend.DTOs.Cancellation;
+package Reservista.example.Backend.Services.Cancellation;
 
 
-import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,7 +13,7 @@ import java.time.Instant;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class CancellationRequestDTO {
+public class CancellationRequest {
 
     @NotNull(message = "please provide the reservation id")
     private Long reservationID;

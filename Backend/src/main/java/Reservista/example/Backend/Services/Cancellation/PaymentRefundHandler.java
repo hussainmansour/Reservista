@@ -1,7 +1,4 @@
 package Reservista.example.Backend.Services.Cancellation;
-import Reservista.example.Backend.DTOs.Cancellation.CancellationRequestDTO;
-import Reservista.example.Backend.DTOs.Cancellation.CancellationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 
 import Reservista.example.Backend.Enums.StatusCode;
 import com.stripe.Stripe;
@@ -10,7 +7,6 @@ import com.stripe.model.Refund;
 import com.stripe.param.RefundCreateParams;
 import Reservista.example.Backend.Error.GlobalException;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
@@ -20,17 +16,17 @@ public class PaymentRefundHandler extends CancellationHandler{
 
 
     @Override
-    public long handleRequest(CancellationRequestDTO cancellationRequestDTO) throws GlobalException {
+    public long handleRequest(CancellationRequest cancellationRequest) throws GlobalException {
 
         Stripe.apiKey = "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
 
         try {
             Refund.create(RefundCreateParams.builder()
-                    .setPaymentIntent(cancellationRequestDTO.getPaymentIntentID())
-                    .setAmount(cancellationRequestDTO.getRefundedAmount()*100)
+                    .setPaymentIntent(cancellationRequest.getPaymentIntentID())
+                    .setAmount(cancellationRequest.getRefundedAmount()*100)
                     .build());
 
-            return nextHandler.handleRequest(cancellationRequestDTO);
+            return nextHandler.handleRequest(cancellationRequest);
 
         } catch (StripeException e) {
             System.out.println(e.getMessage());
