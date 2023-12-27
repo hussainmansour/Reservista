@@ -1,5 +1,6 @@
 package Reservista.example.Backend.DTOs.SearchAndFilter;
 
+import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import jakarta.validation.constraints.Min;
@@ -33,9 +34,11 @@ public class HotelSearchCriteriaDTO {
     private int pageSize = 1;
 
     @NotNull
+    @FutureOrPresent
     private Instant checkIn = Instant.now();
 
     @NotNull
+    @FutureOrPresent
     private Instant checkOut = Instant.now().plus(2, ChronoUnit.DAYS);
 
     private int minPrice = 0;

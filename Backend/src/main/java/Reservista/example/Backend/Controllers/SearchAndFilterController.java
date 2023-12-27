@@ -3,7 +3,7 @@ package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
 import Reservista.example.Backend.Services.SearchAndFilter.SearchAndFilterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test/search")
+@RequestMapping("/user/search")
 public class SearchAndFilterController {
 
     @Autowired
@@ -25,8 +25,8 @@ public class SearchAndFilterController {
     }
 
 
-    @PostMapping("/rooms")
-    public ResponseEntity<HotelDTO> filterRooms(@RequestBody RoomSearchCriteriaDTO searchCriteria) {
+    @PostMapping("/hotel")
+    public ResponseEntity<HotelDTO> getHotel(@Valid @RequestBody HotelIdentifierWithSearchCriteriaDTO searchCriteria) {
         HotelDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
         return new ResponseEntity<>(searchResult, HttpStatus.OK);
     }

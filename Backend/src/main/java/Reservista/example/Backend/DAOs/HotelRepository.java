@@ -29,7 +29,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND rd.price BETWEEN :minPrice AND :maxPrice "+
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars"
-     )
+    )
     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRating(
             @Param("country") String country,
             @Param("city") String city,
@@ -182,10 +182,10 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
             "ORDER BY h.rating DESC"
     )
-    //sort by rating
-     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingDesc(
-             @Param("country") String country,
-             @Param("city") String city,
+        //sort by rating
+    Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingDesc(
+            @Param("country") String country,
+            @Param("city") String city,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut,
             @Param("numberOfRooms") int numberOfRooms,
@@ -212,7 +212,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
             "ORDER BY h.rating ASC"
     )
-     Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingASC(
+    Page<Hotel> findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingASC(
             @Param("country") String country,
             @Param("city") String city,
             @Param("checkIn") Instant checkIn,
@@ -252,5 +252,4 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut
     );
-
 }

@@ -105,7 +105,7 @@ public class HotelSearchFactory {
     }
 
     public Page<Hotel> sortHotelsByRating(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
-         if(Objects.equals(searchCriteria.getSortOrder().toLowerCase(), "desc"))
+        if(Objects.equals(searchCriteria.getSortOrder().toLowerCase(), "desc"))
             return hotelRepository.findByLocation_CityAndRooms_AvailabilityDateRangeAndTotalCapacityAndPriceRangeAndStarsAndRatingOrderByRatingDesc(
                     searchCriteria.getCountry(),
                     searchCriteria.getCity(),
@@ -151,4 +151,3 @@ public class HotelSearchFactory {
         }
     }
 }
-
