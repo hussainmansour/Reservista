@@ -25,7 +25,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country "+
             "AND rd.roomCount >= :numberOfRooms "+
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers "+
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice "+
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars"
@@ -56,7 +56,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -86,7 +86,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -110,8 +110,6 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
     );
 
 
-    // TODO: need to write the Query
-
     @Query("SELECT DISTINCT h FROM Hotel h " +
             "JOIN h.roomDescriptions rd " +
             "LEFT JOIN rd.reservedRooms rr " +
@@ -120,7 +118,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -149,7 +147,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -178,7 +176,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -208,7 +206,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "AND h.location.country = :country " +
             "AND rd.roomCount >= :numberOfRooms " +
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers " +
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms " +
             "AND rd.price BETWEEN :minPrice AND :maxPrice " +
             "AND h.rating BETWEEN :minRating AND :maxRating " +
             "AND h.starRating BETWEEN :minStars AND :maxStars " +
@@ -238,7 +236,7 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             "WHERE rd.hotel.id = :hotelId "+
             "AND rd.roomCount >= :numberOfRooms "+
             "AND rd.capacity * :numberOfRooms >= :numberOfTravelers "+
-            "AND (SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms"
+            "AND (SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = rd.id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut) <= rd.roomCount - :numberOfRooms"
     )
     List<RoomDescription> findAvailableRooms(
             @Param("hotelId") UUID hotelId,
@@ -248,15 +246,11 @@ public interface HotelRepository extends JpaRepository<Hotel, UUID>{
             @Param("numberOfTravelers") int numberOfTravelers
     );
 
-
-    @Query("SELECT COUNT(rr.id) FROM ReservedRoom rr WHERE rr.roomDescription.id = :id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut")
+    @Query("SELECT COUNT(DISTINCT rr.roomNumber) FROM ReservedRoom rr WHERE rr.roomDescription.id = :id AND rr.reservation.checkOut >= :checkIn AND rr.reservation.checkIn <= :checkOut")
     int getNumberOfConflictedRooms(
             @Param("id") UUID roomDescriptionId,
             @Param("checkIn") Instant checkIn,
             @Param("checkOut") Instant checkOut
     );
-
-
-
 
 }
