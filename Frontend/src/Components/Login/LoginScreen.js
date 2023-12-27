@@ -1,9 +1,12 @@
-import React, {useState, useContext} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert} from 'react-native';
+import React, { useState, useContext } from 'react';
+import { StyleSheet, Text, View, TouchableOpacity, Image, ActivityIndicator, Alert } from 'react-native';
 import CustomTextInput from '../Inputs/CustomTextInput';
-import {signIn} from '../../Utilities/API';
-import {AuthContext} from '../../Store/authContext';
+import { signIn } from '../../Utilities/API';
+import { AuthContext } from '../../Store/authContext';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
+import {LinearGradient} from 'expo-linear-gradient';
+import styles from '../../Styles/Loginstyles';
+import colors from '../../Styles/Color';
 import {AuthenticationAPI} from "../../Utilities/New/APIs/AuthenticationAPI";
 
 const LoginScreen = ({navigation}) => {
@@ -47,59 +50,45 @@ const LoginScreen = ({navigation}) => {
     };
 
     return (
-        <View style={styles.wholeForm}>
+        <LinearGradient
+            colors={[colors.MIDNIGHTBLUE, colors.SEABLUE]} // Define your gradient colors
+            style={styles.wholeForm}
+        >
+            <View style={styles.wholeFormContent}>
+                <Image source={require('../../Data/Logo.png')} style={{ alignSelf: 'center' }} />
 
-            <Image source={require('../../Data/Logo.png')} style={{alignSelf: 'center'}}/>
+                <CustomTextInput
+                    placeholder={'Username or Email'}
+                    title={'Username or Email'}
+                    secure={false}
+                    onChangeText={(text) => setUsername(text)}
+                />
 
-            <CustomTextInput
-                placeholder={'Username'}
-                title={'Username'}
-                secure={false}
-                onChangeText={(text) => setUsername(text)}
-            />
+                <CustomTextInput
+                    placeholder={'Password'}
+                    title={'Password'}
+                    secure={true}
+                    onChangeText={(text) => setPassword(text)}
+                    keyboardType="visible-password"
+                />
 
-            <CustomTextInput
-                placeholder={'Password'}
-                title={'Password'}
-                secure={true}
-                onChangeText={(text) => setPassword(text)}
-                keyboardType="visible-password"
-            />
+                {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                <CustomizedButton
+                    text={"Login"}
+                    onPress={handleLoginRequest}
+                    buttonStyle={styles.loginButton} // Add custom style for the login button
+                    textStyle={styles.loginButtonText} // Add custom style for the login button text
+                />
 
-            {loading && <ActivityIndicator size="large" color="#0000ff"/>}
-            <CustomizedButton text={"Login"} onPress={handleLoginRequest}/>
-
-            <View style={styles.signup}>
-                <Text style={{color: 'white'}}>Don’t have an account?</Text>
-                <TouchableOpacity onPress={() => navigation.navigate('Signup')}>
-                    <Text style={styles.textSignup}>signup</Text>
-                </TouchableOpacity>
+                <View style={styles.signupView}>
+                    <Text style={styles.signup}>Don’t have an account?</Text>
+                    <TouchableOpacity onPress={() => navigation.navigate('Sign up')}>
+                        <Text style={styles.textSignup}>signup</Text>
+                    </TouchableOpacity>
+                </View>
             </View>
-
-        </View>
+        </LinearGradient>
     );
 };
 
 export default LoginScreen;
-
-const styles = StyleSheet.create({
-    wholeForm: {
-        backgroundColor: '#131141',
-        flex: 1,
-        justifyContent: 'center',
-    },
-    signup: {
-        flexDirection: 'row',
-        alignSelf: 'center',
-        marginBottom: 20,
-        marginTop: 30,
-    },
-    textSignup: {
-        color: 'white',
-        fontWeight: 'bold',
-        marginBottom: 5,
-        paddingLeft: 10,
-        textDecorationLine: 'underline',
-        fontSize: 15
-    },
-});
