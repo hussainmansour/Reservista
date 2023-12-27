@@ -24,12 +24,10 @@ public class HotelIdentifierWithSearchCriteriaDTO {
     private int numberOfTravelers;
 
     @NotNull
-    @NotBlank
     @FutureOrPresent
     private Instant checkIn;
 
     @NotNull
-    @NotBlank
     @FutureOrPresent
     private Instant checkOut;
 }
