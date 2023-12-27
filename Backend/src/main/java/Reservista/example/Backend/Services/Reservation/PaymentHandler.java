@@ -3,7 +3,6 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import com.stripe.Stripe;
@@ -39,7 +38,7 @@ public class PaymentHandler extends ReservationHandler{
             ReservationResponseDTO reservationResponseDTO
                     =ReservationResponseDTO
                     .builder()
-                    .reservationId(reservationDTO.getReservationID())
+                    .reservationId(reservationDTO.getReservationId())
                     .clientSecret(intent.getClientSecret())
                     .build();
             nextHandler.handleRequest(reservationDTO);

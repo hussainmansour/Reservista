@@ -24,9 +24,9 @@ public class CancellationController{
     }
 
     @PostMapping("/get-refunded-amount")
-    public ResponseEntity<Long> getRefundedAmount(@AuthenticationPrincipal String username,@RequestParam long reservationID) throws GlobalException {
+    public ResponseEntity<Long> getRefundedAmount(@AuthenticationPrincipal String username,@RequestParam long reservationId) throws GlobalException {
 
-        long refundedAmount = cancellationService.getRefundedAmount(username, reservationID);
+        long refundedAmount = cancellationService.getRefundedAmount(username, reservationId);
         return  ResponseEntity.ok(refundedAmount);
     }
 

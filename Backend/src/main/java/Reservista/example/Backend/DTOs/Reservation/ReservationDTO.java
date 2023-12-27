@@ -2,8 +2,6 @@ package Reservista.example.Backend.DTOs.Reservation;
 
 import Reservista.example.Backend.Models.EmbeddedClasses.HotelFoodOptions;
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jdk.jfr.BooleanFlag;
 import lombok.*;
@@ -49,7 +47,7 @@ public class ReservationDTO {
     private int roomPrice;
     private String roomTitle;
 
-    private Long reservationID;
+    private Long reservationId;
 
     private String userName;
 

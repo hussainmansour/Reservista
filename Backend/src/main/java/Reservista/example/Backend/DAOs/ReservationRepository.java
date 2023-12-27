@@ -39,11 +39,6 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
             "WHERE r.id = :id")
     Integer findFullRefundableRateByReservationId(@Param("id") Long id);
 
-    @Query("SELECT CASE WHEN r.user.userName = :userName THEN true ELSE false END " +
-            "FROM Reservation r " +
-            "WHERE r.id = :reservationId")
-    boolean isUsernameMatchingReservation(@Param("userName") String userName, @Param("reservationId") Long reservationId);
-
 
     @Query("SELECT r.user.email, r.hotel.name, COALESCE(r.user.fullName.firstName, r.user.email) AS firstName " +
             "FROM Reservation r " +

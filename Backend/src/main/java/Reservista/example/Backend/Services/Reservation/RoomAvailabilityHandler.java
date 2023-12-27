@@ -5,7 +5,6 @@ import Reservista.example.Backend.DAOs.*;
 import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
@@ -46,7 +45,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
         Reservation reservation = prepareReservation(reservationDTO);
         try {
             Reservation confirmedReservation=checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
-            reservationDTO.setReservationID(confirmedReservation.getId());
+            reservationDTO.setReservationId(confirmedReservation.getId());
             executor.schedule(() -> deleteAfter10min(confirmedReservation.getId()), 10, TimeUnit.MINUTES);
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);

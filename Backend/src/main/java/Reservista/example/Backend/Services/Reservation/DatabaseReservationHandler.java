@@ -4,18 +4,15 @@ import Reservista.example.Backend.DAOs.ReservationRepository;
 import Reservista.example.Backend.DAOs.TempReservationDetailsRepository;
 import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
 import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.ReservedRoom;
 import Reservista.example.Backend.Models.EntityClasses.TempReservationDetails;
 import jakarta.transaction.Transactional;
-import org.apache.tomcat.util.descriptor.web.JspConfigDescriptorImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Iterator;
 import java.util.NoSuchElementException;
-import java.util.Set;
 
 @Service
 public class DatabaseReservationHandler extends ReservationHandler{
@@ -31,7 +28,7 @@ public class DatabaseReservationHandler extends ReservationHandler{
     public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) {
 
         System.out.println("databaseReservationHandler");
-        Reservation reservation =reservationRepository.findById(reservationDTO.getReservationID()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
+        Reservation reservation =reservationRepository.findById(reservationDTO.getReservationId()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
 
         Iterator<ReservedRoom> roomIterator = reservation.getReservedRooms().iterator();
 

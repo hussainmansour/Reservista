@@ -26,16 +26,16 @@ public class CancellationService {
     ReservationRepository reservationRepository;
 
 
-    public long cancelReservation(String username, long reservationID) throws GlobalException {
-        CancellationRequest cancellationRequest = CancellationRequest.builder().reservationID(reservationID).username(username).build();
+    public long cancelReservation(String username, long reservationId) throws GlobalException {
+        CancellationRequest cancellationRequest = CancellationRequest.builder().reservationID(reservationId).username(username).build();
         paymentRefundHandler.setNextHandler(cancellationConfirmationHandler);
         refundCalculatorHandler.setNextHandler(paymentRefundHandler);
         refundAvailabilityCheckerHandler.setNextHandler(refundCalculatorHandler);
         return refundAvailabilityCheckerHandler.handleRequest(cancellationRequest);
     }
 
-    public long getRefundedAmount(String username, long reservationID) throws GlobalException {
-        CancellationRequest cancellationRequest = CancellationRequest.builder().reservationID(reservationID).username(username).build();
+    public long getRefundedAmount(String username, long reservationId) throws GlobalException {
+        CancellationRequest cancellationRequest = CancellationRequest.builder().reservationID(reservationId).username(username).build();
         cancellationRequest.setUsername(username);
         refundCalculatorHandler.setNextHandler(null);
         refundAvailabilityCheckerHandler.setNextHandler(refundCalculatorHandler);
