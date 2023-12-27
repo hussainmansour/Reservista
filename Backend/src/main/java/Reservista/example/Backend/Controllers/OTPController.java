@@ -3,7 +3,6 @@ package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.DTOs.Registration.CodeVerificationDTO;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.Registration.OTPService;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

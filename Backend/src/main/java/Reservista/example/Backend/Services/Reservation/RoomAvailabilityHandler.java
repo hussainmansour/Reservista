@@ -2,10 +2,9 @@
 package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.*;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
@@ -40,7 +39,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
 
 //    @Override
-    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
@@ -60,7 +59,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
     }
 
-    public Reservation prepareReservation(ReservationDTO reservationDTO) {
+    public Reservation prepareReservation(ReservationRequestDTO reservationDTO) {
         RoomDescription roomDescription=roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
         Reservation reservation= Reservation.builder()
                 .user(userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow())

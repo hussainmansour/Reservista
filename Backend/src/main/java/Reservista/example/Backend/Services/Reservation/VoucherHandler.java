@@ -2,9 +2,8 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
@@ -28,7 +27,7 @@ public class VoucherHandler extends ReservationHandler {
 
     @Override
     @Transactional()
-    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         //Here I have Reservation DTO that have UserID and VoucherName
         //Check if the voucher is not null
         //If (OK): firstly check the expiration date of the voucher

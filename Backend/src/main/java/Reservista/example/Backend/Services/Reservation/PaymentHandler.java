@@ -1,9 +1,8 @@
 package Reservista.example.Backend.Services.Reservation;
 
 
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import com.stripe.Stripe;
@@ -21,7 +20,7 @@ public class PaymentHandler extends ReservationHandler{
     private String stripeSecretApiKey;
 
     @Override
-    public ReservationResponseDTO handleRequest(ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
 
         System.out.println("payment reservation handler");
         try {

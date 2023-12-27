@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Controllers;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.Reservation.ReservationService;
 import jakarta.validation.Valid;
@@ -24,7 +23,7 @@ public class ReservationController {
     }
 
     @PostMapping("/reserve")
-    public ReservationResponseDTO reserve(@AuthenticationPrincipal String username, @Valid @RequestBody ReservationDTO reservationDTO) throws GlobalException {
+    public ReservationResponseDTO reserve(@AuthenticationPrincipal String username, @Valid @RequestBody ReservationRequestDTO reservationDTO) throws GlobalException {
        return reservationService.reserve(username,reservationDTO);
     }
 

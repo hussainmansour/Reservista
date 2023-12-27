@@ -12,7 +12,7 @@ import Reservista.example.Backend.MailComponent.mailParsers.RegistrationMailPars
 import Reservista.example.Backend.Models.EntityClasses.OTP;
 import Reservista.example.Backend.Models.EntityClasses.User;
 
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
