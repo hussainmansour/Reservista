@@ -22,12 +22,12 @@ public class UpdateDTO {
 
     private String lastName;
 
-    @BirthDate
+    @Age
     private LocalDate birthDate;
 
     @Gender
     private Genders gender;
 
-    @Country( message = "Invalid nationality")
+    @Nationality
     private String nationality;
 }

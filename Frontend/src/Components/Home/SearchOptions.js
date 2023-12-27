@@ -8,7 +8,7 @@ import Counter from "./Counter";
 import {searchForHotels} from "../../Utilities/API";
 import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
-
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
 const SearchOptions = ({navigation}) => {
 

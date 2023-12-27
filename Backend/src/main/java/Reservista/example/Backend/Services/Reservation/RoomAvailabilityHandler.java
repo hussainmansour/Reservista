@@ -2,16 +2,17 @@
 package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.*;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
 import Reservista.example.Backend.Models.EntityClasses.ReservedRoom;
 import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,7 +39,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
 
 //    @Override
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO) {
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
@@ -49,14 +50,16 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(StatusCode.NOT_AVAILABLE.getCode(),StatusCode.NOT_AVAILABLE.getMessage(),null);
-            return responseDTO;
+//            System.out.println(e.getMessage());
+//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(ErrorCode.NOT_AVAILABLE.getCode(),ErrorCode.NOT_AVAILABLE.getMessage(),null);
+//            return responseDTO;
+            throw new GlobalException(ErrorCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
         }
+
 
     }
 
-    public Reservation prepareReservation(ReservationDTO reservationDTO) {
+    public Reservation prepareReservation(ReservationRequestDTO reservationDTO) {
         RoomDescription roomDescription=roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
         Reservation reservation= Reservation.builder()
                 .user(userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow())
