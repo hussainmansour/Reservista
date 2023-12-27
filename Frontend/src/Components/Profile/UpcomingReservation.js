@@ -3,6 +3,7 @@ import { View, Text, StyleSheet,FlatList } from 'react-native';
 import ReservationCard from './ReservationCard';
 import Color from '../../Styles/Color';
 import Details from './Details';
+import cardStyles from '../../Styles/CardStyles';
 
 
 const UpcomingReservation = () => {
@@ -17,6 +18,10 @@ const UpcomingReservation = () => {
     { reservationID: '7', hotelName: 'Hotel C', roomTitle: 'Triple Room', reservationDate: '2023-03-01', checkIn: '2023-04-01', checkOut: '2023-04-10', noOfRooms: 3, price: 300, invoice: 'Invoice C' },
     // Add more reservation data items as needed
   ];
+
+  function getReservationById(reservationID) {
+    return reservationData.find(reservation => reservation.reservationID === reservationID);
+  }
 
   const [visible,setVisible]=useState(false);
   const [details,setDetails]=useState("");
@@ -51,13 +56,25 @@ const UpcomingReservation = () => {
       checkOut={item.checkOut}
       noOfRooms={item.noOfRooms}
       price={item.price}
-      showDetails={()=>{
-        setDetails(item.invoice);
-        setVisible(true);
-      }}
-      cancelFunction={cancelReservation}
+      buttons={buttons}
     />
   );
+
+  const buttons = [
+    {
+      text: 'More Details...',
+      onPress: (id) => {
+        console.log(id);
+        setDetails(getReservationById(id).invoice);
+        setVisible(true);
+      },
+    },
+    {
+      text: 'Cancel',
+      onPress: (id) => cancelReservation(id),
+      buttonStyle: { backgroundColor: Color.ORANGE }, 
+    }
+  ];
 
   return (
     <View style={styles.container}>

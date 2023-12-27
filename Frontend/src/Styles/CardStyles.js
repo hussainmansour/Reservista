@@ -4,7 +4,7 @@ import Color from "./Color";
 
 
 // Styles
-const styles = StyleSheet.create({
+const cardStyles = StyleSheet.create({
     CardContainer: {
         flexDirection: 'row',
         margin: 10,
@@ -62,4 +62,4 @@ const styles = StyleSheet.create({
         textAlign: 'center',
     },
 });
-export default styles;
+export default cardStyles;

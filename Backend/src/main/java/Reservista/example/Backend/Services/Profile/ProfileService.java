@@ -66,6 +66,11 @@ public class ProfileService {
         return convertToReservationDTO(reservations);
     }
 
+    public List<UpcomingHistoryReservationDTO> getHistoryReservations(String username) throws GlobalException {
+        List<Reservation> reservations = reservationRepository.findHistoryReservationsByUserName(username, Instant.now()).orElseThrow(()->new GlobalException(StatusCode.RESERVATIONS_NOT_FOUND,HttpStatus.NOT_FOUND));
+        return convertToReservationDTO(reservations);
+    }
+
     // mapping from Reservation to UpcomingHistoryReservationDTO
     private List<UpcomingHistoryReservationDTO> convertToReservationDTO(List<Reservation> reservations) {
         List<UpcomingHistoryReservationDTO> reservationDTOS = new ArrayList<>();
@@ -84,7 +89,5 @@ public class ProfileService {
         }
         return reservationDTOS;
     }
-
-    //TODO: Add Reservations history
 
 }

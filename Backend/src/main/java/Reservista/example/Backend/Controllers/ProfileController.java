@@ -61,4 +61,11 @@ public class ProfileController {
 
     }
 
+    @GetMapping("/history")
+    public ResponseEntity<List<UpcomingHistoryReservationDTO>> getHistoryReservations(@AuthenticationPrincipal String username) throws GlobalException {
+        List<UpcomingHistoryReservationDTO> reservations = profileService.getHistoryReservations(username);
+        return ResponseEntity.ok(reservations);
+
+    }
+
 }

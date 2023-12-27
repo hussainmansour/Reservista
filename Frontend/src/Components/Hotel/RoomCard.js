@@ -1,7 +1,7 @@
 // RoomCard Component
 import { View, Text, TouchableOpacity, StyleSheet,FlatList,Image } from 'react-native';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
-import styles from "../../Styles/CardStyles";
+import cardStyles from "../../Styles/CardStyles";
 
 
 const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, reservePress }) => {
@@ -9,9 +9,9 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, r
     const filteredDetails = roomDetails.filter(detail => !detail.includes('Sleeps'));
 
     return (
-        <View style={styles.CardContainer}>
-            <View style={styles.InfoContainer}>
-                <Text style={styles.Title}>{title}</Text>
+        <View style={cardStyles.CardContainer}>
+            <View style={cardStyles.InfoContainer}>
+                <Text style={cardStyles.Title}>{title}</Text>
                 <Text>{`Price: ${price}$`}</Text>
                 <Text>{`Sleeps: ${capacity}`}</Text>
                 <Text>{`Details: ${filteredDetails}`}</Text>
@@ -21,8 +21,8 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, r
                     onPress={() => {
                         reservePress(id, price, title,);
                     }}
-                    textStyle={styles.ButtonText}
-                    buttonStyle={styles.Button}
+                    textStyle={cardStyles.ButtonText}
+                    buttonStyle={cardStyles.Button}
                 ></CustomizedButton>
             </View>
         </View>

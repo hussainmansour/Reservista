@@ -1,15 +1,20 @@
-// RoomCard Component
-import React, { useState } from 'react';
-import { View, Text, TouchableOpacity, StyleSheet, Modal } from 'react-native';
+import React from 'react';
+import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import styles from '../../Styles/CardStyles';
 import Color from '../../Styles/Color';
 
-
-
-
-const ReservationCard = ({ reservationID, hotelName, roomTitle, reservationDate, checkIn, checkOut, noOfRooms, price, showDetails, cancelFunction }) => {
-
+const ReservationCard = ({
+    reservationID,
+    hotelName,
+    roomTitle,
+    reservationDate,
+    checkIn,
+    checkOut,
+    noOfRooms,
+    price,
+    buttons,
+}) => {
     return (
         <View style={styles.CardContainer}>
             <View style={styles.InfoContainer}>
@@ -21,26 +26,16 @@ const ReservationCard = ({ reservationID, hotelName, roomTitle, reservationDate,
                 <Text>{`Checkout date: ${checkOut}`}</Text>
                 <Text>{`Number of rooms: ${noOfRooms}`}</Text>
                 <Text>{`Total price: ${price}`}</Text>
-                <View style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    marginTop: 10,
-                }}>
-                    <CustomizedButton
-                        text={"More Details..."}
-                        onPress={showDetails}
-                        textStyle={styles.ButtonText}
-                        buttonStyle={styles.Button}
-                    ></CustomizedButton>
-                    <CustomizedButton
-                        text={"Cancel"}
-                        onPress={()=>{
-                            cancelFunction(reservationID);
-                        }}
-                        textStyle={styles.ButtonText}
-                        buttonStyle={{...styles.Button,backgroundColor:Color.ORANGE}}
-                    ></CustomizedButton>
+                <View style={additionalStyles.buttonsContainer}>
+                    {buttons.map((button, index) => (
+                        <CustomizedButton
+                            key={index}
+                            text={button.text}
+                            onPress={() => button.onPress(reservationID)}
+                            textStyle={{...styles.ButtonText,...button.textStyle}}
+                            buttonStyle={{...styles.Button,...button.buttonStyle}}
+                        />
+                    ))}
                 </View>
             </View>
         </View>
@@ -48,3 +43,12 @@ const ReservationCard = ({ reservationID, hotelName, roomTitle, reservationDate,
 };
 
 export default ReservationCard;
+
+const additionalStyles = StyleSheet.create({
+    buttonsContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        marginTop: 10,
+    },
+});

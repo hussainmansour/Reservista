@@ -41,4 +41,8 @@ public interface ReservationRepository extends JpaRepository<Reservation,Long> {
     @Query("SELECT r FROM Reservation r WHERE r.user.userName = :userName AND r.isConfirmed = true AND r.checkIn > :currentDate")
     Optional<List<Reservation>> findUpcomingReservationsByUserName(@Param("userName") String userName, @Param("currentDate") Instant currentDate);
 
+    // Get all history reservations for a user
+    @Query("SELECT r FROM Reservation r WHERE r.user.userName = :userName AND r.isConfirmed = true AND r.checkIn < :currentDate")
+    Optional<List<Reservation>> findHistoryReservationsByUserName(@Param("userName") String userName, @Param("currentDate") Instant currentDate);
+
 }
