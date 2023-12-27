@@ -2,7 +2,7 @@ package Reservista.example.Backend.Exceptions;
 
 
 import Reservista.example.Backend.DTOs.ErrorDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +16,7 @@ public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandl
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorDTO<String>> handleBadCredentialsException(BadCredentialsException ex) {
-        ErrorDTO<String> error = StatusCode.LOGIN_FAILED.getError();
+        ErrorDTO<String> error = ErrorCode.LOGIN_FAILED.getError();
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED).body(error);
@@ -25,7 +25,7 @@ public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandl
     // todo: to be removed
     @ExceptionHandler(DisabledException.class)
     public ResponseEntity<ErrorDTO<String>> handleBadCredentialsException(DisabledException ex) {
-        ErrorDTO<String> error = StatusCode.ACCOUNT_DEACTIVATED.getError();
+        ErrorDTO<String> error = ErrorCode.ACCOUNT_DEACTIVATED.getError();
 
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED).body(error);

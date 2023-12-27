@@ -3,8 +3,8 @@ package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.ErrorDTO;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Enums.Genders;
-import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
@@ -76,11 +76,11 @@ class RegistrationControllerTest {
                 .gender(Genders.MALE)
                 .build();
 
-        ErrorDTO<String> expected = StatusCode.TEST_CODE.getError();
+        ErrorDTO<String> expected = ErrorCode.TEST_CODE.getError();
 
         HttpStatus mockHttpsStatus = HttpStatus.BAD_REQUEST;
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new GlobalException(StatusCode.TEST_CODE, mockHttpsStatus));
+        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new GlobalException(ErrorCode.TEST_CODE, mockHttpsStatus));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -101,9 +101,9 @@ class RegistrationControllerTest {
                 .gender(Genders.MALE)
                 .build();
 
-        ErrorDTO<String> expected = StatusCode.ACCOUNT_DEACTIVATED.getError();
+        ErrorDTO<String> expected = ErrorCode.ACCOUNT_DEACTIVATED.getError();
 
-        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new GlobalException(StatusCode.ACCOUNT_DEACTIVATED, HttpStatus.CONFLICT ));
+        when(userRegistrationService.registerUser(registrationRequest)).thenThrow(new GlobalException(ErrorCode.ACCOUNT_DEACTIVATED, HttpStatus.CONFLICT ));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/auth/register")
                         .contentType(MediaType.APPLICATION_JSON)

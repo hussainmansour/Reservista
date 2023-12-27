@@ -36,7 +36,7 @@ public class GlobalExceptionHandler extends Exception{
     @ExceptionHandler(GlobalException.class)
     public ResponseEntity<ErrorDTO<String>> globalException(GlobalException ex){
 
-        ErrorDTO<String> error = ex.getStatusCode().getError();
+        ErrorDTO<String> error = ex.getErrorCode().getError();
 
         return ResponseEntity
                 .status(ex.getHttpStatus()).body(error);

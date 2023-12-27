@@ -6,7 +6,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Services.Registration.OTPService;
@@ -56,7 +56,7 @@ class UserRegistrationServiceTest {
 
         GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.EMAIL_ALREADY_EXIST, exception.getStatusCode());
+        assertEquals(ErrorCode.EMAIL_ALREADY_EXIST, exception.getErrorCode());
 
         verify(userRepository,never()).save(any());
 
@@ -78,7 +78,7 @@ class UserRegistrationServiceTest {
 
         GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.USERNAME_ALREADY_EXIST, exception.getStatusCode());
+        assertEquals(ErrorCode.USERNAME_ALREADY_EXIST, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -103,7 +103,7 @@ class UserRegistrationServiceTest {
 
         GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_BLOCKED, exception.getStatusCode());
+        assertEquals(ErrorCode.ACCOUNT_BLOCKED, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -127,7 +127,7 @@ class UserRegistrationServiceTest {
 
         GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_DEACTIVATED, exception.getStatusCode());
+        assertEquals(ErrorCode.ACCOUNT_DEACTIVATED, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 

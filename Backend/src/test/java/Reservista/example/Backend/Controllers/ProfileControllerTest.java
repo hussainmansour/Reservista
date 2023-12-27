@@ -2,8 +2,8 @@ package Reservista.example.Backend.Controllers;
 
 import Reservista.example.Backend.DTOs.ErrorDTO;
 import Reservista.example.Backend.DTOs.Profile.*;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Enums.Genders;
-import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Enums.SystemRoles;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.Profile.ProfileService;
@@ -29,7 +29,6 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
@@ -107,9 +106,9 @@ class ProfileControllerTest {
     @Test
     void viewNonExistingProfileReturnProfileNotFound() throws Exception {
 
-        when(profileService.viewProfile("husseinkhaled")).thenThrow(new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND));
+        when(profileService.viewProfile("husseinkhaled")).thenThrow(new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND));
 
-        ErrorDTO<String> expected = StatusCode.PROFILE_NOT_FOUND.getError();
+        ErrorDTO<String> expected = ErrorCode.PROFILE_NOT_FOUND.getError();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
                         .contentType(MediaType.APPLICATION_JSON))
@@ -151,11 +150,11 @@ class ProfileControllerTest {
                 .gender(Genders.MALE)
                 .build();
 
-        doThrow(new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND))
+        doThrow(new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND))
                 .when(profileService)
                 .updateProfile(username, updateDTO);
 
-        ErrorDTO<String> expected = StatusCode.PROFILE_NOT_FOUND.getError();
+        ErrorDTO<String> expected = ErrorCode.PROFILE_NOT_FOUND.getError();
 
         mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
                         .contentType(MediaType.APPLICATION_JSON)

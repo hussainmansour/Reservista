@@ -4,7 +4,7 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
 import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
@@ -60,18 +60,18 @@ public class VoucherHandler extends ReservationHandler {
     @Transactional
     public void handleVoucher(User user, Voucher voucher) throws GlobalException {
         if (voucher == null)
-            throw new GlobalException(StatusCode.VOUCHER_NOT_FOUND, HttpStatus.NOT_FOUND);
+            throw new GlobalException(ErrorCode.VOUCHER_NOT_FOUND, HttpStatus.NOT_FOUND);
 
         Instant voucherExpirationDate = voucher.getExpiresAt();
 
         if (Instant.now().isAfter(voucherExpirationDate))
-            throw new GlobalException(StatusCode.EXPIRED_CODE, HttpStatus.GONE);
+            throw new GlobalException(ErrorCode.EXPIRED_CODE, HttpStatus.GONE);
 
 
         Set<Voucher> usedVouchers = user.getVouchers();
 
         if (usedVouchers.contains(voucher))
-            throw new GlobalException(StatusCode.USED_VOUCHER, HttpStatus.CONFLICT);
+            throw new GlobalException(ErrorCode.USED_VOUCHER, HttpStatus.CONFLICT);
 
     }
 

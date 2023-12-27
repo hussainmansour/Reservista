@@ -5,7 +5,7 @@ import Reservista.example.Backend.DAOs.*;
 import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.RoomFoodOptions;
 import Reservista.example.Backend.Models.EntityClasses.Reservation;
@@ -51,9 +51,9 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
 //            System.out.println(e.getMessage());
-//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(StatusCode.NOT_AVAILABLE.getCode(),StatusCode.NOT_AVAILABLE.getMessage(),null);
+//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(ErrorCode.NOT_AVAILABLE.getCode(),ErrorCode.NOT_AVAILABLE.getMessage(),null);
 //            return responseDTO;
-            throw new GlobalException(StatusCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
+            throw new GlobalException(ErrorCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
         }
 
 

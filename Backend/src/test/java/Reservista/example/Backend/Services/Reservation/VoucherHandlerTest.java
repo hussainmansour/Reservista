@@ -2,11 +2,10 @@ package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
-import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -15,10 +14,8 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.HashSet;
-import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.when;
 
 @SpringBootTest
 class VoucherHandlerTest {
@@ -57,10 +54,10 @@ class VoucherHandlerTest {
                 .vouchers(new HashSet<>())
                 .build();
         GlobalException exception = assertThrows(GlobalException.class,()->voucherHandler.handleVoucher(user, null));
-        assertEquals(StatusCode.VOUCHER_NOT_FOUND, exception.getStatusCode());
-//        StatusCode statusCode = voucherHandler.handleVoucher(user, null);
+        assertEquals(ErrorCode.VOUCHER_NOT_FOUND, exception.getErrorCode());
+//        ErrorCode statusCode = voucherHandler.handleVoucher(user, null);
 //
-//        assertEquals(StatusCode.VOUCHER_NOT_FOUND, statusCode);
+//        assertEquals(ErrorCode.VOUCHER_NOT_FOUND, statusCode);
     }
 
     @Test
@@ -77,7 +74,7 @@ class VoucherHandlerTest {
                 .expiresAt(Instant.now().minus(Duration.ofDays(4))).build();
 
         GlobalException exception = assertThrows(GlobalException.class,()->voucherHandler.handleVoucher(user, voucher));
-        assertEquals(StatusCode.EXPIRED_CODE, exception.getStatusCode());
+        assertEquals(ErrorCode.EXPIRED_CODE, exception.getErrorCode());
 
     }
 
@@ -97,7 +94,7 @@ class VoucherHandlerTest {
         user.getVouchers().add(voucher);
 
         GlobalException exception = assertThrows(GlobalException.class,()->voucherHandler.handleVoucher(user, voucher));
-        assertEquals(StatusCode.USED_VOUCHER, exception.getStatusCode());
+        assertEquals(ErrorCode.USED_VOUCHER, exception.getErrorCode());
 
     }
 

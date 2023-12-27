@@ -4,7 +4,7 @@ import Reservista.example.Backend.DTOs.ErrorDTO;
 import lombok.Getter;
 
 @Getter
-public enum StatusCode {
+public enum ErrorCode {
 
     // Registration errors
     EMAIL_ALREADY_EXIST(1, "Email already exists"), // conflict 409
@@ -42,7 +42,7 @@ public enum StatusCode {
     private final int code;
     private final String message;
 
-    StatusCode(int code, String message) {
+    ErrorCode(int code, String message) {
         this.code = code;
         this.message = message;
     }
