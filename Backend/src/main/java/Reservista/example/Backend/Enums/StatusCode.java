@@ -36,6 +36,9 @@ public enum StatusCode {
     STRIPE_PAYMENT_INTENT_SUCCESSFUL(61, "Payment intent created"),
     TEST_CODE(0,"testing message"),
 
+
+
+    // Admin Status codes
     VOUCHER_ALREADY_EXISTS(23,"Voucher already exists"),
 
     ADMIN_ALREADY_EXISTS(24,"Admin already exists"),

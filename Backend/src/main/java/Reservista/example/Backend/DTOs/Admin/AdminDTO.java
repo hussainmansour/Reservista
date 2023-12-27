@@ -3,6 +3,7 @@ package Reservista.example.Backend.DTOs.Admin;
 
 import Reservista.example.Backend.Validators.StrongPassword;
 import Reservista.example.Backend.Validators.Username;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,9 +16,9 @@ import lombok.NoArgsConstructor;
 public class AdminDTO {
 
 
-    @Username
+    @NotBlank
     private String adminName;
 
-    @StrongPassword
+    @NotBlank
     private String password;
 }

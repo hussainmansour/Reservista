@@ -28,7 +28,7 @@ public class AdminService {
 
     public void addVoucher(VoucherDTO voucherDTO) throws GlobalException {
         if(voucherRepository.existsByVoucherCode(voucherDTO.getVoucherCode())){
-            throw new GlobalException(StatusCode.VOUCHER_ALREADY_EXISTS, HttpStatus.NOT_ACCEPTABLE);
+            throw new GlobalException(StatusCode.VOUCHER_ALREADY_EXISTS, HttpStatus.CONFLICT);
         }
 
         Voucher voucher = Voucher.builder()
@@ -42,7 +42,7 @@ public class AdminService {
     public void addAdmin(AdminDTO adminDTO) throws GlobalException {
 
         if(adminRepository.existsByAdminName(adminDTO.getAdminName())){
-            throw new GlobalException(StatusCode.ADMIN_ALREADY_EXISTS, HttpStatus.NOT_ACCEPTABLE);
+            throw new GlobalException(StatusCode.ADMIN_ALREADY_EXISTS, HttpStatus.CONFLICT);
         }
 
         Admin admin = Admin.builder()
