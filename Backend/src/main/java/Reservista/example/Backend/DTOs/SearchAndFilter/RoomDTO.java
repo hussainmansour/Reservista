@@ -13,7 +13,7 @@ public class RoomDTO {
     private int price;
     private int capacity;
     private Set<String> roomDetails;
-//    private Set<RoomImage> roomImages;
+    private Set<RoomImage> roomImages;
     private int roomAvailability;
     private UUID id;
 }
