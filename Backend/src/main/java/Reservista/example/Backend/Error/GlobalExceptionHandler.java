@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.util.HashMap;
 import java.util.Map;
 
+import static Reservista.example.Backend.Config.ValidationUtil.validationErrorCode;
+
 @ControllerAdvice
 public class GlobalExceptionHandler extends Exception{
 
@@ -28,7 +30,7 @@ public class GlobalExceptionHandler extends Exception{
 
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ErrorDTO.builder()
-                .errorCode(100)
+                .errorCode(validationErrorCode)
                 .data(fieldErrors)
                 .build());
     }
@@ -41,5 +43,7 @@ public class GlobalExceptionHandler extends Exception{
         return ResponseEntity
                 .status(ex.getHttpStatus()).body(error);
     }
+
+
 
 }

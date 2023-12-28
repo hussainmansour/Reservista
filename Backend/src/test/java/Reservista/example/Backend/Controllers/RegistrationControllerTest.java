@@ -128,7 +128,7 @@ class RegistrationControllerTest {
         fieldErrors.put("email",invalidEmail);
 
         ErrorDTO<Map<String, String>> expected = ErrorDTO.<Map<String, String>>builder()
-                .errorCode(100)
+                .errorCode(validationErrorCode)
                 .data(fieldErrors)
                 .build();
 
@@ -156,7 +156,7 @@ class RegistrationControllerTest {
         fieldErrors.put("userName",invalidUsername);
 
         ErrorDTO<Map<String, String>> expected = ErrorDTO.<Map<String, String>>builder()
-                .errorCode(100)
+                .errorCode(validationErrorCode)
                 .data(fieldErrors)
                 .build();
 
@@ -184,7 +184,7 @@ class RegistrationControllerTest {
         fieldErrors.put("password",invalidPassword);
 
         ErrorDTO<Map<String, String>> expected = ErrorDTO.<Map<String, String>>builder()
-                .errorCode(100)
+                .errorCode(validationErrorCode)
                 .data(fieldErrors)
                 .build();
 
@@ -215,7 +215,7 @@ class RegistrationControllerTest {
         fieldErrors.put("birthDate",invalidAge);
 
         ErrorDTO<Map<String, String>> expected = ErrorDTO.<Map<String, String>>builder()
-                .errorCode(100)
+                .errorCode(validationErrorCode)
                 .data(fieldErrors)
                 .build();
 

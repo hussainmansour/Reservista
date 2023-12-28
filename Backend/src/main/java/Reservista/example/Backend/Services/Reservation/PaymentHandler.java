@@ -1,6 +1,7 @@
 package Reservista.example.Backend.Services.Reservation;
 
 
+
 import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
 import Reservista.example.Backend.Enums.ErrorCode;
@@ -22,7 +23,6 @@ public class PaymentHandler extends ReservationHandler{
     @Override
     public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
 
-        System.out.println("payment reservation handler");
         try {
             Stripe.apiKey= "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
 
@@ -39,13 +39,14 @@ public class PaymentHandler extends ReservationHandler{
             ReservationResponseDTO reservationResponseDTO
                     =ReservationResponseDTO
                     .builder()
-                    .reservationId(reservationDTO.getReservationID())
+                    .reservationId(reservationDTO.getReservationId())
                     .clientSecret(intent.getClientSecret())
                     .build();
             nextHandler.handleRequest(reservationDTO);
             return reservationResponseDTO;
         }
         catch (StripeException | GlobalException e){
+            System.out.println(e.getMessage());
             throw new GlobalException(ErrorCode.STRIPE_PAYMENT_INTENT_FAILED, HttpStatus.INTERNAL_SERVER_ERROR);
         }
 
