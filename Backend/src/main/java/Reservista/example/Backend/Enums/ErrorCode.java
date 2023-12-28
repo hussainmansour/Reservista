@@ -46,6 +46,9 @@ public enum ErrorCode {
     //Hotel error codes
     HOTEL_NOT_FOUND(50,"Hotel not found"),
 
+    //Hotel error codes
+    HOTEL_NOT_FOUND(50,"Hotel not found"),
+
     // Error code for testing purposes
     TEST_CODE(0,"testing message");
 
