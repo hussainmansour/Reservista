@@ -14,6 +14,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 
 @Service
@@ -38,9 +41,25 @@ public class RoomSearchService {
             roomDTO.setTitle(room.getTitle());
             roomDTO.setId(room.getId());
             roomDTO.setRoomAvailability(getNumberOfAvailableRoomsByRoomDescriptionID(room, hotelIdentifierWithSearchCriteriaDTO));
+
+            Set<String> imageUrls = room.getRoomImages().stream()
+                    .map(image -> getRoomImageUrl(image.getId()))
+                    .collect(Collectors.toSet());
+            roomDTO.setImagesUrls(imageUrls);
+
             roomDTOList.add(roomDTO);
         }
         return roomDTOList;
+    }
+
+    private String getRoomImageUrl(UUID imageId) {
+        // Replace this with your logic to generate image URLs
+        return "http://localhost:8080/api/images/room/" + imageId;
+    }
+
+    private String getHotelImageUrl(UUID imageId) {
+        // Replace this with your logic to generate image URLs
+        return "http://localhost:8080/api/images/hotel/" + imageId;
     }
 
     public HotelDTO getRoomsInSpecificHotel (HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO) throws GlobalException {
@@ -64,7 +83,12 @@ public class RoomSearchService {
         hotelDTO.setFullyRefundable(hotel.isFullyRefundable());
         hotelDTO.setHotelFoodOptions(hotel.getHotelFoodOptions());
         hotelDTO.setRating(hotel.getRating());
-        hotelDTO.setImages(hotel.getHotelImages());
+
+        Set<String> imageUrls = hotel.getHotelImages().stream()
+                .map(image -> getHotelImageUrl(image.getId()))
+                .collect(Collectors.toSet());
+        hotelDTO.setImagesUrls(imageUrls);
+
         hotelDTO.setReviewCount(hotel.getReviewCount());
         hotelDTO.setStarRating(hotel.getStarRating());
         hotelDTO.setRooms(convertToRoomDTOList(roomDescriptions, hotelIdentifierWithSearchCriteriaDTO));

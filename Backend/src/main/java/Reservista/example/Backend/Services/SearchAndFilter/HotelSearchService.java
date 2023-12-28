@@ -1,7 +1,6 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
 import Reservista.example.Backend.DAOs.HotelRepository;
-import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSummaryDTO;
@@ -60,7 +59,7 @@ public class HotelSearchService {
 
             // Generate image URLs
             Set<String> imageUrls = hotel.getHotelImages().stream()
-                    .map(image -> getImageUrl(image.getId()))
+                    .map(image -> getHotelImageUrl(image.getId()))
                     .collect(Collectors.toSet());
             hotelSummaryDTO.setImagesUrls(imageUrls);
 
@@ -68,7 +67,7 @@ public class HotelSearchService {
         }
         return hotelSummaryDTOList;
     }
-    private String getImageUrl(UUID imageId) {
+    private String getHotelImageUrl(UUID imageId) {
         // Replace this with your logic to generate image URLs
         return "http://localhost:8080/api/images/hotel/" + imageId;
     }
