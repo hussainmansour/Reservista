@@ -19,7 +19,6 @@ const SearchAndFilterHeader = () => {
         travellersCount,
     } = searchOptions;
 
-    // const [fontsLoaded] = useFonts({Poppins_700Bold});
 
     const search = () => {
         // call search api to get the hotels and navigate to the search and filter screen
@@ -84,7 +83,6 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
-        // fontFamily: 'Poppins_700Bold'
     },
     dropDownList: {
         marginVertical: '2%',
@@ -104,7 +102,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000000',
         fontSize: 28,
-        // fontFamily: 'Poppins_700Bold'
     },
     date: {
         paddingRight: '5%',

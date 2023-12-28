@@ -10,7 +10,7 @@ import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
-const HotelView = ({route , navigation}) => {
+const HotelView = ({route, navigation}) => {
 
     const {updateSearchCriteria, ...searchCriteria} =
         useContext(SearchCriteriaContext);
@@ -22,47 +22,23 @@ const HotelView = ({route , navigation}) => {
         numberOfRooms
     } = searchCriteria;
 
-    const HotelDTO = {
-        hotelId: route.params.item.id,
-        numberOfRooms: numberOfRooms,
-        numberOfTravelers: numberOfTravelers,
-        checkIn: checkIn,
-        checkOut: checkOut
-    }
+    const {
+        address,
+        city,
+        country,
+        fullyRefundable,
+        fullyRefundableRate,
+        hotelFoodOptions,
+        id,
+        imagesUrls,
+        name,
+        rating,
+        reviewCount,
+        starRating,
+        rooms
+    } = route.params.response;
 
-    const [hotel, setHotel] = useState();
-
-    useEffect(() => {
-        console.log("test")
-        const fetchHotel = async () => {
-            const response = await SearchAndFilterAPI.getHotel(
-                HotelDTO,
-                (response) => {
-                    const responseBody = response.data;
-
-                    if (responseBody.data !== undefined) {
-
-                        if (responseBody.errorCode)
-                            console.log(responseBody.data)
-
-                    } else console.log(responseBody)
-                }
-            );
-            console.log("-------------------------")
-            console.log(response)
-            console.log("-------------------------")
-
-            if (response !== undefined) {
-                console.log(response);
-                setHotel(response);
-                console.log(hotel)
-            }
-        };
-
-        fetchHotel();
-    }, []);
-
-    const hotelTitle = hotel.name || "Hotel Name"; // You can replace "Hotel Name" with a default value
+    const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
 
     const [isModalVisible, setModalVisible] = useState(false);
 
@@ -80,12 +56,12 @@ const HotelView = ({route , navigation}) => {
             title: title,
             count: numberOfRooms,
             roomDescriptionId: roomId,
-            hotelID: hotel.id,
-            refundable: hotel.fullyRefundable,
-            fullyRefundableRate: hotel.fullyRefundableRate,
+            hotelID: id,
+            refundable: fullyRefundable,
+            fullyRefundableRate: fullyRefundableRate,
             checkIn: checkIn,
             checkOut: checkOut,
-            foodOptions: hotel.hotelFoodOptions
+            foodOptions: hotelFoodOptions
         };
         console.log(Reservation);
         navigation.navigate('CartScreen', Reservation);
@@ -96,7 +72,7 @@ const HotelView = ({route , navigation}) => {
         <ScrollView contentContainerStyle={styles.scrollContainer}>
             <View style={styles.container}>
 
-                {/*/!* Hotel Information *!/*/}
+                {/* Hotel Information */}
 
                 <HotelImages>
 
@@ -112,15 +88,15 @@ const HotelView = ({route , navigation}) => {
                     <View style={styles.detailsContainer}>
                         <View style={styles.starsContainer}>
                             <Icon name="star" size={20} color="#FFD700"/>
-                            <Text style={styles.starsText}>{` ${hotel.starRating} Stars`}</Text>
+                            <Text style={styles.starsText}>{` ${starRating} Stars`}</Text>
                         </View>
                         <View style={styles.ratingContainer}>
                             <Icon name="hotel" size={20} color="#333333"/>
-                            <Text style={styles.ratingText}>{` ${hotel.rating} Rating`}</Text>
+                            <Text style={styles.ratingText}>{` ${rating} Rating`}</Text>
                         </View>
                         <View style={styles.reviewsContainer}>
                             <Icon name="comments" size={20} color="#75C2F6"/>
-                            <Text style={styles.reviewText}>{`${hotel.reviewCount} Reviews`}</Text>
+                            <Text style={styles.reviewText}>{`${reviewCount} Reviews`}</Text>
                         </View>
                         <TouchableOpacity onPress={toggleModal} style={styles.reviewButton}>
                             <Text style={styles.reviewButtonText}>See Reviews</Text>
@@ -143,16 +119,16 @@ const HotelView = ({route , navigation}) => {
                         {/*</MapView>*/}
 
                         {/* Address */}
-                        <Text style={styles.address}>{`Address: ${hotel.address}`}</Text>
-                        <Text style={styles.address}>{`City: ${hotel.city}`}</Text>
-                        <Text style={styles.address}>{`Country: ${hotel.country}`}</Text>
+                        <Text style={styles.address}>{`Address: ${address}`}</Text>
+                        <Text style={styles.address}>{`City: ${city}`}</Text>
+                        <Text style={styles.address}>{`Country: ${country}`}</Text>
 
                     </View>
                 </View>
 
                 {/* Room Cards */}
                 <View style={styles.roomsContainer}>
-                    {hotel.rooms.map((room, index) => (
+                    {rooms.map((room, index) => (
                         <RoomCard key={index} {...room} reservePress={reserve}/>
                     ))}
                 </View>
