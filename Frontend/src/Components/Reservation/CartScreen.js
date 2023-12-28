@@ -321,6 +321,7 @@ const CartScreen = ({route}) => {
                     textStyle={styles.whiteText} 
                   />
 
+
         <PaymentModal
             isVisible={isPaymentModalVisible}
             onCancel={handleCheckoutCancellation}

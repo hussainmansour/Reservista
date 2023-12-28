@@ -66,6 +66,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, 
         <StripeProvider
           publishableKey="pk_test_51O5xO9IpHzJgrvA9SXgHNyJwhzEsyPa2AEOdMmSCK0xwXt4ydWuTyU6tPnkbqVdsNNEcxoUbzEbE6R4m9SsNzw6l005nh1i9GZ"
         >
+          
           <View style={styles.modalContent}>
             <TouchableOpacity onPress={onCancel} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>x</Text>

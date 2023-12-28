@@ -70,6 +70,7 @@ const AdditionalOptionsCollapse = ({ room, expanded, onToggle, onBreakfastToggle
           </View>
         </View>
       </Collapsible>
+      
     </View>
   );
 };
