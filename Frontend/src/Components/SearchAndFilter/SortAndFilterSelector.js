@@ -18,9 +18,9 @@ import {
 } from "lucide-react-native";
 import {Actionsheet} from '@gluestack-ui/themed';
 import Slider from "react-native-a11y-slider";
-import {searchForHotels} from "../../Utilities/API";
 import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
 
 const SortAndFilterSelector = (
@@ -39,10 +39,10 @@ const SortAndFilterSelector = (
     const [ratingSliderRange, setRatingSliderRange] = useState([0, 10]);
     const [starsSliderRange, setStarsSliderRange] = useState([0, 5]);
 
-    const [doneState,setDoneState] = useState(false);
+    const [doneState, setDoneState] = useState(false);
 
-    const {updateSearchCriteria,...searchCriteria} = useContext(SearchCriteriaContext);
-    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
+    const {updateSearchCriteria, ...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions, ...searchOptions} = useContext(SearchOptionsContext);
 
 
     const {
@@ -91,15 +91,6 @@ const SortAndFilterSelector = (
         handleClose();
     }
 
-    useEffect(() => {
-        const getHotels = async () => {
-            let hotelsList = await search();
-            setHotels(hotelsList["hotels"]);
-            setDoneState(false);
-        }
-        getHotels().catch(console.error);
-    }, [sortBy, sortDirection , doneState]);
-
 
     const onModalClose = () => {
         setModalVisible(false)
@@ -130,10 +121,46 @@ const SortAndFilterSelector = (
         };
     }
 
+    const [searchTriggered, setSearchTriggered] = useState(false);
+
     const search = async () => {
         updateSearchCriteria(getSearchCriteriaDTO());
-        return await searchForHotels(searchCriteria, setLoading)
-    }
+        setSearchTriggered(true);
+    };
+
+    useEffect(() => {
+
+        if (searchTriggered) {
+            const fetchData = async () => {
+                let listOfHotels = await
+                    SearchAndFilterAPI.filterAndSortHotels(searchCriteria, (response) => {
+
+                        // in case of an expected error this should be the errorDTO
+                        const responseBody = response.data;
+
+                        if (responseBody.data !== undefined) {
+                            // check for error code
+                            if (responseBody.errorCode === 100) {
+                                // todo : alert
+                                console.log(responseBody)
+                            }
+
+                        } else {
+                            // if it doesn't have the data attribute then it's not the errorDTO
+                            // so, it's an unhandled exception
+                            console.log(responseBody)
+                        }
+
+                    }, setLoading);
+                setHotels(listOfHotels["hotels"]);
+            };
+
+            fetchData().then();
+            setSearchTriggered(false);
+            setDoneState(false);
+        }
+    }, [searchCriteria, searchTriggered, sortBy, sortDirection, doneState]);
+
 
     const handleDoneButton = () => {
         setDoneState(true);
@@ -248,7 +275,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000000',
         fontSize: 28,
-        fontFamily: 'Poppins_700Bold'
     },
     modalContainer: {
         flex: 1,
@@ -273,7 +299,6 @@ const styles = StyleSheet.create({
     actionSheetTextElement: {
         color: '#000000',
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
     },
     modalButton: {
         backgroundColor: '#4536F9',
@@ -284,7 +309,6 @@ const styles = StyleSheet.create({
     modalTitles: {
         color: '#000000',
         fontSize: 20,
-        fontFamily: 'Poppins_700Bold'
     },
     modalButtons: {
         marginTop: '10%',

@@ -9,7 +9,8 @@ import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 
 const SearchAndFilterHeader = () => {
 
-    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
+    const {updateSearchOptions , ...searchOptions} =
+        useContext(SearchOptionsContext);
 
     const {
         locations,
@@ -18,7 +19,6 @@ const SearchAndFilterHeader = () => {
         travellersCount,
     } = searchOptions;
 
-    const [fontsLoaded] = useFonts({Poppins_700Bold});
 
     const search = () => {
         // call search api to get the hotels and navigate to the search and filter screen
@@ -27,24 +27,6 @@ const SearchAndFilterHeader = () => {
     return (
         <View style={styles.header}>
             <View style={styles.searchSelectors}>
-                <View style={styles.locationSelector}>
-                    <Text style={styles.label}> Location </Text>
-                    <View style={styles.dropDownList}>
-                        <AutocompleteDropdown
-                            clearOnFocus={false}
-                            closeOnBlur={true}
-                            closeOnSubmit={false}
-                            textInputProps={{placeholder: 'ex: London/UK',}}
-                            onSelectItem={(item) => item &&
-                                updateSearchOptions({selectedLocation:item.id})}
-                            dataSet={locations.map((title, index) => ({
-                                id: `${index + 1}`,
-                                title,
-                            }))}
-                        />
-                    </View>
-                </View>
-
 
                 <View style={styles.dateSelector}>
                     <Text style={styles.label}> Dates </Text>
@@ -101,7 +83,6 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
     },
     dropDownList: {
         marginVertical: '2%',
@@ -121,7 +102,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000000',
         fontSize: 28,
-        fontFamily: 'Poppins_700Bold'
     },
     date: {
         paddingRight: '5%',

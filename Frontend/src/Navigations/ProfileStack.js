@@ -6,7 +6,6 @@ import UpcomingReservation from '../Components/Profile/UpcomingReservation';
 import ReservationHistory from '../Components/Profile/ResrvationHistory';
 import { View, TouchableOpacity, Text, StyleSheet } from 'react-native';
 import Profile from '../Components/Profile/Profile';
-import Color from '../Styles/Color';
 
 const Stack = createStackNavigator();
 
@@ -25,7 +24,7 @@ const ProfileStack = () => {
 
   const headerOptions = ({ navigation }) => ({
     headerStyle: {
-      backgroundColor: Color.MIDNIGHTBLUE,
+      backgroundColor: '#728FF3',
     },
     headerTintColor: '#fff',
     headerTitleStyle: {

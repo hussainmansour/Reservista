@@ -13,7 +13,6 @@ import {
   Button,
   Alert,
 } from "react-native";
-import Color from "../../Styles/Color.js";
 
 const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, price }) => {
 
@@ -87,7 +86,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, 
             </View>
             <Button
               title={"Pay  $" + String(price)}
-              color={ Color.SEABLUE}
+              color= "#75C2F6"
               style={styles.ButtonStyle}
               onPress={pay}
               disabled={paymentLoading || !isReady}
@@ -104,10 +103,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor:  "rgba(0, 0, 0, 0.5)",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: Color.PALEBLUE, // "white",
+    backgroundColor: "white",
     padding: 40,
     borderRadius: 10,
     height: 310,
@@ -128,11 +127,10 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: "600",
     marginBottom: 5, 
-    color: Color.MIDNIGHTBLUE,
   },
   secondaryText: {
     fontSize: 14,
-    color: Color.DARKGREY,
+    color: "grey",
     marginBottom: 10, 
   },
   cardField: {
@@ -141,7 +139,7 @@ const styles = StyleSheet.create({
     marginBottom: 1, 
   },
   cardStyle: {
-    borderColor: Color.DIRTYWHITE,
+    borderColor: "#D3D3D3", 
     borderRadius: 1, 
     borderWidth: 1, 
   },
@@ -149,14 +147,14 @@ const styles = StyleSheet.create({
     padding: 50,
   },
   testModeLabel: {
-    backgroundColor: Color.ORANGE,
+    backgroundColor: "#FFD700",
     padding: 5, 
     borderRadius: 5,
     marginBottom: 10,
     width: "27%",
   },
   testModeText: {
-    color: 'white',
+    color: "navy", 
     fontWeight: "bold",
     fontSize: 12, 
   },

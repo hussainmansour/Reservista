@@ -19,16 +19,25 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Checkbox from "expo-checkbox";
 import AdditionalOptionsCollapse from "./RoomAdditionalOptionsCollapse.js.js";
 import { reserve, rollBackReservation, verifyVoucher } from "../../Utilities/UserAPI.js";
-import Color from "../../Styles/Color.js";
-import CustomizedButton from "../General/Buttons/CustomizedButton.js";
-import CustomTextInput from "../Inputs/CustomTextInput.js";
-import styles from '../../Styles/ReservationStyles.js';
-import { ReservationAPI } from "../../Utilities/New/APIs/ReservationAPI.js";
 
 const CartScreen = ({route}) => {
-
   const navigation = useNavigation();
   const {price,title,count,roomDescriptionId,hotelID,refundable,fullyRefundableRate,checkIn,checkOut,foodOptions}=route.params;
+  // these things will be passed as prpos
+  // const foodOptions = { breakfastPrice: 21, lunchPrice: 57, dinnerPrice: 35 };
+  // const reservationDetails = {
+  //   price: 100,
+  //   title: "Room title",
+  //   count: 4,
+  //   roomDescriptionId: "0002d331-89d7-4f19-b6bf-8cf553b767c5",
+  //   hotelID:"001cc902-bea3-4381-86af-4064e3b90fc8",
+  //   refundable:true,
+  //   fullyRefundableRate: 15,
+  //   checkIn: "2024-06-08T00:00:00Z",
+  //   checkOut: "2024-06-09T00:00:00Z",
+
+  // };
+
   const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
   const [expandedRooms, setExpandedRooms] = useState({});
@@ -128,15 +137,19 @@ const CartScreen = ({route}) => {
         "Reservation successful!",
         "You can check your upcoming reservations now."
     );
-  
+    // TO DO
+    // navigate to the desired screen
     navigation.navigate('Home');
   };
 
   const handleCheckoutCancellation =  async () => {
     setPaymentModalVisible(false);
     setClientSecret("");
-    let response = await ReservationAPI.rollback(reservationId, setLoading = setLoading)
-   
+    try {
+      const response = await rollBackReservation(reservationId, setLoading, authCtx.token);
+    } catch (error) {
+      console.error('Error occured during rolling back the reservation', error.message);
+    }
   };
 
   const toggleExpandedRoom = (roomId) => {
@@ -148,29 +161,27 @@ const CartScreen = ({route}) => {
 
   const applyVoucher = async () => {
 
-    let response = await ReservationAPI.applyVoucher(voucherCode, (response)=>{
+    try {
 
-      const responseBody = response.data;
+      const response = await verifyVoucher(`${voucherCode}`, setLoading, authCtx.token);
+      console.log(response);
+      if (response.status === 200) {
+        setDiscountRate(response.data);
+        setIsVoucherApplied(true);
+        setExpandedVoucher(true);
 
-      if (responseBody.data !== undefined) {
-          setError(responseBody.data)
-          setIsVoucherApplied(false);
-          setDiscountRate(0);
-          setVoucherCode("");
-      } else {
-        
-        console.log(responseBody)
+      }else{
+        setError(response.message)
+        setIsVoucherApplied(false);
+        setDiscountRate(0);
+        setVoucherCode("");
       }
-
-    }, setLoading); 
-
-    // success
-    if (response !== undefined) {
-      setDiscountRate(response.data);
-      setIsVoucherApplied(true);
-      setExpandedVoucher(true);
-  }
-
+    } catch (error) {
+      console.error('Error in verifying voucher', error.message);
+      Alert.alert('Error', 'An error occurred while applying your voucher. Please try again.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const proceedToCheckout = async () => {
@@ -196,23 +207,26 @@ const CartScreen = ({route}) => {
 
     console.log(reservationDTO);
 
-    let response = await ReservationAPI.reserve(reservationDTO,(response) =>{
-        
-        const responseBody = response.data;
+    setLoading(true);
+    try {
+      const response = await reserve(reservationDTO, setLoading,authCtx.token);
+      console.log(response);
+      if (response.status === 61) {
+        setReservationId(response.data.reservationId);
+        setClientSecret(response.data.clientSecret);
+        setPaymentModalVisible(true);
 
-        if (responseBody.data !== undefined){
-          Alert.alert('Error', responseBody.data);
-        }
-        else{
-          console.log(responseBody.data);
-        }
-
-    }, setLoading);
-
-    if (response !== undefined){
-      setReservationId(response.reservationId);
-      setClientSecret(response.clientSecret);
-      setPaymentModalVisible(true);
+      }else if (response.status === 400 ){
+        Alert.alert('', "Unable to complete your reservation");
+      }
+      else{
+        Alert.alert('', response.message);
+      }
+    } catch (error) {
+      console.error('Error in reservation', error.message);
+      Alert.alert('Error', 'An error occurred during your reservation. Please try again.');
+    } finally {
+      setLoading(false);
     }
 
   };
@@ -246,6 +260,8 @@ const CartScreen = ({route}) => {
               <Text style={styles.calculationText}>
                 Full refundability: {fullyRefundableRate}% (+${totalPriceAfterFullRefund - calculatedTotalPrice})
               </Text>
+
+
           )}
           {isVoucherApplied && (
               <>
@@ -281,20 +297,18 @@ const CartScreen = ({route}) => {
           <Collapsible collapsed={expandedVouncher} duration={0}>
             <View style={styles.voucherBoxContainer}>
               <Text style={styles.fullRefundText}>Enter Your Voucher</Text>
-              <View style={styles.voucherContainer}>
+              <View style={styles.voucherContainr}>
                 <TextInput
                     style={styles.textInputStyle}
                     placeholder="Voucher code"
                     onChangeText={(code) => setVoucherCode(code)}
                 />
-            
-                  <CustomizedButton
-                    text={"APPLY"}
+                <TouchableOpacity
+                    style={styles.SmallbuttonStyle}
                     onPress={applyVoucher}
-                    buttonStyle={styles.SmallbuttonStyle} 
-                    textStyle={styles.whiteText} 
-                  />
-              
+                >
+                  <Text style={styles.whiteText}>APPLY</Text>
+                </TouchableOpacity>
               </View>
               {error ? <Text style={styles.errorText}>{error}</Text> : null}
             </View>
@@ -304,7 +318,7 @@ const CartScreen = ({route}) => {
                 <Text style={styles.fullRefundText}>Fully refundable (+{fullyRefundableRate}%)</Text>
                 <Checkbox
                     value={isFullRefundApplied}
-                    style={styles.checkboxStyle} color= {Color.MIDNIGHTBLUE} 
+                    style={styles.checkboxStyle} color="#45474B"
                     onValueChange={() =>{
                       setFullRefundRate(fullyRefundableRate)
                       setIsFullRefundApplied(prev=>!prev)
@@ -313,13 +327,10 @@ const CartScreen = ({route}) => {
           )}
         </View>
 
-        {loading && <ActivityIndicator size="large" color= {Color.MIDNIGHTBLUE} />}
-        <CustomizedButton
-                    text={"CHECK OUT"}
-                    onPress={proceedToCheckout}
-                    buttonStyle={styles.buttonStyle} 
-                    textStyle={styles.whiteText} 
-                  />
+        {loading && <ActivityIndicator size="large" color="#0000ff" />}
+        <TouchableOpacity style={styles.buttonStyle} onPress={proceedToCheckout}>
+          <Text style={styles.whiteText}>CHECK OUT</Text>
+        </TouchableOpacity>
 
 
         <PaymentModal
@@ -333,5 +344,183 @@ const CartScreen = ({route}) => {
   );
 };
 
+const styles = StyleSheet.create({
+  wholeForm: {
+    backgroundColor: "#f5f5f5",
+    flex: 1,
+    paddingTop: 50,
+    justifyContent: "flex-start",
+  },
+  title: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#ffffff",
+    backgroundColor: "#5FBDFF",
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    marginBottom: 20,
+    padding:10
+  },
+  subtitle: {
+    fontSize: 17,
+    color: "#000000",
+    paddingLeft: 20,
+    paddingBottom: 15,
+  },
+  scrollViewContainer: {
+    padding: 10,
+
+  },
+  roomContainer: {
+    borderRadius: 5,
+    marginBottom: 16,
+    paddingHorizontal:15,
+  },
+
+  roomTitle: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#0000000",
+
+  },
+
+  voucherContainr: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginBottom: 5,
+    alignItems: "stretch",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  textInputStyle: {
+    flex: 2,
+    backgroundColor: "#f5f5f5",
+    padding: 8,
+  },
+  SmallbuttonStyle: {
+    backgroundColor: "#45474B",
+    flex: 1,
+    padding: 8,
+  },
+
+  buttonStyle: {
+    marginBottom: 30,
+    width: "95%",
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+    backgroundColor: "#5FBDFF",
+    alignSelf: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+
+  whiteText: {
+    paddingTop: 5,
+    color: "#FFFFFF",
+    fontWeight: "bold",
+    fontSize: 12,
+    alignSelf: "center",
+  },
+
+  priceContainer: {
+    padding: 16,
+    marginTop: 10,
+  },
+
+  totalPrice: {
+    fontSize: 32,
+    fontWeight: "bold",
+    color: "#000000",
+
+  },
+
+  discountText: {
+    fontSize: 18,
+    color: "#45474B", // grey
+
+  },
+
+  navyText: {
+    fontSize: 22,
+    fontWeight: "bold",
+    color: "#45474B",
+    marginBottom: 2,
+
+  },
+  fullRefundText: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "#45474B",
+    marginBottom: 2,
+
+  },
+  calculationText:{
+    fontSize: 18,
+    color: "#45474B",
+    marginBottom: 2,
+  },
+
+  applyVoucherText: {
+    textDecorationLine: "underline",
+    color: "#45474B",
+    fontSize: 16,
+    marginBottom: 5,
+    marginTop: 10,
+    alignSelf: "flex-end",
+    marginRight: 5,
+  },
+  errorText: {
+    color: "red",
+    fontSize: 12,
+    marginTop: 1,
+  },
+  voucherBoxContainer: {
+    borderRadius: 10,
+    padding: 16,
+    marginBottom: 16,
+    width: "95%",
+    alignSelf: "center",
+    borderColor: "#45474B",  // Border Color
+    borderWidth: 2,         // Border Width
+    backgroundColor: "#FFFFFF", // Background Color
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
+  },
+  checkboxContainer: {
+    flexDirection: "row",
+    justifyContent: 'flex-end',
+    alignItems: 'center',
+    padding: 5,
+  },
+  checkboxStyle: {
+    marginLeft: 10,
+  },
+  fullyRefundableContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 4,
+  },
+});
 
 export default CartScreen;

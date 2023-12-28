@@ -1,31 +1,49 @@
 import React, { useState, useEffect } from 'react';
-import { View, Text, ScrollView, StyleSheet, Alert, ActivityIndicator } from 'react-native';
+import {
+    View,
+    Text,
+    ScrollView,
+    StyleSheet,
+    Alert,
+    ActivityIndicator,
+    BackHandler,
+} from 'react-native';
 import CustomTextInput from '../Inputs/CustomTextInput';
+import { refreshCode, verifyEmail } from '../../Utilities/API';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
+import CountDown from 'react-native-countdown-component';
+
 import colors from '../../Styles/Color';
-import { OTPAPI } from '../../Utilities/New/APIs/OTPAPI';
 
 const VerificationCodeScreen = ({ route, navigation }) => {
-    const counterTimeInSeconds = 10 * 60;
     const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
     const [resendDisabled, setResendDisabled] = useState(true);
     const [verifyDisabled, setVerifyDisabled] = useState(false);
-    const [counter, setCounter] = useState(counterTimeInSeconds);
+    const [counter, setCounter] = useState( 10 * 60);
+
 
     useEffect(() => {
-        const intervalId = setInterval(() => {
-            setCounter((prevCounter) => Math.max(0, prevCounter - 1));
+        const handleBackPress = () => {
+            // Prevent default behavior (going back)
+            return true;
+        };
 
-            if (counter === 1) {
-                setVerifyDisabled(true);
-                setResendDisabled(false);
-            }
-        }, 1000);
+        // Add event listener for hardware back button
+        BackHandler.addEventListener('hardwareBackPress', handleBackPress);
 
-        return () => clearInterval(intervalId);
+        // Remove event listener on component unmount
+        return () => {
+            BackHandler.removeEventListener('hardwareBackPress', handleBackPress);
+        };
+    }, []); // Run only once on mount
+
+    useEffect(() => {
+        if (counter === 0) {
+            setResendDisabled(false);
+            setVerifyDisabled(true);
+        }
     }, [counter]);
-
 
     const handleVerifyCode = async () => {
         const dto = {
@@ -33,55 +51,71 @@ const VerificationCodeScreen = ({ route, navigation }) => {
             email: route.params.email,
         };
 
+        try {
+            const data = await verifyEmail(dto, setLoading);
 
-        const response = await OTPAPI.verifyGmailAccount(dto, (response) => {
-            const responseBody = response.data;
-            if (responseBody.data !== undefined) {
-                Alert.alert('Error', responseBody.data);
+            if (data.status === 200) {
+                Alert.alert('Successful', 'Welcome to Reservista');
+                navigation.navigate('Login');
             } else {
-                console.log(responseBody);
+                console.log(data);
+                Alert.alert('Error', 'Incorrect verification code. Please try again.');
             }
-        }, setLoading);
-
-        if (response !== undefined ){
-            Alert.alert('Success', 'Your account has been verified. Welcome to Reservista!');
-            navigation.navigate('Login');
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'An unexpected error occurred.');
+        } finally {
+            // Disable the verify button after it's pressed
+            setVerifyDisabled(true);
         }
-
     };
 
     const handleResendCode = async () => {
+        const dto = {
+            email: route.params.email,
+        };
 
+        try {
+            await refreshCode(dto, setLoading);
 
-        const dto = { email: route.params.email };
-
-        const response = await OTPAPI.refreshOTP(dto, (response) => {
-            const responseBody = response.data;
-            if (responseBody.data !== undefined) {
-                Alert.alert('Error', responseBody.data);
-            } else {
-                console.log(responseBody);
-            }
-        }, setLoading);
-
-        if (response !== undefined ){
+            // Disable the resend button
             setResendDisabled(true);
-            setCounter(counterTimeInSeconds);
-            setVerifyDisabled(false);
-            Alert.alert('Success Resending OTP', 'Verification code has been sent to your email again.');
-        }
 
+            // Reset the counter
+            setCounter(60 * 10);
+
+            // Enable the verify button
+            setVerifyDisabled(false);
+        } catch (error) {
+            console.error(error);
+            Alert.alert('Error', 'Failed to resend verification code.');
+        }
+    };
+
+    const handleCountdownFinish = () => {
+        setVerifyDisabled(true);
+        setResendDisabled(false);
     };
 
     return (
         <ScrollView contentContainerStyle={styles.container}>
+            <CountDown
+                until={counter} // duration in seconds
+                size={40}
+                onFinish={() => handleCountdownFinish()}
+                digitStyle={{ backgroundColor: colors.SEABLUE, borderWidth: 1, borderColor: colors.MIDNIGHTBLUE, borderRadius: 25}}
+                digitTxtStyle={{ color: colors.MIDNIGHTBLUE }}
+                timeToShow={['M', 'S']}
+                timeLabels={{ m: 'Minute', s: 'Second'}}
+                style={{ marginBottom: 35}}
+            />
             <View style={styles.form}>
                 <Text style={styles.title}>Enter Verification Code</Text>
                 <CustomTextInput
                     placeholder="OTP - 6 digits"
                     onChangeText={(text) => setVerificationCode(text)}
                     type="numeric"
-                    errorMessage={`Code will expire in ${String(Math.floor(counter / 60)).padStart(2, '0')}:${String(counter % 60).padStart(2, '0')}`}
+                    errorMessage={'Code Will expire in 10 minutes'}
                 />
 
                 {loading && <ActivityIndicator size="large" color="#0000ff" />}

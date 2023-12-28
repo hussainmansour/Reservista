@@ -59,7 +59,6 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
     },
     dropDownList: {
         marginTop: '2%',

@@ -1,30 +1,23 @@
 import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator} from 'react-native';
+import {View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
-import {useFonts} from 'expo-font';
-import {Poppins_700Bold} from "@expo-google-fonts/poppins"
 import {RangeDatepicker} from '@ui-kitten/components';
 import Counter from "./Counter";
-import {searchForHotels} from "../../Utilities/API";
 import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
 const SearchOptions = ({navigation}) => {
 
-    const {updateSearchCriteria,...searchCriteria} = useContext(SearchCriteriaContext);
-    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
+    const {updateSearchCriteria, ...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions, ...searchOptions} = useContext(SearchOptionsContext);
 
     const [loading, setLoading] = useState(false);
-
-    // const [fontsLoaded] = useFonts({
-    //     Poppins_700Bold
-    // })
 
     const getLocations = async () => {
         // todo: call api to get all locations available
         updateSearchOptions({
-            locations: ['London/UK', 'Cairo/Egypt', 'Paris/France' , 'Xiamen/China']
+            locations: ['London/UK', 'Cairo/Egypt', 'Paris/France', 'Xiamen/China']
         });
     }
 
@@ -49,11 +42,45 @@ const SearchOptions = ({navigation}) => {
         };
     }
 
+    const [searchTriggered, setSearchTriggered] = useState(false);
+
     const search = async () => {
         updateSearchCriteria(getSearchCriteriaDTO());
-        let listOfHotels = await searchForHotels(searchCriteria, setLoading)
-        navigation.navigate('SearchAndFilter', {listOfHotels});
-    }
+        setSearchTriggered(true);
+    };
+
+    useEffect(() => {
+
+        if (searchTriggered) {
+            const fetchData = async () => {
+                let listOfHotels = await
+                    SearchAndFilterAPI.filterAndSortHotels(searchCriteria, (response) => {
+
+                        // in case of an expected error this should be the errorDTO
+                        const responseBody = response.data;
+
+
+                        if (responseBody.data !== undefined) {
+                            // check for error code
+                            if (responseBody.errorCode === 100){
+                                // todo : alert
+                                console.log(responseBody)
+                            }
+
+                        } else {
+                            // if it doesn't have the data attribute then it's not the errorDTO
+                            // so, it's an unhandled exception
+                            console.log(responseBody)
+                        }
+
+                    }, setLoading);
+                navigation.navigate('SearchAndFilter', {listOfHotels});
+            };
+
+            fetchData().then();
+            setSearchTriggered(false);
+        }
+    }, [searchCriteria, searchTriggered]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -95,7 +122,8 @@ const SearchOptions = ({navigation}) => {
             <View style={styles.counters}>
                 <View>
                     <Text style={styles.label}> Rooms </Text>
-                    <Counter count={searchOptions.roomCount} setCount={(count) => updateSearchOptions({roomCount: count})}/>
+                    <Counter count={searchOptions.roomCount}
+                             setCount={(count) => updateSearchOptions({roomCount: count})}/>
                 </View>
 
                 <View>
@@ -130,7 +158,6 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
-        // fontFamily: 'Poppins_700Bold'
     },
     dropDownList: {
         marginVertical: '2%',
@@ -149,7 +176,6 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000000',
         fontSize: 25,
-        // fontFamily: 'Poppins_700Bold'
     },
     date: {
         paddingRight: '5%',
