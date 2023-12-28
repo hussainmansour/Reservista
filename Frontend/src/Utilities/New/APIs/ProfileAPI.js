@@ -27,5 +27,29 @@ export const ProfileAPI = {
             onErrorCallback,
             setLoading
         )
-    }
+
+    },
+    getUpcomingReservation: async(onErrorCallback, setLoading)=>{
+        return await handleRequest(
+            async () => {
+                return await authApi.get(
+                    `${baseURL}/upcoming`
+                );
+            },
+            onErrorCallback,
+            setLoading
+        )
+    },
+
+    getHistoryReservation: async(onErrorCallback, setLoading)=>{
+        return await handleRequest(
+            async () => {
+                return await authApi.get(
+                    `${baseURL}/history`
+                );
+            },
+            onErrorCallback,
+            setLoading
+        )
+    },
 }

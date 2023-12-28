@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
-import { useNavigation } from '@react-navigation/native';
-import { useFormik } from 'formik';
+import React, {useState, useEffect} from 'react';
+import {useNavigation} from '@react-navigation/native';
+import {useFormik} from 'formik';
 import * as Yup from 'yup';
 import {
     View,
@@ -11,7 +11,7 @@ import {
 } from 'react-native';
 import CustomTextInput from '../Inputs/CustomTextInput';
 import Checkbox from 'expo-checkbox';
-import { signUp } from '../../Utilities/API';
+import {signUp} from '../../Utilities/API';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import DropdownList from '../General/DropdownList';
 import axios from "axios";
@@ -19,7 +19,7 @@ import styles from '../../Styles/SignUpstyles';
 import Loginstyles from "../../Styles/Loginstyles";
 import colors from "../../Styles/Color";
 import {LinearGradient} from 'expo-linear-gradient';
-
+import {RegistrationAPI} from "../../Utilities/New/APIs/RegistrationAPI";
 
 
 const validationSchema = Yup.object().shape({
@@ -51,10 +51,6 @@ const validationSchema = Yup.object().shape({
             /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[^\da-zA-Z]).{8,}$/,
             'Password must contain at least one lowercase letter, one uppercase letter, one number, and one special character'
         ),
-    nationality: Yup.string()
-        .required('Nationality is required'),
-    gender: Yup.string()
-        .required("Gender is required")
 });
 
 const SignupScreen = () => {
@@ -63,6 +59,14 @@ const SignupScreen = () => {
     const [agreeTerms, setAgreeTerms] = useState(false);
 
     const navigation = useNavigation();
+
+    const errorCodes = {
+        EMAIL_ALREADY_EXISTS: 1,
+        USERNAME_ALREADY_EXISTS: 2,
+        ACCOUNT_DEACTIVATED: 3,
+        ACCOUNT_BLOCKED: 4,
+        REGISTRATION_RACE_CONDITION: 5,
+    }
 
     const formik = useFormik({
         initialValues: {
@@ -74,31 +78,38 @@ const SignupScreen = () => {
             date: '',
             userName: '',
             nationality: '',
-            gender: '',
+            gender: 'MALE',
         },
-        // validationSchema,
+        validationSchema,
         onSubmit: async (values) => {
-            if(!agreeTerms) {
+            if (!agreeTerms) {
                 Alert.alert('', 'Please agree to the Terms and Conditions');
                 return;
             }
-            setLoading(true);
-            try {
-                const response = await signUp(values, setLoading);
-                console.log(response.status);
-                if (response.status === 200) {
-                    Alert.alert('', response.message);
-                    navigation.navigate('Verification Code', { email: values.email });
-                } else if (response.status === 400) {
-                    handleValidationErrors(response.data);
-                } else if (response.status === 500) {
-                    Alert.alert('', response.message);
+            console.log("nat" + values.nationality + "gender" + values.gender)
+            let response = await RegistrationAPI.register(values, (response) => {
+                // in case of an expected error this should be the errorDTO
+                const responseBody = response.data;
+
+                if (responseBody.data !== undefined) {
+                    if (responseBody.errorCode === errorCodes.ACCOUNT_DEACTIVATED) {
+                        Alert.alert('Reminder', responseBody.data);
+                        navigation.navigate('Verification Code', {email: values.email});
+                    } else {
+                        Alert.alert('Error', responseBody.data);
+                    }
+                } else {
+                    // if it doesn't have the data attribute then it's not the errorDTO
+                    // so, it's an unhandled exception
+                    console.log(responseBody)
                 }
-            } catch (error) {
-                console.error('Error signing up:', error.message);
-                Alert.alert('Error', 'An error occurred during signup. Please try again.');
-            } finally {
-                setLoading(false);
+
+            }, setLoading);
+
+            // success
+            if (response !== undefined) {
+                Alert.alert('Success', 'Please check your email for the verification code.');
+                navigation.navigate('Verification Code', {email: values.email});
             }
         },
 
@@ -113,7 +124,7 @@ const SignupScreen = () => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get('http://192.168.1.4:8080/config/countries');
+                const response = await axios.get('http://192.168.1.17:8080/config/countries');
                 const unsortedCountries = response.data;
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -192,14 +203,15 @@ const SignupScreen = () => {
                         <DropdownList
                             label="Gender"
                             selectedValue={formik.values.gender}
-                            onValueChange={(itemValue) => handleChange('gender')(itemValue)}
+                            onValueChange={(itemValue) => formik.setFieldValue('gender', itemValue)}
                             onBlur={() => formik.handleBlur('gender')}
                             items={[
-                                { label: 'Male', value: 'MALE' },
-                                { label: 'Female', value: 'FEMALE' },
-                                { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
+                                {label: 'Male', value: 'MALE'},
+                                {label: 'Female', value: 'FEMALE'},
+                                {label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY'},
                             ]}
                             color={'white'}
+                            errorMessage={formik.errors.gender}
                         />
                     </View>
 
@@ -214,7 +226,7 @@ const SignupScreen = () => {
                             onBlur={formik.handleBlur('email')}
                             value={formik.values.email}
                             errorMessage={formik.errors.email}
-                            keyboardType="email-address"
+                            type="email-address"
                         />
                         <CustomTextInput
                             placeholder={'Username'}
@@ -233,7 +245,6 @@ const SignupScreen = () => {
                             onBlur={formik.handleBlur('password')}
                             value={formik.values.password}
                             errorMessage={formik.errors.password}
-                            keyboardType="visible-password"
                         />
 
                         <DropdownList
@@ -243,6 +254,8 @@ const SignupScreen = () => {
                             onBlur={() => formik.handleBlur('nationality')}
                             items={dropdownItems}
                             color={'white'}
+                            errorMessage={formik.errors.nationality}
+
                         />
                     </View>
 
@@ -264,7 +277,7 @@ const SignupScreen = () => {
                         </Text>
                     </View>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    {loading && <ActivityIndicator size="large" color="#0000ff"/>}
 
                     <CustomizedButton
                         text={'Sign Up'}

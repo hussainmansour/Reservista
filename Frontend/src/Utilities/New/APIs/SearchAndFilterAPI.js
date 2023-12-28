@@ -5,7 +5,7 @@ import {handleRequest} from "../HandleRequest";
 const baseURL = getBaseURL() + '/user/search';
 
 export const SearchAndFilterAPI = {
-    filterAndSortHotels: async (hotelSearchCriteriaDTO, onErrorCallback, setLoading) => {
+    filterAndSortHotels : async (hotelSearchCriteriaDTO,onErrorCallback, setLoading) => {
         return await handleRequest(
             async () => {
                 return await authApi.post(
@@ -17,8 +17,7 @@ export const SearchAndFilterAPI = {
             setLoading
         )
     },
-    getHotel: async (hotelIdentifierWithSearchCriteriaDTO, onErrorCallback, setLoading) => {
-        console.log("In SearchAPI");
+    getHotel : async (hotelIdentifierWithSearchCriteriaDTO,onErrorCallback, setLoading) => {
         return await handleRequest(
             async () => {
                 return await authApi.post(
