@@ -50,7 +50,7 @@ public class  Hotel {
     @Column(name = "area_description" , nullable = false)
     private Set<String> areaDescription;
 
-    @OneToMany(mappedBy = "hotel" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "hotel" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<HotelImage> hotelImages;
 
     @Min(0)
