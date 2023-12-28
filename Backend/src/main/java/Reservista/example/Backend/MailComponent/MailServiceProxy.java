@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
@@ -73,6 +74,41 @@ public class MailServiceProxy {
         email.setFrom(new InternetAddress(TEST_EMAIL));
         try {
             email.addRecipient(TO, new InternetAddress(to));
+        } catch (AddressException e) {
+            return false;
+        }
+
+        email.setSubject(subject);
+        email.setText(message);
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        email.writeTo(buffer);
+        byte[] rawMessageBytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        Message msg = new Message();
+        msg.setRaw(encodedEmail);
+
+        try {
+            service.users().messages().send("me", msg).execute();
+            return true;
+        } catch (GoogleJsonResponseException e) {
+            System.out.println(e.getDetails().getMessage());
+            return false;
+
+        }
+
+    }
+    public boolean sendMailToAll(Mail m, List<String> emails) throws Exception {
+        String subject = m.getSubject();
+        String message = m.getBody();
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = new MimeMessage(session);
+        email.setFrom(new InternetAddress(TEST_EMAIL));
+        try {
+            for(String e:emails){
+                email.addRecipient(TO, new InternetAddress(e));
+            }
         } catch (AddressException e) {
             return false;
         }
