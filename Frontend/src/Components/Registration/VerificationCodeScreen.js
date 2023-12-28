@@ -6,17 +6,17 @@ import colors from '../../Styles/Color';
 import { OTPAPI } from '../../Utilities/New/APIs/OTPAPI';
 
 const VerificationCodeScreen = ({ route, navigation }) => {
+    const counterTimeInSeconds = 10 * 60;
     const [verificationCode, setVerificationCode] = useState('');
     const [loading, setLoading] = useState(false);
     const [resendDisabled, setResendDisabled] = useState(true);
     const [verifyDisabled, setVerifyDisabled] = useState(false);
-    const [counter, setCounter] = useState(10 * 60);
+    const [counter, setCounter] = useState(counterTimeInSeconds);
 
     useEffect(() => {
         const intervalId = setInterval(() => {
             setCounter((prevCounter) => Math.max(0, prevCounter - 1));
 
-            // When the counter reaches zero, enable the Resend button and disable the Verify button
             if (counter === 1) {
                 setVerifyDisabled(true);
                 setResendDisabled(false);
@@ -66,7 +66,7 @@ const VerificationCodeScreen = ({ route, navigation }) => {
 
         if (response !== undefined ){
             setResendDisabled(true);
-            setCounter(60 * 10);
+            setCounter(counterTimeInSeconds);
             setVerifyDisabled(false);
             Alert.alert('Success Resending OTP', 'Verification code has been sent to your email again.');
         }
