@@ -28,8 +28,7 @@ const LoginScreen = ({ navigation }) => {
 
 
             if (responseBody.data !== undefined) {
-                // check for error code
-
+                // if it has the data attribute then it's the errorDTO
                 Alert.alert('Error', responseBody.data);
                 setIsAuthenticating(false);
             } else {
