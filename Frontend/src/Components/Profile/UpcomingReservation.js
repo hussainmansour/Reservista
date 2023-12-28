@@ -106,9 +106,11 @@ const UpcomingReservation = () => {
 
   // final stage of cancellation
   const cancel = async(reservationID) =>{
-    let response = CancellationAPI.cancelReservation(reservationID,(response)=>{
+    let response = await CancellationAPI.cancelReservation(reservationID,(response)=>{
+      console.log("enter cancellation");
       const responseBody=response.data;
       if(responseBody.data!==undefined){
+        console.log("responsebodydata");
         console.log(responseBody.data);
         Alert.alert('Error',responseBody.data);
       }
@@ -121,10 +123,13 @@ const UpcomingReservation = () => {
     },isLoading);
 
     if(response!==undefined){
+      console.log("response",response);
       setReservationData(deleteReservationById(reservationID));
       Alert.alert("Success","Reservation cancelled successfully");
     }
   }
+
+  
 
 
 
@@ -134,7 +139,7 @@ const UpcomingReservation = () => {
     console.log(reservationId);
     console.log('====================================');
     const refundableAmount=await getRefundableAmoount(reservationId);
-    Alert.alert(`Reservation Cancellation","Are you sure you want to cancel you reservatin.\nThe amount of money you will recieve back is ${refundableAmount} $`,
+    Alert.alert("Reservation Cancellation",`Are you sure you want to cancel you reservatin.\nThe amount of money you will recieve back is ${refundableAmount} $`,
     [
       {
         text: "Confirm",

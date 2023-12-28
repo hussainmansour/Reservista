@@ -22,6 +22,7 @@ public class CancellationConfirmationHandler extends CancellationHandler{
     @Override
     public long handleRequest(CancellationRequest cancellationRequest) {
 
+        System.out.println("cancellation confirmation handler");
         List<Object[]> reservationDetails = reservationRepository.findEmailHotelNameFirstNameByReservationId(cancellationRequest.getReservationID()).orElseThrow(() -> new NoSuchElementException("This reservation was not found"));
 
         Object[] reservationTempDetails2 = reservationDetails.get(0);
@@ -35,9 +36,11 @@ public class CancellationConfirmationHandler extends CancellationHandler{
 
         Mail registrationMail = new CancellationMailParser(cancellationRequest);
 
+        reservationRepository.deleteById(cancellationRequest.getReservationID());
+
         mailService.sendMail(registrationMail);
 
-        reservationRepository.deleteById(cancellationRequest.getReservationID());
+
 
         return cancellationRequest.getRefundedAmount();
 

@@ -18,6 +18,7 @@ public class PaymentRefundHandler extends CancellationHandler{
     @Override
     public long handleRequest(CancellationRequest cancellationRequest) throws GlobalException {
 
+        System.out.println("refund payment handler");
         Stripe.apiKey = "sk_test_51O5xO9IpHzJgrvA9mH85yoTzNH3je4DQNi7kk1oDAHbebXlpDt8E5JRB1iv84CyOOoW80zwNZow3NHi1xOXKxB9000xoFMSnpI";
 
         try {

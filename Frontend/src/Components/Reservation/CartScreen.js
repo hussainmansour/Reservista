@@ -165,8 +165,9 @@ const CartScreen = ({route}) => {
     }, setLoading); 
 
     // success
+    
     if (response !== undefined) {
-      setDiscountRate(response.data);
+      setDiscountRate(response);
       setIsVoucherApplied(true);
       setExpandedVoucher(true);
   }

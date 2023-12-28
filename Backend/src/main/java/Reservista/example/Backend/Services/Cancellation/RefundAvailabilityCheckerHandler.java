@@ -16,9 +16,12 @@ public class RefundAvailabilityCheckerHandler extends CancellationHandler{
     @Autowired
     ReservationRepository reservationRepository;
 
+
     @Override
     public long handleRequest(CancellationRequest cancellationRequest) throws GlobalException {
 
+
+        System.out.println("refund availability handler");
         Reservation reservation = reservationRepository.findByIdAndUserUserName(cancellationRequest.getReservationID(), cancellationRequest.getUsername()).orElseThrow(()->new GlobalException(ErrorCode.RESERVATION_NOT_FOUND, HttpStatus.NOT_FOUND));
 
         if (!reservation.isConfirmed() )

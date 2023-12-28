@@ -18,6 +18,7 @@ public class RefundCalculatorHandler extends CancellationHandler{
         int totalAmount = cancellationRequest.getTotalAmount();
         long refundedAmount;
 
+        System.out.println("refund calculator handler");
         if (cancellationRequest.isFullyRefundable()){
             int fullyRefundableRate = reservationRepository.findFullRefundableRateByReservationId(cancellationRequest.getReservationID());
             refundedAmount = (long) Math.ceil (totalAmount / (1 + fullyRefundableRate/100.0));
