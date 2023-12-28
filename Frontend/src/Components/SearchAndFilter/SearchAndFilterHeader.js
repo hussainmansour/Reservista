@@ -1,39 +1,28 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext} from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
-import {
-    Avatar, AvatarFallbackText, AvatarImage,
-    Icon
-} from "@gluestack-ui/themed"
-import {User} from "lucide-react-native";
 import {useFonts} from "expo-font";
 import {Poppins_700Bold} from "@expo-google-fonts/poppins";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {RangeDatepicker} from "@ui-kitten/components";
 import Counter from "../Home/Counter";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 
-const SearchAndFilterHeader = (
-    {
-        selectedLocation,
-        setSelectedLocation,
+const SearchAndFilterHeader = () => {
+
+    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
+
+    const {
         locations,
-        setLocations,
-        range,
-        setRange,
+        checkInOutTimes,
         roomCount,
-        setRoomCount,
         travellersCount,
-        setTravellersCount
-    }
-) => {
+    } = searchOptions;
 
     const [fontsLoaded] = useFonts({Poppins_700Bold});
+
     const search = () => {
         // call search api to get the hotels and navigate to the search and filter screen
     }
-
-    useEffect(() => {
-        console.log(locations)
-    }, []);
 
     return (
         <View style={styles.header}>
@@ -46,7 +35,8 @@ const SearchAndFilterHeader = (
                             closeOnBlur={true}
                             closeOnSubmit={false}
                             textInputProps={{placeholder: 'ex: London/UK',}}
-                            onSelectItem={(item) => item && setSelectedLocation(item.id)}
+                            onSelectItem={(item) => item &&
+                                updateSearchOptions({selectedLocation:item.id})}
                             dataSet={locations.map((title, index) => ({
                                 id: `${index + 1}`,
                                 title,
@@ -60,8 +50,8 @@ const SearchAndFilterHeader = (
                     <Text style={styles.label}> Dates </Text>
                     <View style={styles.date}>
                         <RangeDatepicker
-                            range={range}
-                            onSelect={nextRange => setRange(nextRange)}
+                            range={checkInOutTimes}
+                            onSelect={nextRange => updateSearchOptions({checkInOutTimes: nextRange})}
                         />
                     </View>
                 </View>
@@ -70,12 +60,12 @@ const SearchAndFilterHeader = (
                 <View style={styles.counters}>
                     <View>
                         <Text style={styles.label}> Rooms </Text>
-                        <Counter count={roomCount} setCount={setRoomCount}/>
+                        <Counter count={roomCount} setCount={(count) => updateSearchOptions({roomCount: count})}/>
                     </View>
 
                     <View>
                         <Text style={styles.label}> Travellers </Text>
-                        <Counter count={travellersCount} setCount={setTravellersCount}/>
+                        <Counter count={travellersCount} setCount={(count) => updateSearchOptions({travellersCount: count})}/>
                     </View>
                 </View>
             </View>
@@ -139,11 +129,11 @@ const styles = StyleSheet.create({
         width: '60%',
         marginLeft: '17%'
     },
-    counters:{
+    counters: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingRight: '5%',
-        marginTop: '5%' ,
+        marginTop: '5%',
         marginBottom: '5%'
     },
     locationSelector: {

@@ -1,8 +1,11 @@
 package Reservista.example.Backend.Controllers;
 
+import Reservista.example.Backend.DTOs.ErrorDTO;
 import Reservista.example.Backend.DTOs.Profile.*;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Enums.SystemRoles;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.Profile.ProfileService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.jupiter.api.BeforeEach;
@@ -12,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -21,12 +25,14 @@ import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Optional;
 
+import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -80,35 +86,36 @@ class ProfileControllerTest {
                 .build();
         System.out.println(profileDTO);
 
-        when(profileService.viewProfile(username)).thenReturn(Optional.of(profileDTO));
+        when(profileService.viewProfile(username)).thenReturn(profileDTO);
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value(200))
-                .andExpect(jsonPath("$.message").value("Profile found"))
-                .andExpect(jsonPath("$.data").exists())
-                .andExpect(jsonPath("$.data.userName").value("husseinkhaled"))
-        .andExpect(jsonPath("$.data.firstName").value("hussein"))
-        .andExpect(jsonPath("$.data.lastName").value("khadrawy"))
-        .andExpect(jsonPath("$.data.middleName").value("khaled"))
-        .andExpect(jsonPath("$.data.birthDate").value("2002-09-09"))
-        .andExpect(jsonPath("$.data.email").value("husseinkhaled733@gmail.com"))
-                .andExpect(jsonPath("$.data.gender").value(Genders.MALE.name()));
+//                .andExpect(jsonPath("$.status").value(200))
+//                .andExpect(jsonPath("$.message").value("Profile found"))
+//                .andExpect(jsonPath("$.data").exists())
+                .andExpect(jsonPath("$.userName").value("husseinkhaled"))
+        .andExpect(jsonPath("$.firstName").value("hussein"))
+        .andExpect(jsonPath("$.lastName").value("khadrawy"))
+        .andExpect(jsonPath("$.middleName").value("khaled"))
+        .andExpect(jsonPath("$.birthDate").value("2002-09-09"))
+        .andExpect(jsonPath("$.email").value("husseinkhaled733@gmail.com"))
+                .andExpect(jsonPath("$.gender").value(Genders.MALE.name()));
     }
 
     @Test
     void viewNonExistingProfileReturnProfileNotFound() throws Exception {
-        String username = "mohamedkhaled";
 
-        when(profileService.viewProfile(username)).thenReturn(Optional.empty());
+        when(profileService.viewProfile("husseinkhaled")).thenThrow(new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND));
+
+        ErrorDTO<String> expected = ErrorCode.PROFILE_NOT_FOUND.getError();
 
         mockMvc.perform(MockMvcRequestBuilders.get("/user/profile/view")
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.message").value("Profile not found"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
+
+
     }
 
     @Test
@@ -123,20 +130,17 @@ class ProfileControllerTest {
                 .gender(Genders.MALE)
                 .build();
 
-        when(profileService.updateProfile(username, updateDTO)).thenReturn(true);
+        assertDoesNotThrow(()->profileService.updateProfile(username, updateDTO));
 
         mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.status").value(200))
-                .andExpect(jsonPath("$.message").value("Profile updated"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+                .andExpect(status().isOk());
     }
 
     @Test
     void updateNonExistingProfileReturnProfilenotfound() throws Exception {
-        String username = "Ibrahimkhaled";
+        String username = "husseinkhaled";
         UpdateDTO updateDTO = UpdateDTO.builder()
                 .firstName("hussein")
                 .lastName("khadrawy")
@@ -146,14 +150,16 @@ class ProfileControllerTest {
                 .gender(Genders.MALE)
                 .build();
 
-        when(profileService.updateProfile(username, updateDTO)).thenReturn(false);
+        doThrow(new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND))
+                .when(profileService)
+                .updateProfile(username, updateDTO);
+
+        ErrorDTO<String> expected = ErrorCode.PROFILE_NOT_FOUND.getError();
 
         mockMvc.perform(MockMvcRequestBuilders.put("/user/profile/edit")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(updateDTO)))
                 .andExpect(status().isNotFound())
-                .andExpect(jsonPath("$.status").value(404))
-                .andExpect(jsonPath("$.message").value("Profile not found"))
-                .andExpect(jsonPath("$.data").doesNotExist());
+                .andExpect(MockMvcResultMatchers.content().json(objectMapper.writeValueAsString(expected)));
     }
 }

@@ -51,6 +51,24 @@ function AuthContextProvider({ children }) {
         };
     }, [authToken]);
 
+    useEffect(() => {
+        const requestInterceptor = authApi.interceptors.request.use(
+            (config) => {
+                if (authToken) {
+                    config.headers['Authorization'] = `Bearer ${authToken}`;
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
+
+        return () => {
+            authApi.interceptors.request.eject(requestInterceptor);
+        };
+    }, [authToken]);
+
     return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }
 

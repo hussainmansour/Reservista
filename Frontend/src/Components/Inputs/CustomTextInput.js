@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
     width: '90%',
-    height: 46,
+    height: 50,
     paddingLeft: 10,
   },
   text: {
@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     paddingLeft: 10,
-    fontSize: 20,
+    fontSize: 17,
   },
   errorText: {
     color: 'red',

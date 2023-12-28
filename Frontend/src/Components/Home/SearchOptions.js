@@ -1,72 +1,58 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 import {View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator} from 'react-native';
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {useFonts} from 'expo-font';
-import {Poppins_700Bold , Poppins_300Light} from "@expo-google-fonts/poppins"
-import {Layout, RangeDatepicker} from '@ui-kitten/components';
+import {Poppins_700Bold} from "@expo-google-fonts/poppins"
+import {RangeDatepicker} from '@ui-kitten/components';
 import Counter from "./Counter";
-import CounterInput from "react-native-counter-input";
 import {searchForHotels} from "../../Utilities/API";
+import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
 const SearchOptions = ({navigation}) => {
-    const [selectedLocation, setSelectedLocation] = useState(null);
-    const [locations, setLocations] = useState([]);
-    const [range, setRange] = useState({});
-    const [roomCount, setRoomCount] = useState(0);
-    const [travellersCount, setTravellersCount] = useState(0);
+
+    const {updateSearchCriteria,...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions , ...searchOptions} = useContext(SearchOptionsContext);
 
     const [loading, setLoading] = useState(false);
 
-    const [fontsLoaded] = useFonts({
-        Poppins_700Bold
-    })
+    // const [fontsLoaded] = useFonts({
+    //     Poppins_700Bold
+    // })
 
     const getLocations = async () => {
         // todo: call api to get all locations available
-        setLocations([
-            'London/UK', 'Cairo/Egypt', 'Paris/France'
-        ]);
+        updateSearchOptions({
+            locations: ['London/UK', 'Cairo/Egypt', 'Paris/France' , 'Xiamen/China']
+        });
     }
 
-    const getSearchDTO = () => {
-        return  {
-            "city": locations[selectedLocation - 1].split("/")[0],
-            "country": locations[selectedLocation - 1].split("/")[1],
-            "numberOfRooms": roomCount,
-            "numberOfTravelers": travellersCount,
-            "pageNumber": 0,
-            "pageSize": 20,
-            "checkIn": range["startDate"],
-            "checkOut": range["endDate"],
-            "minPrice": 0,
-            "maxPrice": 100000,
-            "minStars": 0,
-            "maxStars": 5,
-            "minRating": 0.0,
-            "maxRating": 10.0,
-            "sortBy": "price",
-            "sortOrder": "asc"
-        }
+    const getSearchCriteriaDTO = () => {
+        const {
+            selectedLocation,
+            locations,
+            checkInOutTimes,
+            roomCount,
+            travellersCount,
+        } = searchOptions;
+
+        return {
+            city: locations[selectedLocation - 1]?.split("/")[0],
+            country: locations[selectedLocation - 1]?.split("/")[1],
+            numberOfRooms: roomCount,
+            numberOfTravelers: travellersCount,
+            pageNumber: 0,
+            pageSize: 20,
+            checkIn: checkInOutTimes["startDate"],
+            checkOut: checkInOutTimes["endDate"]
+        };
     }
 
     const search = async () => {
-        let listOfHotels = await searchForHotels(getSearchDTO() , setLoading)
-        navigation.navigate('SearchAndFilter' , {
-            searchDTO : getSearchDTO(),
-            listOfHotels,
-            selectedLocation,
-            setSelectedLocation,
-            locations,
-            setLocations,
-            range,
-            setRange,
-            roomCount,
-            setRoomCount,
-            travellersCount,
-            setTravellersCount,
-            loading,
-            setLoading
-        } )
+        updateSearchCriteria(getSearchCriteriaDTO());
+        let listOfHotels = await searchForHotels(searchCriteria, setLoading)
+        navigation.navigate('SearchAndFilter', {listOfHotels});
     }
 
     useEffect(() => {
@@ -74,7 +60,7 @@ const SearchOptions = ({navigation}) => {
             await getLocations();
         };
 
-        fetchData();
+        fetchData().catch(console.error);
     }, []);
 
     return (
@@ -85,9 +71,10 @@ const SearchOptions = ({navigation}) => {
                     clearOnFocus={false}
                     closeOnBlur={true}
                     closeOnSubmit={false}
-                    textInputProps={{ placeholder: 'ex: London/UK' }}
-                    onSelectItem={(item) => item && setSelectedLocation(item.id)}
-                    dataSet={locations.map((title, index) => ({
+                    textInputProps={{placeholder: 'ex: London/UK'}}
+                    onSelectItem={(item) => item &&
+                        updateSearchOptions({selectedLocation: item.id})}
+                    dataSet={searchOptions.locations.map((title, index) => ({
                         id: `${index + 1}`,
                         title,
                     }))}
@@ -95,12 +82,12 @@ const SearchOptions = ({navigation}) => {
             </View>
 
 
-            <Text style={styles.label}> CheckIn/CheckOut Date </Text>
+            <Text style={styles.label}> Dates </Text>
 
             <View style={styles.date}>
                 <RangeDatepicker
-                    range={range}
-                    onSelect={nextRange => setRange(nextRange)}
+                    range={searchOptions.checkInOutTimes}
+                    onSelect={nextRange => updateSearchOptions({checkInOutTimes: nextRange})}
                 />
             </View>
 
@@ -108,12 +95,13 @@ const SearchOptions = ({navigation}) => {
             <View style={styles.counters}>
                 <View>
                     <Text style={styles.label}> Rooms </Text>
-                    <Counter count={roomCount} setCount={setRoomCount}/>
+                    <Counter count={searchOptions.roomCount} setCount={(count) => updateSearchOptions({roomCount: count})}/>
                 </View>
 
                 <View>
                     <Text style={styles.label}> Travellers </Text>
-                    <Counter count={travellersCount} setCount={setTravellersCount}/>
+                    <Counter count={searchOptions.travellersCount}
+                             setCount={(count) => updateSearchOptions({travellersCount: count})}/>
                 </View>
             </View>
 
@@ -121,7 +109,7 @@ const SearchOptions = ({navigation}) => {
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
 
-            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            {loading && <ActivityIndicator size="large" color="#0000ff"/>}
         </View>
     );
 };
@@ -142,7 +130,7 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
+        // fontFamily: 'Poppins_700Bold'
     },
     dropDownList: {
         marginVertical: '2%',
@@ -161,17 +149,17 @@ const styles = StyleSheet.create({
     buttonText: {
         color: '#000000',
         fontSize: 25,
-        fontFamily: 'Poppins_700Bold'
+        // fontFamily: 'Poppins_700Bold'
     },
     date: {
         paddingRight: '5%',
         marginVertical: '2%',
     },
-    counters:{
+    counters: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingRight: '5%',
-        marginTop: '5%' ,
+        marginTop: '5%',
         marginBottom: '7%'
     }
 });

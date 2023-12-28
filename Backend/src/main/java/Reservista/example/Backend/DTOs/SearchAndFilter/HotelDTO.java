@@ -19,8 +19,8 @@ public class HotelDTO {
     private boolean isFullyRefundable;
     private HotelFoodOptions hotelFoodOptions;
     private double rating;
-    private Set<HotelImage> images;
+    private Set<String> imagesUrls;
     private int reviewCount;
     private int starRating;
-    private double minRoomPrice;
+    private List<RoomDTO> rooms;
 }
