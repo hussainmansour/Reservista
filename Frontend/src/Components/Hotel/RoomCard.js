@@ -10,6 +10,9 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, r
 
     return (
         <View style={cardStyles.CardContainer}>
+            <View style={cardStyles.roomImagesContainer}>
+
+            </View>
             <View style={cardStyles.InfoContainer}>
                 <Text style={cardStyles.Title}>{title}</Text>
                 <Text>{`Price: ${price}$`}</Text>

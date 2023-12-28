@@ -69,7 +69,7 @@ public class HotelSearchService {
     }
     private String getHotelImageUrl(UUID imageId) {
         // Replace this with your logic to generate image URLs
-        return "http://localhost:8080/api/images/hotel/" + imageId;
+        return "http://localhost:8080/api/images/hotel?id=" + imageId;
     }
     public HotelSearchResultDTO getHotelsWithCriteria(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
 

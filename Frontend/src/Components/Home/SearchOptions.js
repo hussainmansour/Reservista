@@ -6,6 +6,7 @@ import Counter from "./Counter";
 import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import {ConfigAPI} from "../../Utilities/New/APIs/ConfigAPI";
 
 const SearchOptions = ({navigation}) => {
 
@@ -15,10 +16,18 @@ const SearchOptions = ({navigation}) => {
     const [loading, setLoading] = useState(false);
 
     const getLocations = async () => {
-        // todo: call api to get all locations available
-        updateSearchOptions({
-            locations: ['London/UK', 'Cairo/Egypt', 'Paris/France', 'Xiamen/China']
+        const locations = await ConfigAPI.getValidLocations((response) => {
+            updateSearchOptions({
+                locations: ['London/UK', 'Cairo/Egypt', 'Paris/France', 'Xiamen/China']
+            });
         });
+
+        if (locations !== undefined) {
+            const updatedLocations = locations.map(location => `${location.city}/${location.country}`);
+            updateSearchOptions({ locations: updatedLocations });
+        }
+
+        console.log(searchOptions.locations);
     }
 
     const getSearchCriteriaDTO = () => {
@@ -62,7 +71,7 @@ const SearchOptions = ({navigation}) => {
 
                         if (responseBody.data !== undefined) {
                             // check for error code
-                            if (responseBody.errorCode === 100){
+                            if (responseBody.errorCode === 100) {
                                 // todo : alert
                                 console.log(responseBody)
                             }
@@ -152,7 +161,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#D3D6E7',
         borderRadius: 15,
         position: 'absolute',
-        bottom: '30%',
+        bottom: '25%',
         left: '10%'
     },
     label: {
@@ -171,7 +180,7 @@ const styles = StyleSheet.create({
         width: '50%',
         alignItems: 'center',
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     buttonText: {
         color: '#000000',

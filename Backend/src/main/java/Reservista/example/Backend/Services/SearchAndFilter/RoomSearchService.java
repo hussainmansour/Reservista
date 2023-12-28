@@ -54,12 +54,12 @@ public class RoomSearchService {
 
     private String getRoomImageUrl(UUID imageId) {
         // Replace this with your logic to generate image URLs
-        return "http://localhost:8080/api/images/room/" + imageId;
+        return "http://localhost:8080/api/images/room?id=" + imageId;
     }
 
     private String getHotelImageUrl(UUID imageId) {
         // Replace this with your logic to generate image URLs
-        return "http://localhost:8080/api/images/hotel/" + imageId;
+        return "http://localhost:8080/api/images/hotel?id=" + imageId;
     }
 
  

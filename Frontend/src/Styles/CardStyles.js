@@ -20,14 +20,14 @@ const cardStyles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 3.84,
     },
-    // roomImagesContainer: {
-    //     height: 150,
-    // },
-    // roomImage: {
-    //     width: 150,
-    //     height: 150,
-    //     borderRadius: 15,
-    // },
+    roomImagesContainer: {
+        height: 150,
+    },
+    roomImage: {
+        width: 150,
+        height: 150,
+        borderRadius: 15,
+    },
     InfoContainer: {
         padding: 15,
         flex: 1,
