@@ -1,4 +1,3 @@
-
 package Reservista.example.Backend.Services.Reservation;
 
 import Reservista.example.Backend.DAOs.*;
@@ -38,21 +37,18 @@ public class RoomAvailabilityHandler extends ReservationHandler {
     ReservationRepository reservationRepository;
 
 
-//    @Override
+    //    @Override
     public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
         ScheduledExecutorService executor = Executors.newScheduledThreadPool(1);
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
         try {
-            Reservation confirmedReservation=checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
+            Reservation confirmedReservation = checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
             reservationDTO.setReservationId(confirmedReservation.getId());
             executor.schedule(() -> deleteAfter10min(confirmedReservation.getId()), 10, TimeUnit.MINUTES);
             executor.shutdown();
             return nextHandler.handleRequest(reservationDTO);
         } catch (Exception e) {
-//            System.out.println(e.getMessage());
-//            ResponseDTO<ReservationResponseDTO> responseDTO =new ResponseDTO<>(ErrorCode.NOT_AVAILABLE.getCode(),ErrorCode.NOT_AVAILABLE.getMessage(),null);
-//            return responseDTO;
             throw new GlobalException(ErrorCode.ROOMS_NOT_AVAILABLE, HttpStatus.NOT_FOUND);
         }
 
@@ -60,8 +56,8 @@ public class RoomAvailabilityHandler extends ReservationHandler {
     }
 
     public Reservation prepareReservation(ReservationRequestDTO reservationDTO) {
-        RoomDescription roomDescription=roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
-        Reservation reservation= Reservation.builder()
+        RoomDescription roomDescription = roomDescriptionRepository.findRoomDescriptionById(reservationDTO.getRoomDescriptionId()).orElseThrow();
+        Reservation reservation = Reservation.builder()
                 .user(userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow())
                 .hotel(hotelRepository.findById(reservationDTO.getHotelID()).orElseThrow())
                 .checkIn(reservationDTO.getCheckIn())
@@ -69,7 +65,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
                 .isRefundable(reservationDTO.isRefundable())
                 .roomDescription(roomDescription)
                 .isConfirmed(false)
-                .voucherApplied(reservationDTO.getVoucherPercentage()!=0)
+                .voucherApplied(reservationDTO.getVoucherPercentage() != 0)
                 .build();
         Set<ReservedRoom> reservedRoomSet = new HashSet<ReservedRoom>();
         for (ReservedRoomDTO r : reservationDTO.getReservedRooms()) {
@@ -87,13 +83,13 @@ public class RoomAvailabilityHandler extends ReservationHandler {
 
     @Transactional
     public Reservation checkAndReserve(Reservation reservation, UUID roomDescriptionId, int roomCount) {
-       HashSet<Integer>  nonAvailableRooms = reservedRoomRepository.getConflictedRoomNumbers(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
+        HashSet<Integer> nonAvailableRooms = reservedRoomRepository.getConflictedRoomNumbers(roomDescriptionId, reservation.getCheckIn(), reservation.getCheckOut());
         int availableRooms = roomCount - nonAvailableRooms.size();
         if (availableRooms >= reservation.getReservedRooms().size()) {
-            int i=0;
-            for(ReservedRoom r:reservation.getReservedRooms()){
-                while (i<roomCount){
-                    if(!nonAvailableRooms.contains(i)){
+            int i = 0;
+            for (ReservedRoom r : reservation.getReservedRooms()) {
+                while (i < roomCount) {
+                    if (!nonAvailableRooms.contains(i)) {
                         r.setRoomNumber(i++);
                         break;
                     }
@@ -102,7 +98,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             }
             return reservationRepository.save(reservation);
         } else {
-            throw new RuntimeException("Not enough available rooms for reservation.");
+            throw new RuntimeException();
         }
     }
 

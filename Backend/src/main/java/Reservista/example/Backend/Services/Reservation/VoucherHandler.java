@@ -40,8 +40,8 @@ public class VoucherHandler extends ReservationHandler {
 
 
         if (reservationDTO.getVoucherCode() != null) {
-            Voucher voucher = voucherRepository.findVoucherByVoucherCode(reservationDTO.getVoucherCode());
-            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElseThrow();
+            Voucher voucher = voucherRepository.findByVoucherCode(reservationDTO.getVoucherCode()).orElse(null);
+            User user = userRepository.findByUserName(reservationDTO.getUserName()).orElse(null);
             handleVoucher(user, voucher);
 
 
@@ -51,8 +51,6 @@ public class VoucherHandler extends ReservationHandler {
             userRepository.save(user);
             voucherRepository.save(voucher);
             return nextHandler.handleRequest(reservationDTO);
-
-
         }
         return nextHandler.handleRequest(reservationDTO);
     }
