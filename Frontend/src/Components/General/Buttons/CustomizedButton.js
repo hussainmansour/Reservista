@@ -4,14 +4,14 @@ import React from 'react';
 import { TouchableOpacity, Text , StyleSheet} from 'react-native';
 
 
-const CustomizedButton = ({ onPress, buttonStyle, textStyle, text }) => {
+const CustomizedButton = ({ onPress, buttonStyle, textStyle, text ,isDisabled=false}) => {
 
     const tStyle={...styles.Text,...textStyle};
 
     const bStyle={...styles.ButtonContainer,...buttonStyle}
-    
+
     return (
-        <TouchableOpacity style={bStyle} onPress={onPress}>
+        <TouchableOpacity disabled={isDisabled} style={bStyle} onPress={onPress}>
             <Text style={tStyle}>{text}</Text>
         </TouchableOpacity>
     )
@@ -21,7 +21,6 @@ export default CustomizedButton;
 
 const styles = StyleSheet.create({
     ButtonContainer:{
-        
         marginTop: 30,
         width: 118,
         height: 43,

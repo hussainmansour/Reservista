@@ -1,0 +1,10 @@
+
+export const getBaseURL = () => {
+    let ipv4Address = "192.168.1.8";
+    // try {
+    //     ipv4Address = await NetworkInfo.getIPV4Address();
+    // } catch (error) {
+    //     console.error('Error getting IP address:', error);
+    // }
+    return `http://${ipv4Address}:8080`;
+};
