@@ -62,6 +62,7 @@ public class RoomSearchService {
         return "http://localhost:8080/api/images/hotel/" + imageId;
     }
 
+ 
     public HotelDTO getRoomsInSpecificHotel (HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO) throws GlobalException {
         List<RoomDescription> roomDescriptions = hotelRepository.findAvailableRooms(
                 hotelIdentifierWithSearchCriteriaDTO.getHotelId(),
@@ -71,8 +72,10 @@ public class RoomSearchService {
                 hotelIdentifierWithSearchCriteriaDTO.getNumberOfTravelers());
 
 
-        Hotel hotel = hotelRepository.findById(hotelIdentifierWithSearchCriteriaDTO.getHotelId()).orElseThrow(() -> new GlobalException(ErrorCode.HOTEL_NOT_FOUND, HttpStatus.NOT_FOUND));
-
+ 
+        Hotel hotel = hotelRepository
+                .findById(hotelIdentifierWithSearchCriteriaDTO.getHotelId())
+                .orElseThrow(() -> new GlobalException(ErrorCode.HOTEL_NOT_FOUND, HttpStatus.NOT_FOUND));
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setId(hotel.getId());
         hotelDTO.setName(hotel.getName());
@@ -89,6 +92,7 @@ public class RoomSearchService {
                 .collect(Collectors.toSet());
         hotelDTO.setImagesUrls(imageUrls);
 
+ 
         hotelDTO.setReviewCount(hotel.getReviewCount());
         hotelDTO.setStarRating(hotel.getStarRating());
         hotelDTO.setRooms(convertToRoomDTOList(roomDescriptions, hotelIdentifierWithSearchCriteriaDTO));

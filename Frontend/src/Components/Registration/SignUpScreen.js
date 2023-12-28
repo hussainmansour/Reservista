@@ -113,7 +113,7 @@ const SignupScreen = () => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get('http://192.168.1.4:8080/config/countries');
+                const response = await axios.get('http://192.168.1.17:8080/config/countries');
                 const unsortedCountries = response.data;
                 setCountries(unsortedCountries.sort());
             } catch (error) {

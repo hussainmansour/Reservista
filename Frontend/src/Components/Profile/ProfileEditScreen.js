@@ -5,8 +5,9 @@ import * as Yup from 'yup';
 import CustomTextInput from '../Inputs/EditTextInput';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import DropdownList from '../General/DropdownList';
-import styles from '../../Styles/Editstyles';
+import editStyles from '../../Styles/Editstyles';
 import axios from 'axios';
+import Color from '../../Styles/Color';
 
 
 // for validation
@@ -41,7 +42,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get("http://192.168.1.5:8080/config/countries");
+                const response = await axios.get("http://192.168.1.17:8080/config/countries");
                 const unsortedCountries = response.data
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -58,9 +59,10 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     }));
     return (
         <Modal visible={isVisible} animationType="slide" transparent={true}>
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Edit Profile</Text>
+            <View
+                style={editStyles.modalContainer}>
+                <View style={editStyles.modalContent}>
+                    <Text style={editStyles.modalTitle}>Edit Profile</Text>
 
                     <Formik
                         initialValues={updateduser}
@@ -68,7 +70,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                         onSubmit={onSave}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                            <ScrollView>
+                            <ScrollView showsVerticalScrollIndicator={false}>
 
                                 <CustomTextInput
                                     title="First Name"
@@ -122,13 +124,13 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     items={dropdownItems}
                                 />
 
-                                <View style={styles.buttonContainer}>
+                                <View style={editStyles.buttonContainer}>
 
                                     {/* Cancel Button */}
                                     <CustomizedButton
                                         onPress={onCancel}
-                                        buttonStyle={styles.cancelButton}
-                                        textStyle={styles.buttonText}
+                                        buttonStyle={{...editStyles.cancelButton,backgroundColor:Color.ORANGE}}
+                                        textStyle={editStyles.buttonText}
                                         text="Cancel"
                                     />
                                     {/* Save Button */}
@@ -136,8 +138,8 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         onPress={()=>{
                                             onSave(values)
                                         }}
-                                        buttonStyle={styles.saveButton}
-                                        textStyle={styles.buttonText}
+                                        buttonStyle={editStyles.saveButton}
+                                        textStyle={editStyles.buttonText}
                                         text="Save"
                                     />
 

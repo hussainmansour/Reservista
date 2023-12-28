@@ -3,6 +3,7 @@ package Reservista.example.Backend.DTOs.SearchAndFilter;
 import jakarta.validation.constraints.FutureOrPresent;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Min;
 import lombok.Data;
 
 import java.time.Instant;

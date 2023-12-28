@@ -29,6 +29,6 @@ public class SearchAndFilterController {
     @PostMapping("/hotel")
     public ResponseEntity<HotelDTO> getHotel(@Valid @RequestBody HotelIdentifierWithSearchCriteriaDTO searchCriteria) throws GlobalException {
         HotelDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
-        return new ResponseEntity<>(searchResult, HttpStatus.OK);
+        return ResponseEntity.ok(searchResult);
     }
 }
