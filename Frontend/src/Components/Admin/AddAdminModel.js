@@ -17,7 +17,7 @@ const validationSchema = Yup.object().shape({
         .max(50, 'Username must be at most 50 characters'),
     password: Yup.string()
         .required('Password percentage is required')
-        .min(6, 'Password length must be greater 8')
+        .min(8, 'Password length must be greater 8')
         .max(100, 'Password length must be greater 5'),
 });
 

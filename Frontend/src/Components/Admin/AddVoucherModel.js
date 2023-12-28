@@ -13,11 +13,11 @@ import Color from "../../Styles/Color";
 const validationSchema = Yup.object().shape({
     voucherCode: Yup.string()
         .required('Voucher Name is required')
-        .min(2, 'Voucher Name must be at least 2 characters')
+        .min(4, 'Voucher Name must be at least 4 characters')
         .max(50, 'Voucher Name must be at most 50 characters'),
     discountRate: Yup.number()
         .required('Voucher percentage is required')
-        .min(0, 'Percentage must be greater than or equal to 0')
+        .min(1, 'Percentage must be greater than 0')
         .max(100, 'Percentage must be less than or equal to 100'),
 });
 
