@@ -1,7 +1,7 @@
 import {NetworkInfo} from "react-native-network-info";
 
 export const getBaseURL = () => {
-    let ipv4Address = "192.168.52.39";
+    let ipv4Address = "192.168.52.125";
     // try {
     //     ipv4Address = await NetworkInfo.getIPV4Address();
     // } catch (error) {

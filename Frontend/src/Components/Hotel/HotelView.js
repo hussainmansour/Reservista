@@ -1,18 +1,20 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert} from 'react-native';
-import MapView, {Marker} from 'react-native-maps';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert,FlatList } from 'react-native';
+import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RoomCard from './RoomCard';
 import RoomAPI from '../../Utilities/RoomsAPI';
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from '@react-navigation/native';
 import HotelImages from './HotelImages';
-import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
-import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
-import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import { SearchCriteriaContext } from "../../Store/searchCriteriaContext";
+import { SearchOptionsContext } from "../../Store/SearchOptionsContext";
+import { SearchAndFilterAPI } from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import { getBaseURL } from '../../Utilities/New/BaseURL';
+import Color from '../../Styles/Color';
 
-const HotelView = ({route, navigation}) => {
+const HotelView = ({ route, navigation }) => {
 
-    const {updateSearchCriteria, ...searchCriteria} =
+    const { updateSearchCriteria, ...searchCriteria } =
         useContext(SearchCriteriaContext);
 
     const {
@@ -70,13 +72,20 @@ const HotelView = ({route, navigation}) => {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
+            <FlatList
+                horizontal
+                data={imagesUrls}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={
+                    ({ item }) => (
+                        <Image style={styles.image} source={{ uri: item.replace("http://localhost:8080", getBaseURL) }} />
+                    )
+                }
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.imageContainer}
+            />
             <View style={styles.container}>
-
                 {/* Hotel Information */}
-
-                <HotelImages>
-
-                </HotelImages>
                 {/* Hotel Name */}
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>{hotelTitle}</Text>
@@ -87,18 +96,18 @@ const HotelView = ({route, navigation}) => {
                     {/* Hotel Details (Rating, Reviews, Stars) */}
                     <View style={styles.detailsContainer}>
                         <View style={styles.starsContainer}>
-                            <Icon name="star" size={20} color="#FFD700"/>
+                            <Icon name="star" size={20} color="#FFD700" />
                             <Text style={styles.starsText}>{` ${starRating} Stars`}</Text>
                         </View>
                         <View style={styles.ratingContainer}>
-                            <Icon name="hotel" size={20} color="#333333"/>
+                            <Icon name="hotel" size={20} color="#333333" />
                             <Text style={styles.ratingText}>{` ${rating} Rating`}</Text>
                         </View>
                         <View style={styles.reviewsContainer}>
-                            <Icon name="comments" size={20} color="#75C2F6"/>
+                            <Icon name="comments" size={20} color="#75C2F6" />
                             <Text style={styles.reviewText}>{`${reviewCount} Reviews`}</Text>
                         </View>
-                        <TouchableOpacity onPress={toggleModal} style={styles.reviewButton}>
+                        <TouchableOpacity onPress={toggleModal} style={{...styles.reviewButton,backgroundColor:Color.SEABLUE}}>
                             <Text style={styles.reviewButtonText}>See Reviews</Text>
                         </TouchableOpacity>
                     </View>
@@ -129,7 +138,7 @@ const HotelView = ({route, navigation}) => {
                 {/* Room Cards */}
                 <View style={styles.roomsContainer}>
                     {rooms.map((room, index) => (
-                        <RoomCard key={index} {...room} reservePress={reserve}/>
+                        <RoomCard key={index} {...room} reservePress={reserve} />
                     ))}
                 </View>
 
@@ -138,7 +147,7 @@ const HotelView = ({route, navigation}) => {
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalTitle}>Reviews Modal</Text>
                         {/* Add your review content here */}
-                        <Button title="Close" onPress={toggleModal}/>
+                        <Button title="Close" onPress={toggleModal} />
                     </View>
                 </Modal>
             </View>
@@ -170,12 +179,12 @@ const styles = StyleSheet.create({
     },
     imageContainer: {
         flexDirection: 'row',
-        marginTop: 20,
-        height: 200
+        marginTop: 70,
+        height: 300
     },
     image: {
-        width: 150, // Adjust the width according to your preference
-        height: 150, // Adjust the height according to your preference
+        width: 300, // Adjust the width according to your preference
+        height: 300, // Adjust the height according to your preference
         borderRadius: 10,
         marginRight: 10, // Adjust the spacing between images
     },
