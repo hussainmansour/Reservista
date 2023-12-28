@@ -1,82 +1,72 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert} from 'react-native';
+import MapView, {Marker} from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RoomCard from './RoomCard';
 import RoomAPI from '../../Utilities/RoomsAPI';
-import { useNavigation } from '@react-navigation/native';
+import {useNavigation} from '@react-navigation/native';
 import HotelImages from './HotelImages';
+import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
-const HotelView = ({ route }) => {
+const HotelView = ({route, navigation}) => {
 
-    const {item,searchDTO}=route.params;
-    const{address,city,country,fullyRefundable,fullyRefundableRate,hotelFoodOptions,id,images,minRoomPrice,name,rating,reviewCount,starRating}=item;
-    const{checkIn,checkOut,numberOfTravelers,numberOfRooms}=searchDTO;
+    const {updateSearchCriteria, ...searchCriteria} =
+        useContext(SearchCriteriaContext);
 
+    const {
+        checkIn,
+        checkOut,
+        numberOfTravelers,
+        numberOfRooms
+    } = searchCriteria;
+
+    const {
+        address,
+        city,
+        country,
+        fullyRefundable,
+        fullyRefundableRate,
+        hotelFoodOptions,
+        id,
+        imagesUrls,
+        name,
+        rating,
+        reviewCount,
+        starRating,
+        rooms
+    } = route.params.response;
 
     const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
 
     const [isModalVisible, setModalVisible] = useState(false);
 
-
-    const [rooms,setRooms]=useState([])
-
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const navigation = useNavigation();
-
-    const reserve = (roomId,price,title) =>{
+    const reserve = (roomId, price, title) => {
         console.log("reserve");
         console.log(roomId);
         console.log(price);
         console.log(title);
-        const Reservation={
+        const Reservation = {
             price: price,
             title: title,
             count: numberOfRooms,
             roomDescriptionId: roomId,
-            hotelID:id,
-            refundable:fullyRefundable,
+            hotelID: id,
+            refundable: fullyRefundable,
             fullyRefundableRate: fullyRefundableRate,
             checkIn: checkIn,
             checkOut: checkOut,
-            foodOptions : hotelFoodOptions
+            foodOptions: hotelFoodOptions
         };
         console.log(Reservation);
-        navigation.navigate('CartScreen',Reservation);
+        navigation.navigate('CartScreen', Reservation);
     }
 
-    const HotelDTO = {
-        "hotelId": id,
-        "numberOfRooms": numberOfRooms,
-        "numberOfTravelers": numberOfTravelers,
-        "checkIn": checkIn,
-        "checkOut": checkOut
-    }
-    console.log("from hotel")
-    console.log(HotelDTO);
-
-
-
-    // Getting the profile
-    useEffect(() => {
-        const fetchRooms = async () => {
-            try {
-                const response = await RoomAPI.getRooms(HotelDTO);
-                console.log(response);
-                setRooms(response.roomDTOList);
-            } catch (error) {
-                console.log('Error fetching data:', error);
-            }
-        };
-
-        fetchRooms();
-    }, []);
-
-    console.log("from rooms");
-    console.log(rooms);
 
     return (
         <ScrollView contentContainerStyle={styles.scrollContainer}>
@@ -84,7 +74,9 @@ const HotelView = ({ route }) => {
 
                 {/* Hotel Information */}
 
-                <HotelImages></HotelImages>
+                <HotelImages>
+
+                </HotelImages>
                 {/* Hotel Name */}
                 <View style={styles.titleContainer}>
                     <Text style={styles.title}>{hotelTitle}</Text>
@@ -95,15 +87,15 @@ const HotelView = ({ route }) => {
                     {/* Hotel Details (Rating, Reviews, Stars) */}
                     <View style={styles.detailsContainer}>
                         <View style={styles.starsContainer}>
-                            <Icon name="star" size={20} color="#FFD700" />
+                            <Icon name="star" size={20} color="#FFD700"/>
                             <Text style={styles.starsText}>{` ${starRating} Stars`}</Text>
                         </View>
                         <View style={styles.ratingContainer}>
-                            <Icon name="hotel" size={20} color="#333333" />
+                            <Icon name="hotel" size={20} color="#333333"/>
                             <Text style={styles.ratingText}>{` ${rating} Rating`}</Text>
                         </View>
                         <View style={styles.reviewsContainer}>
-                            <Icon name="comments" size={20} color="#75C2F6" />
+                            <Icon name="comments" size={20} color="#75C2F6"/>
                             <Text style={styles.reviewText}>{`${reviewCount} Reviews`}</Text>
                         </View>
                         <TouchableOpacity onPress={toggleModal} style={styles.reviewButton}>
@@ -137,7 +129,7 @@ const HotelView = ({ route }) => {
                 {/* Room Cards */}
                 <View style={styles.roomsContainer}>
                     {rooms.map((room, index) => (
-                        <RoomCard key={index} {...room} reservePress={reserve} />
+                        <RoomCard key={index} {...room} reservePress={reserve}/>
                     ))}
                 </View>
 
@@ -146,7 +138,7 @@ const HotelView = ({ route }) => {
                     <View style={styles.modalContainer}>
                         <Text style={styles.modalTitle}>Reviews Modal</Text>
                         {/* Add your review content here */}
-                        <Button title="Close" onPress={toggleModal} />
+                        <Button title="Close" onPress={toggleModal}/>
                     </View>
                 </Modal>
             </View>
@@ -322,7 +314,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
 });
-
 
 
 export default HotelView;

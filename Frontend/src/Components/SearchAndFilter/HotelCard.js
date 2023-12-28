@@ -14,7 +14,6 @@ const HotelCard = ({ hotel, onPress }) => {
                 <Text>{`ReviewCount: ${hotel.reviewCount}`}</Text>
                 <Text>{`Stars: ${hotel.starRating}`}</Text>
                 <Text>{`Price: ${hotel.minRoomPrice}`}</Text>
-                <Text>{`Location: ${hotel.location}`}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -77,4 +76,3 @@ const styles = StyleSheet.create({
 });
 
 export default HotelCard;
-
