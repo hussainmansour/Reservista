@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
-import styles from '../../Styles/CardStyles';
+import cardStyles from '../../Styles/CardStyles';
 import Color from '../../Styles/Color';
 
 const ReservationCard = ({
@@ -16,9 +16,9 @@ const ReservationCard = ({
     buttons,
 }) => {
     return (
-        <View style={styles.CardContainer}>
-            <View style={styles.InfoContainer}>
-                <Text style={styles.Title}>{`Reservation number: ${reservationID}`}</Text>
+        <View style={cardStyles.CardContainer}>
+            <View style={cardStyles.InfoContainer}>
+                <Text style={cardStyles.Title}>{`Reservation number: ${reservationID}`}</Text>
                 <Text>{`Hotel : ${hotelName}$`}</Text>
                 <Text>{`Room type: ${roomTitle}`}</Text>
                 <Text>{`Reservation date: ${reservationDate}`}</Text>
@@ -32,8 +32,8 @@ const ReservationCard = ({
                             key={index}
                             text={button.text}
                             onPress={() => button.onPress(reservationID)}
-                            textStyle={{...styles.ButtonText,...button.textStyle}}
-                            buttonStyle={{...styles.Button,...button.buttonStyle}}
+                            textStyle={{...cardStyles.ButtonText,...button.textStyle}}
+                            buttonStyle={{...cardStyles.Button,...button.buttonStyle}}
                         />
                     ))}
                 </View>
