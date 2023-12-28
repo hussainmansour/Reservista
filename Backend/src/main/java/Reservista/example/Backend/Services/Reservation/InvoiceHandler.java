@@ -13,7 +13,7 @@ public class InvoiceHandler extends ReservationHandler {
         System.out.println("invoice reservation handler");
         StringBuilder s = new StringBuilder();
         s.append("Reservation Details:\n")
-                .append("Reservation ID: ").append(reservationDTO.getReservationID()).append("\n")
+                .append("Reservation ID: ").append(reservationDTO.getReservationId()).append("\n")
                 .append( "Check-in Date: ").append(reservationDTO.getCheckIn()).append("\n")
                 .append("Check-out Date: ").append(reservationDTO.getCheckOut()).append("\n");
 

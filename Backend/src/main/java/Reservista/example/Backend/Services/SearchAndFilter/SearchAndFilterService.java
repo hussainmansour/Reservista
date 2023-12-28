@@ -4,6 +4,7 @@ import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.data.domain.Pageable;
@@ -23,7 +24,7 @@ public class SearchAndFilterService {
         return hotelSearchService.getHotelsWithCriteria(searchCriteria, pageable);
     }
 
-    public HotelDTO filterRooms(HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO){
+    public HotelDTO filterRooms(HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO) throws GlobalException {
         return roomSearchService.getRoomsInSpecificHotel(hotelIdentifierWithSearchCriteriaDTO);
     }
 

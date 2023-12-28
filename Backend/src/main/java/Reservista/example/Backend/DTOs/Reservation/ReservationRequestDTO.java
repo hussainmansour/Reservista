@@ -47,7 +47,7 @@ public class ReservationRequestDTO {
     private int roomPrice;
     private String roomTitle;
 
-    private Long reservationID;
+    private Long reservationId;
 
     private String userName;
 

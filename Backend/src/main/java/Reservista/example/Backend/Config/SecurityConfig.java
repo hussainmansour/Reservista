@@ -41,11 +41,11 @@ public class SecurityConfig {
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests((authorize) -> authorize
                         .requestMatchers(
-                                "/api/payment/**",
-                                "/auth/**",
-                                "/register/**" ,
-                                "/config/**" ,
-                                "/test/**")
+                                        "/api/**",
+                                        "/auth/**",
+                                        "/register/**" ,
+                                        "/config/**" ,
+                                        "/test/**")
                         .permitAll()
                         .requestMatchers("/user/**").hasAuthority(SystemRoles.USER.name())
                         .requestMatchers("/admin/**").hasAuthority(SystemRoles.ADMIN.name())

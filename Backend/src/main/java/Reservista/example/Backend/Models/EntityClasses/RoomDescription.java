@@ -38,7 +38,7 @@ public class RoomDescription {
     @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
     private Set<Reservation> reservations;
 
-    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "roomDescription" , cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private Set<RoomImage> roomImages;
 
     @ElementCollection

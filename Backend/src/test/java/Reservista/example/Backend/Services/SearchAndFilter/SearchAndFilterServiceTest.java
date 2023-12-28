@@ -2,6 +2,7 @@ package Reservista.example.Backend.Services.SearchAndFilter;
 
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -306,7 +307,7 @@ class SearchAndFilterServiceTest {
 
     //tests for rooms
     @Test
-    public void test12_searchRooms() {
+    public void test12_searchRooms() throws GlobalException {
         // Arrange
         HotelIdentifierWithSearchCriteriaDTO searchCriteria = new HotelIdentifierWithSearchCriteriaDTO();
         searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));
@@ -324,7 +325,7 @@ class SearchAndFilterServiceTest {
 
 
     @Test
-    public void test12_searchRoomsWithoutCheckinAndCheckout() {
+    public void test12_searchRoomsWithoutCheckinAndCheckout() throws GlobalException {
         // Arrange
         HotelIdentifierWithSearchCriteriaDTO searchCriteria = new HotelIdentifierWithSearchCriteriaDTO();
         searchCriteria.setNumberOfRooms(1);
