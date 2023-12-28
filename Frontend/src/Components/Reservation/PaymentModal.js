@@ -13,6 +13,7 @@ import {
   Button,
   Alert,
 } from "react-native";
+import Color from "../../Styles/Color.js";
 
 const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, price }) => {
 
@@ -65,6 +66,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, 
         <StripeProvider
           publishableKey="pk_test_51O5xO9IpHzJgrvA9SXgHNyJwhzEsyPa2AEOdMmSCK0xwXt4ydWuTyU6tPnkbqVdsNNEcxoUbzEbE6R4m9SsNzw6l005nh1i9GZ"
         >
+          
           <View style={styles.modalContent}>
             <TouchableOpacity onPress={onCancel} style={styles.closeButton}>
               <Text style={styles.closeButtonText}>x</Text>
@@ -85,7 +87,7 @@ const PaymentModal = ({ isVisible, onCancel, clientSecret, onSuccessfulPayment, 
             </View>
             <Button
               title={"Pay  $" + String(price)}
-              color= "#75C2F6"
+              color={ Color.SEABLUE}
               style={styles.ButtonStyle}
               onPress={pay}
               disabled={paymentLoading || !isReady}
@@ -102,10 +104,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
+    backgroundColor:  "rgba(0, 0, 0, 0.5)",
   },
   modalContent: {
-    backgroundColor: "white",
+    backgroundColor: Color.PALEBLUE, // "white",
     padding: 40,
     borderRadius: 10,
     height: 310,
@@ -126,10 +128,11 @@ const styles = StyleSheet.create({
     fontSize: 20, 
     fontWeight: "600",
     marginBottom: 5, 
+    color: Color.MIDNIGHTBLUE,
   },
   secondaryText: {
     fontSize: 14,
-    color: "grey",
+    color: Color.DARKGREY,
     marginBottom: 10, 
   },
   cardField: {
@@ -138,7 +141,7 @@ const styles = StyleSheet.create({
     marginBottom: 1, 
   },
   cardStyle: {
-    borderColor: "#D3D3D3", 
+    borderColor: Color.DIRTYWHITE,
     borderRadius: 1, 
     borderWidth: 1, 
   },
@@ -146,14 +149,14 @@ const styles = StyleSheet.create({
     padding: 50,
   },
   testModeLabel: {
-    backgroundColor: "#FFD700",
+    backgroundColor: Color.ORANGE,
     padding: 5, 
     borderRadius: 5,
     marginBottom: 10,
     width: "27%",
   },
   testModeText: {
-    color: "navy", 
+    color: 'white',
     fontWeight: "bold",
     fontSize: 12, 
   },
