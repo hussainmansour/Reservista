@@ -22,6 +22,8 @@ const styles = StyleSheet.create({
       scrollViewContainer: {
         padding: 10,
     
+
+        
       },
       roomContainer: {
         borderRadius: 5,
