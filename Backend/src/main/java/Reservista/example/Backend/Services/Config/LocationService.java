@@ -17,14 +17,15 @@ public class LocationService {
 
     private LocationRepository locationRepository;
 
-    public Set<LocationDTO> getLocations(){
+    public Set<LocationDTO> getLocations() {
         List<Location> locations = locationRepository.findAll();
         return locations.stream().map(
-                location -> LocationDTO.builder()
-                        .city(location.getCity())
-                        .country(location.getCountry())
-                        .build()
-        ).collect(Collectors.toSet());
+                        location -> LocationDTO.builder()
+                                .city(location.getCity())
+                                .country(location.getCountry())
+                                .build()
+                )
+                .collect(Collectors.toSet());
     }
 
 }
