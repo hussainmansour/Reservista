@@ -25,7 +25,8 @@ const AddVoucherModel = ({isVisible, onCancel, onSave}) => {
 
 
     const [expirationDate, setExpirationDate] = useState(null);
-
+    const today = new Date();
+    const nextYear = new Date(today.getFullYear() + 1, today.getMonth(), today.getDate());
     return (
         <Modal visible={isVisible} animationType="slide" transparent={false}>
             <View style={{backgroundColor: Color.PALEBLUE, flex: 1, justifyContent: "center", paddingTop: 50}}>
@@ -78,6 +79,8 @@ const AddVoucherModel = ({isVisible, onCancel, onSave}) => {
                                     }}
                                     controlStyle={{backgroundColor: Color.PALEBLUE, borderColor: Color.SEABLUE}}
                                     min={new Date()}
+                                    max={nextYear}
+
                                 />
                                 {expirationDate == null && (
                                     <Text style={{color: 'red'}}>Please select a date before proceeding</Text>

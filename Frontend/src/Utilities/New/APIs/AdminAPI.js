@@ -1,15 +1,15 @@
 import {getBaseURL} from "../BaseURL";
 
 import {handleRequest} from "../HandleRequest";
-import {unAuthApi} from "../axiosIntsance";
+import {authApi, unAuthApi} from "../axiosIntsance";
 
-const baseURL = getBaseURL() + '/auth';
+const baseURL = getBaseURL() + '/admin';
 export const AdminAPI = {
     saveVoucher: async (voucherDTO, onErrorCallback,setLoading) => {
         return await handleRequest(
             async () => {
-                return await unAuthApi.post(
-                    `${baseURL}/admin/voucher`,
+                return await authApi.post(
+                    `${baseURL}/voucher`,
                     voucherDTO
                 );
             },
@@ -20,8 +20,8 @@ export const AdminAPI = {
     saveAdmin:async (adminDTO, onErrorCallback,setLoading) => {
         return await handleRequest(
             async () => {
-                return await unAuthApi.post(
-                    `${baseURL}/admin/newAdmin`,
+                return await authApi.post(
+                    `${baseURL}/newAdmin`,
                     adminDTO
                 );
             },
