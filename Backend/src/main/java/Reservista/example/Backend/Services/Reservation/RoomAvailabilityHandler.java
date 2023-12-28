@@ -43,7 +43,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
         int roomCount = roomDescriptionRepository.findNumberOfRoomsByRoomDescriptionId(reservationDTO.getRoomDescriptionId());
         Reservation reservation = prepareReservation(reservationDTO);
         try {
-            Reservation confirmedReservation=checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
+            Reservation confirmedReservation = checkAndReserve(reservation, reservationDTO.getRoomDescriptionId(), roomCount);
             reservationDTO.setReservationId(confirmedReservation.getId());
             executor.schedule(() -> deleteAfter10min(confirmedReservation.getId()), 10, TimeUnit.MINUTES);
             executor.shutdown();
@@ -98,7 +98,7 @@ public class RoomAvailabilityHandler extends ReservationHandler {
             }
             return reservationRepository.save(reservation);
         } else {
-            throw new RuntimeException("Not enough available rooms for reservation.");
+            throw new RuntimeException();
         }
     }
 

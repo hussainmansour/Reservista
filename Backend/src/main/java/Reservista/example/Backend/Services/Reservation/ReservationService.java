@@ -46,7 +46,7 @@ public class ReservationService {
 
     public int applyVoucher(String username, String voucherCode) throws GlobalException {
         User user = userRepository.findByUserName(username).orElse(null);
-        Voucher voucher = voucherRepository.findVoucherByVoucherCode(voucherCode);
+        Voucher voucher = voucherRepository.findByVoucherCode(voucherCode).orElse(null);
         voucherHandler.handleVoucher(user, voucher);
 
         return voucher.getDiscountRate();
