@@ -26,7 +26,6 @@ const LoginScreen = ({navigation}) => {
             // in case of an expected error this should be the errorDTO
             const responseBody = response.data;
 
-
             if (responseBody.data !== undefined) {
                 // check for error code
 

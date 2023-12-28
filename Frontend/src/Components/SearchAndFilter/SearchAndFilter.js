@@ -7,12 +7,13 @@ import SortAndFilterSelector from "./SortAndFilterSelector";
 const SearchAndFilter = ({route, navigation}) => {
 
     const [hotels, setHotels] = useState([]);
-    const renderItem = ({item}) => <HotelCard hotel={item} onPress={() => onHotelPress(item)}/>;
+    const renderItem = ({item}) =>
+        <HotelCard hotel={item} onPress={() => onHotelPress(item)}/>;
     const onHotelPress = (item) => navigation.navigate('Hotel', {item});
 
     useEffect(() => {
         setHotels(route.params.listOfHotels["hotels"]);
-    }, []);
+    }, [route]);
 
     // todo: fix loading
     const [loading,setLoading] = useState(false);
