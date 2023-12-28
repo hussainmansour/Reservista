@@ -1,11 +1,12 @@
-import {Alert, Dimensions, StyleSheet, Text, View} from 'react-native'
-import React, {useContext, useEffect, useState} from 'react'
+import {Alert, Dimensions, StyleSheet, View} from 'react-native'
+import React, { useEffect, useState} from 'react'
 import Color from "../../Styles/Color";
 import CustomizedButton from "../General/Buttons/CustomizedButton";
 import AddVoucherModel from "./AddVoucherModel";
 import AddAdminModel from "./AddAdminModel";
 import ProfileAPI from "../../Utilities/ProfileAPI";
 import LoadingComponent from "../General/LoadingComponent";
+import {AdminAPI} from "../../Utilities/New/APIs/AdminAPI";
 
 
 
@@ -17,61 +18,43 @@ const AdminHome = ({navigation}) => {
     const handleCancelAddingAdmin = () => {setIsAddingAdmin(false);};
     const handleSaveVoucher = async (values) => {
         console.log(values)
-        // try {
-        //
-        //     console.log("in save");
-        //
-        //     setIsAddingVoucher(false);
-        //
-        //     setIsLoading(true);
-        //
-        //     console.log(values);
-        //
-        //     const response = await ProfileAPI.updateProfile(authCtx.token,values);
-        //
-        //     console.log("response", response);
-        //
-        //     const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
-        //     setUser(updatedUser);
-        //
-        //     console.log("successful update");
-        //     Alert.alert('Success', 'Profile updated successfully');
-        // } catch (error) {
-        //     console.log("Error updating profile:", error);
-        //     Alert.alert('Error', 'Failed to update profile');
-        // }
-        // finally {
-        //     setIsLoading(false);
-        // }
+        let response = await AdminAPI.saveVoucher(values, (response) => {
+            // in case of an expected error this should be the errorDTO
+            const responseBody = response.data;
 
-
+            if (responseBody.data !== undefined) {
+                Alert.alert('Error', responseBody.data);
+            }
+            else{
+                console.log(responseBody)
+            }
+        }, setIsLoading);
+            // success
+            if (response !== undefined) {
+                setIsAddingVoucher(false);
+                setIsLoading(false);
+                Alert.alert('Success', 'Voucher added successfully');
+            }
     };
     const handleSaveAdmin = async (values) => {
-        try {
+        console.log(values)
+        let response = await AdminAPI.saveAdmin(values, (response) => {
+            // in case of an expected error this should be the errorDTO
+            const responseBody = response.data;
 
-            console.log("in save");
 
-            setIsAddingAdmin(false);
-
-            setIsLoading(true);
-
-            console.log(values);
-
-            const response = await ProfileAPI.updateProfile(authCtx.token,values);
-
-            console.log("response", response);
-
-            const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
-            setUser(updatedUser);
-
-            console.log("successful update");
-            Alert.alert('Success', 'Profile updated successfully');
-        } catch (error) {
-            console.log("Error updating profile:", error);
-            Alert.alert('Error', 'Failed to update profile');
-        }
-        finally {
+            if (responseBody.data !== undefined) {
+                Alert.alert('Error', responseBody.data);
+            }
+            else{
+                console.log(responseBody)
+            }
+        }, setIsLoading);
+        // success
+        if (response !== undefined) {
+            setIsAddingVoucher(false);
             setIsLoading(false);
+            Alert.alert('Success', 'Admin added successfully');
         }
 
 
@@ -96,8 +79,8 @@ const AdminHome = ({navigation}) => {
                 onCancel={handleCancelAddingAdmin}
 
             ></AddAdminModel>
-            <CustomizedButton buttonStyle={styles.editButton1} text={"Add voucher"} onPress={()=>{setIsAddingVoucher(true)}} textStyle={styles.editButtonText}></CustomizedButton>
-            <CustomizedButton buttonStyle={styles.editButton} text={"Add admin"} onPress={()=>{setIsAddingAdmin(true)}} textStyle={styles.editButtonText}></CustomizedButton>
+            <CustomizedButton buttonStyle={styles.voucherButton} text={"Add voucher"} onPress={()=>{setIsAddingVoucher(true)}} textStyle={styles.editButtonText}></CustomizedButton>
+            <CustomizedButton buttonStyle={styles.adminButton} text={"Add admin"} onPress={()=>{setIsAddingAdmin(true)}} textStyle={styles.editButtonText}></CustomizedButton>
 
         </View>
     );
@@ -117,27 +100,17 @@ const styles = StyleSheet.create({
     },
     editButtonText: {
         color: 'white',
-        fontSize: 16,
         fontWeight: 'bold',
-        textAlign: 'center',
     },
-    editButton: {
+    adminButton: {
         backgroundColor: Color.ORANGE, // Blue color
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
         width: '50%',
         height: 100,
-
     },
-    editButton1: {
+    voucherButton: {
         backgroundColor: Color.SEABLUE, // Blue color
-        paddingVertical: 10,
-        paddingHorizontal: 20,
-        borderRadius: 5,
         width: '50%',
         height: 100,
-
     },
 
 })
