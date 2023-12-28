@@ -4,9 +4,12 @@ import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.RoomDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
 import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -40,7 +43,7 @@ public class RoomSearchService {
         return roomDTOList;
     }
 
-    public HotelDTO getRoomsInSpecificHotel (HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO){
+    public HotelDTO getRoomsInSpecificHotel (HotelIdentifierWithSearchCriteriaDTO hotelIdentifierWithSearchCriteriaDTO) throws GlobalException {
         List<RoomDescription> roomDescriptions = hotelRepository.findAvailableRooms(
                 hotelIdentifierWithSearchCriteriaDTO.getHotelId(),
                 hotelIdentifierWithSearchCriteriaDTO.getCheckIn(),
@@ -49,7 +52,8 @@ public class RoomSearchService {
                 hotelIdentifierWithSearchCriteriaDTO.getNumberOfTravelers());
 
 
-        Hotel hotel = hotelRepository.findById(hotelIdentifierWithSearchCriteriaDTO.getHotelId()).get();
+        Hotel hotel = hotelRepository.findById(hotelIdentifierWithSearchCriteriaDTO.getHotelId()).orElseThrow(() -> new GlobalException(ErrorCode.HOTEL_NOT_FOUND, HttpStatus.NOT_FOUND));
+
         HotelDTO hotelDTO = new HotelDTO();
         hotelDTO.setId(hotel.getId());
         hotelDTO.setName(hotel.getName());

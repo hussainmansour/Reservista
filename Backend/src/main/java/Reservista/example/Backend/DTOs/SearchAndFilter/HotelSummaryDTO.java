@@ -15,7 +15,7 @@ public class HotelSummaryDTO {
     private String city;
     private String country;
     private double rating;
-    private Set<HotelImage> images;
+    private Set<String> imagesUrls;
     private int reviewCount;
     private int starRating;
     private double minRoomPrice;

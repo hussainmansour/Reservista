@@ -1,7 +1,7 @@
 package Reservista.example.Backend.DTOs.SearchAndFilter;
 
 import jakarta.validation.constraints.FutureOrPresent;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 
@@ -12,15 +12,12 @@ import java.util.UUID;
 public class HotelIdentifierWithSearchCriteriaDTO {
 
     @NotNull
-    @NotBlank
     private UUID HotelId;
 
-    @NotNull
-    @NotBlank
+    @Min(1)
     private int numberOfRooms;
 
-    @NotNull
-    @NotBlank
+    @Min(1)
     private int numberOfTravelers;
 
     @NotNull
