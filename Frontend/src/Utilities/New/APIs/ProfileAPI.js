@@ -27,8 +27,8 @@ export const ProfileAPI = {
             onErrorCallback,
             setLoading
         )
-    },
 
+    },
     getUpcomingReservation: async(onErrorCallback, setLoading)=>{
         return await handleRequest(
             async () => {
