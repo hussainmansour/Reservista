@@ -22,7 +22,7 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, r
                         reservePress(id, price, title,);
                     }}
                     textStyle={cardStyles.ButtonText}
-                    buttonStyle={cardStyles.Button}
+                    buttonStyle={{...cardStyles.Button,width:'100%'}}
                 ></CustomizedButton>
             </View>
         </View>

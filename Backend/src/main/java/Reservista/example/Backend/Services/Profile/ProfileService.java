@@ -5,8 +5,6 @@ import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Profile.ProfileDTO;
 import Reservista.example.Backend.DTOs.Profile.UpcomingHistoryReservationDTO;
 import Reservista.example.Backend.DTOs.Profile.UpdateDTO;
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
-import Reservista.example.Backend.Enums.StatusCode;
 import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EmbeddedClasses.FullName;
@@ -19,7 +17,6 @@ import org.springframework.stereotype.Service;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProfileService {
@@ -33,9 +30,7 @@ public class ProfileService {
 
     public ProfileDTO viewProfile(String username) throws GlobalException {
 
-        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(StatusCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND)); // 404
-//        Optional<User> user = userRepository.findById(username);
-
+        User user = userRepository.findById(username).orElseThrow(()->new GlobalException(ErrorCode.PROFILE_NOT_FOUND, HttpStatus.NOT_FOUND)); // 404
         return ProfileDTO.builder()
                 .userName(user.getUsername())
                 .email(user.getEmail())
@@ -63,12 +58,12 @@ public class ProfileService {
     }
 
     public List<UpcomingHistoryReservationDTO> getUpcomingReservations(String username) throws GlobalException {
-        List<Reservation> reservations = reservationRepository.findUpcomingReservationsByUserName(username, Instant.now()).orElseThrow(()->new GlobalException(StatusCode.RESERVATIONS_NOT_FOUND,HttpStatus.NOT_FOUND));
+        List<Reservation> reservations = reservationRepository.findUpcomingReservationsByUserName(username, Instant.now()).orElseThrow(()->new GlobalException(ErrorCode.UPCOMING_RESERVATIONS_NOT_FOUND,HttpStatus.NOT_FOUND));
         return convertToReservationDTO(reservations);
     }
 
     public List<UpcomingHistoryReservationDTO> getHistoryReservations(String username) throws GlobalException {
-        List<Reservation> reservations = reservationRepository.findHistoryReservationsByUserName(username, Instant.now()).orElseThrow(()->new GlobalException(StatusCode.RESERVATIONS_NOT_FOUND,HttpStatus.NOT_FOUND));
+        List<Reservation> reservations = reservationRepository.findHistoryReservationsByUserName(username, Instant.now()).orElseThrow(()->new GlobalException(ErrorCode.HISTORY_RESERVATIONS_NOT_FOUND,HttpStatus.NOT_FOUND));
         return convertToReservationDTO(reservations);
     }
 

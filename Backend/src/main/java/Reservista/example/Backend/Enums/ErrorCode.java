@@ -34,6 +34,8 @@ public enum ErrorCode {
 
     //Profile error codes
     PROFILE_NOT_FOUND(40,"Profile not found"),
+    UPCOMING_RESERVATIONS_NOT_FOUND(404, "There is no upcoming reservations"), // not found 404
+    HISTORY_RESERVATIONS_NOT_FOUND(404, "There is no history reservations"), // not found 404
 
     // Error code for testing purposes
     TEST_CODE(0,"testing message");

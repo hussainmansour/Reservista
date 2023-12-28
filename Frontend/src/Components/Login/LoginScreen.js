@@ -4,12 +4,12 @@ import CustomTextInput from '../Inputs/CustomTextInput';
 import { signIn } from '../../Utilities/API';
 import { AuthContext } from '../../Store/authContext';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
-import {LinearGradient} from 'expo-linear-gradient';
+import { LinearGradient } from 'expo-linear-gradient';
 import styles from '../../Styles/Loginstyles';
 import colors from '../../Styles/Color';
-import {AuthenticationAPI} from "../../Utilities/New/APIs/AuthenticationAPI";
+import { AuthenticationAPI } from "../../Utilities/New/APIs/AuthenticationAPI";
 
-const LoginScreen = ({navigation}) => {
+const LoginScreen = ({ navigation }) => {
     const [username, setUsername] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);

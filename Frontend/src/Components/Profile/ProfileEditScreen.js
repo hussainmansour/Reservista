@@ -7,6 +7,7 @@ import CustomizedButton from '../General/Buttons/CustomizedButton';
 import DropdownList from '../General/DropdownList';
 import editStyles from '../../Styles/Editstyles';
 import axios from 'axios';
+import Color from '../../Styles/Color';
 
 
 // for validation
@@ -69,7 +70,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                         onSubmit={onSave}
                     >
                         {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                            <ScrollView>
+                            <ScrollView showsVerticalScrollIndicator={false}>
 
                                 <CustomTextInput
                                     title="First Name"
@@ -128,7 +129,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     {/* Cancel Button */}
                                     <CustomizedButton
                                         onPress={onCancel}
-                                        buttonStyle={editStyles.cancelButton}
+                                        buttonStyle={{...editStyles.cancelButton,backgroundColor:Color.ORANGE}}
                                         textStyle={editStyles.buttonText}
                                         text="Cancel"
                                     />
