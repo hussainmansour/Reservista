@@ -52,12 +52,15 @@ const SearchAndFilter = ({route, navigation}) => {
         setHotels(route.params.listOfHotels["hotels"]);
     }, [route]);
 
-    // todo: fix loading
+
     const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.container}>
-            <SearchAndFilterHeader/>
+            <SearchAndFilterHeader
+                loading={loading}
+                setLoading={setLoading}
+            />
             <FlatList
                 data={hotels}
                 renderItem={renderItem}

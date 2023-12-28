@@ -129,6 +129,15 @@ const SortAndFilterSelector = (
     };
 
     useEffect(() => {
+        const fetchData = async () => {
+            await search();
+        };
+
+        fetchData().then();
+        setDoneState(false);
+    }, [doneState]);
+
+    useEffect(() => {
 
         if (searchTriggered) {
             const fetchData = async () => {
@@ -159,7 +168,7 @@ const SortAndFilterSelector = (
             setSearchTriggered(false);
             setDoneState(false);
         }
-    }, [searchCriteria, searchTriggered, sortBy, sortDirection, doneState]);
+    }, [searchCriteria, searchTriggered, sortBy, sortDirection]);
 
 
     const handleDoneButton = () => {

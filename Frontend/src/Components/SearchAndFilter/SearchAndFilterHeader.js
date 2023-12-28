@@ -1,5 +1,5 @@
 import React, {useContext} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {ActivityIndicator, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useFonts} from "expo-font";
 import {Poppins_700Bold} from "@expo-google-fonts/poppins";
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
@@ -7,7 +7,12 @@ import {RangeDatepicker} from "@ui-kitten/components";
 import Counter from "../Home/Counter";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 
-const SearchAndFilterHeader = () => {
+const SearchAndFilterHeader = (
+    {
+        loading,
+        setLoading
+    }
+) => {
 
     const {updateSearchOptions , ...searchOptions} =
         useContext(SearchOptionsContext);
@@ -54,6 +59,8 @@ const SearchAndFilterHeader = () => {
             <TouchableOpacity style={styles.button} onPress={search}>
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
+
+            {loading && <ActivityIndicator size="large" color="#0000ff"/>}
         </View>
 
     );
@@ -75,7 +82,7 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        height: '38%',
+        height: '35%',
         backgroundColor: '#4536F9',
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,

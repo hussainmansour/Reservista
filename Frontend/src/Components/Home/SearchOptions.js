@@ -16,18 +16,21 @@ const SearchOptions = ({navigation}) => {
     const [loading, setLoading] = useState(false);
 
     const getLocations = async () => {
-        const locations = await ConfigAPI.getValidLocations((response) => {
+        // if (locations !== undefined && locations.length > 0)
+        //     return
+
+        // const locations = await ConfigAPI.getValidLocations((response) => {
             updateSearchOptions({
                 locations: ['London/UK', 'Cairo/Egypt', 'Paris/France', 'Xiamen/China']
             });
-        });
+        // });
 
-        if (locations !== undefined) {
-            const updatedLocations = locations.map(location => `${location.city}/${location.country}`);
-            updateSearchOptions({ locations: updatedLocations });
-        }
-
-        console.log(searchOptions.locations);
+        // if (locations !== undefined) {
+        //     const updatedLocations = locations.map(location => `${location.city}/${location.country}`);
+        //     updateSearchOptions({ locations: updatedLocations });
+        // }
+        //
+        // console.log(searchOptions.locations);
     }
 
     const getSearchCriteriaDTO = () => {
@@ -52,6 +55,10 @@ const SearchOptions = ({navigation}) => {
     }
 
     const [searchTriggered, setSearchTriggered] = useState(false);
+
+
+    const today = new Date();
+    const nextYear = new Date(today.getFullYear() + 5, today.getMonth(), today.getDate());
 
     const search = async () => {
         updateSearchCriteria(getSearchCriteriaDTO());
@@ -92,10 +99,11 @@ const SearchOptions = ({navigation}) => {
     }, [searchCriteria, searchTriggered]);
 
     useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             await getLocations();
         };
-
+        setLoading(false);
         fetchData().catch(console.error);
     }, []);
 
@@ -124,6 +132,8 @@ const SearchOptions = ({navigation}) => {
                 <RangeDatepicker
                     range={searchOptions.checkInOutTimes}
                     onSelect={nextRange => updateSearchOptions({checkInOutTimes: nextRange})}
+                    min={today}
+                    max={nextYear}
                 />
             </View>
 
