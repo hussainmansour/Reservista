@@ -47,7 +47,10 @@ public enum ErrorCode {
     HOTEL_NOT_FOUND(50,"Hotel not found"),
 
     //Hotel error codes
-    HOTEL_NOT_FOUND(50,"Hotel not found"),
+    VOUCHER_ALREADY_EXISTS(23,"Voucher already exists"),
+
+    ADMIN_ALREADY_EXISTS(24,"Admin already exists"),
+
 
     // Error code for testing purposes
     TEST_CODE(0,"testing message");

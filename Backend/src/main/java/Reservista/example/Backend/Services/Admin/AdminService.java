@@ -4,9 +4,8 @@ import Reservista.example.Backend.DAOs.AdminRepository;
 import Reservista.example.Backend.DAOs.VoucherRepository;
 import Reservista.example.Backend.DTOs.Admin.AdminDTO;
 import Reservista.example.Backend.DTOs.Admin.VoucherDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.Enums.ErrorCode;
 import Reservista.example.Backend.Error.GlobalException;
-import Reservista.example.Backend.Error.GlobalExceptionHandler;
 import Reservista.example.Backend.Models.EntityClasses.Admin;
 import Reservista.example.Backend.Models.EntityClasses.Voucher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +27,7 @@ public class AdminService {
 
     public void addVoucher(VoucherDTO voucherDTO) throws GlobalException {
         if(voucherRepository.existsByVoucherCode(voucherDTO.getVoucherCode())){
-            throw new GlobalException(StatusCode.VOUCHER_ALREADY_EXISTS, HttpStatus.CONFLICT);
+            throw new GlobalException(ErrorCode.VOUCHER_ALREADY_EXISTS, HttpStatus.CONFLICT);
         }
 
         Voucher voucher = Voucher.builder()
@@ -42,7 +41,7 @@ public class AdminService {
     public void addAdmin(AdminDTO adminDTO) throws GlobalException {
 
         if(adminRepository.existsByAdminName(adminDTO.getAdminName())){
-            throw new GlobalException(StatusCode.ADMIN_ALREADY_EXISTS, HttpStatus.CONFLICT);
+            throw new GlobalException(ErrorCode.ADMIN_ALREADY_EXISTS, HttpStatus.CONFLICT);
         }
 
         Admin admin = Admin.builder()
