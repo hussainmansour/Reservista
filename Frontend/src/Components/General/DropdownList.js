@@ -7,7 +7,7 @@ import styles from '../../Styles/Editstyles';
 
 
 
-const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items, color }) => {
+const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items, color, errorMessage }) => {
     // console.log(`Label: ${label}`);
     // console.log(`Selected Value: ${selectedValue}`);
     // console.log('Items:', items);
@@ -32,6 +32,9 @@ const DropdownList = ({ label, selectedValue, onValueChange, onBlur, items, colo
                     ))}
                 </Picker>
             </View>
+            {errorMessage ? (
+                <Text style={styles.errorText}>{errorMessage}</Text>
+            ) : null}
         </View>
     )
 };
