@@ -1,5 +1,6 @@
 const Color =
 {
+
     PALEBLUE: '#DAECF3',
     ORANGE: '#fe5b66',
     SEABLUE: '#1AA6B7',

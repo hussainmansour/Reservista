@@ -11,4 +11,5 @@ public final class ValidationUtil {
     public static final String invalidAge="Invalid Age";
     public static final String invalidGender="invalid gender";
     public static final String invalidNationality="invalid nationality";
+    public static final int validationErrorCode = 100;
 }

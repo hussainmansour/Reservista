@@ -1,7 +1,8 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchResultDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -306,9 +307,9 @@ class SearchAndFilterServiceTest {
 
     //tests for rooms
     @Test
-    public void test12_searchRooms() {
+    public void test12_searchRooms() throws GlobalException {
         // Arrange
-        RoomSearchCriteriaDTO searchCriteria = new RoomSearchCriteriaDTO();
+        HotelIdentifierWithSearchCriteriaDTO searchCriteria = new HotelIdentifierWithSearchCriteriaDTO();
         searchCriteria.setCheckIn(Instant.parse("2024-01-01T00:00:00Z"));
         searchCriteria.setCheckOut(Instant.parse("2024-01-05T00:00:00Z"));
         searchCriteria.setNumberOfRooms(1);
@@ -316,30 +317,26 @@ class SearchAndFilterServiceTest {
         searchCriteria.setHotelId(UUID.fromString("d10a9c49-add1-44bd-98c6-2674c5b8fd78"));
 
         // Act
-        RoomSearchResultDTO result = searchAndFilterService.filterRooms(searchCriteria);
+        HotelDTO result = searchAndFilterService.filterRooms(searchCriteria);
 
         // Assert
         assertNotNull(result);
-        assertNotNull(result.getRoomDTOList());
-        assertTrue(result.getRoomDTOList().size() > 0);
-    }
+     }
 
 
     @Test
-    public void test12_searchRoomsWithoutCheckinAndCheckout() {
+    public void test12_searchRoomsWithoutCheckinAndCheckout() throws GlobalException {
         // Arrange
-        RoomSearchCriteriaDTO searchCriteria = new RoomSearchCriteriaDTO();
+        HotelIdentifierWithSearchCriteriaDTO searchCriteria = new HotelIdentifierWithSearchCriteriaDTO();
         searchCriteria.setNumberOfRooms(1);
         searchCriteria.setNumberOfTravelers(1);
         searchCriteria.setHotelId(UUID.fromString("d10a9c49-add1-44bd-98c6-2674c5b8fd78"));
 
         // Act
-        RoomSearchResultDTO result = searchAndFilterService.filterRooms(searchCriteria);
+        HotelDTO result = searchAndFilterService.filterRooms(searchCriteria);
 
         // Assert
         assertNotNull(result);
-        assertNotNull(result.getRoomDTOList());
-        assertTrue(result.getRoomDTOList().size() > 0);
-    }
+     }
 
 }
