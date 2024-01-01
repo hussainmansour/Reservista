@@ -30,6 +30,8 @@ public class RegistrationRequestDTO {
 
     private String lastName;
 
+    private String middleName;
+
     @Age
     private LocalDate birthDate;
 

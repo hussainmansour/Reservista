@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
@@ -9,6 +9,7 @@ import editStyles from '../../Styles/Editstyles';
 import axios from 'axios';
 import Color from '../../Styles/Color';
 import { getBaseURL } from '../../Utilities/New/BaseURL';
+import { Layout, Button, useStyleSheet, Datepicker } from '@ui-kitten/components';
 
 
 // for validation
@@ -38,12 +39,21 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
 
     const [countries, setCountries] = useState([])
 
+    console.log(user);
+
+    const formattedDateString = user.birthDate
+
+    let parts = formattedDateString.split("-");
+    let formattedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+    const [birthDate, setBirthDate] = useState(formattedDate)
+
     // Get the valid countries
 
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get(`http://${getBaseURL}:8080/config/countries`);
+                const response = await axios.get(`${getBaseURL()}/config/countries`);
                 const unsortedCountries = response.data
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -97,13 +107,60 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     Value={values.lastName}
                                 />
 
-                                <CustomTextInput
+                                {/* <CustomTextInput
                                     title="Date of birth"
                                     onChangeText={handleChange('birthDate')}
                                     onBlur={handleBlur('birthDate')}
                                     errorMessage={errors.birthDate}
                                     Value={values.birthDate}
-                                />
+                                /> */}
+
+                                <View style={{ marginBottom: 15, marginLeft: 21, width: '85%' }}>
+                                    <Text style={{
+                                        color: Color.MIDNIGHTBLUE,
+                                        fontWeight: 'bold',
+                                        marginBottom: 5,
+                                        paddingLeft: 10,
+                                        fontSize: 15,
+                                    }}>
+                                        Date of birth
+                                    </Text>
+                                    <Datepicker
+                                        placeholder="Select Date"
+                                        date={birthDate}
+                                        onSelect={(date) => {
+                                            console.log('====================================');
+                                            setBirthDate(date);
+                                            let validDate = date.getFullYear() +
+                                                '-' +
+                                                (String(date.getMonth() + 1).padStart(2, '0')) +
+                                                '-' +
+                                                (String(date.getDate()).padStart(2, '0'));
+                                            // values.birthDate=validDate;
+                                            console.log(validDate);
+                                            handleChange('birthDate')(validDate);
+                                            console.log(date);
+                                            console.log('====================================');
+                                        }}
+                                        controlStyle={{
+                                            backgroundColor: '#D9D9D9',
+                                            borderRadius: 10,
+                                            height: 55,
+                                            paddingLeft: 10,
+                                        }}
+                                        min={new Date(1900, 1, 1)}
+                                        max={new Date()}
+                                    />
+
+                                    {errors.birthDate ? (
+                                        <Text style={{
+                                            color: 'red',
+                                            fontSize: 14,
+                                            marginTop: 5,
+                                            marginLeft: 10,
+                                        }}>{errors.birthDate}</Text>
+                                    ) : null}
+                                </View>
 
                                 <DropdownList
                                     label="Gender"
@@ -130,13 +187,13 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     {/* Cancel Button */}
                                     <CustomizedButton
                                         onPress={onCancel}
-                                        buttonStyle={{...editStyles.cancelButton,backgroundColor:Color.ORANGE}}
+                                        buttonStyle={{ ...editStyles.cancelButton, backgroundColor: Color.ORANGE }}
                                         textStyle={editStyles.buttonText}
                                         text="Cancel"
                                     />
                                     {/* Save Button */}
                                     <CustomizedButton
-                                        onPress={()=>{
+                                        onPress={() => {
                                             onSave(values)
                                         }}
                                         buttonStyle={editStyles.saveButton}

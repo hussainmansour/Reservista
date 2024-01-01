@@ -94,7 +94,7 @@ const UpcomingReservation = () => {
         console.log('====================================');
         Alert.alert("Error", "Failed to cancel your reservation.\nTry again later.");
       }
-    },isLoading);
+    },setIsLoading);
     if(response!==undefined){
       console.log('====================================');
       console.log(response);
@@ -120,7 +120,7 @@ const UpcomingReservation = () => {
         console.log('====================================');
         Alert.alert("Error", "Failed to cancel your reservation.\nTry again later.");
       }
-    },isLoading);
+    },setIsLoading);
 
     if(response!==undefined){
       console.log("response",response);

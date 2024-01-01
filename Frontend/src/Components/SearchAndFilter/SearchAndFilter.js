@@ -1,16 +1,16 @@
-import React, {useContext, useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import SearchAndFilterHeader from './SearchAndFilterHeader';
 import HotelCard from "./HotelCard";
 import SortAndFilterSelector from "./SortAndFilterSelector";
-import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
-import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import { SearchCriteriaContext } from "../../Store/searchCriteriaContext";
+import { SearchAndFilterAPI } from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
-const SearchAndFilter = ({route, navigation}) => {
+const SearchAndFilter = ({ route, navigation }) => {
 
     const [hotels, setHotels] = useState([]);
 
-    const {updateSearchCriteria, ...searchCriteria} =
+    const { updateSearchCriteria, ...searchCriteria } =
         useContext(SearchCriteriaContext);
 
     const {
@@ -20,32 +20,34 @@ const SearchAndFilter = ({route, navigation}) => {
         numberOfRooms
     } = searchCriteria;
 
-    const onHotelPress = (item) => navigation.navigate('Hotel', {item});
-    const renderItem = ({item}) =>
-        <HotelCard hotel={item} onPress={async () => {
-            const HotelDTO = {
-                hotelId: item.id,
-                numberOfRooms: numberOfRooms,
-                numberOfTravelers: numberOfTravelers,
-                checkIn: checkIn,
-                checkOut: checkOut
-            }
+    const onHotelPress = (item) => navigation.navigate('Hotel', { item });
+    const renderItem = ({ item }) =>
+        <HotelCard hotel={item} onPress={()=> onHotelPress(item)
+            // async () => {
+            //     const HotelDTO = {
+            //         hotelId: item.id,
+            //         numberOfRooms: numberOfRooms,
+            //         numberOfTravelers: numberOfTravelers,
+            //         checkIn: checkIn,
+            //         checkOut: checkOut
+            //     }
 
-            const response = await SearchAndFilterAPI.getHotel(
-                HotelDTO,
-                (response) => {
-                    const responseBody = response.data;
+            //     const response = await SearchAndFilterAPI.getHotel(
+            //         HotelDTO,
+            //         (response) => {
+            //             const responseBody = response.data;
 
-                    if (responseBody.data !== undefined) {
+            //             if (responseBody.data !== undefined) {
 
-                        if (responseBody.errorCode === 50)
-                            Alert('Error' , responseBody.data);
+            //                 if (responseBody.errorCode === 50)
+            //                     Alert('Error', responseBody.data);
 
-                    } else console.log(responseBody)
-                }
-            );
-            navigation.navigate('Hotel', {response})
-        }}/>;
+            //             } else console.log(responseBody)
+            //         }
+            //     );
+            //     navigation.navigate('Hotel', { response })
+            // }
+        } />;
 
 
     useEffect(() => {
@@ -65,7 +67,7 @@ const SearchAndFilter = ({route, navigation}) => {
                 data={hotels}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-                ListFooterComponent={<View style={{height: 100}}/>}
+                ListFooterComponent={<View style={{ height: 100 }} />}
             />
             <SortAndFilterSelector
                 setHotels={setHotels}

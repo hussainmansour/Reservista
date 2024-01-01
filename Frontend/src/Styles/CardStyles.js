@@ -6,7 +6,8 @@ import Color from "./Color";
 // Styles
 const cardStyles = StyleSheet.create({
     CardContainer: {
-        flexDirection: 'row',
+        flex:1,
+        flexDirection: 'column',
         margin: 10,
         borderRadius: 15,
         overflow: 'hidden',

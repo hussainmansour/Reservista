@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert,FlatList } from 'react-native';
+import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RoomCard from './RoomCard';
@@ -11,11 +11,20 @@ import { SearchOptionsContext } from "../../Store/SearchOptionsContext";
 import { SearchAndFilterAPI } from "../../Utilities/New/APIs/SearchAndFilterAPI";
 import { getBaseURL } from '../../Utilities/New/BaseURL';
 import Color from '../../Styles/Color';
+import LoadingComponent from '../General/LoadingComponent';
 
 const HotelView = ({ route, navigation }) => {
 
     const { updateSearchCriteria, ...searchCriteria } =
         useContext(SearchCriteriaContext);
+
+    const [isModalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hotel, setHotel] = useState({});
+
+    console.log('====================================');
+    console.log(route.params.item);
+    console.log('====================================');
 
     const {
         checkIn,
@@ -23,6 +32,50 @@ const HotelView = ({ route, navigation }) => {
         numberOfTravelers,
         numberOfRooms
     } = searchCriteria;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const HotelDTO = {
+                hotelId: route.params.item.id,
+                numberOfRooms: numberOfRooms,
+                numberOfTravelers: numberOfTravelers,
+                checkIn: checkIn,
+                checkOut: checkOut
+            }
+            let response = await SearchAndFilterAPI.getHotel(HotelDTO, (response) => {
+                const responseBody = response.data;
+                if (responseBody.data !== undefined) {
+                    console.log(responseBody.data);
+                    Alert.alert('Error', responseBody.data);
+                }
+                else {
+                    console.log('====================================');
+                    console.log(responseBody);
+                    console.log('====================================');
+                    Alert.alert("Error", "Failed to get Hotel");
+                }
+            });
+
+            if (response !== undefined) {
+                console.log("from hotel view");
+                console.log('====================================');
+                console.log(response);
+                console.log('====================================');
+                setHotel(response);
+            }
+        };
+
+        fetchData().then(()=>{
+            setIsLoading(false);
+        });
+    }, []);
+
+    // Wait until data is loaded before rendering
+    if (isLoading) {
+        return (
+            <LoadingComponent></LoadingComponent>
+        );
+    }
 
     const {
         address,
@@ -38,11 +91,11 @@ const HotelView = ({ route, navigation }) => {
         reviewCount,
         starRating,
         rooms
-    } = route.params.response;
+    } = hotel;
+
+    console.log(hotel);
 
     const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
-
-    const [isModalVisible, setModalVisible] = useState(false);
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
@@ -107,7 +160,7 @@ const HotelView = ({ route, navigation }) => {
                             <Icon name="comments" size={20} color="#75C2F6" />
                             <Text style={styles.reviewText}>{`${reviewCount} Reviews`}</Text>
                         </View>
-                        <TouchableOpacity onPress={toggleModal} style={{...styles.reviewButton,backgroundColor:Color.SEABLUE}}>
+                        <TouchableOpacity onPress={toggleModal} style={{ ...styles.reviewButton, backgroundColor: Color.SEABLUE }}>
                             <Text style={styles.reviewButtonText}>See Reviews</Text>
                         </TouchableOpacity>
                     </View>
@@ -136,11 +189,21 @@ const HotelView = ({ route, navigation }) => {
                 </View>
 
                 {/* Room Cards */}
-                <View style={styles.roomsContainer}>
+                {/* <View style={styles.roomsContainer}>
                     {rooms.map((room, index) => (
                         <RoomCard key={index} {...room} reservePress={reserve} />
                     ))}
-                </View>
+                </View> */}
+                <FlatList data={rooms}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <RoomCard {...item} reservePress={reserve} />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.roomsContainer}
+                >
+
+                </FlatList>
 
                 {/* Reviews Modal */}
                 <Modal animationType="slide" transparent={false} visible={isModalVisible}>
@@ -159,11 +222,11 @@ const styles = StyleSheet.create({
 
     scrollContainer: {
         flexGrow: 1,
+        backgroundColor: Color.PALEBLUE,
     },
     container: {
         flex: 1,
-        paddingTop: 40,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: Color.PALEBLUE,
         paddingHorizontal: 10, // Adjusted padding
     },
     infoContainer: {
@@ -178,6 +241,7 @@ const styles = StyleSheet.create({
         marginBottom: 5, // Decreased space
     },
     imageContainer: {
+        backgroundColor: Color.PALEBLUE,
         flexDirection: 'row',
         marginTop: 70,
         height: 300
@@ -186,11 +250,12 @@ const styles = StyleSheet.create({
         width: 300, // Adjust the width according to your preference
         height: 300, // Adjust the height according to your preference
         borderRadius: 10,
-        marginRight: 10, // Adjust the spacing between images
+        marginHorizontal: 10, // Adjust the spacing between images
     },
     infomapContainer: {
         flexDirection: 'row',
         borderRadius: 15,
+        padding: 10,
         overflow: 'hidden',
         backgroundColor: '#ffffff',
         elevation: 5,
@@ -251,11 +316,14 @@ const styles = StyleSheet.create({
         padding: 8, // Decreased space
         backgroundColor: '#ffffff',
         borderRadius: 5,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     roomsContainer: {
         flex: 1,
         paddingBottom: 30,
-        marginTop: 10, // Decreased space
+        marginTop: 10,
+        marginBottom:70, // Decreased space
     },
     modalContainer: {
         flex: 1,

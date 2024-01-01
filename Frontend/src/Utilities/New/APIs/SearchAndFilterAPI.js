@@ -18,6 +18,9 @@ export const SearchAndFilterAPI = {
         )
     },
     getHotel : async (hotelIdentifierWithSearchCriteriaDTO,onErrorCallback, setLoading) => {
+        console.log('====================================');
+        console.log("in the getHotel Call");
+        console.log('====================================');
         return await handleRequest(
             async () => {
                 return await authApi.post(

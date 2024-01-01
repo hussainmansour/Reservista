@@ -1,6 +1,6 @@
-import React, {useState, useEffect} from 'react';
-import {useNavigation} from '@react-navigation/native';
-import {useFormik} from 'formik';
+import React, { useState, useEffect } from 'react';
+import { useNavigation } from '@react-navigation/native';
+import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import {
     View,
@@ -11,15 +11,19 @@ import {
 } from 'react-native';
 import CustomTextInput from '../Inputs/CustomTextInput';
 import Checkbox from 'expo-checkbox';
-import {signUp} from '../../Utilities/API';
+import { signUp } from '../../Utilities/API';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import DropdownList from '../General/DropdownList';
 import axios from "axios";
 import styles from '../../Styles/SignUpstyles';
 import Loginstyles from "../../Styles/Loginstyles";
 import colors from "../../Styles/Color";
-import {LinearGradient} from 'expo-linear-gradient';
-import {RegistrationAPI} from "../../Utilities/New/APIs/RegistrationAPI";
+import { LinearGradient } from 'expo-linear-gradient';
+import { RegistrationAPI } from "../../Utilities/New/APIs/RegistrationAPI";
+import Color from '../../Styles/Color';
+import { Layout, Button, useStyleSheet, Datepicker } from '@ui-kitten/components';
+import { getBaseURL } from '../../Utilities/New/BaseURL';
+
 
 
 const validationSchema = Yup.object().shape({
@@ -31,11 +35,11 @@ const validationSchema = Yup.object().shape({
         .required('Last Name is required')
         .min(2, 'Last Name must be at least 2 characters')
         .max(50, 'Last Name must be at most 50 characters'),
-    date: Yup.string()
+    birthDate: Yup.string()
         .required('Date of birth is required')
         .matches(
             /^\d{4}-\d{2}-\d{2}$/,
-            'Invalid date format. Please use YYYY-MM-DD.'
+            'Invalid Date format. Please use YYYY-MM-DD.'
         ),
     email: Yup.string()
         .required('Email is required')
@@ -57,6 +61,8 @@ const SignupScreen = () => {
     const [loading, setLoading] = useState('');
     const [countries, setCountries] = useState([]);
     const [agreeTerms, setAgreeTerms] = useState(false);
+    const [birthDate, setBirthDate] = useState(null)
+
 
     const navigation = useNavigation();
 
@@ -75,7 +81,7 @@ const SignupScreen = () => {
             lastName: '',
             email: '',
             password: '',
-            date: '',
+            birthDate: '',
             userName: '',
             nationality: '',
             gender: 'MALE',
@@ -94,7 +100,7 @@ const SignupScreen = () => {
                 if (responseBody.data !== undefined) {
                     if (responseBody.errorCode === errorCodes.ACCOUNT_DEACTIVATED) {
                         Alert.alert('Reminder', responseBody.data);
-                        navigation.navigate('Verification Code', {email: values.email});
+                        navigation.navigate('Verification Code', { email: values.email });
                     } else {
                         Alert.alert('Error', responseBody.data);
                     }
@@ -109,10 +115,9 @@ const SignupScreen = () => {
             // success
             if (response !== undefined) {
                 Alert.alert('Success', 'Please check your email for the verification code.');
-                navigation.navigate('Verification Code', {email: values.email});
+                navigation.navigate('Verification Code', { email: values.email });
             }
         },
-
     });
 
     const handleValidationErrors = (errorData) => {
@@ -124,7 +129,7 @@ const SignupScreen = () => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get('http://192.168.1.17:8080/config/countries');
+                const response = await axios.get(`${getBaseURL()}/config/countries`);
                 const unsortedCountries = response.data;
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -142,8 +147,8 @@ const SignupScreen = () => {
             }
         };
 
-        // fetchCountries();
-        addCountries(); //For testing purposes
+        fetchCountries();
+        // addCountries(); //For testing purposes
     }, []);
 
     const dropdownItems = countries.map((nationality) => ({
@@ -154,7 +159,7 @@ const SignupScreen = () => {
     return (
         <LinearGradient
             colors={[colors.MIDNIGHTBLUE, colors.SEABLUE]} // Define your gradient colors
-            style={{flex: 1}}
+            style={{ flex: 1 }}
         >
             <ScrollView contentContainerStyle={styles.scrollContainer}>
                 <View style={styles.wholeForm}>
@@ -190,15 +195,63 @@ const SignupScreen = () => {
                             errorMessage={formik.errors.lastName}
                         />
 
-                        <CustomTextInput
+                        {/* <CustomTextInput
                             placeholder={'YYYY-MM-DD'}
                             title={'Date of birth'}
                             secure={false}
-                            onChangeText={formik.handleChange('date')}
-                            onBlur={formik.handleBlur('date')}
-                            value={formik.values.date}
-                            errorMessage={formik.errors.date}
-                        />
+                            onChangeText={formik.handleChange('birthDate')}
+                            onBlur={formik.handleBlur('birthDate')}
+                            value={formik.values.birthDate}
+                            errorMessage={formik.errors.birthDate}
+                        /> */}
+                        <View style={{ marginBottom: 15, marginLeft: 21, width: '85%' }}>
+                            <Text style={{
+                                color: 'white',
+                                fontWeight: 'bold',
+                                marginBottom: 5,
+                                paddingLeft: 10,
+                                fontSize: 17,
+                            }}>
+                                Date of birth
+                            </Text>
+                            <Datepicker
+                                placeholder="Select Date"
+                                date={birthDate}
+                                onSelect={(date) => {
+                                    console.log('====================================');
+                                    setBirthDate(date);
+                                    let validDate = date.getFullYear() +
+                                        '-' +
+                                        (String(date.getMonth() + 1).padStart(2, '0')) +
+                                        '-' +
+                                        (String(date.getDate()).padStart(2, '0'));
+                                    // values.birthDate=validDate;
+                                    console.log(validDate);
+                                    formik.handleChange('birthDate')(validDate);
+                                    console.log(date);
+                                    console.log('====================================');
+                                }}
+                                controlStyle={{
+                                    backgroundColor: '#D9D9D9',
+                                    borderRadius: 10,
+                                    height: 55,
+                                    paddingLeft: 10,
+                                }}
+                                min={new Date(1900, 1, 1)}
+                                max={new Date()}
+                            />
+
+                            {formik.errors.birthDate ? (
+                                <Text style={{
+                                    color: 'red',
+                                    fontSize: 14,
+                                    marginTop: 5,
+                                    marginLeft: 10,
+                                }}>{formik.errors.birthDate}</Text>
+                            ) : null}
+                        </View>
+
+
 
                         <DropdownList
                             label="Gender"
@@ -206,9 +259,9 @@ const SignupScreen = () => {
                             onValueChange={(itemValue) => formik.setFieldValue('gender', itemValue)}
                             onBlur={() => formik.handleBlur('gender')}
                             items={[
-                                {label: 'Male', value: 'MALE'},
-                                {label: 'Female', value: 'FEMALE'},
-                                {label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY'},
+                                { label: 'Male', value: 'MALE' },
+                                { label: 'Female', value: 'FEMALE' },
+                                { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
                             ]}
                             color={'white'}
                             errorMessage={formik.errors.gender}
@@ -277,7 +330,7 @@ const SignupScreen = () => {
                         </Text>
                     </View>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff"/>}
+                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
 
                     <CustomizedButton
                         text={'Sign Up'}

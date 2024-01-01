@@ -15,20 +15,20 @@ const RoomCard = ({ title, price, capacity, roomDetails, roomAvailability, id, i
     console.log(imagesUrls);
     return (
         <View>
-            <FlatList
-                horizontal
-                data={imagesUrls}
-                keyExtractor={(item, index) => index.toString()}
-                renderItem={
-                    ({ item }) => (
-                        <Image style={styles.image} source={{ uri: item.replace("http://localhost:8080", getBaseURL) }} />
-                    )
-                }
-                showsHorizontalScrollIndicator={false}
-                contentContainerStyle={styles.imageContainer}
-            />
 
             <View style={cardStyles.CardContainer}>
+                <FlatList
+                    horizontal
+                    data={imagesUrls}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={
+                        ({ item }) => (
+                            <Image style={styles.image} source={{ uri: item.replace("http://localhost:8080", getBaseURL) }} />
+                        )
+                    }
+                    showsHorizontalScrollIndicator={false}
+                    contentContainerStyle={styles.imageContainer}
+                />
                 <View style={cardStyles.InfoContainer}>
                     <Text style={cardStyles.Title}>{title}</Text>
                     <Text>{`Price: ${price}$`}</Text>
@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
         height: 200,
         resizeMode: 'cover',
         borderRadius: 8,
-        margin:5
+        margin: 5
     },
     textContainer: {
         flex: 1,

@@ -39,6 +39,7 @@ public class UserRegistrationService {
                         .fullName(FullName.builder()
                                 .firstName(registrationRequest.getFirstName())
                                 .lastName(registrationRequest.getLastName())
+                                .middleName(registrationRequest.getMiddleName())
                                 .build())
                         .email(registrationRequest.getEmail())
                         .password(passwordEncoder.encode(registrationRequest.getPassword()))

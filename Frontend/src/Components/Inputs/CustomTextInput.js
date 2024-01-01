@@ -1,8 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-const CustomTextInput = ({ placeholder, title, secure, onChangeText, errorMessage, type ,textStyle,textInputStyle,containerStyle}) => {
-  const tStyle={...styles.Text,...textStyle};
+const CustomTextInput = ({ placeholder, title, secure, onBlur, onChangeText, errorMessage, type ,textStyle,textInputStyle,containerStyle}) => {
+  const tStyle={...styles.text,...textStyle};
   const tInputStyle={...styles.textInput,...textInputStyle};
   const cStyle={...styles.inputContainer,...containerStyle};
 
@@ -13,6 +13,7 @@ const CustomTextInput = ({ placeholder, title, secure, onChangeText, errorMessag
         placeholder={placeholder}
         secureTextEntry={secure}
         onChangeText={onChangeText}
+        onBlur={onBlur}
         style={tInputStyle}
         keyboardType={type === null ? "default" : type}
       />

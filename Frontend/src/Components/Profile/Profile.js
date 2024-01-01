@@ -29,7 +29,7 @@ const Profile = () => {
                     console.log('====================================');
                     Alert.alert("Error", "Failed to get your profile");
                 }
-            },setIsLoading);
+            });
 
             if(response!==undefined){
                 console.log('====================================');
@@ -39,7 +39,9 @@ const Profile = () => {
             }
         };
 
-        fetchData();
+        fetchData().then(()=>{
+            setIsLoading(false);
+        });
     }, []);
 
     const handleEdit = () => {
@@ -54,8 +56,9 @@ const Profile = () => {
     // updating the profile
     const handleSave = async (values) => {
         setIsEditing(false);
+        console.log(values);
         console.log("in save");
-        let response = await ProfileAPI.editProfile(values,()=>{
+        let response = await ProfileAPI.editProfile(values,(response)=>{
             const responseBody=response.data;
                 if(responseBody.data!==undefined){
                     console.log(responseBody.data);
@@ -79,34 +82,6 @@ const Profile = () => {
             console.log("successful update");
             Alert.alert('Success', 'Profile updated successfully');
         }
-
-
-        // try {
-
-        //     console.log("in save");
-
-        //     setIsEditing(false);
-
-        //     setIsLoading(true);
-
-        //     console.log(values);
-
-        //     const response = await ProfileAPI.updateProfile(authCtx.token,values);
-
-        //     console.log("response", response);
-
-        //     const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
-        //     setUser(updatedUser);
-
-        //     console.log("successful update");
-        //     Alert.alert('Success', 'Profile updated successfully');
-        // } catch (error) {
-        //     console.log("Error updating profile:", error);
-        //     Alert.alert('Error', 'Failed to update profile');
-        // }
-        // finally {
-        //     setIsLoading(false);
-        // }
     };
 
     // Wait until data is loaded before rendering
