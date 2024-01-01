@@ -54,9 +54,11 @@ const VerificationCodeScreen = ({ route, navigation }) => {
 
 
         const dto = { email: route.params.email };
-
-        const response = await OTPAPI.refreshOTP(dto, (response) => {
+        console.log("email",dto);
+        const response = await OTPAPI.refreshOTP(route.params.email, (response) => {
+            
             const responseBody = response.data;
+            console.log(responseBody.errorCode);
             if (responseBody.data !== undefined) {
                 Alert.alert('Error', responseBody.data);
             } else {

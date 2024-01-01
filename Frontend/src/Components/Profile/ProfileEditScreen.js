@@ -8,6 +8,7 @@ import DropdownList from '../General/DropdownList';
 import editStyles from '../../Styles/Editstyles';
 import axios from 'axios';
 import Color from '../../Styles/Color';
+import { getBaseURL } from '../../Utilities/New/BaseURL';
 
 
 // for validation
@@ -42,7 +43,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get("http://192.168.1.17:8080/config/countries");
+                const response = await axios.get(`http://${getBaseURL}:8080/config/countries`);
                 const unsortedCountries = response.data
                 setCountries(unsortedCountries.sort());
             } catch (error) {

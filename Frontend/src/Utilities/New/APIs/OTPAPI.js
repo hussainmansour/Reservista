@@ -17,16 +17,11 @@ export const OTPAPI = {
         )
     },
     refreshOTP: async (email, onErrorCallback, setLoading) => {
+        console.log("email in refreshOTP",email)
         return await handleRequest(
             async () => {
                 return await unAuthApi.post(
-                    `${baseURL}/refresh-verification-code`,
-                    null,
-                    {
-                        params: {
-                            'email': email
-                        }
-                    }
+                    `${baseURL}/refresh-verification-code/${email}`
                 );
             },
             onErrorCallback,
