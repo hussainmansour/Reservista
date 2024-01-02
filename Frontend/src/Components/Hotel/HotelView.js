@@ -65,7 +65,7 @@ const HotelView = ({ route, navigation }) => {
             }
         };
 
-        fetchData().then(()=>{
+        fetchData().then(() => {
             setIsLoading(false);
         });
     }, []);
@@ -100,6 +100,9 @@ const HotelView = ({ route, navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
+    navigation.setOptions({
+        title: hotelTitle,
+    });
 
     const reserve = (roomId, price, title) => {
         console.log("reserve");
@@ -124,7 +127,12 @@ const HotelView = ({ route, navigation }) => {
 
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>{hotelTitle}</Text>
+            </View>
             <FlatList
                 horizontal
                 data={imagesUrls}
@@ -140,9 +148,6 @@ const HotelView = ({ route, navigation }) => {
             <View style={styles.container}>
                 {/* Hotel Information */}
                 {/* Hotel Name */}
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{hotelTitle}</Text>
-                </View>
 
                 <View style={styles.infomapContainer}>
 
@@ -243,8 +248,9 @@ const styles = StyleSheet.create({
     imageContainer: {
         backgroundColor: Color.PALEBLUE,
         flexDirection: 'row',
-        marginTop: 70,
-        height: 300
+        margin:10,
+        paddingRight:10,
+        height: 400
     },
     image: {
         width: 300, // Adjust the width according to your preference
@@ -323,7 +329,7 @@ const styles = StyleSheet.create({
         flex: 1,
         paddingBottom: 30,
         marginTop: 10,
-        marginBottom:70, // Decreased space
+         // Decreased space
     },
     modalContainer: {
         flex: 1,
@@ -339,18 +345,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#333333',
+        color: '#ffffff',
 
     },
     titleContainer: {
         flexDirection: 'row',
-        margin: 10,
         height: '5%',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        backgroundColor: '#ffffff',
+        backgroundColor: Color.SEABLUE,
         elevation: 5,
         shadowColor: '#000',
         shadowOffset: {
