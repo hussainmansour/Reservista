@@ -86,7 +86,7 @@ const SignupScreen = () => {
             nationality: '',
             gender: 'MALE',
         },
-        validationSchema,
+        validationSchema:validationSchema,
         onSubmit: async (values) => {
             if (!agreeTerms) {
                 Alert.alert('', 'Please agree to the Terms and Conditions');
@@ -125,6 +125,8 @@ const SignupScreen = () => {
             formik.setFieldError(key, errorData[key]);
         });
     };
+
+    
 
     useEffect(() => {
         const fetchCountries = async () => {
@@ -173,7 +175,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('firstName')}
                             onBlur={formik.handleBlur('firstName')}
                             value={formik.values.firstName}
-                            errorMessage={formik.errors.firstName}
+                            errorMessage={formik.touched.firstName && formik.errors.firstName}
                         />
                         <CustomTextInput
                             placeholder={'Middle name'}
@@ -182,7 +184,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('middleName')}
                             onBlur={formik.handleBlur('middleName')}
                             value={formik.values.middleName}
-                            errorMessage={formik.errors.middleName}
+                            errorMessage={formik.touched.middleName && formik.errors.middleName}
                         />
 
                         <CustomTextInput
@@ -192,7 +194,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('lastName')}
                             onBlur={formik.handleBlur('lastName')}
                             value={formik.values.lastName}
-                            errorMessage={formik.errors.lastName}
+                            errorMessage={formik.touched.lastName && formik.errors.lastName}
                         />
 
                         {/* <CustomTextInput
@@ -241,7 +243,7 @@ const SignupScreen = () => {
                                 max={new Date()}
                             />
 
-                            {formik.errors.birthDate ? (
+                            {(formik.touched.birthDate && formik.errors.birthDate) ? (
                                 <Text style={{
                                     color: 'red',
                                     fontSize: 14,
@@ -264,7 +266,7 @@ const SignupScreen = () => {
                                 { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
                             ]}
                             color={'white'}
-                            errorMessage={formik.errors.gender}
+                            errorMessage={formik.touched.gender&&formik.errors.gender}
                         />
                     </View>
 
@@ -278,7 +280,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('email')}
                             onBlur={formik.handleBlur('email')}
                             value={formik.values.email}
-                            errorMessage={formik.errors.email}
+                            errorMessage={formik.touched.email && formik.errors.email}
                             type="email-address"
                         />
                         <CustomTextInput
@@ -288,7 +290,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('userName')}
                             onBlur={formik.handleBlur('userName')}
                             value={formik.values.userName}
-                            errorMessage={formik.errors.userName}
+                            errorMessage={formik.touched.userName && formik.errors.userName}
                         />
                         <CustomTextInput
                             placeholder={'Password (8 characters)'}
@@ -297,7 +299,7 @@ const SignupScreen = () => {
                             onChangeText={formik.handleChange('password')}
                             onBlur={formik.handleBlur('password')}
                             value={formik.values.password}
-                            errorMessage={formik.errors.password}
+                            errorMessage={formik.touched.password && formik.errors.password}
                         />
 
                         <DropdownList
@@ -307,7 +309,7 @@ const SignupScreen = () => {
                             onBlur={() => formik.handleBlur('nationality')}
                             items={dropdownItems}
                             color={'white'}
-                            errorMessage={formik.errors.nationality}
+                            errorMessage={formik.touched.nationality && formik.errors.nationality}
 
                         />
                     </View>

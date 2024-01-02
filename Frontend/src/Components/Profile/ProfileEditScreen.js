@@ -78,16 +78,21 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                     <Formik
                         initialValues={updateduser}
                         validationSchema={validationSchema}
-                        onSubmit={onSave}
+                        onSubmit={(values)=>{
+                            console.log('====================================');
+                            console.log("in the submit");
+                            console.log('====================================');
+                            onSave(values);
+                        }}
                     >
-                        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
+                        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
                             <ScrollView showsVerticalScrollIndicator={false}>
 
                                 <CustomTextInput
                                     title="First Name"
                                     onChangeText={handleChange('firstName')}
                                     onBlur={handleBlur('firstName')}
-                                    errorMessage={errors.firstName}
+                                    errorMessage={touched.firstName && errors.firstName}
                                     Value={values.firstName}
                                 />
 
@@ -95,7 +100,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     title="Middle Name (Optional)"
                                     onChangeText={handleChange('middleName')}
                                     onBlur={handleBlur('middleName')}
-                                    errorMessage={errors.middleName}
+                                    errorMessage={touched.middleName && errors.middleName}
                                     Value={values.middleName}
                                 />
 
@@ -103,7 +108,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     title="Last Name"
                                     onChangeText={handleChange('lastName')}
                                     onBlur={handleBlur('lastName')}
-                                    errorMessage={errors.lastName}
+                                    errorMessage={touched.lastName && errors.lastName}
                                     Value={values.lastName}
                                 />
 
@@ -152,7 +157,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         max={new Date()}
                                     />
 
-                                    {errors.birthDate ? (
+                                    {(touched.birthDate && errors.birthDate) ? (
                                         <Text style={{
                                             color: 'red',
                                             fontSize: 14,
@@ -172,6 +177,9 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         { label: 'Female', value: 'FEMALE' },
                                         { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
                                     ]}
+                                    errorMessage={
+                                        touched.gender && errors.gender
+                                    }
                                 />
 
                                 <DropdownList
@@ -180,6 +188,9 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     onValueChange={(itemValue) => handleChange('nationality')(itemValue)}
                                     onBlur={() => handleBlur('nationality')}
                                     items={dropdownItems}
+                                    errorMessage={
+                                        touched.nationality && errors.nationality
+                                    }
                                 />
 
                                 <View style={editStyles.buttonContainer}>
@@ -193,9 +204,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     />
                                     {/* Save Button */}
                                     <CustomizedButton
-                                        onPress={() => {
-                                            onSave(values)
-                                        }}
+                                        onPress={handleSubmit}
                                         buttonStyle={editStyles.saveButton}
                                         textStyle={editStyles.buttonText}
                                         text="Save"
