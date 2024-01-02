@@ -8,6 +8,7 @@ import {User} from "lucide-react-native";
 import CustomizedButton from "../General/Buttons/CustomizedButton";
 import IconButton from "../General/Buttons/IconButton";
 import {AuthContext} from "../../Store/authContext";
+import Color from "../../Styles/Color";
 
 const HomeHeader = ({navigation}) => {
 
@@ -55,7 +56,7 @@ const HomeHeader = ({navigation}) => {
             <View style={styles.logoutButton} >
                 <IconButton
                                 icon="exit"
-                                color={'#3498db'}
+                                color={Color.SEABLUE}
                                 size={24}
                                 onPress={authCtx.logout}
                             />
@@ -91,7 +92,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         width: '100%',
         height: '40%',
-        backgroundColor: '#4536F9',
+        backgroundColor: Color.SEABLUE,
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
     }
@@ -99,7 +100,7 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontWeight: '900',
         fontSize: 45,
-        color: '#0c0202',
+        color: Color.DIRTYWHITE,
         marginTop: '5%'
     },
     avatar: {
@@ -108,7 +109,7 @@ const styles = StyleSheet.create({
         paddingRight: '10%'
     },
     logoutButton : {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.SEABLUE,
         borderRadius: 10,
         height: '18%',
         width: '12%',

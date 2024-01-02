@@ -7,6 +7,7 @@ import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
 import {ConfigAPI} from "../../Utilities/New/APIs/ConfigAPI";
+import Color from "../../Styles/Color";
 
 const SearchOptions = ({navigation}) => {
 
@@ -122,6 +123,7 @@ const SearchOptions = ({navigation}) => {
                         id: `${index + 1}`,
                         title,
                     }))}
+                    inputContainerStyle={{backgroundColor: "white", borderColor: Color.SEABLUE}}
                 />
             </View>
 
@@ -129,9 +131,14 @@ const SearchOptions = ({navigation}) => {
             <Text style={styles.label}> Dates </Text>
 
             <View style={styles.date}>
+
+
                 <RangeDatepicker
+                    placeholder="DD/MM/YYYY"
                     range={searchOptions.checkInOutTimes}
                     onSelect={nextRange => updateSearchOptions({checkInOutTimes: nextRange})}
+                    controlStyle={{ borderColor: Color.SEABLUE}}
+                    // renderDay={{backgoundcolor:Color.ORANGE}}
                     min={today}
                     max={nextYear}
                 />
@@ -156,7 +163,7 @@ const SearchOptions = ({navigation}) => {
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
 
-            {loading && <ActivityIndicator size="large" color="#0000ff"/>}
+            {loading && <ActivityIndicator size="large" color={Color.MIDNIGHTBLUE}/>}
         </View>
     );
 };
@@ -168,7 +175,7 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         paddingTop: '5%',
         height: '40%',
-        backgroundColor: '#D3D6E7',
+        backgroundColor: Color.PALEBLUE,
         borderRadius: 15,
         position: 'absolute',
         bottom: '25%',
@@ -177,13 +184,14 @@ const styles = StyleSheet.create({
     label: {
         fontWeight: '500',
         fontSize: 18,
+        color:Color.MIDNIGHTBLUE
     },
     dropDownList: {
         marginVertical: '2%',
         paddingRight: '5%',
     },
     button: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.ORANGE,
         borderRadius: 5,
         marginRight: '5%',
         height: '12%',
@@ -193,19 +201,20 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
     buttonText: {
-        color: '#000000',
+        color: '#ffffff',
         fontSize: 25,
     },
     date: {
         paddingRight: '5%',
         marginVertical: '2%',
+
     },
     counters: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingRight: '5%',
         marginTop: '5%',
-        marginBottom: '7%'
+        marginBottom: '7%',
     }
 });
 

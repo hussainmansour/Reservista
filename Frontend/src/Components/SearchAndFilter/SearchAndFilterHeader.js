@@ -6,6 +6,7 @@ import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
 import {RangeDatepicker} from "@ui-kitten/components";
 import Counter from "../Home/Counter";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import Color from "../../Styles/Color";
 
 const SearchAndFilterHeader = (
     {
@@ -60,7 +61,7 @@ const SearchAndFilterHeader = (
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
 
-            {loading && <ActivityIndicator size="large" color="#0000ff"/>}
+            {loading && <ActivityIndicator size="large" color={Color.MIDNIGHTBLUE} style={{alignItems: 'center', justifyContent: 'center'}}/>}
         </View>
 
     );
@@ -70,7 +71,7 @@ const styles = StyleSheet.create({
     searchSelectors: {
         paddingLeft: '5%',
         paddingTop: '2%',
-        backgroundColor: '#D3D6E7',
+        backgroundColor: Color.PALEBLUE,
         borderRadius: 15,
         marginRight: '10%',
         marginTop: '-13%',
@@ -82,8 +83,8 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'flex-start',
         width: '100%',
-        height: '35%',
-        backgroundColor: '#4536F9',
+        height: '33%',
+        backgroundColor: Color.SEABLUE,
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
     },
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
         marginLeft: '9%'
     },
     button: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.ORANGE,
         borderRadius: 5,
         height: '18%',
         width: '50%',
@@ -107,8 +108,8 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonText: {
-        color: '#000000',
-        fontSize: 28,
+        color: Color.DIRTYWHITE,
+        fontSize: 20,
     },
     date: {
         paddingRight: '5%',

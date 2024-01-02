@@ -47,7 +47,7 @@ const AddVoucherModel = ({isVisible, onCancel, onSave}) => {
                                 title="Voucher Name"
                                 onChangeText={handleChange('voucherCode')}
                                 onBlur={handleBlur('voucherCode')}
-                                errorMessage={errors.voucherCode}
+                                errorMessage={touched.voucherCode && errors.voucherCode}
                                 Value={values.voucherCode}
                                 textStyle={{color: Color.MIDNIGHTBLUE}}
                                 textInputStyle={{backgroundColor: Color.MIDNIGHTBLUE}}
@@ -56,7 +56,7 @@ const AddVoucherModel = ({isVisible, onCancel, onSave}) => {
                                 title="Voucher Percentage"
                                 onChangeText={handleChange('discountRate')}
                                 onBlur={handleBlur('discountRate')}
-                                errorMessage={errors.discountRate}
+                                errorMessage={touched.discountRate && errors.discountRate}
                                 Value={values.discountRate}
                                 keyboardType='numeric'
                             />

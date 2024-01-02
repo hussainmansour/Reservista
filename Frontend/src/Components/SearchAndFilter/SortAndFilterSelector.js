@@ -21,6 +21,7 @@ import Slider from "react-native-a11y-slider";
 import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
 import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
 import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import Color from "../../Styles/Color";
 
 
 const SortAndFilterSelector = (
@@ -274,7 +275,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        backgroundColor: '#3498db',
+        backgroundColor: Color.MIDNIGHTBLUE,
         borderRadius: 5,
         marginLeft: '10%',
         alignItems: 'center',
@@ -282,8 +283,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonText: {
-        color: '#000000',
-        fontSize: 28,
+        color: Color.DIRTYWHITE,
+        fontSize: 18,
+        marginLeft:15,
+        marginRight:15,
+        marginTop:3,
+        marginBottom:3,
+        borderRadius:2,
+
     },
     modalContainer: {
         flex: 1,
@@ -293,7 +300,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.PALEBLUE,
         padding: 20,
         width: '80%',
         borderRadius: 20,
@@ -302,21 +309,22 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     actionSheet: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.PALEBLUE,
         height: '26%'
     },
     actionSheetTextElement: {
-        color: '#000000',
+        color: Color.MIDNIGHTBLUE,
         fontSize: 18,
     },
     modalButton: {
-        backgroundColor: '#4536F9',
+        backgroundColor: Color.SEABLUE,
         paddingHorizontal: '5%',
-        borderRadius: 18,
+        borderRadius: 5,
         marginHorizontal: '3%'
+
     },
     modalTitles: {
-        color: '#000000',
+        color: Color.MIDNIGHTBLUE,
         fontSize: 20,
     },
     modalButtons: {

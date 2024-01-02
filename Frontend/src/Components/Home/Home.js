@@ -2,6 +2,7 @@ import {Dimensions, StyleSheet, Text, View} from 'react-native'
 import React from 'react'
 import HomeHeader from "./HomeHeader";
 import SearchOptions from "./SearchOptions";
+import Color from "../../Styles/Color";
 
 const Home = ({navigation}) => {
   return (
@@ -24,7 +25,7 @@ const styles = StyleSheet.create({
     container:{
         flex: 1,
         justifyContent: 'flex-start',
-        backgroundColor: 'white'
+        backgroundColor: Color.DIRTYWHITE
     },
     searchOptions: {
         position: 'absolute',
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     tabs: {
         marginTop: '100%',
         alignSelf: 'center',
-        borderColor: 'blue',
+        borderColor: Color.ORANGE,
         borderWidth: 3,
         paddingHorizontal: '25%',
         paddingVertical: '1%',

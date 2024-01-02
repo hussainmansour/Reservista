@@ -4,6 +4,7 @@ import colors from "./Color";
 const styles = StyleSheet.create({
     wholeForm: {
         flex: 1,
+        paddingTop:120
     },
     wholeFormContent: {
         backgroundColor: 'transparent',
@@ -20,6 +21,7 @@ const styles = StyleSheet.create({
     signup: {
         color: 'white',
         fontSize: 17,
+
     },
     textSignup: {
         color: 'white',
@@ -40,6 +42,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.ORANGE,
     },
     loginButtonText: {
+
         fontSize: 20,
         color: 'white',
     },
