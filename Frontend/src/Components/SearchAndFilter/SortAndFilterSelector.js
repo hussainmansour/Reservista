@@ -237,15 +237,27 @@ const SortAndFilterSelector = (
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitles}>Price range</Text>
                         <Slider min={100} max={10000} values={[priceSliderRange[0], priceSliderRange[1]]}
-                                onChange={handlePriceChange}/>
+                                onChange={handlePriceChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <Text style={styles.modalTitles}>Rating Range</Text>
                         <Slider min={1} max={10} values={[ratingSliderRange[0], ratingSliderRange[1]]}
-                                onChange={handleRatingChange}/>
+                                onChange={handleRatingChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <Text style={styles.modalTitles}>Star Rating Range</Text>
                         <Slider min={1} max={5} values={[starsSliderRange[0], starsSliderRange[1]]}
-                                onChange={handleStarsChange}/>
+                                onChange={handleStarsChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <View style={styles.modalButtons}>
                             <TouchableOpacity style={styles.modalButton} onPress={handleDoneButton}>
@@ -285,11 +297,11 @@ const styles = StyleSheet.create({
     buttonText: {
         color: Color.DIRTYWHITE,
         fontSize: 18,
-        marginLeft:15,
-        marginRight:15,
-        marginTop:3,
-        marginBottom:3,
-        borderRadius:2,
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 3,
+        marginBottom: 3,
+        borderRadius: 2,
 
     },
     modalContainer: {
@@ -334,6 +346,17 @@ const styles = StyleSheet.create({
     },
     doneSheetText: {
         alignSelf: 'center'
+    },
+    slider: {
+        backgroundColor: "red",
+    },
+    trackStyle: {
+        backgroundColor: Color.ORANGE,
+        height: 5
+    },
+    selectedTrackStyle : {
+        backgroundColor: Color.DIRTYWHITE,
+        height: 6,
     }
 });
 

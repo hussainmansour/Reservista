@@ -82,8 +82,12 @@ const LoginScreen = ({ navigation }) => {
                 <View style={styles.signupView}>
                     <Text style={styles.signup}>Don’t have an account?</Text>
                     <TouchableOpacity onPress={() => navigation.navigate('Sign up')}>
-                        <Text style={styles.textSignup}>signup</Text>
+                        <Text style={styles.textSignup}>Signup</Text>
                     </TouchableOpacity>
+                </View>
+
+                <View style={styles.copyrightView}>
+                    <Text style={styles.copyrightText}>{"Copyright © 2024 Reservista"}</Text>
                 </View>
             </View>
         </LinearGradient>

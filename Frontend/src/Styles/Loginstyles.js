@@ -1,10 +1,11 @@
-import { StyleSheet } from "react-native";
+import {StyleSheet} from "react-native";
 import colors from "./Color";
+import Color from "./Color";
 
 const styles = StyleSheet.create({
     wholeForm: {
         flex: 1,
-        paddingTop:120
+        paddingTop: 120
     },
     wholeFormContent: {
         backgroundColor: 'transparent',
@@ -15,8 +16,8 @@ const styles = StyleSheet.create({
     signupView: {
         flexDirection: 'row',
         alignSelf: 'center',
-        marginBottom: 100,
-        marginTop: 20,
+        marginBottom: 50,
+        // marginTop: 20,
     },
     signup: {
         color: 'white',
@@ -46,6 +47,17 @@ const styles = StyleSheet.create({
         fontSize: 20,
         color: 'white',
     },
+    copyrightView: {
+        flexDirection: 'row',
+        alignSelf: 'center',
+        marginBottom: '20%',
+        marginTop: '10%',
+    },
+    copyrightText :{
+        color : Color.DIRTYWHITE,
+        fontWeight: "900",
+        fontSize: 15,
+    }
 });
 
 export default styles;

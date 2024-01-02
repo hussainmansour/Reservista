@@ -15,7 +15,7 @@ const SearchAndFilterHeader = (
     }
 ) => {
 
-    const {updateSearchOptions , ...searchOptions} =
+    const {updateSearchOptions, ...searchOptions} =
         useContext(SearchOptionsContext);
 
     const {
@@ -53,7 +53,8 @@ const SearchAndFilterHeader = (
 
                     <View>
                         <Text style={styles.label}> Travellers </Text>
-                        <Counter count={travellersCount} setCount={(count) => updateSearchOptions({travellersCount: count})}/>
+                        <Counter count={travellersCount}
+                                 setCount={(count) => updateSearchOptions({travellersCount: count})}/>
                     </View>
                 </View>
             </View>
@@ -61,7 +62,7 @@ const SearchAndFilterHeader = (
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
 
-            {loading && <ActivityIndicator size="large" color={Color.MIDNIGHTBLUE} style={{alignItems: 'center', justifyContent: 'center'}}/>}
+            {loading && <ActivityIndicator size="large" color={Color.MIDNIGHTBLUE} style={styles.loadingIndicator}/>}
         </View>
 
     );
@@ -131,7 +132,13 @@ const styles = StyleSheet.create({
     dateSelector: {
         flexDirection: 'row',
         alignItems: 'center'
+    },
+    loadingIndicator: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        alignSelf: 'center'
     }
+
 });
 
 
