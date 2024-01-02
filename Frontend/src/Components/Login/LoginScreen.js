@@ -71,7 +71,7 @@ const LoginScreen = ({ navigation }) => {
                     keyboardType="visible-password"
                 />
 
-                {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                {loading && <ActivityIndicator size="large" color={colors.MIDNIGHTBLUE} />}
                 <CustomizedButton
                     text={"Login"}
                     onPress={handleLoginRequest}

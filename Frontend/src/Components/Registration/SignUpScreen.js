@@ -92,7 +92,6 @@ const SignupScreen = () => {
                 Alert.alert('', 'Please agree to the Terms and Conditions');
                 return;
             }
-            console.log("nat" + values.nationality + "gender" + values.gender)
             let response = await RegistrationAPI.register(values, (response) => {
                 // in case of an expected error this should be the errorDTO
                 const responseBody = response.data;
@@ -332,7 +331,7 @@ const SignupScreen = () => {
                         </Text>
                     </View>
 
-                    {loading && <ActivityIndicator size="large" color="#0000ff" />}
+                    {loading && <ActivityIndicator size="large" color={colors.MIDNIGHTBLUE} />}
 
                     <CustomizedButton
                         text={'Sign Up'}

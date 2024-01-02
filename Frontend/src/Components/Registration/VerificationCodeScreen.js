@@ -4,6 +4,7 @@ import CustomTextInput from '../Inputs/CustomTextInput';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import colors from '../../Styles/Color';
 import { OTPAPI } from '../../Utilities/New/APIs/OTPAPI';
+import { LinearGradient } from 'expo-linear-gradient';
 
 const VerificationCodeScreen = ({ route, navigation }) => {
     const counterTimeInSeconds = 10 * 60;
@@ -76,6 +77,10 @@ const VerificationCodeScreen = ({ route, navigation }) => {
     };
 
     return (
+        <LinearGradient
+            colors={[colors.MIDNIGHTBLUE, colors.SEABLUE]} // Define your gradient colors
+            style={{ flex: 1 }}
+        >
         <ScrollView contentContainerStyle={styles.container}>
             <View style={styles.form}>
                 <Text style={styles.title}>Enter Verification Code</Text>
@@ -104,18 +109,19 @@ const VerificationCodeScreen = ({ route, navigation }) => {
                 />
             </View>
         </ScrollView>
+        </LinearGradient>
     );
 };
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: colors.PALEBLUE,
+        // backgroundColor: colors.PALEBLUE,
         justifyContent: 'center',
         paddingHorizontal: 20,
     },
     form: {
-        backgroundColor: colors.SEABLUE,
+        backgroundColor: colors.PALEBLUE,
         borderRadius: 10,
         padding: 20,
     },
@@ -141,7 +147,7 @@ const styles = StyleSheet.create({
     resendButton: {
         backgroundColor: colors.MIDNIGHTBLUE,
         alignSelf: 'center',
-        marginTop: 20,
+        marginTop: 5,
         width: '50%',
         height: 50,
         borderRadius: 10,
