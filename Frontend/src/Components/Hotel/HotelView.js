@@ -100,9 +100,6 @@ const HotelView = ({ route, navigation }) => {
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
-    navigation.setOptions({
-        title: hotelTitle,
-    });
 
     const reserve = (roomId, price, title) => {
         console.log("reserve");
