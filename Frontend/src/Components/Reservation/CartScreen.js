@@ -1,5 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { AuthContext } from '../../Store/authContext.js';
+import { LogBox } from 'react-native';
 import {
   StyleSheet,
   Text,
@@ -28,6 +29,9 @@ import { ReservationAPI } from "../../Utilities/New/APIs/ReservationAPI.js";
 const CartScreen = ({route}) => {
 
   const navigation = useNavigation();
+  LogBox.ignoreLogs([
+    'Non-serializable values were found in the navigation state',
+  ]);
   const {price,title,count,roomDescriptionId,hotelID,refundable,fullyRefundableRate,checkIn,checkOut,foodOptions}=route.params;
   const [isPaymentModalVisible, setPaymentModalVisible] = useState(false);
   const [clientSecret, setClientSecret] = useState("");
