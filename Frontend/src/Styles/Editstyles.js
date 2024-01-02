@@ -88,7 +88,7 @@ const editStyles = StyleSheet.create({
         fontWeight: 'bold',
         textAlign: 'center',
     },
-        invoiceText: {
+    invoiceText: {
         fontSize: 16,
         color: '#555555',
         lineHeight: 24,

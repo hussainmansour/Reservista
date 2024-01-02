@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Modal,StyleSheet } from 'react-native';
+import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import editStyles from '../../Styles/Editstyles';
 import Color from '../../Styles/Color';
@@ -11,16 +11,18 @@ const Details = ({ isVisible, invoice, onClose }) => {
             animationType="slide"
             transparent={true}
         >
-            <View style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Details</Text>
-                    <Text style={styles.invoiceText}>{invoice}</Text>
-                    <CustomizedButton
-                        text="Close"
-                        onPress={onClose}
-                        textStyle={editStyles.buttonText}
-                        buttonStyle={editStyles.cancelButton}
-                    />
+            <View style={editStyles.modalContainer}>
+                <View style={editStyles.modalContent}>
+                    <Text style={editStyles.modalTitle}>Details</Text>
+                    <ScrollView showsVerticalScrollIndicator={false}>
+                        <Text style={editStyles.invoiceText}>{invoice}</Text>
+                        <CustomizedButton
+                            text="Close"
+                            onPress={onClose}
+                            textStyle={editStyles.buttonText}
+                            buttonStyle={editStyles.cancelButton}
+                        />
+                    </ScrollView>
                 </View>
             </View>
         </Modal>
