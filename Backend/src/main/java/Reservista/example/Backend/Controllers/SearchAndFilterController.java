@@ -1,9 +1,10 @@
 package Reservista.example.Backend.Controllers;
 
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchCriteriaDTO;
-import Reservista.example.Backend.DTOs.SearchAndFilter.RoomSearchResultDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelIdentifierWithSearchCriteriaDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Services.SearchAndFilter.SearchAndFilterService;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/test/search")
+@RequestMapping("/user/search")
 public class SearchAndFilterController {
 
     @Autowired
@@ -21,13 +22,13 @@ public class SearchAndFilterController {
     @PostMapping("/hotels")
     public ResponseEntity<HotelSearchResultDTO> filterAndSortHotels(@Valid @RequestBody HotelSearchCriteriaDTO searchCriteria) {
         HotelSearchResultDTO searchResult = searchAndFilterService.filterAndSortHotels(searchCriteria);
-        return new ResponseEntity<>(searchResult, HttpStatus.OK);
+        return ResponseEntity.ok(searchResult);
     }
 
 
-    @PostMapping("/rooms")
-    public ResponseEntity<RoomSearchResultDTO> filterRooms(@RequestBody RoomSearchCriteriaDTO searchCriteria) {
-        RoomSearchResultDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
-        return new ResponseEntity<>(searchResult, HttpStatus.OK);
+    @PostMapping("/hotel")
+    public ResponseEntity<HotelDTO> getHotel(@Valid @RequestBody HotelIdentifierWithSearchCriteriaDTO searchCriteria) throws GlobalException {
+        HotelDTO searchResult = searchAndFilterService.filterRooms(searchCriteria);
+        return ResponseEntity.ok(searchResult);
     }
 }

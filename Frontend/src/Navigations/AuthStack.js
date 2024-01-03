@@ -19,9 +19,9 @@ export default function AuthStack() {
             <Stack.Navigator>
                 {/* <Stack.Screen name = "CartScreen" component={CartScreen} options={{ headerShown: false }} /> */}
                 <Stack.Screen name = "Login" component={LoginScreen} options={{ headerShown: false }} />
-                <Stack.Screen name = 'Signup' component = {SignupScreen}/>
-                <Stack.Screen name = 'TermsAndConditions' component={TermsAndConditionsScreen} />
-                <Stack.Screen name = 'VerificationCode' component={VerificationCodeScreen} />
+                <Stack.Screen name ="Sign up" component = {SignupScreen}/>
+                <Stack.Screen name = 'Terms And Conditions' component={TermsAndConditionsScreen} />
+                <Stack.Screen name = 'Verification Code' component={VerificationCodeScreen} options={{ headerShown: false }} />
             </Stack.Navigator>
         </View>
     );

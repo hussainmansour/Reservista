@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { View, StyleSheet } from 'react-native';
 import CounterButton from "./CounterButton";
 import ScalableText from "react-native-text";
+import Color from "../../Styles/Color";
 
 const Counter = ({
     count,
@@ -72,17 +73,21 @@ const Counter = ({
 const counterStyles = StyleSheet.create({
     container: {
         flexDirection: 'row',
+        color: Color.SEABLUE,
+
     },
     countText: {
         fontSize: 16,
         paddingLeft: 15,
         paddingRight: 15,
-        color: '#27AAE1',
+        color: Color.SEABLUE,
     },
     count: {
         minWidth: 40,
         alignItems: 'center',
         justifyContent: 'center',
+        color: Color.SEABLUE,
+
     },
 });
 

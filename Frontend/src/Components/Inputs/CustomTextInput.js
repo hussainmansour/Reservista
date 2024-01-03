@@ -1,15 +1,20 @@
 import React from 'react';
 import { StyleSheet, Text, TextInput, View } from 'react-native';
 
-const CustomTextInput = ({ placeholder, title, secure, onChangeText, errorMessage, type }) => {
+const CustomTextInput = ({ placeholder, title, secure, onBlur, onChangeText, errorMessage, type ,textStyle,textInputStyle,containerStyle}) => {
+  const tStyle={...styles.text,...textStyle};
+  const tInputStyle={...styles.textInput,...textInputStyle};
+  const cStyle={...styles.inputContainer,...containerStyle};
+
   return (
-    <View style={styles.inputContainer}>
-      <Text style={styles.text}>{title}</Text>
+    <View style={cStyle}>
+      <Text style={tStyle}>{title}</Text>
       <TextInput
         placeholder={placeholder}
         secureTextEntry={secure}
         onChangeText={onChangeText}
-        style={styles.textInput}
+        onBlur={onBlur}
+        style={tInputStyle}
         keyboardType={type === null ? "default" : type}
       />
       {errorMessage ? (
@@ -30,7 +35,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#D9D9D9',
     borderRadius: 10,
     width: '90%',
-    height: 46,
+    height: 50,
     paddingLeft: 10,
   },
   text: {
@@ -38,7 +43,7 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     marginBottom: 5,
     paddingLeft: 10,
-    fontSize: 20,
+    fontSize: 17,
   },
   errorText: {
     color: 'red',

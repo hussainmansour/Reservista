@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
@@ -21,5 +22,10 @@ public interface UserRepository extends JpaRepository<User, String> {
     Optional<User> findByEmail(String email);
 
     Optional<User> findByUserName(String userName);
+
+    @Query("SELECT u.isBlocked FROM User u WHERE u.email = :email")
+    boolean findIsBlockedByEmail(@Param("email") String email);
+    @Query("SELECT u.email FROM User u")
+    List<String> findAllUsersEmails();
 }
 

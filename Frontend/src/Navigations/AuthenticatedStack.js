@@ -32,15 +32,18 @@ export default function AuthenticatedStack() {
                 name="Home"
                 component={Home}
                 options={{
-                    headerRight: ({tintColor}) => (
-                        <IconButton
-                            icon="exit"
-                            color={tintColor}
-                            size={24}
-                            onPress={authCtx.logout}
-                        />
-                    ),
+                    headerShown:false
                 }}
+                // options={{
+                //     headerRight: ({tintColor}) => (
+                //         <IconButton
+                //             icon="exit"
+                //             color={tintColor}
+                //             size={24}
+                //             onPress={authCtx.logout}
+                //         />
+                //     ),
+                // }}
             />
             <Stack.Screen
             name="Profile"

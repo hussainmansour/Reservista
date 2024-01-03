@@ -1,15 +1,12 @@
 package Reservista.example.Backend.Controllers;
 import Reservista.example.Backend.Services.Payment.PaymentConfirmationService;
-import lombok.extern.log4j.Log4j2;
-import org.apache.logging.log4j.Logger;
-import org.checkerframework.checker.units.qual.A;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import com.stripe.exception.SignatureVerificationException;
-import com.stripe.model.Event;;
+import com.stripe.model.Event;
 import com.stripe.net.Webhook;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

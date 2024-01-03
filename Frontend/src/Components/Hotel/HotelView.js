@@ -1,94 +1,150 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet } from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, Image, Button, Modal, TouchableOpacity, ScrollView, StyleSheet, Alert, FlatList } from 'react-native';
 import MapView, { Marker } from 'react-native-maps';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import RoomCard from './RoomCard';
 import RoomAPI from '../../Utilities/RoomsAPI';
 import { useNavigation } from '@react-navigation/native';
 import HotelImages from './HotelImages';
+import { SearchCriteriaContext } from "../../Store/searchCriteriaContext";
+import { SearchOptionsContext } from "../../Store/SearchOptionsContext";
+import { SearchAndFilterAPI } from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import { getBaseURL } from '../../Utilities/New/BaseURL';
+import Color from '../../Styles/Color';
+import LoadingComponent from '../General/LoadingComponent';
 
-const HotelView = ({ route }) => {
+const HotelView = ({ route, navigation }) => {
 
-    const {item,searchDTO}=route.params;
-    const{address,city,country,fullyRefundable,fullyRefundableRate,hotelFoodOptions,id,images,minRoomPrice,name,rating,reviewCount,starRating}=item;
-    const{checkIn,checkOut,numberOfTravelers,numberOfRooms}=searchDTO;
-
-
-    const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
+    const { updateSearchCriteria, ...searchCriteria } =
+        useContext(SearchCriteriaContext);
 
     const [isModalVisible, setModalVisible] = useState(false);
+    const [isLoading, setIsLoading] = useState(true);
+    const [hotel, setHotel] = useState({});
 
+    console.log('====================================');
+    console.log(route.params.item);
+    console.log('====================================');
 
-    const [rooms,setRooms]=useState([])
+    const {
+        checkIn,
+        checkOut,
+        numberOfTravelers,
+        numberOfRooms
+    } = searchCriteria;
+
+    useEffect(() => {
+        const fetchData = async () => {
+            const HotelDTO = {
+                hotelId: route.params.item.id,
+                numberOfRooms: numberOfRooms,
+                numberOfTravelers: numberOfTravelers,
+                checkIn: checkIn,
+                checkOut: checkOut
+            }
+            let response = await SearchAndFilterAPI.getHotel(HotelDTO, (response) => {
+                const responseBody = response.data;
+                if (responseBody.data !== undefined) {
+                    console.log(responseBody.data);
+                    Alert.alert('Error', responseBody.data);
+                }
+                else {
+                    console.log('====================================');
+                    console.log(responseBody);
+                    console.log('====================================');
+                    Alert.alert("Error", "Failed to get Hotel");
+                }
+            });
+
+            if (response !== undefined) {
+                console.log("from hotel view");
+                console.log('====================================');
+                console.log(response);
+                console.log('====================================');
+                setHotel(response);
+            }
+        };
+
+        fetchData().then(() => {
+            setIsLoading(false);
+        });
+    }, []);
+
+    // Wait until data is loaded before rendering
+    if (isLoading) {
+        return (
+            <LoadingComponent></LoadingComponent>
+        );
+    }
+
+    const {
+        address,
+        city,
+        country,
+        fullyRefundable,
+        fullyRefundableRate,
+        hotelFoodOptions,
+        id,
+        imagesUrls,
+        name,
+        rating,
+        reviewCount,
+        starRating,
+        rooms
+    } = hotel;
+
+    console.log(hotel);
+
+    const hotelTitle = name || "Hotel Name"; // You can replace "Hotel Name" with a default value
 
     const toggleModal = () => {
         setModalVisible(!isModalVisible);
     };
 
-    const navigation = useNavigation();
-
-    const reserve = (roomId,price,title) =>{
+    const reserve = (roomId, price, title) => {
         console.log("reserve");
         console.log(roomId);
         console.log(price);
         console.log(title);
-        const Reservation={
+        const Reservation = {
             price: price,
             title: title,
             count: numberOfRooms,
             roomDescriptionId: roomId,
-            hotelID:id,
-            refundable:fullyRefundable,
+            hotelID: id,
+            refundable: fullyRefundable,
             fullyRefundableRate: fullyRefundableRate,
             checkIn: checkIn,
             checkOut: checkOut,
-            foodOptions : hotelFoodOptions
+            foodOptions: hotelFoodOptions
         };
         console.log(Reservation);
-        navigation.navigate('CartScreen',Reservation);
+        navigation.navigate('CartScreen', Reservation);
     }
 
-    const HotelDTO = {
-        "hotelId": id,
-        "numberOfRooms": numberOfRooms,
-        "numberOfTravelers": numberOfTravelers,
-        "checkIn": checkIn,
-        "checkOut": checkOut
-    }
-    console.log("from hotel")
-    console.log(HotelDTO);
-
-
-
-    // Getting the profile
-    useEffect(() => {
-        const fetchRooms = async () => {
-            try {
-                const response = await RoomAPI.getRooms(HotelDTO);
-                console.log(response);
-                setRooms(response.roomDTOList);
-            } catch (error) {
-                console.log('Error fetching data:', error);
-            }
-        };
-
-        fetchRooms();
-    }, []);
-
-    console.log("from rooms");
-    console.log(rooms);
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <ScrollView contentContainerStyle={styles.scrollContainer}
+        showsVerticalScrollIndicator={false}
+        >
+            <View style={styles.titleContainer}>
+                <Text style={styles.title}>{hotelTitle}</Text>
+            </View>
+            <FlatList
+                horizontal
+                data={imagesUrls}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={
+                    ({ item }) => (
+                        <Image style={styles.image} source={{ uri: item.replace("http://localhost:8080", getBaseURL) }} />
+                    )
+                }
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={styles.imageContainer}
+            />
             <View style={styles.container}>
-
                 {/* Hotel Information */}
-
-                <HotelImages></HotelImages>
                 {/* Hotel Name */}
-                <View style={styles.titleContainer}>
-                    <Text style={styles.title}>{hotelTitle}</Text>
-                </View>
 
                 <View style={styles.infomapContainer}>
 
@@ -106,7 +162,7 @@ const HotelView = ({ route }) => {
                             <Icon name="comments" size={20} color="#75C2F6" />
                             <Text style={styles.reviewText}>{`${reviewCount} Reviews`}</Text>
                         </View>
-                        <TouchableOpacity onPress={toggleModal} style={styles.reviewButton}>
+                        <TouchableOpacity onPress={toggleModal} style={{ ...styles.reviewButton, backgroundColor: Color.SEABLUE }}>
                             <Text style={styles.reviewButtonText}>See Reviews</Text>
                         </TouchableOpacity>
                     </View>
@@ -135,11 +191,21 @@ const HotelView = ({ route }) => {
                 </View>
 
                 {/* Room Cards */}
-                <View style={styles.roomsContainer}>
+                {/* <View style={styles.roomsContainer}>
                     {rooms.map((room, index) => (
                         <RoomCard key={index} {...room} reservePress={reserve} />
                     ))}
-                </View>
+                </View> */}
+                <FlatList data={rooms}
+                    keyExtractor={(item, index) => index.toString()}
+                    renderItem={({ item }) => (
+                        <RoomCard {...item} reservePress={reserve} />
+                    )}
+                    showsVerticalScrollIndicator={false}
+                    contentContainerStyle={styles.roomsContainer}
+                >
+
+                </FlatList>
 
                 {/* Reviews Modal */}
                 <Modal animationType="slide" transparent={false} visible={isModalVisible}>
@@ -158,11 +224,11 @@ const styles = StyleSheet.create({
 
     scrollContainer: {
         flexGrow: 1,
+        backgroundColor: Color.PALEBLUE,
     },
     container: {
         flex: 1,
-        paddingTop: 40,
-        backgroundColor: '#f5f5f5',
+        backgroundColor: Color.PALEBLUE,
         paddingHorizontal: 10, // Adjusted padding
     },
     infoContainer: {
@@ -177,19 +243,22 @@ const styles = StyleSheet.create({
         marginBottom: 5, // Decreased space
     },
     imageContainer: {
+        backgroundColor: Color.PALEBLUE,
         flexDirection: 'row',
-        marginTop: 20,
-        height: 200
+        margin:10,
+        paddingRight:10,
+        height: 400
     },
     image: {
-        width: 150, // Adjust the width according to your preference
-        height: 150, // Adjust the height according to your preference
+        width: 300, // Adjust the width according to your preference
+        height: 300, // Adjust the height according to your preference
         borderRadius: 10,
-        marginRight: 10, // Adjust the spacing between images
+        marginHorizontal: 10, // Adjust the spacing between images
     },
     infomapContainer: {
         flexDirection: 'row',
         borderRadius: 15,
+        padding: 10,
         overflow: 'hidden',
         backgroundColor: '#ffffff',
         elevation: 5,
@@ -250,11 +319,14 @@ const styles = StyleSheet.create({
         padding: 8, // Decreased space
         backgroundColor: '#ffffff',
         borderRadius: 5,
+        fontWeight: 'bold',
+        textAlign: 'center',
     },
     roomsContainer: {
         flex: 1,
         paddingBottom: 30,
-        marginTop: 10, // Decreased space
+        marginTop: 10,
+         // Decreased space
     },
     modalContainer: {
         flex: 1,
@@ -270,18 +342,17 @@ const styles = StyleSheet.create({
     title: {
         fontSize: 24,
         fontWeight: 'bold',
-        color: '#333333',
+        color: '#ffffff',
 
     },
     titleContainer: {
         flexDirection: 'row',
-        margin: 10,
         height: '5%',
         borderRadius: 15,
         justifyContent: 'center',
         alignItems: 'center',
         overflow: 'hidden',
-        backgroundColor: '#ffffff',
+        backgroundColor: Color.SEABLUE,
         elevation: 5,
         shadowColor: '#000',
         shadowOffset: {
@@ -322,7 +393,6 @@ const styles = StyleSheet.create({
         marginLeft: 5,
     },
 });
-
 
 
 export default HotelView;

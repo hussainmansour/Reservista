@@ -1,5 +1,6 @@
 import axios from "axios";
-const API_BASE_URL = 'http://192.168.1.5:8080/test/search/rooms';
+
+const API_BASE_URL = 'http://192.168.1.109:8080/test/search/rooms';
 
 const RoomAPI = {
     getRooms: async (HotelDTO) => {

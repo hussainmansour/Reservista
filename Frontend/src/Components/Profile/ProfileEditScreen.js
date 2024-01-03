@@ -1,12 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { View, Text, Modal, StyleSheet, ScrollView } from 'react-native';
 import { Formik } from 'formik';
 import * as Yup from 'yup';
 import CustomTextInput from '../Inputs/EditTextInput';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import DropdownList from '../General/DropdownList';
-import styles from '../../Styles/Editstyles';
+import editStyles from '../../Styles/Editstyles';
 import axios from 'axios';
+import Color from '../../Styles/Color';
+import { getBaseURL } from '../../Utilities/New/BaseURL';
+import { Layout, Button, useStyleSheet, Datepicker } from '@ui-kitten/components';
 
 
 // for validation
@@ -36,12 +39,21 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
 
     const [countries, setCountries] = useState([])
 
+    console.log(user);
+
+    const formattedDateString = user.birthDate
+
+    let parts = formattedDateString.split("-");
+    let formattedDate = new Date(parts[0], parts[1] - 1, parts[2]);
+
+    const [birthDate, setBirthDate] = useState(formattedDate)
+
     // Get the valid countries
 
     useEffect(() => {
         const fetchCountries = async () => {
             try {
-                const response = await axios.get("http://192.168.1.5:8080/config/countries");
+                const response = await axios.get(`${getBaseURL()}/config/countries`);
                 const unsortedCountries = response.data
                 setCountries(unsortedCountries.sort());
             } catch (error) {
@@ -59,23 +71,28 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
     return (
         <Modal visible={isVisible} animationType="slide" transparent={true}>
             <View
-                style={styles.modalContainer}>
-                <View style={styles.modalContent}>
-                    <Text style={styles.modalTitle}>Edit Profile</Text>
+                style={editStyles.modalContainer}>
+                <View style={editStyles.modalContent}>
+                    <Text style={editStyles.modalTitle}>Edit Profile</Text>
 
                     <Formik
                         initialValues={updateduser}
                         validationSchema={validationSchema}
-                        onSubmit={onSave}
+                        onSubmit={(values)=>{
+                            console.log('====================================');
+                            console.log("in the submit");
+                            console.log('====================================');
+                            onSave(values);
+                        }}
                     >
-                        {({ handleChange, handleBlur, handleSubmit, values, errors }) => (
-                            <ScrollView>
+                        {({ handleChange, handleBlur, handleSubmit, values, errors, touched }) => (
+                            <ScrollView showsVerticalScrollIndicator={false}>
 
                                 <CustomTextInput
                                     title="First Name"
                                     onChangeText={handleChange('firstName')}
                                     onBlur={handleBlur('firstName')}
-                                    errorMessage={errors.firstName}
+                                    errorMessage={touched.firstName && errors.firstName}
                                     Value={values.firstName}
                                 />
 
@@ -83,7 +100,7 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     title="Middle Name (Optional)"
                                     onChangeText={handleChange('middleName')}
                                     onBlur={handleBlur('middleName')}
-                                    errorMessage={errors.middleName}
+                                    errorMessage={touched.middleName && errors.middleName}
                                     Value={values.middleName}
                                 />
 
@@ -91,17 +108,64 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     title="Last Name"
                                     onChangeText={handleChange('lastName')}
                                     onBlur={handleBlur('lastName')}
-                                    errorMessage={errors.lastName}
+                                    errorMessage={touched.lastName && errors.lastName}
                                     Value={values.lastName}
                                 />
 
-                                <CustomTextInput
+                                {/* <CustomTextInput
                                     title="Date of birth"
                                     onChangeText={handleChange('birthDate')}
                                     onBlur={handleBlur('birthDate')}
                                     errorMessage={errors.birthDate}
                                     Value={values.birthDate}
-                                />
+                                /> */}
+
+                                <View style={{ marginBottom: 15, marginLeft: 21, width: '85%' }}>
+                                    <Text style={{
+                                        color: Color.MIDNIGHTBLUE,
+                                        fontWeight: 'bold',
+                                        marginBottom: 5,
+                                        paddingLeft: 10,
+                                        fontSize: 15,
+                                    }}>
+                                        Date of birth
+                                    </Text>
+                                    <Datepicker
+                                        placeholder="Select Date"
+                                        date={birthDate}
+                                        onSelect={(date) => {
+                                            console.log('====================================');
+                                            setBirthDate(date);
+                                            let validDate = date.getFullYear() +
+                                                '-' +
+                                                (String(date.getMonth() + 1).padStart(2, '0')) +
+                                                '-' +
+                                                (String(date.getDate()).padStart(2, '0'));
+                                            // values.birthDate=validDate;
+                                            console.log(validDate);
+                                            handleChange('birthDate')(validDate);
+                                            console.log(date);
+                                            console.log('====================================');
+                                        }}
+                                        controlStyle={{
+                                            backgroundColor: '#D9D9D9',
+                                            borderRadius: 10,
+                                            height: 55,
+                                            paddingLeft: 10,
+                                        }}
+                                        min={new Date(1900, 1, 1)}
+                                        max={new Date()}
+                                    />
+
+                                    {(touched.birthDate && errors.birthDate) ? (
+                                        <Text style={{
+                                            color: 'red',
+                                            fontSize: 14,
+                                            marginTop: 5,
+                                            marginLeft: 10,
+                                        }}>{errors.birthDate}</Text>
+                                    ) : null}
+                                </View>
 
                                 <DropdownList
                                     label="Gender"
@@ -113,6 +177,9 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                         { label: 'Female', value: 'FEMALE' },
                                         { label: 'Prefer not to say', value: 'PREFER_NOT_TO_SAY' },
                                     ]}
+                                    errorMessage={
+                                        touched.gender && errors.gender
+                                    }
                                 />
 
                                 <DropdownList
@@ -121,24 +188,25 @@ const ProfileEditScreen = ({ isVisible, onSave, onCancel, user }) => {
                                     onValueChange={(itemValue) => handleChange('nationality')(itemValue)}
                                     onBlur={() => handleBlur('nationality')}
                                     items={dropdownItems}
+                                    errorMessage={
+                                        touched.nationality && errors.nationality
+                                    }
                                 />
 
-                                <View style={styles.buttonContainer}>
+                                <View style={editStyles.buttonContainer}>
 
                                     {/* Cancel Button */}
                                     <CustomizedButton
                                         onPress={onCancel}
-                                        buttonStyle={styles.cancelButton}
-                                        textStyle={styles.buttonText}
+                                        buttonStyle={{ ...editStyles.cancelButton, backgroundColor: Color.ORANGE }}
+                                        textStyle={editStyles.buttonText}
                                         text="Cancel"
                                     />
                                     {/* Save Button */}
                                     <CustomizedButton
-                                        onPress={()=>{
-                                            onSave(values)
-                                        }}
-                                        buttonStyle={styles.saveButton}
-                                        textStyle={styles.buttonText}
+                                        onPress={handleSubmit}
+                                        buttonStyle={editStyles.saveButton}
+                                        textStyle={editStyles.buttonText}
                                         text="Save"
                                     />
 

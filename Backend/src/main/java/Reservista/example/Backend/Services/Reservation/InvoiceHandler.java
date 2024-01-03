@@ -1,19 +1,19 @@
 package Reservista.example.Backend.Services.Reservation;
 
-import Reservista.example.Backend.DTOs.Reservation.ReservationDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationRequestDTO;
 import Reservista.example.Backend.DTOs.Reservation.ReservedRoomDTO;
-import Reservista.example.Backend.DTOs.Response.ReservationResponseDTO;
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
+import Reservista.example.Backend.DTOs.Reservation.ReservationResponseDTO;
+import Reservista.example.Backend.Error.GlobalException;
 import org.springframework.stereotype.Service;
 
 @Service
 public class InvoiceHandler extends ReservationHandler {
-    public ResponseDTO<ReservationResponseDTO> handleRequest(ReservationDTO reservationDTO){
+    public ReservationResponseDTO handleRequest(ReservationRequestDTO reservationDTO) throws GlobalException {
 
         System.out.println("invoice reservation handler");
         StringBuilder s = new StringBuilder();
         s.append("Reservation Details:\n")
-                .append("Reservation ID: ").append(reservationDTO.getReservationID()).append("\n")
+                .append("Reservation ID: ").append(reservationDTO.getReservationId()).append("\n")
                 .append( "Check-in Date: ").append(reservationDTO.getCheckIn()).append("\n")
                 .append("Check-out Date: ").append(reservationDTO.getCheckOut()).append("\n");
 

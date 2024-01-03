@@ -1,76 +1,76 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, FlatList, Modal, Button} from 'react-native';
+import React, { useContext, useEffect, useState } from 'react';
+import { View, Text, StyleSheet, FlatList } from 'react-native';
 import SearchAndFilterHeader from './SearchAndFilterHeader';
 import HotelCard from "./HotelCard";
 import SortAndFilterSelector from "./SortAndFilterSelector";
+import { SearchCriteriaContext } from "../../Store/searchCriteriaContext";
+import { SearchAndFilterAPI } from "../../Utilities/New/APIs/SearchAndFilterAPI";
 
-const SearchAndFilter = ({route, navigation}) => {
-    const renderItem = ({item}) => <HotelCard hotel={item} onPress={() => onHotelPress(item)}/>;
-
-    const [isSortModalVisible, setSortModalVisible] = useState(false);
-    const [isFilterModalVisible, setFilterSortModalVisible] = useState(false);
+const SearchAndFilter = ({ route, navigation }) => {
 
     const [hotels, setHotels] = useState([]);
 
-    const onHotelPress = (item) => {
-        navigation.navigate('Hotel' , {
-            searchDTO,
-            item
-        })
-    }
+    const { updateSearchCriteria, ...searchCriteria } =
+        useContext(SearchCriteriaContext);
 
     const {
-        selectedLocation,
-        setSelectedLocation,
-        locations,
-        setLocations,
-        range,
-        setRange,
-        roomCount,
-        setRoomCount,
-        travellersCount,
-        setTravellersCount,
-        loading,
-        setLoading,
-        searchDTO,
-        listOfHotels
-    } = route.params;
+        checkIn,
+        checkOut,
+        numberOfTravelers,
+        numberOfRooms
+    } = searchCriteria;
+
+    const onHotelPress = (item) => navigation.navigate('Hotel', { item });
+    const renderItem = ({ item }) =>
+        <HotelCard hotel={item} onPress={()=> onHotelPress(item)
+            // async () => {
+            //     const HotelDTO = {
+            //         hotelId: item.id,
+            //         numberOfRooms: numberOfRooms,
+            //         numberOfTravelers: numberOfTravelers,
+            //         checkIn: checkIn,
+            //         checkOut: checkOut
+            //     }
+
+            //     const response = await SearchAndFilterAPI.getHotel(
+            //         HotelDTO,
+            //         (response) => {
+            //             const responseBody = response.data;
+
+            //             if (responseBody.data !== undefined) {
+
+            //                 if (responseBody.errorCode === 50)
+            //                     Alert('Error', responseBody.data);
+
+            //             } else console.log(responseBody)
+            //         }
+            //     );
+            //     navigation.navigate('Hotel', { response })
+            // }
+        } />;
+
 
     useEffect(() => {
         setHotels(route.params.listOfHotels["hotels"]);
-    }, []);
+    }, [route]);
+
+
+    const [loading, setLoading] = useState(false);
 
     return (
         <View style={styles.container}>
             <SearchAndFilterHeader
-                selectedLocation={selectedLocation}
-                setSelectedLocation={setSelectedLocation}
-                locations={locations}
-                setLocations={setLocations}
-                range={range}
-                setRange={setRange}
-                roomCount={roomCount}
-                setRoomCount={setRoomCount}
-                travellersCount={travellersCount}
-                setTravellersCount={setTravellersCount}
-                hotels={hotels}
-                setHotels={setHotels}
+                loading={loading}
+                setLoading={setLoading}
             />
             <FlatList
                 data={hotels}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-                ListFooterComponent={<View style={{height: 100}}/>}
+                ListFooterComponent={<View style={{ height: 100 }} />}
             />
             <SortAndFilterSelector
                 setHotels={setHotels}
-                hotels={hotels}
-                selectedLocation={selectedLocation}
-                locations={locations}
-                range={range}
-                roomCount={roomCount}
-                travellersCount={travellersCount}
-                loading={loading}
                 setLoading={setLoading}
             />
         </View>

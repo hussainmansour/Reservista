@@ -1,10 +1,14 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, {useContext, useEffect, useState} from 'react';
+import {Button, StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {
     Avatar, AvatarFallbackText, AvatarImage,
     Icon
 } from "@gluestack-ui/themed"
 import {User} from "lucide-react-native";
+import CustomizedButton from "../General/Buttons/CustomizedButton";
+import IconButton from "../General/Buttons/IconButton";
+import {AuthContext} from "../../Store/authContext";
+import Color from "../../Styles/Color";
 
 const HomeHeader = ({navigation}) => {
 
@@ -12,6 +16,8 @@ const HomeHeader = ({navigation}) => {
     const [firstName, setFirstName] = useState('Mohamed');
     const [lastName, setLastName] = useState('Anwar');
     const [hasImage, setHasImage] = useState(false);
+
+    const authCtx = useContext(AuthContext);
 
 
     const getProfileImage = async () => {
@@ -46,6 +52,18 @@ const HomeHeader = ({navigation}) => {
 
     return (
         <View style={styles.header}>
+
+            <View style={styles.logoutButton} >
+                <IconButton
+                                icon="exit"
+                                color={Color.SEABLUE}
+                                size={24}
+                                onPress={authCtx.logout}
+                            />
+                {/*<Text style={styles.buttonText}>{"Logout"}</Text>*/}
+            </View>
+
+
             <Text style={styles.headerTitle}>
                 {`Let's Start \nExploring`}
             </Text>
@@ -74,7 +92,7 @@ const styles = StyleSheet.create({
         alignItems: 'flex-start',
         width: '100%',
         height: '40%',
-        backgroundColor: '#4536F9',
+        backgroundColor: Color.SEABLUE,
         borderBottomLeftRadius: 40,
         borderBottomRightRadius: 40,
     }
@@ -82,12 +100,25 @@ const styles = StyleSheet.create({
     headerTitle: {
         fontWeight: '900',
         fontSize: 45,
-        color: '#0c0202'
+        color: Color.DIRTYWHITE,
+        marginTop: '5%'
     },
     avatar: {
         alignSelf: 'flex-end',
         paddingBottom: '65%',
         paddingRight: '10%'
+    },
+    logoutButton : {
+        backgroundColor: Color.SEABLUE,
+        borderRadius: 10,
+        height: '18%',
+        width: '12%',
+        justifyContent: 'center',
+        bottom: '9%',
+    },
+    buttonText: {
+        color: '#000000',
+        fontSize: 10,
     }
 })
 export default HomeHeader;

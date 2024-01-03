@@ -1,80 +1,111 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator} from 'react-native';
+import React, {useContext, useEffect, useState} from 'react';
+import {View, Text, StyleSheet, Button, TouchableOpacity, ActivityIndicator, Alert} from 'react-native';
 import {AutocompleteDropdown} from "react-native-autocomplete-dropdown";
-import {useFonts} from 'expo-font';
-import {Poppins_700Bold , Poppins_300Light} from "@expo-google-fonts/poppins"
-import {Layout, RangeDatepicker} from '@ui-kitten/components';
+import {RangeDatepicker} from '@ui-kitten/components';
 import Counter from "./Counter";
-import CounterInput from "react-native-counter-input";
-import {searchForHotels} from "../../Utilities/API";
+import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import {ConfigAPI} from "../../Utilities/New/APIs/ConfigAPI";
+import Color from "../../Styles/Color";
 
 const SearchOptions = ({navigation}) => {
-    const [selectedLocation, setSelectedLocation] = useState(null);
-    const [locations, setLocations] = useState([]);
-    const [range, setRange] = useState({});
-    const [roomCount, setRoomCount] = useState(0);
-    const [travellersCount, setTravellersCount] = useState(0);
+
+    const {updateSearchCriteria, ...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions, ...searchOptions} = useContext(SearchOptionsContext);
 
     const [loading, setLoading] = useState(false);
 
-    const [fontsLoaded] = useFonts({
-        Poppins_700Bold
-    })
-
     const getLocations = async () => {
-        // todo: call api to get all locations available
-        setLocations([
-            'London/UK', 'Cairo/Egypt', 'Paris/France'
-        ]);
+        // if (locations !== undefined && locations.length > 0)
+        //     return
+
+        // const locations = await ConfigAPI.getValidLocations((response) => {
+            updateSearchOptions({
+                locations: ['London/UK', 'Cairo/Egypt', 'Paris/France', 'Xiamen/China']
+            });
+        // });
+
+        // if (locations !== undefined) {
+        //     const updatedLocations = locations.map(location => `${location.city}/${location.country}`);
+        //     updateSearchOptions({ locations: updatedLocations });
+        // }
+        //
+        // console.log(searchOptions.locations);
     }
 
-    const getSearchDTO = () => {
-        return  {
-            "city": locations[selectedLocation - 1].split("/")[0],
-            "country": locations[selectedLocation - 1].split("/")[1],
-            "numberOfRooms": roomCount,
-            "numberOfTravelers": travellersCount,
-            "pageNumber": 0,
-            "pageSize": 20,
-            "checkIn": range["startDate"],
-            "checkOut": range["endDate"],
-            "minPrice": 0,
-            "maxPrice": 100000,
-            "minStars": 0,
-            "maxStars": 5,
-            "minRating": 0.0,
-            "maxRating": 10.0,
-            "sortBy": "price",
-            "sortOrder": "asc"
-        }
+    const getSearchCriteriaDTO = () => {
+        const {
+            selectedLocation,
+            locations,
+            checkInOutTimes,
+            roomCount,
+            travellersCount,
+        } = searchOptions;
+
+        return {
+            city: locations[selectedLocation - 1]?.split("/")[0],
+            country: locations[selectedLocation - 1]?.split("/")[1],
+            numberOfRooms: roomCount,
+            numberOfTravelers: travellersCount,
+            pageNumber: 0,
+            pageSize: 20,
+            checkIn: checkInOutTimes["startDate"],
+            checkOut: checkInOutTimes["endDate"]
+        };
     }
+
+    const [searchTriggered, setSearchTriggered] = useState(false);
+
+
+    const today = new Date();
+    const nextYear = new Date(today.getFullYear() + 5, today.getMonth(), today.getDate());
 
     const search = async () => {
-        let listOfHotels = await searchForHotels(getSearchDTO() , setLoading)
-        navigation.navigate('SearchAndFilter' , {
-            searchDTO : getSearchDTO(),
-            listOfHotels,
-            selectedLocation,
-            setSelectedLocation,
-            locations,
-            setLocations,
-            range,
-            setRange,
-            roomCount,
-            setRoomCount,
-            travellersCount,
-            setTravellersCount,
-            loading,
-            setLoading
-        } )
-    }
+        updateSearchCriteria(getSearchCriteriaDTO());
+        setSearchTriggered(true);
+    };
 
     useEffect(() => {
+
+        if (searchTriggered) {
+            const fetchData = async () => {
+                let listOfHotels = await
+                    SearchAndFilterAPI.filterAndSortHotels(searchCriteria, (response) => {
+
+                        // in case of an expected error this should be the errorDTO
+                        const responseBody = response.data;
+
+
+                        if (responseBody.data !== undefined) {
+                            // check for error code
+                            if (responseBody.errorCode === 100) {
+                                // todo : alert
+                                console.log(responseBody)
+                            }
+
+                        } else {
+                            // if it doesn't have the data attribute then it's not the errorDTO
+                            // so, it's an unhandled exception
+                            console.log(responseBody)
+                        }
+
+                    }, setLoading);
+                navigation.navigate('SearchAndFilter', {listOfHotels});
+            };
+
+            fetchData().then();
+            setSearchTriggered(false);
+        }
+    }, [searchCriteria, searchTriggered]);
+
+    useEffect(() => {
+        setLoading(true);
         const fetchData = async () => {
             await getLocations();
         };
-
-        fetchData();
+        setLoading(false);
+        fetchData().catch(console.error);
     }, []);
 
     return (
@@ -85,22 +116,31 @@ const SearchOptions = ({navigation}) => {
                     clearOnFocus={false}
                     closeOnBlur={true}
                     closeOnSubmit={false}
-                    textInputProps={{ placeholder: 'ex: London/UK' }}
-                    onSelectItem={(item) => item && setSelectedLocation(item.id)}
-                    dataSet={locations.map((title, index) => ({
+                    textInputProps={{placeholder: 'ex: London/UK'}}
+                    onSelectItem={(item) => item &&
+                        updateSearchOptions({selectedLocation: item.id})}
+                    dataSet={searchOptions.locations.map((title, index) => ({
                         id: `${index + 1}`,
                         title,
                     }))}
+                    inputContainerStyle={{backgroundColor: "white", borderColor: Color.SEABLUE}}
                 />
             </View>
 
 
-            <Text style={styles.label}> CheckIn/CheckOut Date </Text>
+            <Text style={styles.label}> Dates </Text>
 
             <View style={styles.date}>
+
+
                 <RangeDatepicker
-                    range={range}
-                    onSelect={nextRange => setRange(nextRange)}
+                    placeholder="DD/MM/YYYY"
+                    range={searchOptions.checkInOutTimes}
+                    onSelect={nextRange => updateSearchOptions({checkInOutTimes: nextRange})}
+                    controlStyle={{ borderColor: Color.SEABLUE}}
+                    // renderDay={{backgoundcolor:Color.ORANGE}}
+                    min={today}
+                    max={nextYear}
                 />
             </View>
 
@@ -108,12 +148,14 @@ const SearchOptions = ({navigation}) => {
             <View style={styles.counters}>
                 <View>
                     <Text style={styles.label}> Rooms </Text>
-                    <Counter count={roomCount} setCount={setRoomCount}/>
+                    <Counter count={searchOptions.roomCount}
+                             setCount={(count) => updateSearchOptions({roomCount: count})}/>
                 </View>
 
                 <View>
                     <Text style={styles.label}> Travellers </Text>
-                    <Counter count={travellersCount} setCount={setTravellersCount}/>
+                    <Counter count={searchOptions.travellersCount}
+                             setCount={(count) => updateSearchOptions({travellersCount: count})}/>
                 </View>
             </View>
 
@@ -121,7 +163,7 @@ const SearchOptions = ({navigation}) => {
                 <Text style={styles.buttonText}>{"Search"}</Text>
             </TouchableOpacity>
 
-            {loading && <ActivityIndicator size="large" color="#0000ff" />}
+            {loading && <ActivityIndicator size="large" color={Color.MIDNIGHTBLUE}/>}
         </View>
     );
 };
@@ -133,46 +175,46 @@ const styles = StyleSheet.create({
         paddingLeft: '5%',
         paddingTop: '5%',
         height: '40%',
-        backgroundColor: '#D3D6E7',
+        backgroundColor: Color.PALEBLUE,
         borderRadius: 15,
         position: 'absolute',
-        bottom: '30%',
+        bottom: '25%',
         left: '10%'
     },
     label: {
         fontWeight: '500',
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
+        color:Color.MIDNIGHTBLUE
     },
     dropDownList: {
         marginVertical: '2%',
         paddingRight: '5%',
     },
     button: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.ORANGE,
         borderRadius: 5,
         marginRight: '5%',
         height: '12%',
         width: '50%',
         alignItems: 'center',
         alignSelf: 'center',
-        justifyContent: 'center'
+        justifyContent: 'center',
     },
     buttonText: {
-        color: '#000000',
+        color: '#ffffff',
         fontSize: 25,
-        fontFamily: 'Poppins_700Bold'
     },
     date: {
         paddingRight: '5%',
         marginVertical: '2%',
+
     },
-    counters:{
+    counters: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
         paddingRight: '5%',
-        marginTop: '5%' ,
-        marginBottom: '7%'
+        marginTop: '5%',
+        marginBottom: '7%',
     }
 });
 

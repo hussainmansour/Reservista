@@ -1,8 +1,8 @@
 package Reservista.example.Backend.Exceptions;
 
 
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
-import Reservista.example.Backend.Enums.StatusCode;
+import Reservista.example.Backend.DTOs.ErrorDTO;
+import Reservista.example.Backend.Enums.ErrorCode;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -15,24 +15,21 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 public class AuthenticationExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ResponseDTO<String>> handleBadCredentialsException(BadCredentialsException ex) {
-        return ResponseEntity.ok(
-                ResponseDTO.<String> builder()
-                        .status(StatusCode.UNAUTHORIZED.getCode())
-                        .message(StatusCode.UNAUTHORIZED.getMessage())
-                        .build()
-        );
+    public ResponseEntity<ErrorDTO<String>> handleBadCredentialsException(BadCredentialsException ex) {
+        ErrorDTO<String> error = ErrorCode.LOGIN_FAILED.getError();
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED).body(error);
     }
 
     // todo: to be removed
     @ExceptionHandler(DisabledException.class)
-    public ResponseEntity<ResponseDTO<String>> handleBadCredentialsException(DisabledException ex) {
-        return ResponseEntity.ok(
-                ResponseDTO.<String> builder()
-                        .status(StatusCode.ACCOUNT_DEACTIVATED.getCode())
-                        .message(StatusCode.ACCOUNT_DEACTIVATED.getMessage())
-                        .build()
-        );
+    public ResponseEntity<ErrorDTO<String>> handleBadCredentialsException(DisabledException ex) {
+        ErrorDTO<String> error = ErrorCode.ACCOUNT_DEACTIVATED.getError();
+
+        return ResponseEntity
+                .status(HttpStatus.UNAUTHORIZED).body(error);
+
     }
 
 }

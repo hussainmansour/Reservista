@@ -4,13 +4,12 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.Paths;
+import java.util.List;
 import java.util.Objects;
 import java.util.Properties;
 import java.util.Set;
 
-import Reservista.example.Backend.Enums.StatusCode;
 
-import Reservista.example.Backend.DTOs.Response.ResponseDTO;
 import com.google.api.client.auth.oauth2.Credential;
 import com.google.api.client.extensions.java6.auth.oauth2.AuthorizationCodeInstalledApp;
 import com.google.api.client.extensions.jetty.auth.oauth2.LocalServerReceiver;
@@ -25,6 +24,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.gmail.Gmail;
 import com.google.api.services.gmail.model.Message;
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.stereotype.Service;
 
 import javax.mail.Session;
 import javax.mail.internet.AddressException;
@@ -64,7 +64,7 @@ public class MailServiceProxy {
         return new AuthorizationCodeInstalledApp(flow, receiver).authorize("user");
     }
 
-    public ResponseDTO<Void> sendMail(Mail m) throws Exception {
+    public boolean sendMail(Mail m) throws Exception {
         String to = m.getTo();
         String subject = m.getSubject();
         String message = m.getBody();
@@ -75,8 +75,7 @@ public class MailServiceProxy {
         try {
             email.addRecipient(TO, new InternetAddress(to));
         } catch (AddressException e) {
-
-            return StatusCode.INVALID_ARGUMENT.getRespond();
+            return false;
         }
 
         email.setSubject(subject);
@@ -90,11 +89,46 @@ public class MailServiceProxy {
         msg.setRaw(encodedEmail);
 
         try {
-            msg = service.users().messages().send("me", msg).execute();
-            return StatusCode.SUCCESS.getRespond();
+            service.users().messages().send("me", msg).execute();
+            return true;
         } catch (GoogleJsonResponseException e) {
-            GoogleJsonError error = e.getDetails();
-            return new ResponseDTO( error.getCode(),error.getMessage(),null);
+            System.out.println(e.getDetails().getMessage());
+            return false;
+
+        }
+
+    }
+    public boolean sendMailToAll(Mail m, List<String> emails) throws Exception {
+        String subject = m.getSubject();
+        String message = m.getBody();
+        Properties props = new Properties();
+        Session session = Session.getDefaultInstance(props, null);
+        MimeMessage email = new MimeMessage(session);
+        email.setFrom(new InternetAddress(TEST_EMAIL));
+        try {
+            for(String e:emails){
+                email.addRecipient(TO, new InternetAddress(e));
+            }
+        } catch (AddressException e) {
+            return false;
+        }
+
+        email.setSubject(subject);
+        email.setText(message);
+
+        ByteArrayOutputStream buffer = new ByteArrayOutputStream();
+        email.writeTo(buffer);
+        byte[] rawMessageBytes = buffer.toByteArray();
+        String encodedEmail = Base64.encodeBase64URLSafeString(rawMessageBytes);
+        Message msg = new Message();
+        msg.setRaw(encodedEmail);
+
+        try {
+            service.users().messages().send("me", msg).execute();
+            return true;
+        } catch (GoogleJsonResponseException e) {
+            System.out.println(e.getDetails().getMessage());
+            return false;
 
         }
 

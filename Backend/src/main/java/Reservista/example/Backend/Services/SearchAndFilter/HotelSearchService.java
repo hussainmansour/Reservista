@@ -1,9 +1,11 @@
 package Reservista.example.Backend.Services.SearchAndFilter;
 
-import Reservista.example.Backend.DTOs.SearchAndFilter.HotelDTO;
+import Reservista.example.Backend.DAOs.HotelRepository;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchCriteriaDTO;
 import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSearchResultDTO;
+import Reservista.example.Backend.DTOs.SearchAndFilter.HotelSummaryDTO;
 import Reservista.example.Backend.Models.EntityClasses.Hotel;
+import Reservista.example.Backend.Models.EntityClasses.RoomDescription;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,6 +13,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service
 public class HotelSearchService {
@@ -18,56 +23,68 @@ public class HotelSearchService {
     @Autowired
     private HotelSearchFactory hotelSearchFactory;
 
-    private int calculateMinRoomPrice(Hotel hotel) {
-//        int minPrice = Integer.MAX_VALUE;
-//        for(RoomDescription rd :hotel.getRoomDescriptions()){
-//            minPrice = Math.min(minPrice, rd.getPrice());
-//        }
-//        return minPrice;
-        return 5;
+    @Autowired
+    HotelRepository hotelRepository;
+
+    private int calculateMinRoomPrice(UUID id, HotelSearchCriteriaDTO searchCriteria) {
+        List<RoomDescription> roomDescriptions = hotelRepository.findAvailableRooms(
+                id,
+                searchCriteria.getCheckIn(),
+                searchCriteria.getCheckOut(),
+                searchCriteria.getNumberOfRooms(),
+                searchCriteria.getNumberOfTravelers()
+        );
+
+        return roomDescriptions.stream()
+                .mapToInt(RoomDescription::getPrice)
+                .min()
+                .orElse(Integer.MAX_VALUE);
     }
 
 
-    private List<HotelDTO> convertToHotelDTOList(List<Hotel> hotels) {
-        List<HotelDTO> hotelDTOList = new ArrayList<>();
+
+    private List<HotelSummaryDTO> convertToHotelSummaryDTOList(List<Hotel> hotels, HotelSearchCriteriaDTO searchCriteria) {
+        List<HotelSummaryDTO> hotelSummaryDTOList = new ArrayList<>();
 
         for (Hotel hotel : hotels) {
-            HotelDTO hotelDTO = new HotelDTO();
-            hotelDTO.setId(hotel.getId());
-            hotelDTO.setName(hotel.getName());
-            hotelDTO.setCity(hotel.getLocation().getCity());
-            hotelDTO.setRating(hotel.getRating());
-            hotelDTO.setReviewCount(hotel.getReviewCount());
-            hotelDTO.setStarRating(hotel.getStarRating());
-            hotelDTO.setCountry(hotel.getLocation().getCountry());
-            hotelDTO.setMinRoomPrice(calculateMinRoomPrice(hotel));
-            hotelDTO.setHotelFoodOptions(hotel.getHotelFoodOptions());
-            hotelDTO.setFullyRefundable(hotel.isFullyRefundable());
-            hotelDTO.setAddress(hotel.getAddress());
-            hotelDTO.setFullyRefundableRate(hotel.getFullyRefundableRate());
-//            hotelDTO.setImages(hotel.getHotelImages()); // Assuming getHotelImages returns Set<HotelImage>
-            hotelDTOList.add(hotelDTO);
+            HotelSummaryDTO hotelSummaryDTO = new HotelSummaryDTO();
+            hotelSummaryDTO.setId(hotel.getId());
+            hotelSummaryDTO.setName(hotel.getName());
+            hotelSummaryDTO.setCity(hotel.getLocation().getCity());
+            hotelSummaryDTO.setRating(hotel.getRating());
+            hotelSummaryDTO.setReviewCount(hotel.getReviewCount());
+            hotelSummaryDTO.setStarRating(hotel.getStarRating());
+            hotelSummaryDTO.setCountry(hotel.getLocation().getCountry());
+            hotelSummaryDTO.setMinRoomPrice(calculateMinRoomPrice(hotel.getId(), searchCriteria));
+
+            // Generate image URLs
+            Set<String> imageUrls = hotel.getHotelImages().stream()
+                    .map(image -> getHotelImageUrl(image.getId()))
+                    .collect(Collectors.toSet());
+            hotelSummaryDTO.setImagesUrls(imageUrls);
+
+            hotelSummaryDTOList.add(hotelSummaryDTO);
         }
-
-        return hotelDTOList;
+        return hotelSummaryDTOList;
     }
-
+    private String getHotelImageUrl(UUID imageId) {
+        // Replace this with your logic to generate image URLs
+        return "http://localhost:8080/api/images/hotel?id=" + imageId;
+    }
     public HotelSearchResultDTO getHotelsWithCriteria(HotelSearchCriteriaDTO searchCriteria, Pageable pageable) {
 
-        Page<Hotel> hotelPage;
+        Page<Hotel> hotelSummaryPage;
 
         if (searchCriteria.hasSortCriteria()) {
-            hotelPage = hotelSearchFactory.sortHotelsByCriteria(searchCriteria, pageable);
+            hotelSummaryPage = hotelSearchFactory.sortHotelsByCriteria(searchCriteria, pageable);
         } else {
-            hotelPage = hotelSearchFactory.searchHotels(searchCriteria, pageable);
+            hotelSummaryPage = hotelSearchFactory.searchHotels(searchCriteria, pageable);
         }
 
-        if (hotelPage == null) {
+        if (hotelSummaryPage == null) {
             return null;
         }
-        List<HotelDTO> hotelDTOList = convertToHotelDTOList(hotelPage.getContent());
-//        Page<HotelDTO> hotelDTOPage = new PageImpl<>(hotelDTOList, hotelPage.getPageable(), hotelPage.getTotalElements());
-
+        List<HotelSummaryDTO> hotelDTOList = convertToHotelSummaryDTOList(hotelSummaryPage.getContent(), searchCriteria);
         HotelSearchResultDTO searchResult = new HotelSearchResultDTO();
         searchResult.setHotels(hotelDTOList);
         return searchResult;

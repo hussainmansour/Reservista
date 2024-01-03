@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {View, Text, StyleSheet, TouchableOpacity, Modal} from 'react-native';
 import {
     ActionsheetBackdrop,
@@ -18,19 +18,15 @@ import {
 } from "lucide-react-native";
 import {Actionsheet} from '@gluestack-ui/themed';
 import Slider from "react-native-a11y-slider";
-import {searchForHotels} from "../../Utilities/API";
+import {SearchCriteriaContext} from "../../Store/searchCriteriaContext";
+import {SearchOptionsContext} from "../../Store/SearchOptionsContext";
+import {SearchAndFilterAPI} from "../../Utilities/New/APIs/SearchAndFilterAPI";
+import Color from "../../Styles/Color";
 
 
 const SortAndFilterSelector = (
     {
-        selectedLocation,
-        locations,
-        range,
-        roomCount,
-        travellersCount,
-        hotels,
         setHotels,
-        loading,
         setLoading
     }
 ) => {
@@ -44,7 +40,19 @@ const SortAndFilterSelector = (
     const [ratingSliderRange, setRatingSliderRange] = useState([0, 10]);
     const [starsSliderRange, setStarsSliderRange] = useState([0, 5]);
 
-    const [doneState,setDoneState] = useState(false);
+    const [doneState, setDoneState] = useState(false);
+
+    const {updateSearchCriteria, ...searchCriteria} = useContext(SearchCriteriaContext);
+    const {updateSearchOptions, ...searchOptions} = useContext(SearchOptionsContext);
+
+
+    const {
+        selectedLocation,
+        locations,
+        checkInOutTimes,
+        roomCount,
+        travellersCount,
+    } = searchOptions;
 
 
     const handlePriceChange = (values) => {
@@ -84,15 +92,6 @@ const SortAndFilterSelector = (
         handleClose();
     }
 
-    useEffect(() => {
-        const getHotels = async () => {
-            let hotelsList = await search();
-            setHotels(hotelsList["hotels"]);
-            setDoneState(false);
-        }
-        getHotels();
-    }, [sortBy, sortDirection , doneState]);
-
 
     const onModalClose = () => {
         setModalVisible(false)
@@ -102,28 +101,76 @@ const SortAndFilterSelector = (
         setModalVisible(true);
     };
 
+    const getSearchCriteriaDTO = () => {
+        return {
+            city: locations[selectedLocation - 1].split("/")[0],
+            country: locations[selectedLocation - 1].split("/")[1],
+            numberOfRooms: roomCount,
+            numberOfTravelers: travellersCount,
+            pageNumber: 0,
+            pageSize: 20,
+            checkIn: checkInOutTimes["startDate"],
+            checkOut: checkInOutTimes["endDate"],
+            minPrice: priceSliderRange[0],
+            maxPrice: priceSliderRange[1],
+            minStars: starsSliderRange[0],
+            maxStars: starsSliderRange[1],
+            minRating: ratingSliderRange[0],
+            maxRating: ratingSliderRange[1],
+            sortBy: sortBy,
+            sortOrder: sortDirection
+        };
+    }
+
+    const [searchTriggered, setSearchTriggered] = useState(false);
+
     const search = async () => {
-        const searchDTO = {
-            "city": locations[selectedLocation - 1].split("/")[0],
-            "country": locations[selectedLocation - 1].split("/")[1],
-            "numberOfRooms": roomCount,
-            "numberOfTravelers": travellersCount,
-            "pageNumber": 0,
-            "pageSize": 20,
-            "checkIn": range["startDate"],
-            "checkOut": range["endDate"],
-            "minPrice": priceSliderRange[0],
-            "maxPrice": priceSliderRange[1],
-            "minStars": starsSliderRange[0],
-            "maxStars": starsSliderRange[1],
-            "minRating": ratingSliderRange[0],
-            "maxRating": ratingSliderRange[1],
-            "sortBy": sortBy,
-            "sortOrder": sortDirection
+        updateSearchCriteria(getSearchCriteriaDTO());
+        setSearchTriggered(true);
+    };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            await search();
         };
 
-        return await searchForHotels(searchDTO, setLoading)
-    }
+        fetchData().then();
+        setDoneState(false);
+    }, [doneState]);
+
+    useEffect(() => {
+
+        if (searchTriggered) {
+            const fetchData = async () => {
+                let listOfHotels = await
+                    SearchAndFilterAPI.filterAndSortHotels(searchCriteria, (response) => {
+
+                        // in case of an expected error this should be the errorDTO
+                        const responseBody = response.data;
+
+                        if (responseBody.data !== undefined) {
+                            // check for error code
+                            if (responseBody.errorCode === 100) {
+                                // todo : alert
+                                console.log(responseBody)
+                            }
+
+                        } else {
+                            // if it doesn't have the data attribute then it's not the errorDTO
+                            // so, it's an unhandled exception
+                            console.log(responseBody)
+                        }
+
+                    }, setLoading);
+                setHotels(listOfHotels["hotels"]);
+            };
+
+            fetchData().then();
+            setSearchTriggered(false);
+            setDoneState(false);
+        }
+    }, [searchCriteria, searchTriggered, sortBy, sortDirection]);
+
 
     const handleDoneButton = () => {
         setDoneState(true);
@@ -190,15 +237,27 @@ const SortAndFilterSelector = (
                     <View style={styles.modalContent}>
                         <Text style={styles.modalTitles}>Price range</Text>
                         <Slider min={100} max={10000} values={[priceSliderRange[0], priceSliderRange[1]]}
-                                onChange={handlePriceChange}/>
+                                onChange={handlePriceChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <Text style={styles.modalTitles}>Rating Range</Text>
                         <Slider min={1} max={10} values={[ratingSliderRange[0], ratingSliderRange[1]]}
-                                onChange={handleRatingChange}/>
+                                onChange={handleRatingChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <Text style={styles.modalTitles}>Star Rating Range</Text>
                         <Slider min={1} max={5} values={[starsSliderRange[0], starsSliderRange[1]]}
-                                onChange={handleStarsChange}/>
+                                onChange={handleStarsChange}
+                                markerColor={Color.ORANGE}
+                                trackStyle={styles.trackStyle}
+                                selectedTrackStyle={styles.selectedTrackStyle}
+                        />
 
                         <View style={styles.modalButtons}>
                             <TouchableOpacity style={styles.modalButton} onPress={handleDoneButton}>
@@ -228,7 +287,7 @@ const styles = StyleSheet.create({
     },
     button: {
         flex: 1,
-        backgroundColor: '#3498db',
+        backgroundColor: Color.MIDNIGHTBLUE,
         borderRadius: 5,
         marginLeft: '10%',
         alignItems: 'center',
@@ -236,9 +295,14 @@ const styles = StyleSheet.create({
         justifyContent: 'center'
     },
     buttonText: {
-        color: '#000000',
-        fontSize: 28,
-        fontFamily: 'Poppins_700Bold'
+        color: Color.DIRTYWHITE,
+        fontSize: 18,
+        marginLeft: 15,
+        marginRight: 15,
+        marginTop: 3,
+        marginBottom: 3,
+        borderRadius: 2,
+
     },
     modalContainer: {
         flex: 1,
@@ -248,7 +312,7 @@ const styles = StyleSheet.create({
         // backgroundColor: 'rgba(0, 0, 0, 0.5)',
     },
     modalContent: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.PALEBLUE,
         padding: 20,
         width: '80%',
         borderRadius: 20,
@@ -257,24 +321,23 @@ const styles = StyleSheet.create({
         alignSelf: 'center'
     },
     actionSheet: {
-        backgroundColor: '#3498db',
+        backgroundColor: Color.PALEBLUE,
         height: '26%'
     },
     actionSheetTextElement: {
-        color: '#000000',
+        color: Color.MIDNIGHTBLUE,
         fontSize: 18,
-        fontFamily: 'Poppins_700Bold'
     },
     modalButton: {
-        backgroundColor: '#4536F9',
+        backgroundColor: Color.SEABLUE,
         paddingHorizontal: '5%',
-        borderRadius: 18,
+        borderRadius: 5,
         marginHorizontal: '3%'
+
     },
     modalTitles: {
-        color: '#000000',
+        color: Color.MIDNIGHTBLUE,
         fontSize: 20,
-        fontFamily: 'Poppins_700Bold'
     },
     modalButtons: {
         marginTop: '10%',
@@ -283,6 +346,17 @@ const styles = StyleSheet.create({
     },
     doneSheetText: {
         alignSelf: 'center'
+    },
+    slider: {
+        backgroundColor: "red",
+    },
+    trackStyle: {
+        backgroundColor: Color.ORANGE,
+        height: 5
+    },
+    selectedTrackStyle : {
+        backgroundColor: Color.DIRTYWHITE,
+        height: 6,
     }
 });
 

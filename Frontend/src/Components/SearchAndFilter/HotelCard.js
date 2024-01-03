@@ -1,11 +1,16 @@
-import React from 'react';
-import { View, Text, Image, TouchableOpacity, FlatList, StyleSheet } from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {View, Text, Image, TouchableOpacity, FlatList, StyleSheet} from 'react-native';
+import {getBaseURL} from "../../Utilities/New/BaseURL";
 
-const HotelCard = ({ hotel, onPress }) => {
+const HotelCard = ({hotel, onPress}) => {
+
     return (
         <TouchableOpacity style={styles.card} onPress={onPress}>
             <View style={styles.imageContainer}>
-                <Image source={{ uri: "https://images.trvl-media.com/lodging/20000000/19290000/19286800/19286763/36efda2f.jpg?impolicy=fcrop&w=1200&h=800&p=1&q=medium" }} style={styles.image} />
+                <Image source={
+                    {
+                        uri: hotel["imagesUrls"][0].replace("http://localhost:8080", getBaseURL)
+                    }} style={styles.image}/>
             </View>
             <View style={styles.textContainer}>
                 <Text style={styles.hotelTitle}>{hotel.name}</Text>
@@ -13,8 +18,7 @@ const HotelCard = ({ hotel, onPress }) => {
                 <Text>{`Rating: ${hotel.rating}`}</Text>
                 <Text>{`ReviewCount: ${hotel.reviewCount}`}</Text>
                 <Text>{`Stars: ${hotel.starRating}`}</Text>
-                <Text>{`Price: ${hotel.minRoomPrice}`}</Text>
-                <Text>{`Location: ${hotel.location}`}</Text>
+                <Text>{`Price: ${hotel.minRoomPrice} $`}</Text>
             </View>
         </TouchableOpacity>
     );
@@ -77,4 +81,3 @@ const styles = StyleSheet.create({
 });
 
 export default HotelCard;
-

@@ -1,10 +1,15 @@
 package Reservista.example.Backend.DTOs.Registration;
 
+import Reservista.example.Backend.Enums.Genders;
 import Reservista.example.Backend.Validators.*;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 import lombok.Data;
 
 import java.time.LocalDate;
+
+import static Reservista.example.Backend.Config.ValidationUtil.invalidGender;
 
 
 @Data
@@ -20,15 +25,22 @@ public class RegistrationRequestDTO {
     @Username
     private String userName;
 
-//    @NotBlank(message = "please provide your first name")
+    @NotBlank
     private String firstName;
 
     private String lastName;
 
-    @BirthDate
+    private String middleName;
+
+    @Age
     private LocalDate birthDate;
 
-    @Country( message = "Invalid nationality")
+    @Nationality
     private String nationality;
+
+//    @NotNull(message = invalidGender)
+    @Gender
+    private Genders gender;
+
 
 }

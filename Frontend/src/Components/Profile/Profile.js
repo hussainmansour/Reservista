@@ -3,32 +3,45 @@ import { View, Text, StyleSheet, Image, Alert } from 'react-native';
 import CustomizedButton from '../General/Buttons/CustomizedButton';
 import ProfileEditScreen from './ProfileEditScreen';
 import { AuthContext } from '../../Store/authContext';
-import ProfileAPI from '../../Utilities/ProfileAPI';
+
 import LoadingComponent from '../General/LoadingComponent';
+import { ProfileAPI } from '../../Utilities/New/APIs/ProfileAPI';
+import Color from '../../Styles/Color';
 
 
 const Profile = () => {
     const [isEditing, setIsEditing] = useState(false);
     const [user, setUser] = useState({});
     const [isLoading, setIsLoading] = useState(true);
-    const authCtx = useContext(AuthContext);
 
     // Getting the profile
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                const response = await ProfileAPI.getProfile(authCtx.token);
+            let response= await ProfileAPI.viewProfile((response)=>{
+                const responseBody=response.data;
+                if(responseBody.data!==undefined){
+                    console.log(responseBody.data);
+                    Alert.alert('Error',responseBody.data);
+                }
+                else{
+                    console.log('====================================');
+                    console.log(responseBody);
+                    console.log('====================================');
+                    Alert.alert("Error", "Failed to get your profile");
+                }
+            });
+
+            if(response!==undefined){
+                console.log('====================================');
                 console.log(response);
-                setUser(response.data);
-            } catch (error) {
-                console.log('Error fetching data:', error);
-                Alert.alert("Error", "Can't find your profile");
-            } finally {
-                setIsLoading(false);
+                console.log('====================================');
+                setUser(response);
             }
         };
 
-        fetchData();
+        fetchData().then(()=>{
+            setIsLoading(false);
+        });
     }, []);
 
     const handleEdit = () => {
@@ -42,31 +55,32 @@ const Profile = () => {
 
     // updating the profile
     const handleSave = async (values) => {
-        try {
-
-            console.log("in save");
-
-            setIsEditing(false);
-
-            setIsLoading(true);
-
-            console.log(values);
-
-            const response = await ProfileAPI.updateProfile(authCtx.token,values);
-
-            console.log("response", response);
+        setIsEditing(false);
+        console.log(values);
+        console.log("in save");
+        let response = await ProfileAPI.editProfile(values,(response)=>{
+            const responseBody=response.data;
+                if(responseBody.data!==undefined){
+                    console.log(responseBody.data);
+                    Alert.alert('Error',responseBody.data);
+                }
+                else{
+                    console.log('====================================');
+                    console.log(responseBody);
+                    console.log('====================================');
+                    Alert.alert("Error", "Failed to update your profile");
+                }
+            },setIsLoading);
+        if(response!==undefined){
+            console.log('====================================');
+            console.log(response);
+            console.log('====================================');
 
             const updatedUser = { 'userName': user.userName, 'email': user.email, ...values };
             setUser(updatedUser);
 
             console.log("successful update");
             Alert.alert('Success', 'Profile updated successfully');
-        } catch (error) {
-            console.log("Error updating profile:", error);
-            Alert.alert('Error', 'Failed to update profile');
-        }
-        finally {
-            setIsLoading(false);
         }
     };
 
@@ -140,7 +154,7 @@ const styles = StyleSheet.create({
         color: '#555',
     },
     editButton: {
-        backgroundColor: '#728FF3', // Blue color
+        backgroundColor: Color.MIDNIGHTBLUE, // Blue color
         paddingVertical: 10,
         paddingHorizontal: 20,
         borderRadius: 5,

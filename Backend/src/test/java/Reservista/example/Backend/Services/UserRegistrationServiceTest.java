@@ -3,20 +3,18 @@ package Reservista.example.Backend.Services;
 import static org.junit.jupiter.api.Assertions.*;
 
 
-import Reservista.example.Backend.DAOs.BlockedUserRepository;
 import Reservista.example.Backend.DAOs.UserRepository;
 import Reservista.example.Backend.DTOs.Registration.RegistrationRequestDTO;
-import Reservista.example.Backend.Enums.StatusCode;
-import Reservista.example.Backend.Error.RegistrationCredentialsException;
-import Reservista.example.Backend.Error.DeactivatedAccountException;
+import Reservista.example.Backend.Enums.ErrorCode;
+import Reservista.example.Backend.Error.GlobalException;
 import Reservista.example.Backend.Models.EntityClasses.User;
+import Reservista.example.Backend.Services.Registration.OTPService;
 import Reservista.example.Backend.Services.Registration.UserRegistrationService;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import static org.mockito.ArgumentMatchers.any;
@@ -31,20 +29,18 @@ class UserRegistrationServiceTest {
     @MockBean
     UserRepository userRepository;
 
-    @MockBean
-    BlockedUserRepository blockedUserRepository;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @MockBean
+    private OTPService otpService;
 
     @Test
     public void whenEmailAlreadyExists_thenUserAccountNotCreated(){
 
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -52,9 +48,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.EMAIL_ALREADY_EXIST.getMessage(), exception.getMessage());
+        assertEquals(ErrorCode.EMAIL_ALREADY_EXIST, exception.getErrorCode());
 
         verify(userRepository,never()).save(any());
 
@@ -65,8 +61,6 @@ class UserRegistrationServiceTest {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
-        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -74,9 +68,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception = assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception = assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.USERNAME_ALREADY_EXIST.getMessage(), exception.getMessage());
+        assertEquals(ErrorCode.USERNAME_ALREADY_EXIST, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -86,12 +80,8 @@ class UserRegistrationServiceTest {
     @Test
     public void whenUserIsBlocked_thenUserAccountNotCreated(){
 
-
-
-        Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
-        Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
+        Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
+        Mockito.when(userRepository.findIsBlockedByEmail("mariam@gmail.com")).thenReturn(true);
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -99,9 +89,9 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        RegistrationCredentialsException exception =assertThrows(RegistrationCredentialsException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_BLOCKED.getMessage(), exception.getMessage());
+        assertEquals(ErrorCode.ACCOUNT_BLOCKED, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 
@@ -109,12 +99,13 @@ class UserRegistrationServiceTest {
 
 
     @Test
-    public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain(){
+    public void whenUserHasADeactivatedAccount_thenUserAccountNotCreatedAgain() throws GlobalException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(true);
-        Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(true);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsBlockedByEmail("mariam@gmail.com")).thenReturn(false);
+        doNothing().when(otpService).refreshOTP("mariam@gmail.com");
+
 
         RegistrationRequestDTO registrationRequest =
                 RegistrationRequestDTO.builder()
@@ -122,21 +113,23 @@ class UserRegistrationServiceTest {
                         .userName("mariam")
                         .build();
 
-        DeactivatedAccountException exception =assertThrows(DeactivatedAccountException.class,()->userRegistrationService.registerUser(registrationRequest));
+        GlobalException exception =assertThrows(GlobalException.class,()->userRegistrationService.registerUser(registrationRequest));
 
-        assertEquals(StatusCode.ACCOUNT_DEACTIVATED.getMessage(), exception.getMessage());
+        assertEquals(ErrorCode.ACCOUNT_DEACTIVATED, exception.getErrorCode());
 
         verify(userRepository,never()).save(any(User.class));
 
     }
 
     @Test
-    public void whenValidUserCredentials_thenUserAccountCreated() throws RegistrationCredentialsException, DeactivatedAccountException {
+    public void whenValidUserCredentials_thenUserAccountCreated() throws GlobalException {
 
         Mockito.when(userRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
         Mockito.when(userRepository.existsByUserName("mariam")).thenReturn(false);
         Mockito.when(userRepository.findIsActivatedByEmail("mariam@gmail.com")).thenReturn(false);
-        Mockito.when(blockedUserRepository.existsByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(userRepository.findIsBlockedByEmail("mariam@gmail.com")).thenReturn(false);
+        Mockito.when(otpService.createAndSendOTP(any(User.class))).thenReturn(true);
+
         Mockito.when(userRepository.save(any(User.class))).thenAnswer(invocation -> {
             User savedUser = invocation.getArgument(0);
             savedUser.setPassword(passwordEncoder.encode("password"));
